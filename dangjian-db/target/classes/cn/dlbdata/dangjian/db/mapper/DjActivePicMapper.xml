@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dlbdata.dangjian.db.mapper.DjActivePicMapper">
+  <resultMap id="BaseResultMap" type="cn.dlbdata.dangjian.db.pojo.DjActivePic">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="dj_active_id" jdbcType="INTEGER" property="djActiveId" />
+    <result column="dj_user_id" jdbcType="INTEGER" property="djUserId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+</mapper>

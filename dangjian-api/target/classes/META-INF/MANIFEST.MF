@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Implementation-Title: dangjian-api
+Implementation-Version: 2.0.1-SNAPSHOT
+Built-By: xiaowei
+Implementation-Vendor-Id: cn.dlbdata
+Build-Jdk: 1.8.0_121
+Implementation-URL: http://maven.apache.org
+Created-By: Maven Integration for Eclipse
+
