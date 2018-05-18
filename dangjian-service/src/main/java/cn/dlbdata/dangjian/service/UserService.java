@@ -6,7 +6,7 @@ import cn.dlbdata.dangjian.api.IUserService;
 import cn.dlbdata.dangjian.db.mapper.DjUserMapper;
 import cn.dlbdata.dangjian.db.pojo.DjUser;
 
-public class UserService implements IUserService {
+public class UserService extends BaseService implements IUserService {
 	@Autowired
 	DjUserMapper userMapper;
 
