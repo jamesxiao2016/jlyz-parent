@@ -1,5 +1,9 @@
 *.class
-/target/*
-/classes/*
+*/target/*
+*/classes/*
 Thumbs.db
 /.settings/*
+*.project
+*.prefs
+dangjian-common/.settings/org.eclipse.wst.common.project.facet.core.xml
+dangjian-common/.settings/org.eclipse.wst.common.component
