@@ -27,10 +27,9 @@
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 	
-	<import resource="applicationContext-dubbo-config.xml" />
-	
+	<import resource="applicationContext-mybatis.xml" />
 	<!-- 自动扫描 -->
-	<context:component-scan base-package="com.meig" />
+	<context:component-scan base-package="com.dlbdata" />
 	<!-- 配置使Spring采用CGLIB代理 -->
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 	<context:annotation-config />
