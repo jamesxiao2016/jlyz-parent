@@ -10,7 +10,7 @@
 		<version>2.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>cn.dlbdata</groupId>
-	<artifactId>dangjian-service</artifactId>
+	<artifactId>dangjian-service-impl</artifactId>
 	<version>2.0.1-SNAPSHOT</version>
 	<name>dangjian-service</name>
 	<url>http://maven.apache.org</url>
@@ -30,7 +30,7 @@
 		</dependency>
 		<dependency>
 			<groupId>cn.dlbdata</groupId>
-			<artifactId>dangjian-api</artifactId>
+			<artifactId>dangjian-service</artifactId>
 			<version>2.0.1-SNAPSHOT</version>
 		</dependency>
 		

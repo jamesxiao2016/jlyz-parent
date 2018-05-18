@@ -17,8 +17,8 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>dangjian-db</module>
-		<module>dangjian-api</module>
 		<module>dangjian-service</module>
+		<module>dangjian-service-impl</module>
 		<module>dangjian-common</module>
 		<module>dangjian-web</module>
 	</modules>

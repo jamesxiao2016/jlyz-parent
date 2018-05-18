@@ -10,10 +10,10 @@
         <dependent-module archiveName="dangjian-db-2.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/dangjian-db/dangjian-db">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="dangjian-api-2.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/dangjian-api/dangjian-api">
+        <dependent-module archiveName="dangjian-service-2.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/dangjian-service/dangjian-service">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="dangjian-service-2.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/dangjian-service/dangjian-service">
+        <dependent-module archiveName="dangjian-service-impl-2.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/dangjian-service-impl/dangjian-service-impl">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="dangjian-web"/>
