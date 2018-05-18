@@ -165,8 +165,6 @@
 		</property>
 	</bean>
 	<mvc:annotation-driven conversion-service="conversionService" />
-	<mvc:annotation-driven>
-	</mvc:annotation-driven>
 	<!-- <mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/v1/*" />

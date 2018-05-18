@@ -103,12 +103,11 @@
 	</bean>
 
 	<!--动态数据源 -->
-	<bean id="dataSource" class="cn.dlbdata.dangjian.core.db.DynamicRouteDataSource">
+	<bean id="dataSource" class="cn.dlbdata.dangjian.common.core.db.DynamicRouteDataSource">
 		<property name="targetDataSources">
 			<map key-type="java.lang.String">
 				<entry key="master" value-ref="masterDataSource" />
 				<entry key="slave" value-ref="slaveDataSource" />
-				<entry key="support" value-ref="supportDataSource" />
 			</map>
 		</property>
 		<!-- 默认目标数据源为主库数据源 -->
