@@ -9,19 +9,19 @@ public class DjActiveDept {
      * 记录ID
      */
     @Id
-    private Integer id;
+    private Long id;
 
     /**
      * 活动ID
      */
     @Column(name = "dj_active_id")
-    private Integer djActiveId;
+    private Long djActiveId;
 
     /**
      * 部门ID
      */
     @Column(name = "dj_dept_id")
-    private Integer djDeptId;
+    private Long djDeptId;
 
     /**
      * 状态
@@ -36,7 +36,7 @@ public class DjActiveDept {
      *
      * @return id - 记录ID
      */
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -45,7 +45,7 @@ public class DjActiveDept {
      *
      * @param id 记录ID
      */
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -54,7 +54,7 @@ public class DjActiveDept {
      *
      * @return dj_active_id - 活动ID
      */
-    public Integer getDjActiveId() {
+    public Long getDjActiveId() {
         return djActiveId;
     }
 
@@ -63,7 +63,7 @@ public class DjActiveDept {
      *
      * @param djActiveId 活动ID
      */
-    public void setDjActiveId(Integer djActiveId) {
+    public void setDjActiveId(Long djActiveId) {
         this.djActiveId = djActiveId;
     }
 
@@ -72,7 +72,7 @@ public class DjActiveDept {
      *
      * @return dj_dept_id - 部门ID
      */
-    public Integer getDjDeptId() {
+    public Long getDjDeptId() {
         return djDeptId;
     }
 
@@ -81,7 +81,7 @@ public class DjActiveDept {
      *
      * @param djDeptId 部门ID
      */
-    public void setDjDeptId(Integer djDeptId) {
+    public void setDjDeptId(Long djDeptId) {
         this.djDeptId = djDeptId;
     }
 
