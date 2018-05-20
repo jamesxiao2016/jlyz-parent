@@ -1,4 +1,4 @@
-package cn.dlbdata.dj.web.utils;
+package cn.dlbdata.dj.common.core.util;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -19,10 +19,19 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JwtTokenUtil {
 	static Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
-	static String KEY_UID = "UID";
-	static String KEY_UNAME = "UNAME";
-	static String KEY_CID = "CID";
-	static String KEY_UTYPE = "UTYPE";
+	/**
+	 * KEY-用户ID
+	 */
+	public static String KEY_UID = "UID";
+	/**
+	 * KEY-用户名
+	 */
+	public static String KEY_UNAME = "UNAME";
+	/**
+	 * KEY-部门ID
+	 */
+	public static String KEY_CID = "CID";
+	public static String KEY_UTYPE = "UTYPE";
 
 	/**
 	 * 创建token
@@ -119,7 +128,7 @@ public class JwtTokenUtil {
 	/**
 	 * jwt
 	 */
-	static final String JWT_ID = "meiglink"; // jwtid
+	static final String JWT_ID = "dlbdata"; // jwtid
 	static final String JWT_SECERT = "7786df7fc3a34e26a61c034d5ec8245d"; // 密匙
 	public static final long JWT_TTL = 1 * 5 * 1000; // token有效时间
 	public static final int MINUTE_TTL = 60 * 1000; // millisecond
@@ -135,9 +144,9 @@ public class JwtTokenUtil {
 			String token = createToken(userId, name, cid, TTLMillis);
 			System.out.println(token);
 			Claims claims = parseJWT(token);
-			System.out.println(claims.get("uid"));
-			System.out.println(claims.get("uname"));
-			System.out.println(claims.get("cid"));
+			System.out.println(claims.get(KEY_UID));
+			System.out.println(claims.get(KEY_UNAME));
+			System.out.println(claims.get(KEY_CID));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

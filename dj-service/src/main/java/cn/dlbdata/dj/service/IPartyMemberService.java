@@ -3,6 +3,7 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 
 import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.vo.PartyVo;
 
 /**
  * 党员相关的业务逻辑
@@ -29,4 +30,13 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	public List<DjPartymember> getPartyMemberListByDeptId(Long deptId);
+
+	/**
+	 * 根据党员ID获取党员的积分及参加活动的次数
+	 * 
+	 * @param memberId
+	 *            党员ID
+	 * @return
+	 */
+	public PartyVo getScoreAndNumByMemberId(Long memberId);
 }

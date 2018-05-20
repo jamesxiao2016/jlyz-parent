@@ -22,13 +22,13 @@
 		</jdbcConnection>
 
 		<!-- 配置pojo生成路径 -->
-		<javaModelGenerator targetPackage="com.meig.link.db.pojo"
+		<javaModelGenerator targetPackage="cn.dlbdata.dj.db.pojo"
 			targetProject="/Users/xiaowei/work/project/jlyz-park/server/jlyz-web/dj-db/src/main/java/" />
 		<!-- 配置xml生成路径 -->
-		<sqlMapGenerator targetPackage="com.meig.link.db.mapper"
+		<sqlMapGenerator targetPackage="cn.dlbdata.dj.db.mapper"
 			targetProject="/Users/xiaowei/work/project/jlyz-park/server/jlyz-web/dj-db/src/main/java/" />
 		<!-- 配置mapper生成路径 -->
-		<javaClientGenerator targetPackage="com.meig.link.db.mapper"
+		<javaClientGenerator targetPackage="ccn.dlbdata.dj.db.mapper"
 			targetProject="/Users/xiaowei/work/project/jlyz-park/server/jlyz-web/dj-db/src/main/java/" type="XMLMAPPER" />
 
 		<table tableName="%">

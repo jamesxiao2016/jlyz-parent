@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
+import cn.dlbdata.dj.common.core.util.cache.CacheManager;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.DlbConstant.ResultCode;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
@@ -18,6 +21,7 @@ import cn.dlbdata.dj.serviceimpl.base.BaseService;
 import cn.dlbdata.dj.vo.LoginVo;
 import cn.dlbdata.dj.vo.UserVo;
 
+@Service
 public class UserService extends BaseService implements IUserServcie {
 
 	@Autowired
@@ -118,14 +122,14 @@ public class UserService extends BaseService implements IUserServcie {
 			result.setMsg("用户名或密码错误");
 		}
 
-		// TODO 角色权限判断
+		// TODO 角色权限判断，判断登录的角色是否匹配(后续处理）
 
 		// 返回数据处理
 		UserVo data = new UserVo();
 		data.setDeptId(user.getDeptId());
 		data.setMemeberId(user.getDjPartymemberId());
 		data.setName(vo.getName());
-		//data.setToken(token);
+		// data.setToken(token);
 		data.setUserId(user.getId());
 
 		DjPartymember member = partyMemberMapper.selectByPrimaryKey(user.getDeptId());
@@ -137,9 +141,16 @@ public class UserService extends BaseService implements IUserServcie {
 			data.setPartyBranchName(dept.getPrincipalId() + "");
 			data.setDeptName(dept.getName());
 		}
+
+		// 生成token
+		String token = JwtTokenUtil.createToken(user.getId() + "", user.getName(), user.getDeptId() + "", 0);
+		data.setToken(token);
+		
+		CacheManager.getInstance().put(user.getId() + "", data);
+
 		// 返回结果
 		result.setCode(ResultCode.OK.getCode());
-
+		result.setData(data);
 		return result;
 	}
 
