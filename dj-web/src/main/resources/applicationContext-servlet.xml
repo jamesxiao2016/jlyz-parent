@@ -146,12 +146,12 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/v1/*" />
 			<mvc:mapping path="/ct/*" />
-			<bean class="com.meig.link.control.interceptor.MyHandlerInterceptor"></bean>
+			<bean class="cn.dlbdata.dj.web.interceptor.MyHandlerInterceptor"></bean>
 		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/user/*.html" />
 			<mvc:mapping path="/user/view/*.html" />
-			<bean class="com.meig.link.control.interceptor.ViewHandlerInterceptor"></bean>
+			<bean class="cn.dlbdata.dj.web.interceptor.ViewHandlerInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors> -->
 </beans>
