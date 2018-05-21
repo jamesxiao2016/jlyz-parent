@@ -35,4 +35,13 @@ public interface IActiveService {
 	 * @return
 	 */
 	public List<DjActive> getActiveListByDeptIds(Long[] deptIds);
+
+	/**
+	 * 根据用户ID获取活动次数（包含驿站活动次数）
+	 * 
+	 * @param userId
+	 *            用户ID
+	 * @return
+	 */
+	public Integer getActiveNumByUserId(Long userId, Long activeType);
 }

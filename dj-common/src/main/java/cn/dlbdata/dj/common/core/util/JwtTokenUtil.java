@@ -36,10 +36,9 @@ public class JwtTokenUtil {
 	/**
 	 * 创建token
 	 * 
-	 * @param uid
-	 * @param uname
-	 * @param cid
-	 * @param userType
+	 * @param uid 用户ID
+	 * @param uname 用户姓名
+	 * @param cid 部门ID
 	 * @param ttlMillis
 	 * @return
 	 */

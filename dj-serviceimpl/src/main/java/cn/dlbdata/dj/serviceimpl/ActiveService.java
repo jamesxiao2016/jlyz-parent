@@ -1,10 +1,12 @@
 package cn.dlbdata.dj.serviceimpl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.db.mapper.DjActiveDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
@@ -44,6 +46,17 @@ public class ActiveService extends BaseService implements IActiveService {
 			return null;
 		}
 		return null;
+	}
+
+	@Override
+	public Integer getActiveNumByUserId(Long userId, Long activeType) {
+		if (userId == null) {
+			return 0;
+		}
+		Date startTime = DatetimeUtil.getCurrYearFirst();
+		Date endTime = DatetimeUtil.getCurrYearLast();
+		Integer count = activeMapper.getUserActiveCountByActiveTypeAndTime(userId, activeType, startTime, endTime);
+		return count;
 	}
 
 }

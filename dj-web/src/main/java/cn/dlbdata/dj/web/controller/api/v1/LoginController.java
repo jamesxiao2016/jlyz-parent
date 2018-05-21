@@ -80,4 +80,11 @@ public class LoginController extends BaseController {
 		}
 		return result;
 	}
+	
+	@ResponseBody
+	@PostMapping("/login")
+	public ResultVo<UserVo> updatePwd(@RequestBody LoginVo vo) {
+		ResultVo<UserVo> result = userService.login(vo);
+		return result;
+	}
 }

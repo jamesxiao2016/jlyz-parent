@@ -21,6 +21,8 @@ public class UserVo {
 	private String deptName;
 	// 党支书姓名
 	private String partyBranchName;
+	// 所属党委
+	private String partyCommittee;
 
 	public Long getUserId() {
 		return userId;
@@ -84,6 +86,30 @@ public class UserVo {
 
 	public void setPartyBranchName(String partyBranchName) {
 		this.partyBranchName = partyBranchName;
+	}
+
+	public Integer getSex() {
+		return sex;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public String getPartyCommittee() {
+		return partyCommittee;
+	}
+
+	public void setPartyCommittee(String partyCommittee) {
+		this.partyCommittee = partyCommittee;
 	}
 
 }
