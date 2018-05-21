@@ -29,10 +29,10 @@ public class DjScore {
     private Float score;
 
     /**
-     * 加分人（自己或审批人）
+     * 用户ID
      */
-    @Column(name = "add_user_id")
-    private Long addUserId;
+    @Column(name = "user_id")
+    private Long userId;
 
     /**
      * 加分时间
@@ -41,10 +41,28 @@ public class DjScore {
     private Date addTime;
 
     /**
-     * 用户ID
+     * 加分人（自己或审批人）
      */
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "apply_user_id")
+    private Long applyUserId;
+
+    /**
+     * 审批人ID
+     */
+    @Column(name = "approver_id")
+    private Long approverId;
+
+    /**
+     * 加分年份
+     */
+    @Column(name = "add_year")
+    private Integer addYear;
+
+    /**
+     * 加分状态
+     */
+    @Column(name = "add_status")
+    private Integer addStatus;
 
     /**
      * 积分说明
@@ -148,21 +166,21 @@ public class DjScore {
     }
 
     /**
-     * 获取加分人（自己或审批人）
+     * 获取用户ID
      *
-     * @return add_user_id - 加分人（自己或审批人）
+     * @return user_id - 用户ID
      */
-    public Long getAddUserId() {
-        return addUserId;
+    public Long getUserId() {
+        return userId;
     }
 
     /**
-     * 设置加分人（自己或审批人）
+     * 设置用户ID
      *
-     * @param addUserId 加分人（自己或审批人）
+     * @param userId 用户ID
      */
-    public void setAddUserId(Long addUserId) {
-        this.addUserId = addUserId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     /**
@@ -184,21 +202,75 @@ public class DjScore {
     }
 
     /**
-     * 获取用户ID
+     * 获取加分人（自己或审批人）
      *
-     * @return user_id - 用户ID
+     * @return apply_user_id - 加分人（自己或审批人）
      */
-    public Long getUserId() {
-        return userId;
+    public Long getApplyUserId() {
+        return applyUserId;
     }
 
     /**
-     * 设置用户ID
+     * 设置加分人（自己或审批人）
      *
-     * @param userId 用户ID
+     * @param applyUserId 加分人（自己或审批人）
      */
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setApplyUserId(Long applyUserId) {
+        this.applyUserId = applyUserId;
+    }
+
+    /**
+     * 获取审批人ID
+     *
+     * @return approver_id - 审批人ID
+     */
+    public Long getApproverId() {
+        return approverId;
+    }
+
+    /**
+     * 设置审批人ID
+     *
+     * @param approverId 审批人ID
+     */
+    public void setApproverId(Long approverId) {
+        this.approverId = approverId;
+    }
+
+    /**
+     * 获取加分年份
+     *
+     * @return add_year - 加分年份
+     */
+    public Integer getAddYear() {
+        return addYear;
+    }
+
+    /**
+     * 设置加分年份
+     *
+     * @param addYear 加分年份
+     */
+    public void setAddYear(Integer addYear) {
+        this.addYear = addYear;
+    }
+
+    /**
+     * 获取加分状态
+     *
+     * @return add_status - 加分状态
+     */
+    public Integer getAddStatus() {
+        return addStatus;
+    }
+
+    /**
+     * 设置加分状态
+     *
+     * @param addStatus 加分状态
+     */
+    public void setAddStatus(Integer addStatus) {
+        this.addStatus = addStatus;
     }
 
     /**

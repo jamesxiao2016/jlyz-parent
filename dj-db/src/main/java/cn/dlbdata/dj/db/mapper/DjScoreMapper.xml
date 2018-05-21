@@ -9,9 +9,12 @@
     <result column="dj_type_id" jdbcType="BIGINT" property="djTypeId" />
     <result column="dj_sub_type_id" jdbcType="BIGINT" property="djSubTypeId" />
     <result column="score" jdbcType="REAL" property="score" />
-    <result column="add_user_id" jdbcType="BIGINT" property="addUserId" />
-    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="apply_user_id" jdbcType="BIGINT" property="applyUserId" />
+    <result column="approver_id" jdbcType="BIGINT" property="approverId" />
+    <result column="add_year" jdbcType="INTEGER" property="addYear" />
+    <result column="add_status" jdbcType="INTEGER" property="addStatus" />
     <result column="score_desc" jdbcType="VARCHAR" property="scoreDesc" />
     <result column="record_id" jdbcType="BIGINT" property="recordId" />
     <result column="recrod_desc" jdbcType="VARCHAR" property="recrodDesc" />
