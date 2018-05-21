@@ -45,7 +45,7 @@
 	<!-- 对web包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
 	<!-- 自动搜索@Controller标注的类 -->
 	<context:component-scan
-		base-package="cn.dlbdata.dj.web.controller" />
+		base-package="cn.dlbdata.dj.web.controller,cn.dlbdata.dj.web.controller.admin,cn.dlbdata.dj.web.controller.api.v1" />
 	<!-- 基于Annotation的映射方式 -->
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
@@ -146,12 +146,12 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/v1/*" />
 			<mvc:mapping path="/ct/*" />
-			<bean class="com.meig.link.control.interceptor.MyHandlerInterceptor"></bean>
+			<bean class="cn.dlbdata.dj.web.interceptor.MyHandlerInterceptor"></bean>
 		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/user/*.html" />
 			<mvc:mapping path="/user/view/*.html" />
-			<bean class="com.meig.link.control.interceptor.ViewHandlerInterceptor"></bean>
+			<bean class="cn.dlbdata.dj.web.interceptor.ViewHandlerInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors> -->
 </beans>
