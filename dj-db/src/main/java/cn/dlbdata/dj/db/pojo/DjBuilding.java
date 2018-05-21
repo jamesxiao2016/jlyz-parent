@@ -3,8 +3,8 @@ package cn.dlbdata.dj.db.pojo;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "dj_dept")
-public class DjDept {
+@Table(name = "dj_building")
+public class DjBuilding {
     /**
      * 记录ID
      */
@@ -18,23 +18,24 @@ public class DjDept {
     private Long djSectionId;
 
     /**
-     * 楼宇ID
-     */
-    @Column(name = "dj_building_id")
-    private Long djBuildingId;
-
-    /**
-     * 楼层
-     */
-    private String floor;
-
-    /**
-     * 部门名称
+     * 片区名称
      */
     private String name;
 
     /**
-     * 部门人数
+     * 楼层数
+     */
+    @Column(name = "floor_num")
+    private Integer floorNum;
+
+    /**
+     * 党支部数
+     */
+    @Column(name = "party_num")
+    private Integer partyNum;
+
+    /**
+     * 党员人数
      */
     @Column(name = "people_num")
     private Integer peopleNum;
@@ -45,32 +46,15 @@ public class DjDept {
     private Integer address;
 
     /**
-     * 电话
-     */
-    private String phone;
-
-    /**
      * 状态
      */
     private Integer status;
-
-    /**
-     * 上级部门ID
-     */
-    @Column(name = "parent_id")
-    private Long parentId;
-
-    /**
-     * 部门层级
-     */
-    @Column(name = "dept_level")
-    private String deptLevel;
 
     @Column(name = "create_time")
     private Date createTime;
 
     /**
-     * 部门负责人ID
+     * 楼宇负责人ID
      */
     @Column(name = "principal_id")
     private Long principalId;
@@ -112,72 +96,72 @@ public class DjDept {
     }
 
     /**
-     * 获取楼宇ID
+     * 获取片区名称
      *
-     * @return dj_building_id - 楼宇ID
-     */
-    public Long getDjBuildingId() {
-        return djBuildingId;
-    }
-
-    /**
-     * 设置楼宇ID
-     *
-     * @param djBuildingId 楼宇ID
-     */
-    public void setDjBuildingId(Long djBuildingId) {
-        this.djBuildingId = djBuildingId;
-    }
-
-    /**
-     * 获取楼层
-     *
-     * @return floor - 楼层
-     */
-    public String getFloor() {
-        return floor;
-    }
-
-    /**
-     * 设置楼层
-     *
-     * @param floor 楼层
-     */
-    public void setFloor(String floor) {
-        this.floor = floor;
-    }
-
-    /**
-     * 获取部门名称
-     *
-     * @return name - 部门名称
+     * @return name - 片区名称
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 设置部门名称
+     * 设置片区名称
      *
-     * @param name 部门名称
+     * @param name 片区名称
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * 获取部门人数
+     * 获取楼层数
      *
-     * @return people_num - 部门人数
+     * @return floor_num - 楼层数
+     */
+    public Integer getFloorNum() {
+        return floorNum;
+    }
+
+    /**
+     * 设置楼层数
+     *
+     * @param floorNum 楼层数
+     */
+    public void setFloorNum(Integer floorNum) {
+        this.floorNum = floorNum;
+    }
+
+    /**
+     * 获取党支部数
+     *
+     * @return party_num - 党支部数
+     */
+    public Integer getPartyNum() {
+        return partyNum;
+    }
+
+    /**
+     * 设置党支部数
+     *
+     * @param partyNum 党支部数
+     */
+    public void setPartyNum(Integer partyNum) {
+        this.partyNum = partyNum;
+    }
+
+    /**
+     * 获取党员人数
+     *
+     * @return people_num - 党员人数
      */
     public Integer getPeopleNum() {
         return peopleNum;
     }
 
     /**
-     * 设置部门人数
+     * 设置党员人数
      *
-     * @param peopleNum 部门人数
+     * @param peopleNum 党员人数
      */
     public void setPeopleNum(Integer peopleNum) {
         this.peopleNum = peopleNum;
@@ -202,24 +186,6 @@ public class DjDept {
     }
 
     /**
-     * 获取电话
-     *
-     * @return phone - 电话
-     */
-    public String getPhone() {
-        return phone;
-    }
-
-    /**
-     * 设置电话
-     *
-     * @param phone 电话
-     */
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    /**
      * 获取状态
      *
      * @return status - 状态
@@ -238,42 +204,6 @@ public class DjDept {
     }
 
     /**
-     * 获取上级部门ID
-     *
-     * @return parent_id - 上级部门ID
-     */
-    public Long getParentId() {
-        return parentId;
-    }
-
-    /**
-     * 设置上级部门ID
-     *
-     * @param parentId 上级部门ID
-     */
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    /**
-     * 获取部门层级
-     *
-     * @return dept_level - 部门层级
-     */
-    public String getDeptLevel() {
-        return deptLevel;
-    }
-
-    /**
-     * 设置部门层级
-     *
-     * @param deptLevel 部门层级
-     */
-    public void setDeptLevel(String deptLevel) {
-        this.deptLevel = deptLevel;
-    }
-
-    /**
      * @return create_time
      */
     public Date getCreateTime() {
@@ -288,18 +218,18 @@ public class DjDept {
     }
 
     /**
-     * 获取部门负责人ID
+     * 获取楼宇负责人ID
      *
-     * @return principal_id - 部门负责人ID
+     * @return principal_id - 楼宇负责人ID
      */
     public Long getPrincipalId() {
         return principalId;
     }
 
     /**
-     * 设置部门负责人ID
+     * 设置楼宇负责人ID
      *
-     * @param principalId 部门负责人ID
+     * @param principalId 楼宇负责人ID
      */
     public void setPrincipalId(Long principalId) {
         this.principalId = principalId;

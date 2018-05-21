@@ -9,19 +9,19 @@ public class DjActivePic {
      * 记录ID
      */
     @Id
-    private Integer id;
+    private Long id;
 
     /**
      * 活动ID
      */
     @Column(name = "dj_active_id")
-    private Integer djActiveId;
+    private Long djActiveId;
 
     /**
      * 参与人ID
      */
     @Column(name = "dj_user_id")
-    private Integer djUserId;
+    private Long djUserId;
 
     /**
      * 状态
@@ -39,7 +39,7 @@ public class DjActivePic {
      *
      * @return id - 记录ID
      */
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -48,7 +48,7 @@ public class DjActivePic {
      *
      * @param id 记录ID
      */
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -57,7 +57,7 @@ public class DjActivePic {
      *
      * @return dj_active_id - 活动ID
      */
-    public Integer getDjActiveId() {
+    public Long getDjActiveId() {
         return djActiveId;
     }
 
@@ -66,7 +66,7 @@ public class DjActivePic {
      *
      * @param djActiveId 活动ID
      */
-    public void setDjActiveId(Integer djActiveId) {
+    public void setDjActiveId(Long djActiveId) {
         this.djActiveId = djActiveId;
     }
 
@@ -75,7 +75,7 @@ public class DjActivePic {
      *
      * @return dj_user_id - 参与人ID
      */
-    public Integer getDjUserId() {
+    public Long getDjUserId() {
         return djUserId;
     }
 
@@ -84,7 +84,7 @@ public class DjActivePic {
      *
      * @param djUserId 参与人ID
      */
-    public void setDjUserId(Integer djUserId) {
+    public void setDjUserId(Long djUserId) {
         this.djUserId = djUserId;
     }
 

@@ -9,7 +9,7 @@ public class DjPointPic {
      * 记录ID
      */
     @Id
-    private Integer id;
+    private Long id;
 
     /**
      * 积分类型
@@ -25,13 +25,13 @@ public class DjPointPic {
      * 记录ID
      */
     @Column(name = "record_id")
-    private Integer recordId;
+    private Long recordId;
 
     /**
      * 图片ID
      */
     @Column(name = "dj_pic_id")
-    private Integer djPicId;
+    private Long djPicId;
 
     /**
      * 状态
@@ -49,7 +49,7 @@ public class DjPointPic {
      *
      * @return id - 记录ID
      */
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -58,7 +58,7 @@ public class DjPointPic {
      *
      * @param id 记录ID
      */
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -101,7 +101,7 @@ public class DjPointPic {
      *
      * @return record_id - 记录ID
      */
-    public Integer getRecordId() {
+    public Long getRecordId() {
         return recordId;
     }
 
@@ -110,7 +110,7 @@ public class DjPointPic {
      *
      * @param recordId 记录ID
      */
-    public void setRecordId(Integer recordId) {
+    public void setRecordId(Long recordId) {
         this.recordId = recordId;
     }
 
@@ -119,7 +119,7 @@ public class DjPointPic {
      *
      * @return dj_pic_id - 图片ID
      */
-    public Integer getDjPicId() {
+    public Long getDjPicId() {
         return djPicId;
     }
 
@@ -128,7 +128,7 @@ public class DjPointPic {
      *
      * @param djPicId 图片ID
      */
-    public void setDjPicId(Integer djPicId) {
+    public void setDjPicId(Long djPicId) {
         this.djPicId = djPicId;
     }
 

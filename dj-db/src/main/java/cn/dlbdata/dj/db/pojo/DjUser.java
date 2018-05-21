@@ -54,6 +54,18 @@ public class DjUser {
      */
     private String avatar;
 
+    /**
+     * 登录次数
+     */
+    @Column(name = "login_count")
+    private Integer loginCount;
+
+    /**
+     * 最后登录时间
+     */
+    @Column(name = "last_time")
+    private Date lastTime;
+
     @Column(name = "create_time")
     private Date createTime;
 
@@ -217,6 +229,42 @@ public class DjUser {
      */
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    /**
+     * 获取登录次数
+     *
+     * @return login_count - 登录次数
+     */
+    public Integer getLoginCount() {
+        return loginCount;
+    }
+
+    /**
+     * 设置登录次数
+     *
+     * @param loginCount 登录次数
+     */
+    public void setLoginCount(Integer loginCount) {
+        this.loginCount = loginCount;
+    }
+
+    /**
+     * 获取最后登录时间
+     *
+     * @return last_time - 最后登录时间
+     */
+    public Date getLastTime() {
+        return lastTime;
+    }
+
+    /**
+     * 设置最后登录时间
+     *
+     * @param lastTime 最后登录时间
+     */
+    public void setLastTime(Date lastTime) {
+        this.lastTime = lastTime;
     }
 
     /**

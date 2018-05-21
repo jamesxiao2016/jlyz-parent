@@ -14,6 +14,8 @@
     <result column="dept_id" jdbcType="BIGINT" property="deptId" />
     <result column="token" jdbcType="VARCHAR" property="token" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="login_count" jdbcType="INTEGER" property="loginCount" />
+    <result column="last_time" jdbcType="TIMESTAMP" property="lastTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 </mapper>

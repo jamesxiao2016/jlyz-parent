@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.dlbdata.dj.db.mapper.DjActiveDeptMapper">
-  <resultMap id="BaseResultMap" type="cn.dlbdata.dj.db.pojo.DjActiveDept">
+<mapper namespace="cn.dlbdata.dj.db.mapper.DjSectionMapper">
+  <resultMap id="BaseResultMap" type="cn.dlbdata.dj.db.pojo.DjSection">
     <!--
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="dj_active_id" jdbcType="BIGINT" property="djActiveId" />
-    <result column="dj_dept_id" jdbcType="BIGINT" property="djDeptId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="people_num" jdbcType="INTEGER" property="peopleNum" />
+    <result column="address" jdbcType="INTEGER" property="address" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="principal_id" jdbcType="BIGINT" property="principalId" />
   </resultMap>
 </mapper>

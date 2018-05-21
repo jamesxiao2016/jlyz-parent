@@ -5,15 +5,15 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="dj_type_id" jdbcType="INTEGER" property="djTypeId" />
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="dj_type_id" jdbcType="BIGINT" property="djTypeId" />
     <result column="dj_sub_type_id" jdbcType="BIGINT" property="djSubTypeId" />
     <result column="score" jdbcType="REAL" property="score" />
     <result column="add_user_id" jdbcType="BIGINT" property="addUserId" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="score_desc" jdbcType="VARCHAR" property="scoreDesc" />
-    <result column="record_id" jdbcType="INTEGER" property="recordId" />
+    <result column="record_id" jdbcType="BIGINT" property="recordId" />
     <result column="recrod_desc" jdbcType="VARCHAR" property="recrodDesc" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />

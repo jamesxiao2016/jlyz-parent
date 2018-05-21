@@ -9,13 +9,13 @@ public class DjScore {
      * 记录ID
      */
     @Id
-    private Integer id;
+    private Long id;
 
     /**
      * 类型ID
      */
     @Column(name = "dj_type_id")
-    private Integer djTypeId;
+    private Long djTypeId;
 
     /**
      * 二级类型ID
@@ -56,7 +56,7 @@ public class DjScore {
      * 记录ID
      */
     @Column(name = "record_id")
-    private Integer recordId;
+    private Long recordId;
 
     /**
      * 记录描述
@@ -80,7 +80,7 @@ public class DjScore {
      *
      * @return id - 记录ID
      */
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -89,7 +89,7 @@ public class DjScore {
      *
      * @param id 记录ID
      */
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -98,7 +98,7 @@ public class DjScore {
      *
      * @return dj_type_id - 类型ID
      */
-    public Integer getDjTypeId() {
+    public Long getDjTypeId() {
         return djTypeId;
     }
 
@@ -107,7 +107,7 @@ public class DjScore {
      *
      * @param djTypeId 类型ID
      */
-    public void setDjTypeId(Integer djTypeId) {
+    public void setDjTypeId(Long djTypeId) {
         this.djTypeId = djTypeId;
     }
 
@@ -224,7 +224,7 @@ public class DjScore {
      *
      * @return record_id - 记录ID
      */
-    public Integer getRecordId() {
+    public Long getRecordId() {
         return recordId;
     }
 
@@ -233,7 +233,7 @@ public class DjScore {
      *
      * @param recordId 记录ID
      */
-    public void setRecordId(Integer recordId) {
+    public void setRecordId(Long recordId) {
         this.recordId = recordId;
     }
 

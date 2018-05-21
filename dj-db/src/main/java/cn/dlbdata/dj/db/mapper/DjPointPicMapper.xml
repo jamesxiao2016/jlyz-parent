@@ -5,10 +5,10 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="id" jdbcType="BIGINT" property="id" />
     <result column="point_type" jdbcType="INTEGER" property="pointType" />
-    <result column="record_id" jdbcType="INTEGER" property="recordId" />
-    <result column="dj_pic_id" jdbcType="INTEGER" property="djPicId" />
+    <result column="record_id" jdbcType="BIGINT" property="recordId" />
+    <result column="dj_pic_id" jdbcType="BIGINT" property="djPicId" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>

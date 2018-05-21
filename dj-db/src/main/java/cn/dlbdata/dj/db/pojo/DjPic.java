@@ -9,7 +9,7 @@ public class DjPic {
      * 记录ID
      */
     @Id
-    private Integer id;
+    private Long id;
 
     /**
      * 图片名称
@@ -36,7 +36,7 @@ public class DjPic {
      *
      * @return id - 记录ID
      */
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -45,7 +45,7 @@ public class DjPic {
      *
      * @param id 记录ID
      */
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
