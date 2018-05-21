@@ -13,7 +13,7 @@ import cn.dlbdata.dj.vo.UserVo;
  * @author xiaowei
  *
  */
-public interface IUserServcie {
+public interface IUserService {
 
 	/**
 	 * 用户登录
@@ -87,5 +87,5 @@ public interface IUserServcie {
 	 * @param id
 	 * @return
 	 */
-	public Float getSumScoreByUserId(Long id, String year);
+	public Double getSumScoreByUserId(Long userId, Integer year);
 }

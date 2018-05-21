@@ -12,17 +12,18 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.DlbConstant.ResultCode;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
+import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjUser;
-import cn.dlbdata.dj.service.IUserServcie;
+import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.serviceimpl.base.BaseService;
 import cn.dlbdata.dj.vo.LoginVo;
 import cn.dlbdata.dj.vo.UserVo;
 
 @Service
-public class UserService extends BaseService implements IUserServcie {
+public class UserService extends BaseService implements IUserService {
 
 	@Autowired
 	private DjUserMapper userMapper;
@@ -30,6 +31,8 @@ public class UserService extends BaseService implements IUserServcie {
 	private DjDeptMapper deptMapper;
 	@Autowired
 	private DjPartymemberMapper partyMemberMapper;
+	@Autowired
+	private DjScoreMapper scoreMapper;
 
 	@Override
 	public DjUser getUserInfoById(Long id) {
@@ -233,9 +236,11 @@ public class UserService extends BaseService implements IUserServcie {
 	}
 
 	@Override
-	public Float getSumScoreByUserId(Long id, String year) {
-		// TODO Auto-generated method stub
-		return null;
+	public Double getSumScoreByUserId(Long userId, Integer year) {
+		if (userId == null) {
+			return 0D;
+		}
+		return scoreMapper.getSumScoreByUserId(userId, year);
 	}
 
 }

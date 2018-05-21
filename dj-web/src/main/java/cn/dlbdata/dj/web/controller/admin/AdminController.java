@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.service.IUserServcie;
+import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.vo.LoginVo;
 import cn.dlbdata.dj.vo.UserVo;
 
@@ -22,7 +22,7 @@ import cn.dlbdata.dj.vo.UserVo;
 public class AdminController {
 	
 	@Autowired
-	private IUserServcie userService;
+	private IUserService userService;
 	
 	@PostMapping("/login")
 	@ResponseBody

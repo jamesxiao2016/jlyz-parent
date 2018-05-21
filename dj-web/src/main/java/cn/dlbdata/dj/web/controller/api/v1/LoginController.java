@@ -14,7 +14,7 @@ import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
 import cn.dlbdata.dj.common.core.util.cache.CacheManager;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.DlbConstant.ResultCode;
-import cn.dlbdata.dj.service.IUserServcie;
+import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.vo.LoginVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
@@ -30,7 +30,7 @@ import cn.dlbdata.dj.web.base.BaseController;
 public class LoginController extends BaseController {
 
 	@Autowired
-	private IUserServcie userService;
+	private IUserService userService;
 
 	/**
 	 * 用户登录
@@ -82,9 +82,9 @@ public class LoginController extends BaseController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/login")
-	public ResultVo<UserVo> updatePwd(@RequestBody LoginVo vo) {
-		ResultVo<UserVo> result = userService.login(vo);
+	@PostMapping("/updatePwd")
+	public ResultVo<String> updatePwd(@RequestBody LoginVo vo) {
+		ResultVo<String> result = userService.updatePwd(vo);
 		return result;
 	}
 }
