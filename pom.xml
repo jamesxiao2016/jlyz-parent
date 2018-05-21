@@ -402,5 +402,6 @@
     <module>dj-service</module>
     <module>dj-serviceimpl</module>
     <module>dj-web</module>
+    <module>dj-thirdparty</module>
   </modules>
 </project>
