@@ -8,3 +8,4 @@ Thumbs.db
 *.prefs
 dangjian-common/.settings/org.eclipse.wst.common.project.facet.core.xml
 dangjian-common/.settings/org.eclipse.wst.common.component
+*.springBeans
