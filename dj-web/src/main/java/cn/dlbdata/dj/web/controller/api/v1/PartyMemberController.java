@@ -3,6 +3,7 @@ package cn.dlbdata.dj.web.controller.api.v1;
 import java.util.Calendar;
 import java.util.List;
 
+import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,6 +101,22 @@ public class PartyMemberController extends BaseController {
 		}
 		List<DjScore> data = partyMemberService.getTypeScoreListByUserId(userId, year);
 		result.setData(data);
+		return result;
+	}
+
+	/**
+	 *
+	 * @param deptId 支部ID
+	 * @param subTypeId 子活动ID  11："思想汇报自主汇报"，12："思想汇报书面汇报"
+	 * @return 思想汇报评分查询党员列表
+	 */
+	@GetMapping("/getReportByDeptId")
+	@ResponseBody
+	public ResultVo<List<ReportPartyMemberVo>> getReportPartyMember(long deptId,
+																	int subTypeId){
+		ResultVo<List<ReportPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
+		List<ReportPartyMemberVo> voList = partyMemberService.getReportPartyMember(deptId,subTypeId);
+		result.setData(voList);
 		return result;
 	}
 }

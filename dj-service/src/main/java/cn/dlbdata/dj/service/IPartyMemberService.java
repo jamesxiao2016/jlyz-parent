@@ -5,6 +5,7 @@ import java.util.List;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.vo.PartyVo;
+import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
 
 /**
  * 党员相关的业务逻辑
@@ -58,4 +59,13 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	public List<DjScore> getTypeScoreListByUserId(Long userId, Integer year);
+
+	/**
+	 *
+	 * @param deptId 支部ID
+	 * @param subTypeId 子活动ID  11："思想汇报自主汇报"，12："思想汇报书面汇报"
+	 * @return 思想汇报评分查询党员列表
+	 */
+	List<ReportPartyMemberVo> getReportPartyMember(long deptId,
+												   int subTypeId);
 }

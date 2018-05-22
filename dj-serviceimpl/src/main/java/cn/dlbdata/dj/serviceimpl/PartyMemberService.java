@@ -1,7 +1,13 @@
 package cn.dlbdata.dj.serviceimpl;
 
+import java.util.Calendar;
 import java.util.List;
 
+import cn.dlbdata.dj.common.core.exception.DlbException;
+import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
+import cn.dlbdata.dj.constant.ActiveTypeEnum;
+import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +18,7 @@ import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.serviceimpl.base.BaseService;
 import cn.dlbdata.dj.vo.PartyVo;
+
 
 @Service
 public class PartyMemberService extends BaseService implements IPartyMemberService {
@@ -62,4 +69,33 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 		return scoreMapper.getTypeScoreListByUserId(userId, year);
 	}
 
+	@Override
+	public List<ReportPartyMemberVo> getReportPartyMember(long deptId, int subTypeId) {
+		if(subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId() &&
+				subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_L.getActiveSubId()) {
+			throw new DlbException("subTypeId不合法!");
+		}
+		Calendar ca = Calendar.getInstance();
+		int year = ca.get(Calendar.YEAR);
+		System.out.println(year);
+		List<ReportPartyMemberVo> voList = partyMemberMapper.getReportPartyMember(deptId);
+		for (ReportPartyMemberVo vo :voList) {
+			vo.setSubTypeId(subTypeId);
+			vo.setTypeId(ActiveTypeEnum.ACTIVE_C.getActiveId());
+			vo.setStatus(DlbConstant.AUDIT_STATUS_NO.getValue());
+		}
+		if (!voList.isEmpty()) {
+			//查询有积分记录的用户ID
+			List<Long> userIdList = scoreMapper.getByDeptIdAndTypeIdAndSubTypeIdAndYear(deptId,
+					ActiveTypeEnum.ACTIVE_C.getActiveId(),subTypeId,year);
+			for (int i = 0;i<userIdList.size();i++) {
+				for (int j = 0;j<voList.size();j++) {
+					if (voList.get(j).getId().equals(userIdList.get(i))) {
+						voList.get(j).setStatus(DlbConstant.AUDIT_STATUS_YES.getValue());
+					}
+				}
+			}
+		}
+		return voList;
+	}
 }
