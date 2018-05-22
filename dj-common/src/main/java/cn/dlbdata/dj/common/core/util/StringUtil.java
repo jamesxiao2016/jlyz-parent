@@ -1,6 +1,8 @@
 package cn.dlbdata.dj.common.core.util;
 
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,9 +15,10 @@ public class StringUtil extends StringUtils {
 	public static String generatorUuid() {
 		return UUID.randomUUID().toString();
 	}
-	
+
 	/**
 	 * 生成32位的uuid（不包含-）
+	 * 
 	 * @return
 	 */
 	public static String generatorShortUuid() {

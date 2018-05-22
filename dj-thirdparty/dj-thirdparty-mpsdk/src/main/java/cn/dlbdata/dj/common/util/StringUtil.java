@@ -194,4 +194,25 @@ public class StringUtil {
 
         return buf.toString();
     }
+
+	/**
+	 * 获取字符串结尾的数字
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static String getEndDigit(String str) {
+		String result = "";
+		if (StringUtils.isEmpty(str)) {
+			return result;
+		}
+		Pattern pattern = Pattern.compile("\\d+$");
+		Matcher matcher = pattern.matcher(str);
+
+		if (matcher.find()) {
+			result = matcher.group();
+		}
+
+		return result;
+	}
 }

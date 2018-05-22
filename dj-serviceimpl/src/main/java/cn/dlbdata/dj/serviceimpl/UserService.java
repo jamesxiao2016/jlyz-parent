@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
 import cn.dlbdata.dj.common.core.util.cache.CacheManager;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
@@ -253,20 +254,22 @@ public class UserService extends BaseService implements IUserService {
 			DjUser user = null;
 			for (DjPartymember partyMember : list) {
 				String name = partyMember.getName();
-				
+
 				String pinyingName = name;
-				try
-				{
+				try {
 					pinyingName = PingyinUtil.cn2SpellNoBlank(name);
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					// 不处理此异常
 				}
+
+				// 处理账号重复的情况
+				pinyingName = checkName(pinyingName);
 
 				String password = StringUtil.getMD5Digest32("12345678");
 
 				user = new DjUser();
 				user.setId(partyMember.getId());
+				user.setDjPartymemberId(partyMember.getId());
 				user.setDeptId(partyMember.getDeptId());
 				user.setPwd(password);
 				user.setName(pinyingName);
@@ -280,4 +283,31 @@ public class UserService extends BaseService implements IUserService {
 		return null;
 	}
 
+	/**
+	 * 递归处理账号问题，重复的自动在后面加1
+	 * 
+	 * @param name
+	 * @return
+	 */
+	String str = "";
+	private String checkName(String name) {
+		str = name;
+		if (StringUtils.isEmpty(name)) {
+			return name;
+		}
+		DjUser user = new DjUser();
+		user.setName(name);
+		int count = userMapper.selectCount(user);
+		if (count > 0) {
+			String endNumber = StringUtil.getEndDigit(name);
+			if (StringUtils.isEmpty(endNumber)) {
+				name = name + "1";
+			} else {
+				name = name.substring(0, name.length() - endNumber.length()) + (DigitUtil.parseToInt(endNumber) + 1);
+			}
+			checkName(name);
+		}
+
+		return str;
+	}
 }
