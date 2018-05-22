@@ -24,7 +24,7 @@
 		</dependency>
 		<dependency>
 			<groupId>cn.dlbdata</groupId>
-			<artifactId>dj-thirdparty</artifactId>
+			<artifactId>dj-thirdparty-mpsdk</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
