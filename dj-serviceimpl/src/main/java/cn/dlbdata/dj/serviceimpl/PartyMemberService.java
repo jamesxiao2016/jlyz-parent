@@ -1,5 +1,6 @@
 package cn.dlbdata.dj.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -78,8 +79,12 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 		Calendar ca = Calendar.getInstance();
 		int year = ca.get(Calendar.YEAR);
 		System.out.println(year);
-		List<ReportPartyMemberVo> voList = partyMemberMapper.getReportPartyMember(deptId);
-		for (ReportPartyMemberVo vo :voList) {
+		List<DjPartymember> pojoList = partyMemberMapper.getReportPartyMember(deptId);
+		List<ReportPartyMemberVo> voList = new ArrayList<>();
+		for (DjPartymember pojo :pojoList) {
+			ReportPartyMemberVo vo = new ReportPartyMemberVo();
+			vo.setId(pojo.getId());
+			vo.setName(pojo.getName());
 			vo.setSubTypeId(subTypeId);
 			vo.setTypeId(ActiveTypeEnum.ACTIVE_C.getActiveId());
 			vo.setStatus(DlbConstant.AUDIT_STATUS_NO.getValue());

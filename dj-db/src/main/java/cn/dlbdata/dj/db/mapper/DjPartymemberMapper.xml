@@ -20,7 +20,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   
-  <select id="getReportPartyMember" parameterType="java.lang.Long" resultType="cn.dlbdata.dj.vo.party.ReportPartyMemberVo">
+  <select id="getReportPartyMember" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select name,id from dj_partymember  where dept_id = #{deptId}
     order by post_id desc
   </select>
