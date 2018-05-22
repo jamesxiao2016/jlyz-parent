@@ -1,35 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.dlbdata.dj.db.mapper.DjScoreMapper">
-  <resultMap id="BaseResultMap" type="cn.dlbdata.dj.db.pojo.DjScore">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="dj_type_id" jdbcType="BIGINT" property="djTypeId" />
-    <result column="dj_sub_type_id" jdbcType="BIGINT" property="djSubTypeId" />
-    <result column="score" jdbcType="REAL" property="score" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
-    <result column="apply_user_id" jdbcType="BIGINT" property="applyUserId" />
-    <result column="approver_id" jdbcType="BIGINT" property="approverId" />
-    <result column="add_year" jdbcType="INTEGER" property="addYear" />
-    <result column="add_status" jdbcType="INTEGER" property="addStatus" />
-    <result column="score_desc" jdbcType="VARCHAR" property="scoreDesc" />
-    <result column="record_id" jdbcType="BIGINT" property="recordId" />
-    <result column="recrod_desc" jdbcType="VARCHAR" property="recrodDesc" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-  </resultMap>
-  
-	<select id="getSumScoreByUserId" parameterType="Map" resultType="java.lang.Double">
-    		select sum(score) from dj_score where user_id=#{userId,jdbcType=INTEGER} and add_year=#{year,jdbcType=INTEGER};
-  	</select>
-  
-	<select id="getSumScoreByProjectIdAndUserId" parameterType="Map" resultType="java.lang.Double">
-    		select sum(score) from dj_score where user_id=#{userId} and add_year=#{year}
-	    <if test="typeId != null">
-	      and type_id=#{typeId}
-	    </if>
-  </select>
+	<resultMap id="BaseResultMap" type="cn.dlbdata.dj.db.pojo.DjScore">
+		<!-- WARNING - @mbg.generated -->
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="dj_type_id" jdbcType="BIGINT" property="djTypeId" />
+		<result column="dj_sub_type_id" jdbcType="BIGINT" property="djSubTypeId" />
+		<result column="score" jdbcType="REAL" property="score" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+		<result column="apply_user_id" jdbcType="BIGINT" property="applyUserId" />
+		<result column="approver_id" jdbcType="BIGINT" property="approverId" />
+		<result column="add_year" jdbcType="INTEGER" property="addYear" />
+		<result column="add_status" jdbcType="INTEGER" property="addStatus" />
+		<result column="score_desc" jdbcType="VARCHAR" property="scoreDesc" />
+		<result column="record_id" jdbcType="BIGINT" property="recordId" />
+		<result column="recrod_desc" jdbcType="VARCHAR" property="recrodDesc" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="user_name" jdbcType="BIGINT" property="userName" />
+		<result column="name" jdbcType="BIGINT" property="name" />
+		<result column="max_score" jdbcType="REAL" property="maxScore" />
+	</resultMap>
+
+	<select id="getSumScoreByUserId" parameterType="Map"
+		resultType="java.lang.Double">
+		select sum(score) from dj_score where user_id=#{userId} and add_year=#{year}
+	</select>
+
+	<select id="getSumScoreByTypeIdAndUserId" parameterType="Map"
+		resultType="java.lang.Double">
+		select sum(score) from dj_score where user_id=#{userId} and add_year=#{year}
+		<if test="typeId != null">
+			and dj_type_id=#{typeId}
+		</if>
+	</select>
+	
+	<select id="getScoreListByUserId" parameterType="Map"
+		resultType="BaseResultMap">
+		SELECT s.user_id,s.score,s.add_time,u.user_name,t.name,s.dj_type_id,s.record_id,s.recrod_desc from dj_score s 
+		left join dj_user u on u.id = s.approver_id 
+		left join dj_sub_type t on t.id = s.dj_sub_type_id
+		where s.add_year = #{year} and s.user_id = #{userId}
+	</select>
+	
+	<select id="getTypeScoreListByUserId" parameterType="Map"
+		resultType="BaseResultMap">
+		SELECT s.dj_type_id,t.name,sum(s.score) score,t.max_score from dj_score s 
+		left join dj_type t on t.id = s.dj_type_id 
+		where s.add_year = #{year} and s.user_id = #{userId}
+		group by s.dj_type_id
+	</select>
 </mapper>

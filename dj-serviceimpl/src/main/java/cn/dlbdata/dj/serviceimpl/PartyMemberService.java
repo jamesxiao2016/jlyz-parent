@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
+import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.serviceimpl.base.BaseService;
 import cn.dlbdata.dj.vo.PartyVo;
@@ -15,6 +17,9 @@ import cn.dlbdata.dj.vo.PartyVo;
 public class PartyMemberService extends BaseService implements IPartyMemberService {
 	@Autowired
 	private DjPartymemberMapper partyMemberMapper;
+
+	@Autowired
+	private DjScoreMapper scoreMapper;
 
 	@Override
 	public DjPartymember getInfoById(Long id) {
@@ -39,6 +44,22 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 		PartyVo result = new PartyVo();
 		result.setMemberId(memberId);
 		return result;
+	}
+
+	@Override
+	public List<DjScore> getScoreListByUserId(Long userId, Integer year) {
+		if (userId == null) {
+			return null;
+		}
+		return scoreMapper.getScoreListByUserId(userId, year);
+	}
+
+	@Override
+	public List<DjScore> getTypeScoreListByUserId(Long userId, Integer year) {
+		if (userId == null) {
+			return null;
+		}
+		return scoreMapper.getTypeScoreListByUserId(userId, year);
 	}
 
 }

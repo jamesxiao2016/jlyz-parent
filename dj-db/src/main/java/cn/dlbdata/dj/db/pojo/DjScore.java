@@ -92,6 +92,20 @@ public class DjScore {
      */
     @Column(name = "create_time")
     private Date createTime;
+    
+    /**
+     * 审批人姓名
+     */
+    @Column(name = "user_name")
+    @Transient
+    private String userName;
+    
+    @Transient
+    private String name;
+    
+    @Transient
+    @Column(name = "max_score")
+    private Double maxScore;
 
     /**
      * 获取记录ID
@@ -362,4 +376,20 @@ public class DjScore {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

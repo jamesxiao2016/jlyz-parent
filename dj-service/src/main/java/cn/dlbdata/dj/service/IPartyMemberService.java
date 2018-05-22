@@ -3,6 +3,7 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 
 import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.vo.PartyVo;
 
 /**
@@ -39,4 +40,22 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	public PartyVo getScoreAndNumByMemberId(Long memberId);
+
+	/**
+	 * 获取积分明细
+	 * 
+	 * @param userId
+	 * @param year
+	 * @return
+	 */
+	public List<DjScore> getScoreListByUserId(Long userId, Integer year);
+
+	/**
+	 * 获取每个项目的积分及总积分
+	 * 
+	 * @param userId
+	 * @param year
+	 * @return
+	 */
+	public List<DjScore> getTypeScoreListByUserId(Long userId, Integer year);
 }
