@@ -6,7 +6,7 @@ package cn.dlbdata.dj.common.core.exception;
  * @author xiaowei
  *
  */
-public class DlbException extends Exception {
+public class DlbException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	private int errorCode;
