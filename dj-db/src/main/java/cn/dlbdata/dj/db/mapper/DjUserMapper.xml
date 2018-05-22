@@ -17,5 +17,6 @@
     <result column="login_count" jdbcType="INTEGER" property="loginCount" />
     <result column="last_time" jdbcType="TIMESTAMP" property="lastTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
   </resultMap>
 </mapper>

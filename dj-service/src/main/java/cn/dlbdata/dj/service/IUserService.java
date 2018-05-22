@@ -1,5 +1,7 @@
 package cn.dlbdata.dj.service;
 
+import java.util.List;
+
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
@@ -88,4 +90,10 @@ public interface IUserService {
 	 * @return
 	 */
 	public Double getSumScoreByUserId(Long userId, Integer year);
+	
+	/**
+	 * 获取所有的用户列表
+	 * @return
+	 */
+	public List<DjUser> getALlUser();
 }

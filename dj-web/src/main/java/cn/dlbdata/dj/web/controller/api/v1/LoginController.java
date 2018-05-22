@@ -87,4 +87,11 @@ public class LoginController extends BaseController {
 		ResultVo<String> result = userService.updatePwd(vo);
 		return result;
 	}
+	
+	@ResponseBody
+	@GetMapping("/getAllList")
+	public ResultVo<String> getAllList() {
+		userService.getALlUser();
+		return new ResultVo<>(ResultCode.OK.getCode());
+	}
 }

@@ -9,7 +9,6 @@ public class DjUser {
      * 记录ID
      */
     @Id
-    @GeneratedValue(generator = "JDBC")
     private Long id;
 
     /**
@@ -69,6 +68,12 @@ public class DjUser {
 
     @Column(name = "create_time")
     private Date createTime;
+
+    /**
+     * 用户姓名
+     */
+    @Column(name = "user_name")
+    private String userName;
 
     /**
      * 获取记录ID
@@ -280,5 +285,23 @@ public class DjUser {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * 获取用户姓名
+     *
+     * @return user_name - 用户姓名
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     * 设置用户姓名
+     *
+     * @param userName 用户姓名
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

@@ -10,6 +10,8 @@ import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
 import cn.dlbdata.dj.common.core.util.cache.CacheManager;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.common.util.PingyinUtil;
+import cn.dlbdata.dj.common.util.StringUtil;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
 import cn.dlbdata.dj.db.mapper.DjScoreMapper;
@@ -140,7 +142,7 @@ public class UserService extends BaseService implements IUserService {
 		DjPartymember member = partyMemberMapper.selectByPrimaryKey(user.getDeptId());
 		if (member != null) {
 			data.setUserName(member.getName());
-			data.setSex(member.getSex());
+			data.setSex(member.getSexCode());
 		}
 		DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
 		if (dept != null) {
@@ -220,7 +222,7 @@ public class UserService extends BaseService implements IUserService {
 			DjPartymember member = partyMemberMapper.selectByPrimaryKey(user.getDeptId());
 			if (member != null) {
 				data.setUserName(member.getName());
-				data.setSex(member.getSex());
+				data.setSex(member.getSexCode());
 			}
 			DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
 			if (dept != null) {
@@ -241,6 +243,33 @@ public class UserService extends BaseService implements IUserService {
 			return 0D;
 		}
 		return scoreMapper.getSumScoreByUserId(userId, year);
+	}
+
+	@Override
+	public List<DjUser> getALlUser() {
+		List<DjPartymember> list = partyMemberMapper.selectAll();
+		if (list != null) {
+			logger.info("总数" + list.size());
+			DjUser user = null;
+			for (DjPartymember partyMember : list) {
+				String name = partyMember.getName();
+				String pinyingName = PingyinUtil.cn2SpellNoBlank(name);
+
+				String password = StringUtil.getMD5Digest32("12345678");
+
+				user = new DjUser();
+				user.setId(partyMember.getId());
+				user.setDeptId(partyMember.getDeptId());
+				user.setPwd(password);
+				user.setName(pinyingName);
+				user.setUserName(name);
+				user.setRoleId(0L);
+
+				userMapper.insertSelective(user);
+				logger.info(name + ":" + pinyingName);
+			}
+		}
+		return null;
 	}
 
 }

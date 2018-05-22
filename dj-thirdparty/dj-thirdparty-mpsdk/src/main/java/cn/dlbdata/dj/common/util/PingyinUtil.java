@@ -86,8 +86,8 @@ public class PingyinUtil {
 
     public static void main(String[] args) throws UnsupportedEncodingException {
         String x = "浦  迪";
-        System.out.println(cn2FirstSpell(x));
+        //System.out.println(cn2FirstSpell(x));
         System.out.println(cn2SpellNoBlank(x));
-        System.out.println(cn2Spell(x));
+        //System.out.println(cn2Spell(x));
     }
 }

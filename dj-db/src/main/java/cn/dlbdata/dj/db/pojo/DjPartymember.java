@@ -9,7 +9,6 @@ public class DjPartymember {
      * 记录ID
      */
     @Id
-    @GeneratedValue(generator = "JDBC")
     private Long id;
 
     /**
@@ -20,7 +19,8 @@ public class DjPartymember {
     /**
      * 性别
      */
-    private Integer sex;
+    @Column(name = "sex_code")
+    private Integer sexCode;
 
     /**
      * 年龄
@@ -74,6 +74,30 @@ public class DjPartymember {
     private Date createTime;
 
     /**
+     * 生日
+     */
+    @Column(name = "birth_date")
+    private Date birthDate;
+
+    /**
+     * 学历
+     */
+    @Column(name = "education_code")
+    private String educationCode;
+
+    /**
+     * 行政职务
+     */
+    @Column(name = "adm_post")
+    private String admPost;
+
+    /**
+     * 党内职务
+     */
+    @Column(name = "party_post_code")
+    private String partyPostCode;
+
+    /**
      * 获取记录ID
      *
      * @return id - 记录ID
@@ -112,19 +136,19 @@ public class DjPartymember {
     /**
      * 获取性别
      *
-     * @return sex - 性别
+     * @return sex_code - 性别
      */
-    public Integer getSex() {
-        return sex;
+    public Integer getSexCode() {
+        return sexCode;
     }
 
     /**
      * 设置性别
      *
-     * @param sex 性别
+     * @param sexCode 性别
      */
-    public void setSex(Integer sex) {
-        this.sex = sex;
+    public void setSexCode(Integer sexCode) {
+        this.sexCode = sexCode;
     }
 
     /**
@@ -301,5 +325,77 @@ public class DjPartymember {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * 获取生日
+     *
+     * @return birth_date - 生日
+     */
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    /**
+     * 设置生日
+     *
+     * @param birthDate 生日
+     */
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    /**
+     * 获取学历
+     *
+     * @return education_code - 学历
+     */
+    public String getEducationCode() {
+        return educationCode;
+    }
+
+    /**
+     * 设置学历
+     *
+     * @param educationCode 学历
+     */
+    public void setEducationCode(String educationCode) {
+        this.educationCode = educationCode;
+    }
+
+    /**
+     * 获取行政职务
+     *
+     * @return adm_post - 行政职务
+     */
+    public String getAdmPost() {
+        return admPost;
+    }
+
+    /**
+     * 设置行政职务
+     *
+     * @param admPost 行政职务
+     */
+    public void setAdmPost(String admPost) {
+        this.admPost = admPost;
+    }
+
+    /**
+     * 获取党内职务
+     *
+     * @return party_post_code - 党内职务
+     */
+    public String getPartyPostCode() {
+        return partyPostCode;
+    }
+
+    /**
+     * 设置党内职务
+     *
+     * @param partyPostCode 党内职务
+     */
+    public void setPartyPostCode(String partyPostCode) {
+        this.partyPostCode = partyPostCode;
     }
 }
