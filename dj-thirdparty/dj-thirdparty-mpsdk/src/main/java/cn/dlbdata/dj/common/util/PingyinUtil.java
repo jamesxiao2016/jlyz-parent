@@ -64,7 +64,8 @@ public class PingyinUtil {
                 try {
                     pingyinBuffer.append(PinyinHelper.toHanyuPinyinStringArray(arr[i], defaultFormat)[0]);
                 } catch (BadHanyuPinyinOutputFormatCombination e) {
-                    logger.error("Get Full Spell error.", e);
+                    logger.error("Get Full Spell error." + chinese, e);
+                    pingyinBuffer.append(chinese);
                 }
             } else {
                 pingyinBuffer.append(arr[i]);

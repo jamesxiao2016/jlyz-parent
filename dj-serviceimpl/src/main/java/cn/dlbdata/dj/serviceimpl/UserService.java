@@ -253,7 +253,15 @@ public class UserService extends BaseService implements IUserService {
 			DjUser user = null;
 			for (DjPartymember partyMember : list) {
 				String name = partyMember.getName();
-				String pinyingName = PingyinUtil.cn2SpellNoBlank(name);
+				
+				String pinyingName = name;
+				try
+				{
+					pinyingName = PingyinUtil.cn2SpellNoBlank(name);
+				}
+				catch (Exception e) {
+					// 不处理此异常
+				}
 
 				String password = StringUtil.getMD5Digest32("12345678");
 

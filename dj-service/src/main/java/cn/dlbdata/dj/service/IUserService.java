@@ -92,7 +92,7 @@ public interface IUserService {
 	public Double getSumScoreByUserId(Long userId, Integer year);
 	
 	/**
-	 * 获取所有的用户列表
+	 * 将党员数据导入到用户表中
 	 * @return
 	 */
 	public List<DjUser> getALlUser();
