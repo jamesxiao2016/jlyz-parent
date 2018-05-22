@@ -9,6 +9,7 @@ public class DjApprove {
      * 记录ID
      */
     @Id
+    @GeneratedValue(generator = "JDBC")
     private Long id;
 
     /**

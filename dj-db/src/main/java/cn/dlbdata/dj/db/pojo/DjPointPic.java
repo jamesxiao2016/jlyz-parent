@@ -9,6 +9,7 @@ public class DjPointPic {
      * 记录ID
      */
     @Id
+    @GeneratedValue(generator = "JDBC")
     private Long id;
 
     /**

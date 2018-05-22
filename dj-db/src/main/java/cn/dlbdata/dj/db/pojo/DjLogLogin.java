@@ -9,6 +9,7 @@ public class DjLogLogin {
      * 记录ID
      */
     @Id
+    @GeneratedValue(generator = "JDBC")
     private Long id;
 
     /**
