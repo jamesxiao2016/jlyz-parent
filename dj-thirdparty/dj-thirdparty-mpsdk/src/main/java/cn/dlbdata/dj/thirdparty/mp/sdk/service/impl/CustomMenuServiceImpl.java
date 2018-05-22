@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
  * @Description:
  * @Date: Created on 16:57 2018/3/25
  */
-@Service
 public class CustomMenuServiceImpl extends TokenBasedService implements CustomMenuService {
 
     public CustomMenuServiceImpl(TokenBasedHttpClient client) {

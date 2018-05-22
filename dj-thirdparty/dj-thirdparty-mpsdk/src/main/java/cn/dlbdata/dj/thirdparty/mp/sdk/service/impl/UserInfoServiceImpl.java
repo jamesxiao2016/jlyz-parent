@@ -24,7 +24,6 @@ import net.sf.json.JSONObject;
  * @Description:
  * @Date: Created on 16:57 2018/3/25
  */
-@Service
 public class UserInfoServiceImpl extends TokenBasedService implements UserInfoService {
     Logger logger = LoggerFactory.getLogger(UserInfoServiceImpl.class);
 

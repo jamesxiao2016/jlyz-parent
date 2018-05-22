@@ -26,5 +26,8 @@
 	http://www.springframework.org/schema/data/jpa/spring-jpa-4.0.xsd
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
-	
+	<bean id="tokenBasedHttpClient" class="cn.dlbdata.dj.thirdparty.mp.sdk.util.TokenBasedHttpClient"></bean>
+	<bean id="accessService" class="cn.dlbdata.dj.thirdparty.mp.sdk.service.impl.AccessServiceImpl"></bean>
+	<bean id="customMenuService" class="cn.dlbdata.dj.thirdparty.mp.sdk.service.impl.CustomMenuServiceImpl"></bean>
+	<bean id="userInfoService" class="cn.dlbdata.dj.thirdparty.mp.sdk.service.impl.UserInfoServiceImpl"></bean>
 </beans>

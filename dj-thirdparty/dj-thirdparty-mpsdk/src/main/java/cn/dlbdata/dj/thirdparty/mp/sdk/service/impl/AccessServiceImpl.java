@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
  * @Description: 腾讯公众平台访问服务实现
  * @Date: Created on 0:44 2018/3/25
  */
-@Service
 public class AccessServiceImpl extends BaseService implements AccessService {
     public AccessServiceImpl(HttpWebApi client) {
         super(client);

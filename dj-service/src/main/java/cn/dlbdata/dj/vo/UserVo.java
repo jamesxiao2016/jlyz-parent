@@ -23,6 +23,8 @@ public class UserVo {
 	private String partyBranchName;
 	// 所属党委
 	private String partyCommittee;
+	//当前登录角色
+	private Long roleId;
 
 	public Long getUserId() {
 		return userId;
@@ -110,6 +112,14 @@ public class UserVo {
 
 	public void setPartyCommittee(String partyCommittee) {
 		this.partyCommittee = partyCommittee;
+	}
+
+	public Long getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
 	}
 
 }
