@@ -16,9 +16,6 @@
         <dependent-module archiveName="dj-common-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/dj-common/dj-common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="dj-thirdparty-mpsdk-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/dj-thirdparty-mpsdk/dj-thirdparty-mpsdk">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="dj-web"/>
         <property name="java-output-path" value="/dj-web/target/classes"/>
     </wb-module>
