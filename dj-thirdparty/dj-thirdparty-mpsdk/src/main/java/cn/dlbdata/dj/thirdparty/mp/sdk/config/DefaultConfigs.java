@@ -14,7 +14,6 @@ public class DefaultConfigs {
 
   public static String API_URL_PREFIX;
 
-  @Value("${thirdparty-mp-sdk.api-url-prefix}")
   public void setApiUrlPrefix(String value) {
     API_URL_PREFIX = value;
   }
