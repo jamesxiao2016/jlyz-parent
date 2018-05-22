@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
 import cn.dlbdata.dj.common.core.util.cache.CacheManager;
+import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.constant.DlbConstant.ResultCode;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
 import cn.dlbdata.dj.db.mapper.DjScoreMapper;

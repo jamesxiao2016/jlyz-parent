@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.constant.DlbConstant.ResultCode;
 import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IUserService;

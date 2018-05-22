@@ -14,8 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.JsonUtil;
+import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.constant.DlbConstant.ResultCode;
 import cn.dlbdata.dj.web.base.BaseController;
 
 @Controller
