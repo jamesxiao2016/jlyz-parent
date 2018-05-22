@@ -142,16 +142,10 @@
 		</property>
 	</bean>
 	<mvc:annotation-driven conversion-service="conversionService" />
-	<!-- <mvc:interceptors>
+	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/v1/*" />
-			<mvc:mapping path="/ct/*" />
+			<mvc:mapping path="/api/v1/*" />
 			<bean class="cn.dlbdata.dj.web.interceptor.MyHandlerInterceptor"></bean>
 		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/user/*.html" />
-			<mvc:mapping path="/user/view/*.html" />
-			<bean class="cn.dlbdata.dj.web.interceptor.ViewHandlerInterceptor"></bean>
-		</mvc:interceptor>
-	</mvc:interceptors> -->
+	</mvc:interceptors>
 </beans>

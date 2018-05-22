@@ -37,7 +37,7 @@
 	</select>
 	
 	<select id="getScoreListByUserId" parameterType="Map"
-		resultType="BaseResultMap">
+		resultType="cn.dlbdata.dj.db.pojo.DjScore">
 		SELECT s.user_id,s.score,s.add_time,u.user_name,t.name,s.dj_type_id,s.record_id,s.recrod_desc from dj_score s 
 		left join dj_user u on u.id = s.approver_id 
 		left join dj_sub_type t on t.id = s.dj_sub_type_id
@@ -45,7 +45,7 @@
 	</select>
 	
 	<select id="getTypeScoreListByUserId" parameterType="Map"
-		resultType="BaseResultMap">
+		resultType="cn.dlbdata.dj.db.pojo.DjScore">
 		SELECT s.dj_type_id,t.name,sum(s.score) score,t.max_score from dj_score s 
 		left join dj_type t on t.id = s.dj_type_id 
 		where s.add_year = #{year} and s.user_id = #{userId}
