@@ -37,5 +37,33 @@
 		#{endTime)
 
 	</select>
+	
+	
+	 <select id="getRunningActive" parameterType="map" resultType="java.util.Map">
+      SELECT
+        t.id, t.name, t.start_time, t.end_time, t.address, t.create_user_id,
+       	t.content, t.status, t.type_id,	t.has_audit, t.sub_type_id, p.name
+      FROM dj_active t INNER JOIN dj_partymember p on t.create_user_id = p.id
+      where 1 = 1 
+      <if test="departmentId != null">
+          AND p.id = #{departmentId}
+      </if>
+      <if test="status != null">
+          AND t.active_status = #{activeStatus}
+      </if>
+      <if test="createUserId != null">
+          AND t.create_user_id = #{createUserId}
+      </if>
+      <if test="startTimeYn != null">
+          <![CDATA[ AND t.start_time <= NOW() ]]>
+      </if>
+       <if test="endTime != null">
+          AND t.end_time &gt; #{endTime}
+      </if>
+        order by t.start_time DESC
+       <if test="start != null and start > 0">
+        LIMIT #{start} , #{pageSize}
+      </if>
+    </select>
 
 </mapper>
