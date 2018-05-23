@@ -1,8 +1,10 @@
 package cn.dlbdata.dj.service;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.dlbdata.dj.db.pojo.DjActive;
+import cn.dlbdata.dj.vo.ActiveVo;
 
 /**
  * 活动相关的业务逻辑
@@ -44,4 +46,8 @@ public interface IActiveService {
 	 * @return
 	 */
 	public Integer getActiveNumByUserId(Long userId, Long activeType);
+	/**
+	 * 
+	 */
+	public List<Map<String,Object>> getParticipateActive(ActiveVo vo);
 }
