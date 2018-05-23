@@ -4,7 +4,9 @@ import java.util.List;
 
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjScore;
+import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
 import cn.dlbdata.dj.vo.PartyVo;
+import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
 
 /**
@@ -67,5 +69,12 @@ public interface IPartyMemberService {
 	 * @return 思想汇报评分查询党员列表
 	 */
 	List<ReportPartyMemberVo> getReportPartyMember(long deptId,
-												   int subTypeId);
+												   long subTypeId);
+
+
+	/**
+	 *思想汇报直接加分
+	 * @param request 请求Data
+	 */
+	void reportAddScore(ReportAddScoreRequest request, int year, UserVo userVo);
 }

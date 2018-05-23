@@ -3,12 +3,14 @@ package cn.dlbdata.dj.web.controller.api.v1;
 import java.util.Calendar;
 import java.util.List;
 
+import cn.dlbdata.dj.common.core.util.constant.CoreConst;
+import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
+import cn.dlbdata.dj.service.IActiveService;
+import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
@@ -31,6 +33,8 @@ public class PartyMemberController extends BaseController {
 	private IPartyMemberService partyMemberService;
 	@Autowired
 	private IUserService userService;
+	@Autowired
+	private IActiveService activeService;
 
 	/**
 	 * 获取党员参与活动次数
@@ -112,11 +116,23 @@ public class PartyMemberController extends BaseController {
 	 */
 	@GetMapping("/getReportByDeptId")
 	@ResponseBody
-	public ResultVo<List<ReportPartyMemberVo>> getReportPartyMember(long deptId,
-																	int subTypeId){
+	public ResultVo<List<ReportPartyMemberVo>> getReportPartyMember(@RequestParam(value = "deptId") Long deptId,
+																	@RequestParam("subTypeId")Long subTypeId){
 		ResultVo<List<ReportPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		List<ReportPartyMemberVo> voList = partyMemberService.getReportPartyMember(deptId,subTypeId);
 		result.setData(voList);
 		return result;
+	}
+
+    @PostMapping("/scoreCustom")
+	@ResponseBody
+	public ResultVo reportAddScore(@RequestBody ReportAddScoreRequest request) {
+		String token = getHeader("token");
+
+		// 从缓存中获取当前用户的信息
+		UserVo currUser = getCacheUserByToken(token);
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		partyMemberService.reportAddScore(request,year,currUser);
+		return new ResultVo(CoreConst.ResultCode.OK.getCode(),"加分成功!");
 	}
 }

@@ -4,8 +4,7 @@ package cn.dlbdata.dj.vo.party;
 public class ReportPartyMemberVo {
     private String name;//党员姓名
     private Long id;//党员ID
-    private int typeId;//活动ID
-    private int subTypeId;//子活动ID
+    private Long subTypeId;//子活动ID
     private int status;
 
     public String getName() {
@@ -24,19 +23,11 @@ public class ReportPartyMemberVo {
         this.id = id;
     }
 
-    public int getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
-    }
-
-    public int getSubTypeId() {
+    public Long getSubTypeId() {
         return subTypeId;
     }
 
-    public void setSubTypeId(int subTypeId) {
+    public void setSubTypeId(Long subTypeId) {
         this.subTypeId = subTypeId;
     }
 

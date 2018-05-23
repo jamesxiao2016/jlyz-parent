@@ -58,4 +58,9 @@
 		where  u.dept_id = #{deptId} and sc.dj_type_id = #{typeId}
 		and sc.dj_sub_type_id = #{subTypeId} and sc.add_year = #{year}
 	</select>
+	
+	<select id="getScoreIdsByTypeIdAndSubTypeIdAndYearAndPartyMemberId" resultMap="BaseResultMap">
+		select id from dj_score where dj_type_id = #{typeId} and dj_sub_type_id = #{subTypeId}
+		and add_year = #{year} and user_Id = #{partyMemberId}
+	</select>
 </mapper>

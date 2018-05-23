@@ -2,8 +2,10 @@ package cn.dlbdata.dj.constant;
 
 
 public enum DlbConstant  {
-    AUDIT_STATUS_YES(1,"有效"),
-    AUDIT_STATUS_NO(0,"未审核");
+    AUDIT_STATUS_YES(1,"已审核"),
+    AUDIT_STATUS_NO(0,"未审核"),
+    BASEDATA_STATUS_VALID(1,"有效"),
+    BASEDATA_STATUS_INVALID(0,"作废");
 
      DlbConstant(int value, String desc) {
         this.value = value;

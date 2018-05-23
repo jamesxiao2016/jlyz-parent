@@ -3,6 +3,16 @@ package cn.dlbdata.dj.serviceimpl;
 import java.util.Date;
 import java.util.List;
 
+import cn.dlbdata.dj.common.core.exception.DlbException;
+import cn.dlbdata.dj.common.core.util.DigitUtil;
+import cn.dlbdata.dj.constant.ActiveTypeEnum;
+import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
+import cn.dlbdata.dj.db.mapper.DjScoreMapper;
+import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.pojo.DjScore;
+import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
+import cn.dlbdata.dj.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +30,10 @@ public class ActiveService extends BaseService implements IActiveService {
 	private DjActiveMapper activeMapper;
 	@Autowired
 	private DjActiveDeptMapper activeDeptMapper;
+	@Autowired
+	private DjPartymemberMapper partymemberMapper;
+	@Autowired
+	private DjScoreMapper scoreMapper;
 
 	@Override
 	public DjActive getActiveInfoById(Long id) {
@@ -58,5 +72,6 @@ public class ActiveService extends BaseService implements IActiveService {
 		Integer count = activeMapper.getUserActiveCountByActiveTypeAndTime(userId, activeType, startTime, endTime);
 		return count;
 	}
+
 
 }

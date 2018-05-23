@@ -3,6 +3,8 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 
 import cn.dlbdata.dj.db.pojo.DjActive;
+import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
+import cn.dlbdata.dj.vo.UserVo;
 
 /**
  * 活动相关的业务逻辑
