@@ -53,8 +53,8 @@
 	</select>
 
 	<select id="getByDeptIdAndTypeIdAndSubTypeIdAndYear"
-			resultType="java.util.List">
-		SELECT sc.user_Id from dj_score sc LEFT JOIN dj_user u on sc.user_id = u.id
+			resultType="java.lang.Long">
+		SELECT sc.user_Id from dj_score sc LEFT JOIN dj_partymember u on sc.user_id = u.id
 		where  u.dept_id = #{deptId} and sc.dj_type_id = #{typeId}
 		and sc.dj_sub_type_id = #{subTypeId} and sc.add_year = #{year}
 	</select>
