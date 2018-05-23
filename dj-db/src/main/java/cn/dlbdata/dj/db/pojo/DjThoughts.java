@@ -9,7 +9,6 @@ public class DjThoughts {
      * 记录ID
      */
     @Id
-    @GeneratedValue(generator = "JDBC")
     private Long id;
 
     /**
@@ -22,7 +21,7 @@ public class DjThoughts {
      * 汇报时间
      */
     @Column(name = "thoughts_time")
-    private Integer thoughtsTime;
+    private Date thoughtsTime;
 
     /**
      * 加分分数
@@ -90,7 +89,7 @@ public class DjThoughts {
      *
      * @return thoughts_time - 汇报时间
      */
-    public Integer getThoughtsTime() {
+    public Date getThoughtsTime() {
         return thoughtsTime;
     }
 
@@ -99,7 +98,7 @@ public class DjThoughts {
      *
      * @param thoughtsTime 汇报时间
      */
-    public void setThoughtsTime(Integer thoughtsTime) {
+    public void setThoughtsTime(Date thoughtsTime) {
         this.thoughtsTime = thoughtsTime;
     }
 

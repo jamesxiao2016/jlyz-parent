@@ -7,7 +7,7 @@
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="thoughts_info" jdbcType="VARCHAR" property="thoughtsInfo" />
-    <result column="thoughts_time" jdbcType="INTEGER" property="thoughtsTime" />
+    <result column="thoughts_time" jdbcType="TIMESTAMP" property="thoughtsTime" />
     <result column="score" jdbcType="REAL" property="score" />
     <result column="dj_user_id" jdbcType="BIGINT" property="djUserId" />
     <result column="dj_dept_id" jdbcType="BIGINT" property="djDeptId" />
