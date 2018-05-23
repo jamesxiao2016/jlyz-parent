@@ -1,13 +1,19 @@
 package cn.dlbdata.dj.serviceimpl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import cn.dlbdata.dj.common.core.exception.DlbException;
+import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
+import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +25,7 @@ import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.serviceimpl.base.BaseService;
 import cn.dlbdata.dj.vo.PartyVo;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -28,6 +35,9 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 
 	@Autowired
 	private DjScoreMapper scoreMapper;
+
+	@Autowired
+	private DjPartymemberMapper partymemberMapper;
 
 	@Override
 	public DjPartymember getInfoById(Long id) {
@@ -71,7 +81,7 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 	}
 
 	@Override
-	public List<ReportPartyMemberVo> getReportPartyMember(long deptId, int subTypeId) {
+	public List<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId) {
 		if(subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId() &&
 				subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_L.getActiveSubId()) {
 			throw new DlbException("subTypeId不合法!");
@@ -86,8 +96,8 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 			vo.setId(pojo.getId());
 			vo.setName(pojo.getName());
 			vo.setSubTypeId(subTypeId);
-			vo.setTypeId(ActiveTypeEnum.ACTIVE_C.getActiveId());
 			vo.setStatus(DlbConstant.AUDIT_STATUS_NO.getValue());
+			voList.add(vo);
 		}
 		if (!voList.isEmpty()) {
 			//查询有积分记录的用户ID
@@ -102,5 +112,51 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 			}
 		}
 		return voList;
+	}
+
+	/**
+	 *思想汇报直接加分
+	 * @param request 请求Data
+	 */
+	@Transactional
+	@Override
+	public void reportAddScore(ReportAddScoreRequest request, int year, UserVo userVo) {
+		if (request.getId() == null ||
+				request.getSubTypeId() == null || request.getReportTime() == null ||
+				"".equals(request.getReportTime())) {
+			throw new DlbException("请求参数不完整");
+		}
+		DjPartymember partymember = partymemberMapper.selectByPrimaryKey(request.getId());
+		if (partymember == null) {
+			throw new DlbException("该党员不存在");
+		}
+		// TODO 校验当前登录用户做该操作的权限
+		//查询是否有思想汇报记录
+		List<DjScore> scoreIds = scoreMapper.getScoreIdsByTypeIdAndSubTypeIdAndYearAndPartyMemberId(
+				ActiveTypeEnum.ACTIVE_C.getActiveId(),request.getSubTypeId(),year,request.getId());
+		if (scoreIds.size()>=1) {
+			throw new DlbException("请勿重复加分!");
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date reportDate = null;
+		try {
+			reportDate = formatter.parse(request.getReportTime());
+		}catch (ParseException e) {
+			e.printStackTrace();
+		}
+		DjScore djScore = new DjScore();
+		djScore.setId(DigitUtil.generatorLongId());
+		djScore.setDjTypeId(ActiveTypeEnum.ACTIVE_C.getActiveId());
+		djScore.setDjSubTypeId(request.getSubTypeId());
+		djScore.setScore(new Float(5));
+		djScore.setUserId(request.getId());
+		djScore.setAddTime(reportDate);
+		//TODO 目前User的信息获取不到，先写成1
+		djScore.setApplyUserId(1L);
+		djScore.setApproverId(1L);
+		djScore.setAddYear(year);
+		djScore.setStatus(DlbConstant.BASEDATA_STATUS_VALID.getValue());
+		djScore.setCreateTime(new Date());
+		scoreMapper.insert(djScore);
 	}
 }

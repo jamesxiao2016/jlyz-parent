@@ -1,5 +1,6 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,11 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.vo.ActiveVo;
-import cn.dlbdata.dj.vo.LoginVo;
-import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
 
 /**
