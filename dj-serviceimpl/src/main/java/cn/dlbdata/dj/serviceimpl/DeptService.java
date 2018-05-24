@@ -34,4 +34,18 @@ public class DeptService extends BaseService implements IDeptService {
 		return deptMapper.selectByExample(example);
 	}
 
+	/* (non-Javadoc)
+	 * <p>Title: getDeptMessage</p>
+	 * <p>Description: 党支部信息</p> 
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IDeptService#getDeptMessage()
+	 */
+	@Override
+	public DjDept getDeptMessage(Long detpartmentId) {
+		if(detpartmentId == null) {
+			return null;
+		}
+		return deptMapper.selectByPrimaryKey(detpartmentId);
+	}
+
 }
