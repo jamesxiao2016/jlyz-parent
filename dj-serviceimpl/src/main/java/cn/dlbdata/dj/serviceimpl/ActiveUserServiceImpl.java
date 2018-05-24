@@ -11,14 +11,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.mapper.DjActiveMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveUserMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
-import cn.dlbdata.dj.dto.active.ActiveSignUpRequest;
+import cn.dlbdata.dj.dto.ActiveSignUpRequest;
 import cn.dlbdata.dj.service.IActiveUserService;
 import cn.dlbdata.dj.serviceimpl.base.BaseService;
 import tk.mybatis.mapper.entity.Example;

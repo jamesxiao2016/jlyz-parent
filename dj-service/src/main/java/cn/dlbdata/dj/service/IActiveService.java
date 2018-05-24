@@ -3,11 +3,8 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 import java.util.Map;
 
-import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
-import cn.dlbdata.dj.dto.active.ActiveSignUpRequest;
-import cn.dlbdata.dj.vo.ActiveVo;
 import cn.dlbdata.dj.vo.PageVo;
 
 /**

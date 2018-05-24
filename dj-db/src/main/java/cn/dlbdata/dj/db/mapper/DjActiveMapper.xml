@@ -35,7 +35,7 @@
 	</select>
 	
 	
-	 <select id="getRunningActive" parameterType="cn.dlbdata.dj.db.resquest.PartyMemberLifeNotice" resultType="java.util.Map">
+	 <select id="getRunningActive" parameterType="map" resultType="java.util.Map">
 	      SELECT
 	        t.id, t.name, t.start_time, t.end_time, t.address, t.create_user_id,
 	       	t.content, t.status, t.type_id,	t.has_audit, t.sub_type_id, p.name partyMemberName,
@@ -53,7 +53,7 @@
      </select>
      
      
-     <select id="getRunningActiveCount" parameterType="cn.dlbdata.dj.db.resquest.PartyMemberLifeNotice" resultType="java.util.Map">
+     <select id="getRunningActiveCount" parameterType="map" resultType="java.util.Map">
 	      SELECT count(*),
 	        t.id, t.name, t.start_time, t.end_time, t.address, t.create_user_id,
 	       	t.content, t.status, t.type_id,	t.has_audit, t.sub_type_id, p.name partyMemberName,

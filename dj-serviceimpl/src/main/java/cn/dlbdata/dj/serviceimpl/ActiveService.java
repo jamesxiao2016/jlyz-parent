@@ -1,6 +1,7 @@
 package cn.dlbdata.dj.serviceimpl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +77,12 @@ public class ActiveService extends BaseService implements IActiveService {
 			return result;
 		}
 		partyMemberLifeNotice.setEndTime(new Date());
-		List<Map<String, Object>> activeList = activeMapper.getRunningActive(partyMemberLifeNotice);
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", partyMemberLifeNotice.getUserId());
+		map.put("startTime", partyMemberLifeNotice.getStartTime());
+		map.put("endTime", partyMemberLifeNotice.getEndTime());
+		map.put("departmentId", partyMemberLifeNotice.getDepartmentId());
+		List<Map<String, Object>> activeList = activeMapper.getRunningActive(map);
 		result.setTotal(getParticipateActiveCount(partyMemberLifeNotice));
 		result.setData(activeList);
 		return result;
@@ -94,7 +100,14 @@ public class ActiveService extends BaseService implements IActiveService {
 		if(partyMemberLifeNotice == null) {
 			return 0;
 		}
-		int count = activeMapper.getParticipateActiveCount(partyMemberLifeNotice);
+		partyMemberLifeNotice.setEndTime(new Date());
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", partyMemberLifeNotice.getUserId());
+		map.put("startTime", partyMemberLifeNotice.getStartTime());
+		map.put("endTime", partyMemberLifeNotice.getEndTime());
+		map.put("departmentId", partyMemberLifeNotice.getDepartmentId());
+		List<Map<String, Object>> activeList = activeMapper.getRunningActive(map);
+		int count = activeMapper.getParticipateActiveCount(map);
 		return count;
 	}
 
