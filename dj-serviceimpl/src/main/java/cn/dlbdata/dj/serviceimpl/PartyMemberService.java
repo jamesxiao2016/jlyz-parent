@@ -12,6 +12,7 @@ import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
+import cn.dlbdata.dj.constant.AuditStatusEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.*;
 import cn.dlbdata.dj.db.pojo.*;
@@ -118,7 +119,7 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 			vo.setName(pojo.getName());
 			vo.setSubTypeId(subTypeId);
 			vo.setDeptId(pojo.getDeptId());
-			vo.setStatus(DlbConstant.AUDIT_STATUS_NO.getValue());
+			vo.setStatus(AuditStatusEnum.UNDONE.getValue());
 			voList.add(vo);
 		}
 		if (!voList.isEmpty()) {
@@ -128,7 +129,7 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 			for (int i = 0;i<userIdList.size();i++) {
 				for (int j = 0;j<voList.size();j++) {
 					if (voList.get(j).getId().equals(userIdList.get(i))) {
-						voList.get(j).setStatus(DlbConstant.AUDIT_STATUS_YES.getValue());
+						voList.get(j).setStatus(AuditStatusEnum.PASS.getValue());
 					}
 				}
 			}
@@ -175,7 +176,7 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 		djThoughts.setDjUserId(request.getId());
 		djThoughts.setCreateTime(new Date());
 		djThoughts.setDjDeptId(request.getDeptId());
-		djThoughts.setStatus(DlbConstant.BASEDATA_STATUS_VALID.getValue());
+		djThoughts.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		thoughtsMapper.insert(djThoughts);
 
 		//todo ：后面需改为batchInsert
@@ -185,7 +186,7 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 			picRecord.setTableName("dj_thoughts");
 			picRecord.setRecordId(djThoughts.getId());
             picRecord.setDjPicId(pid);
-			picRecord.setStatus(DlbConstant.BASEDATA_STATUS_VALID.getValue());
+			picRecord.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 			picRecord.setCreateTime(new Date());
 			picRecordMapper.insert(picRecord);
 		}
@@ -202,7 +203,7 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 		djScore.setApplyUserId(1L);
 		djScore.setApproverId(1L);
 		djScore.setAddYear(year);
-		djScore.setStatus(DlbConstant.BASEDATA_STATUS_VALID.getValue());
+		djScore.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		djScore.setCreateTime(new Date());
 		djScore.setRecordId(djThoughts.getId());
 		scoreMapper.insert(djScore);
@@ -231,14 +232,14 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 			int count1 = vanguardMapper.countUnAuditByPtMemberIdAndType(vo.getId());
 			if (count1 == 0) {
 				//未审核
-				vo.setAuditStatus(DlbConstant.AUDIT_STATUS_NO.getValue());
+				vo.setAuditStatus(AuditStatusEnum.UNDONE.getValue());
 			} else {
 				//2.判断该党员有未审核的记录（status =0），则该党员为待审核，否则该党员为已审核
-				int count2 = vanguardMapper.countByPtMemberIdStatus(vo.getId(),DlbConstant.PIONEERING_STATUS_A.getValue());
+				int count2 = vanguardMapper.countByPtMemberIdStatus(vo.getId(),AuditStatusEnum.UNDONE.getValue());
 				if (count2>0) {
-					vo.setAuditStatus(DlbConstant.AUDIT_STATUS_WAIT.getValue());
+					vo.setAuditStatus(AuditStatusEnum.WAITING.getValue());
 				} else {
-					vo.setAuditStatus(DlbConstant.AUDIT_STATUS_YES.getValue());
+					vo.setAuditStatus(AuditStatusEnum.PASS.getValue());
 				}
 			}
 		}
