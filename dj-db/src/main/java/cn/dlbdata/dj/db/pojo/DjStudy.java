@@ -12,11 +12,6 @@ public class DjStudy {
     private Long id;
 
     /**
-     * 活动名称
-     */
-    private String name;
-
-    /**
      * 分类ID
      */
     @Column(name = "dj_type_id")
@@ -52,7 +47,12 @@ public class DjStudy {
     private Date endTime;
 
     /**
-     * 活动内容
+     * 学习主题
+     */
+    private String name;
+
+    /**
+     * 学习内容
      */
     private String conent;
 
@@ -110,24 +110,6 @@ public class DjStudy {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     * 获取活动名称
-     *
-     * @return name - 活动名称
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * 设置活动名称
-     *
-     * @param name 活动名称
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -239,18 +221,36 @@ public class DjStudy {
     }
 
     /**
-     * 获取活动内容
+     * 获取学习主题
      *
-     * @return conent - 活动内容
+     * @return name - 学习主题
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * 设置学习主题
+     *
+     * @param name 学习主题
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * 获取学习内容
+     *
+     * @return conent - 学习内容
      */
     public String getConent() {
         return conent;
     }
 
     /**
-     * 设置活动内容
+     * 设置学习内容
      *
-     * @param conent 活动内容
+     * @param conent 学习内容
      */
     public void setConent(String conent) {
         this.conent = conent;
