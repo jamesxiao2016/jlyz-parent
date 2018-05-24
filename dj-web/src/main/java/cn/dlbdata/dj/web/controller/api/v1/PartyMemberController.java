@@ -7,6 +7,7 @@ import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.vo.UserVo;
+import cn.dlbdata.dj.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,7 @@ import cn.dlbdata.dj.web.base.BaseController;
 
 /**
  * 处理党员相关的controller
- * 
+ *
  * @author xiaowei
  *
  */
@@ -38,7 +39,7 @@ public class PartyMemberController extends BaseController {
 
 	/**
 	 * 获取党员参与活动次数
-	 * 
+	 *
 	 * @param memberId
 	 * @return
 	 */
@@ -53,7 +54,7 @@ public class PartyMemberController extends BaseController {
 
 	/**
 	 * 获取用户积分总数
-	 * 
+	 *
 	 * @param userId
 	 * @param year
 	 * @return
@@ -72,7 +73,7 @@ public class PartyMemberController extends BaseController {
 
 	/**
 	 * 获取积分明细
-	 * 
+	 *
 	 * @param userId
 	 * @param year
 	 * @return
@@ -91,7 +92,7 @@ public class PartyMemberController extends BaseController {
 
 	/**
 	 * 获取各个类型的积分总数及最大分数（雷达图、积分进度列表）
-	 * 
+	 *
 	 * @param userId
 	 * @param year
 	 * @return
@@ -135,4 +136,19 @@ public class PartyMemberController extends BaseController {
 		partyMemberService.reportAddScore(request,year,currUser);
 		return new ResultVo(CoreConst.ResultCode.OK.getCode(),"加分成功!");
 	}
+
+	/**
+	 * 支书查询先锋评定党员列表
+	 * @param deptId
+	 * @return
+	 */
+	@GetMapping("/getPartymembersByDeptIdForPioneeringParty")
+	@ResponseBody
+	public ResultVo<List<PioneeringPartyMemberVo>> getPioneeringPartyMembers(@RequestParam(value = "deptId") Long deptId) {
+		List<PioneeringPartyMemberVo> voList = partyMemberService.getPioneeringPartyMembers(deptId);
+		ResultVo<List<PioneeringPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
+		result.setData(voList);
+		return result;
+	}
+
 }

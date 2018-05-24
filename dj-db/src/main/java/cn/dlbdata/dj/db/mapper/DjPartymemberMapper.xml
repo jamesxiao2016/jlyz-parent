@@ -25,7 +25,7 @@
   </resultMap>
   
   <select id="getReportPartyMember" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select name,id from dj_partymember  where dept_id = #{deptId}
+    select name,id,dept_id from dj_partymember  where dept_id = #{deptId}
     order by post_id desc
   </select>
 </mapper>

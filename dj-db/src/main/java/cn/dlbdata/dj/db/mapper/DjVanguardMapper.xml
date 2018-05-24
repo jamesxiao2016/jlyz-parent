@@ -15,4 +15,12 @@
     <result column="dj_dept_id" jdbcType="BIGINT" property="djDeptId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+
+  <select id="countUnAuditByPtMemberIdAndType" resultType="int">
+    select count(0) from dj_vanguard where dj_user_id =#{id} and type in(1,2,3)
+  </select>
+
+  <select id="countByPtMemberIdStatus" resultType="int">
+    select count(0) from dj_vanguard where dj_user_id =#{pid} and status=#{status}
+  </select>
 </mapper>
