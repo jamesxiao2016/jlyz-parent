@@ -6,14 +6,18 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="audit_type" jdbcType="BIGINT" property="auditType" />
-    <result column="record_id" jdbcType="BIGINT" property="recordId" />
+    <result column="dj_type_id" jdbcType="BIGINT" property="djTypeId" />
+    <result column="dj_sub_type_id" jdbcType="BIGINT" property="djSubTypeId" />
     <result column="apply_info" jdbcType="VARCHAR" property="applyInfo" />
     <result column="apply_id" jdbcType="BIGINT" property="applyId" />
+    <result column="apply_name" jdbcType="VARCHAR" property="applyName" />
     <result column="apply_desc" jdbcType="VARCHAR" property="applyDesc" />
     <result column="approver_id" jdbcType="BIGINT" property="approverId" />
+    <result column="approver_name" jdbcType="VARCHAR" property="approverName" />
     <result column="dj_dept_id" jdbcType="INTEGER" property="djDeptId" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="table_name" jdbcType="VARCHAR" property="tableName" />
+    <result column="record_id" jdbcType="BIGINT" property="recordId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 </mapper>

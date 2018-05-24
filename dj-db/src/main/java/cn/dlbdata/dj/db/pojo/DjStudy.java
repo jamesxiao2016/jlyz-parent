@@ -15,13 +15,13 @@ public class DjStudy {
      * 分类ID
      */
     @Column(name = "dj_type_id")
-    private Integer djTypeId;
+    private Long djTypeId;
 
     /**
      * 二级分类ID
      */
     @Column(name = "dj_sub_type_id")
-    private Integer djSubTypeId;
+    private Long djSubTypeId;
 
     /**
      * 地点
@@ -54,13 +54,13 @@ public class DjStudy {
     /**
      * 学习内容
      */
-    private String conent;
+    private String content;
 
     /**
      * 党员ID
      */
     @Column(name = "create_user_id")
-    private Integer createUserId;
+    private Long createUserId;
 
     /**
      * 党员姓名
@@ -78,13 +78,13 @@ public class DjStudy {
      * 审批人ID
      */
     @Column(name = "approve_id")
-    private Integer approveId;
+    private Long approveId;
 
     /**
      * 部门ID
      */
     @Column(name = "dj_dept_id")
-    private Integer djDeptId;
+    private Long djDeptId;
 
     /**
      * 状态
@@ -117,7 +117,7 @@ public class DjStudy {
      *
      * @return dj_type_id - 分类ID
      */
-    public Integer getDjTypeId() {
+    public Long getDjTypeId() {
         return djTypeId;
     }
 
@@ -126,7 +126,7 @@ public class DjStudy {
      *
      * @param djTypeId 分类ID
      */
-    public void setDjTypeId(Integer djTypeId) {
+    public void setDjTypeId(Long djTypeId) {
         this.djTypeId = djTypeId;
     }
 
@@ -135,7 +135,7 @@ public class DjStudy {
      *
      * @return dj_sub_type_id - 二级分类ID
      */
-    public Integer getDjSubTypeId() {
+    public Long getDjSubTypeId() {
         return djSubTypeId;
     }
 
@@ -144,7 +144,7 @@ public class DjStudy {
      *
      * @param djSubTypeId 二级分类ID
      */
-    public void setDjSubTypeId(Integer djSubTypeId) {
+    public void setDjSubTypeId(Long djSubTypeId) {
         this.djSubTypeId = djSubTypeId;
     }
 
@@ -241,19 +241,19 @@ public class DjStudy {
     /**
      * 获取学习内容
      *
-     * @return conent - 学习内容
+     * @return content - 学习内容
      */
-    public String getConent() {
-        return conent;
+    public String getContent() {
+        return content;
     }
 
     /**
      * 设置学习内容
      *
-     * @param conent 学习内容
+     * @param content 学习内容
      */
-    public void setConent(String conent) {
-        this.conent = conent;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     /**
@@ -261,7 +261,7 @@ public class DjStudy {
      *
      * @return create_user_id - 党员ID
      */
-    public Integer getCreateUserId() {
+    public Long getCreateUserId() {
         return createUserId;
     }
 
@@ -270,7 +270,7 @@ public class DjStudy {
      *
      * @param createUserId 党员ID
      */
-    public void setCreateUserId(Integer createUserId) {
+    public void setCreateUserId(Long createUserId) {
         this.createUserId = createUserId;
     }
 
@@ -315,7 +315,7 @@ public class DjStudy {
      *
      * @return approve_id - 审批人ID
      */
-    public Integer getApproveId() {
+    public Long getApproveId() {
         return approveId;
     }
 
@@ -324,7 +324,7 @@ public class DjStudy {
      *
      * @param approveId 审批人ID
      */
-    public void setApproveId(Integer approveId) {
+    public void setApproveId(Long approveId) {
         this.approveId = approveId;
     }
 
@@ -333,7 +333,7 @@ public class DjStudy {
      *
      * @return dj_dept_id - 部门ID
      */
-    public Integer getDjDeptId() {
+    public Long getDjDeptId() {
         return djDeptId;
     }
 
@@ -342,7 +342,7 @@ public class DjStudy {
      *
      * @param djDeptId 部门ID
      */
-    public void setDjDeptId(Integer djDeptId) {
+    public void setDjDeptId(Long djDeptId) {
         this.djDeptId = djDeptId;
     }
 
