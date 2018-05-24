@@ -10,12 +10,12 @@
     <result column="dj_type_id" jdbcType="INTEGER" property="djTypeId" />
     <result column="dj_sub_type_id" jdbcType="INTEGER" property="djSubTypeId" />
     <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="principal_id" jdbcType="VARCHAR" property="principalId" />
     <result column="has_audit" jdbcType="INTEGER" property="hasAudit" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
     <result column="conent" jdbcType="VARCHAR" property="conent" />
     <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="pic_id" jdbcType="BIGINT" property="picId" />
     <result column="approve_id" jdbcType="INTEGER" property="approveId" />
     <result column="dj_dept_id" jdbcType="INTEGER" property="djDeptId" />

@@ -9,7 +9,6 @@ public class DjStudy {
      * 记录ID
      */
     @Id
-    @GeneratedValue(generator = "JDBC")
     private Long id;
 
     /**
@@ -35,12 +34,6 @@ public class DjStudy {
     private String address;
 
     /**
-     * 负责人
-     */
-    @Column(name = "principal_id")
-    private String principalId;
-
-    /**
      * 是否审核
      */
     @Column(name = "has_audit")
@@ -64,10 +57,16 @@ public class DjStudy {
     private String conent;
 
     /**
-     * 活动发起人
+     * 党员ID
      */
     @Column(name = "create_user_id")
     private Integer createUserId;
+
+    /**
+     * 党员姓名
+     */
+    @Column(name = "user_name")
+    private String userName;
 
     /**
      * 活动图片ID
@@ -186,24 +185,6 @@ public class DjStudy {
     }
 
     /**
-     * 获取负责人
-     *
-     * @return principal_id - 负责人
-     */
-    public String getPrincipalId() {
-        return principalId;
-    }
-
-    /**
-     * 设置负责人
-     *
-     * @param principalId 负责人
-     */
-    public void setPrincipalId(String principalId) {
-        this.principalId = principalId;
-    }
-
-    /**
      * 获取是否审核
      *
      * @return has_audit - 是否审核
@@ -276,21 +257,39 @@ public class DjStudy {
     }
 
     /**
-     * 获取活动发起人
+     * 获取党员ID
      *
-     * @return create_user_id - 活动发起人
+     * @return create_user_id - 党员ID
      */
     public Integer getCreateUserId() {
         return createUserId;
     }
 
     /**
-     * 设置活动发起人
+     * 设置党员ID
      *
-     * @param createUserId 活动发起人
+     * @param createUserId 党员ID
      */
     public void setCreateUserId(Integer createUserId) {
         this.createUserId = createUserId;
+    }
+
+    /**
+     * 获取党员姓名
+     *
+     * @return user_name - 党员姓名
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     * 设置党员姓名
+     *
+     * @param userName 党员姓名
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     /**
