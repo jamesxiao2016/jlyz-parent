@@ -3,26 +3,98 @@ package cn.dlbdata.dj.vo;
 import java.util.Date;
 
 public class ActiveVo {
+	/**
+	 * 报名表id
+	 */
 	private Long id;
+	/**
+	 * 活动id
+	 */
 	private Long djActiveId;
+	/**
+	 * 用户id
+	 */
 	private Long djUserId;
+	/**
+	 * 活动是否签到：0代表未签到，1代表签到
+	 */
 	private Integer status;
+	/**
+	 * 报名时间
+	 */
 	private Date createTime;
+	/**
+	 * 签到时间
+	 */
 	private Date signTime;
+	/**
+	 * 活动名称
+	 */
 	private String activeName;
+	/**
+	 * 活动类型id
+	 */
 	private Long typeId;
+	/**
+	 * 活动二级分类id
+	 */
 	private Long subTypeId;
+	/**
+	 * 活动地址
+	 */
 	private String address;
+	/**
+	 * 活动负责人名称
+	 */
 	private String principalId;
+	/**
+	 * 活动是否审核
+	 */
 	private Integer hasAudit;
+	/**
+	 * 活动开始时间
+	 */
 	private Date startActiveTime;
+	/**
+	 * 活动结束时间
+	 */
 	private Date endActiveTime;
+	/**
+	 * 活动内容
+	 */
 	private String content;
+	/**
+	 * 活动创建人id
+	 */
 	private Long createUserId;
+	/**
+	 * 活动图片id
+	 */
 	private Long picId;
+	/**
+	 * 活动状态
+	 */
 	private Integer ActiveStatus;
+	/**
+	 * 创建活动时间
+	 */
 	private Date createActiveTime;
+	/**
+	 * 用户名称
+	 */
 	private String userName;
+	/**
+	 * 活动类型名称
+	 */
+	private String activeTypeName;
+	/**
+	 * 活动二级分类名称
+	 */
+	private String subActiveTypeName;
+	/**
+	 * 活动二级分类内容
+	 */
+	private String subActiveTypeContent;
 	public Long getId() {
 		return id;
 	}
@@ -142,6 +214,24 @@ public class ActiveVo {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	public String getActiveTypeName() {
+		return activeTypeName;
+	}
+	public void setActiveTypeName(String activeTypeName) {
+		this.activeTypeName = activeTypeName;
+	}
+	public String getSubActiveTypeName() {
+		return subActiveTypeName;
+	}
+	public void setSubActiveTypeName(String subActiveTypeName) {
+		this.subActiveTypeName = subActiveTypeName;
+	}
+	public String getSubActiveTypeContent() {
+		return subActiveTypeContent;
+	}
+	public void setSubActiveTypeContent(String subActiveTypeContent) {
+		this.subActiveTypeContent = subActiveTypeContent;
 	}
 	
 
