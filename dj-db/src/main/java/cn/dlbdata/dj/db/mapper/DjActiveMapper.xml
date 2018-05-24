@@ -22,20 +22,16 @@
 	<select id="getUserActiveCountByActiveTypeAndTime" parameterType="map"
 		resultType="java.lang.Integer">
 		select count(*) from dj_active d
-		WHERE id in (
+		WHERE d.id in (
 		SELECT dj_active_id FROM
 		dj_active_user dau WHERE dj_user_id =
 		#{userId} AND dau.status = 1
 		)
 		<if test="activeType != null">
-			AND type_id = #{activeType}
+			AND d.type_id = #{activeType}
 		</if>
-		AND (start_time BETWEEN #{startTime} and
-		#{endTime}
-		OR end_time BETWEEN
-		#{startTime} and
-		#{endTime)
-
+		AND (start_time BETWEEN #{startTime} and #{endTime}
+		OR end_time BETWEEN #{startTime} and #{endTime} )
 	</select>
 	
 	
