@@ -228,14 +228,14 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 		}
 		for (PioneeringPartyMemberVo vo :voList) {
 
-			//1.判断该党员没有type in(1,2,3) 的记录，则该党员为未审核，否则走2
+			//1.判断该党员没有type in(13，14，15) 的记录，则该党员为未审核，否则走2
 			int count1 = vanguardMapper.countUnAuditByPtMemberIdAndType(vo.getId());
 			if (count1 == 0) {
 				//未审核
 				vo.setAuditStatus(AuditStatusEnum.UNDONE.getValue());
 			} else {
-				//2.判断该党员有未审核的记录（status =0），则该党员为待审核，否则该党员为已审核
-				int count2 = vanguardMapper.countByPtMemberIdStatus(vo.getId(),AuditStatusEnum.UNDONE.getValue());
+				//2.判断该党员有待审核的记录（status =0），则该党员为待审核，否则该党员为已审核
+				int count2 = vanguardMapper.countByPtMemberIdStatus(vo.getId(),AuditStatusEnum.WAITING.getValue());
 				if (count2>0) {
 					vo.setAuditStatus(AuditStatusEnum.WAITING.getValue());
 				} else {

@@ -3,77 +3,133 @@ package cn.dlbdata.dj.vo;
 import java.util.Date;
 
 public class ActiveVo {
-	private Integer offSet;
-	private Integer set;
+	/**
+	 * 报名表id
+	 */
+	private Long id;
 	/**
 	 * 活动id
 	 */
-	private Long activeId;
+	private Long djActiveId;
+	/**
+	 * 用户id
+	 */
+	private Long djUserId;
+	/**
+	 * 活动是否签到：0代表未签到，1代表签到
+	 */
+	private Integer status;
+	/**
+	 * 报名时间
+	 */
+	private Date createTime;
+	/**
+	 * 签到时间
+	 */
+	private Date signTime;
 	/**
 	 * 活动名称
 	 */
 	private String activeName;
 	/**
-	 * 用户id
+	 * 活动类型id
 	 */
-	private Long userId;
+	private Long typeId;
 	/**
-	 * 活动开始时间
+	 * 活动二级分类id
 	 */
-	private Date startTime;
+	private Long subTypeId;
 	/**
-	 * 活动结束时间
-	 */
-	private Date endTime;
-	/**
-	 * 地点
+	 * 活动地址
 	 */
 	private String address;
 	/**
-	 * 活动发起人id
+	 * 活动负责人名称
 	 */
-	private Long createUserId;
+	private String principalId;
+	/**
+	 * 活动是否审核
+	 */
+	private Integer hasAudit;
+	/**
+	 * 活动开始时间
+	 */
+	private Date startActiveTime;
+	/**
+	 * 活动结束时间
+	 */
+	private Date endActiveTime;
 	/**
 	 * 活动内容
 	 */
 	private String content;
 	/**
-	 * 活动负责人
+	 * 活动创建人id
 	 */
-	private String principalId;
+	private Long createUserId;
 	/**
-	 * 支部id
+	 * 活动图片id
 	 */
-	private Long departmentId;
-	public Long getDepartmentId() {
-		return departmentId;
+	private Long picId;
+	/**
+	 * 活动状态
+	 */
+	private Integer ActiveStatus;
+	/**
+	 * 创建活动时间
+	 */
+	private Date createActiveTime;
+	/**
+	 * 用户名称
+	 */
+	private String userName;
+	/**
+	 * 活动类型名称
+	 */
+	private String activeTypeName;
+	/**
+	 * 活动二级分类名称
+	 */
+	private String subActiveTypeName;
+	/**
+	 * 活动二级分类内容
+	 */
+	private String subActiveTypeContent;
+	public Long getId() {
+		return id;
 	}
-	public void setDepartmentId(Long departmentId) {
-		this.departmentId = departmentId;
+	public void setId(Long id) {
+		this.id = id;
 	}
-	public String getPrincipalId() {
-		return principalId;
+	public Long getDjActiveId() {
+		return djActiveId;
 	}
-	public void setPrincipalId(String principalId) {
-		this.principalId = principalId;
+	public void setDjActiveId(Long djActiveId) {
+		this.djActiveId = djActiveId;
 	}
-	public Integer getOffSet() {
-		return offSet;
+	public Long getDjUserId() {
+		return djUserId;
 	}
-	public void setOffSet(Integer offSet) {
-		this.offSet = offSet;
+	public void setDjUserId(Long djUserId) {
+		this.djUserId = djUserId;
 	}
-	public Integer getSet() {
-		return set;
+	public Integer getStatus() {
+		return status;
 	}
-	public void setSet(Integer set) {
-		this.set = set;
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
-	public Long getActiveId() {
-		return activeId;
+	public Date getCreateTime() {
+		return createTime;
 	}
-	public void setActiveId(Long activeId) {
-		this.activeId = activeId;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	public Date getSignTime() {
+		return signTime;
+	}
+	public void setSignTime(Date signTime) {
+		this.signTime = signTime;
 	}
 	public String getActiveName() {
 		return activeName;
@@ -81,23 +137,17 @@ public class ActiveVo {
 	public void setActiveName(String activeName) {
 		this.activeName = activeName;
 	}
-	public Long getUserId() {
-		return userId;
+	public Long getTypeId() {
+		return typeId;
 	}
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setTypeId(Long typeId) {
+		this.typeId = typeId;
 	}
-	public Date getStartTime() {
-		return startTime;
+	public Long getSubTypeId() {
+		return subTypeId;
 	}
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
-	}
-	public Date getEndTime() {
-		return endTime;
-	}
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
+	public void setSubTypeId(Long subTypeId) {
+		this.subTypeId = subTypeId;
 	}
 	public String getAddress() {
 		return address;
@@ -105,11 +155,29 @@ public class ActiveVo {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public Long getCreateUserId() {
-		return createUserId;
+	public String getPrincipalId() {
+		return principalId;
 	}
-	public void setCreateUserId(Long createUserId) {
-		this.createUserId = createUserId;
+	public void setPrincipalId(String principalId) {
+		this.principalId = principalId;
+	}
+	public Integer getHasAudit() {
+		return hasAudit;
+	}
+	public void setHasAudit(Integer hasAudit) {
+		this.hasAudit = hasAudit;
+	}
+	public Date getStartActiveTime() {
+		return startActiveTime;
+	}
+	public void setStartActiveTime(Date startActiveTime) {
+		this.startActiveTime = startActiveTime;
+	}
+	public Date getEndActiveTime() {
+		return endActiveTime;
+	}
+	public void setEndActiveTime(Date endActiveTime) {
+		this.endActiveTime = endActiveTime;
 	}
 	public String getContent() {
 		return content;
@@ -117,7 +185,54 @@ public class ActiveVo {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	public Long getCreateUserId() {
+		return createUserId;
+	}
+	public void setCreateUserId(Long createUserId) {
+		this.createUserId = createUserId;
+	}
+	public Long getPicId() {
+		return picId;
+	}
+	public void setPicId(Long picId) {
+		this.picId = picId;
+	}
+	public Integer getActiveStatus() {
+		return ActiveStatus;
+	}
+	public void setActiveStatus(Integer activeStatus) {
+		ActiveStatus = activeStatus;
+	}
+	public Date getCreateActiveTime() {
+		return createActiveTime;
+	}
+	public void setCreateActiveTime(Date createActiveTime) {
+		this.createActiveTime = createActiveTime;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getActiveTypeName() {
+		return activeTypeName;
+	}
+	public void setActiveTypeName(String activeTypeName) {
+		this.activeTypeName = activeTypeName;
+	}
+	public String getSubActiveTypeName() {
+		return subActiveTypeName;
+	}
+	public void setSubActiveTypeName(String subActiveTypeName) {
+		this.subActiveTypeName = subActiveTypeName;
+	}
+	public String getSubActiveTypeContent() {
+		return subActiveTypeContent;
+	}
+	public void setSubActiveTypeContent(String subActiveTypeContent) {
+		this.subActiveTypeContent = subActiveTypeContent;
+	}
 	
-
 
 }
