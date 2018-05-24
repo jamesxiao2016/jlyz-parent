@@ -24,4 +24,12 @@ public interface IDeptService {
 	 * @return
 	 */
 	public List<DjDept> getDeptListByParentId(Long parentId);
+	/**
+	 * 
+	 * <p>Title: getDeptMessage</p> 
+	 * <p>Description:党支部相关信息 </p> 
+	 * @param departmentId
+	 * @return
+	 */
+	public DjDept getDeptMessage(Long departmentId);
 }
