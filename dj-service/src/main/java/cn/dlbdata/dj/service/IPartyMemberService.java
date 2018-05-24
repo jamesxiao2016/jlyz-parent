@@ -85,4 +85,12 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	List<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId);
+	/**
+	 * 
+	 * <p>Title: queryAllPartyMembersByDeptId</p> 
+	 * <p>Description: 查询支部全部党员的信息以及分数</p> 
+	 * @param deptId
+	 * @return
+	 */
+	public List<DjPartymember> queryAllPartyMembersByDeptId(Long deptId);
 }

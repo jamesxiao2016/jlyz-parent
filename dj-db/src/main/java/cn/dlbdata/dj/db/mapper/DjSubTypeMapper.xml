@@ -16,4 +16,21 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+  
+    <resultMap id="BaseResultMapTwo" type="cn.dlbdata.dj.db.pojo.DjSubType">
+	    <id column="id" jdbcType="BIGINT" property="id" />
+	    <result column="dj_type_id" jdbcType="BIGINT" property="djTypeId" />
+	    <result column="name" jdbcType="VARCHAR" property="name" />
+	    <result column="content" jdbcType="VARCHAR" property="content" />
+	    <result column="score" jdbcType="REAL" property="score" />
+	    <result column="typeName" jdbcType="VARCHAR" property="typeName" />
+  </resultMap>
+  <select id="getActiveTypeList" resultMap="BaseResultMapTwo">
+  	select dj.id, dj.dj_type_id, dj.name ,dj.content, dt.name typeName
+  	from dj_sub_type dj
+  	left join dj_type dt on dt.id = dj.dj_type_id
+  	where dj.name like '%参加活动%' 
+  </select>
+  
+  
 </mapper>

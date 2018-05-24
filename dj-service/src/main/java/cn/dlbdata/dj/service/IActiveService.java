@@ -6,6 +6,7 @@ import java.util.Map;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.vo.PageVo;
+import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
 
 /**
  * 活动相关的业务逻辑
@@ -55,9 +56,19 @@ public interface IActiveService {
 	 *党员生活通知总数
 	 * <p>Title: getParticipateActiveCount</p> 
 	 * <p>Description: </p> 
-	 * @param PartyMemberLifeNotice
+	 * @param
 	 * @return
 	 */
 	public int getParticipateActiveCount(PartyMemberLifeNotice partyMemberLifeNotice);
+
+	/**
+	 * 支书查询待办列表
+	 * @param deptId 支部ID
+	 * @param subTypeId 活动类型Id
+	 * @return
+	 */
+	//TODO :分页暂缓
+	List<PendingPtMemberVo>getPendingList(Long deptId,Long subTypeId);
+
 	
 }

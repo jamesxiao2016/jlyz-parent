@@ -60,6 +60,9 @@ public class DjSubType {
     @Column(name = "create_time")
     private Date createTime;
 
+    
+    private String typeName;
+    
     /**
      * 获取记录ID
      *
@@ -239,4 +242,13 @@ public class DjSubType {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+    
 }
