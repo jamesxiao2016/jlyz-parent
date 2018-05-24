@@ -4,7 +4,7 @@
  *  @author zhouxuan
  *  @date 2018年5月23日 
  */
-package cn.dlbdata.dj.db.resquest;
+package cn.dlbdata.dj.dto;
 
 import java.sql.Date;
 

@@ -14,7 +14,7 @@ import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
 import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActiveDept;
-import cn.dlbdata.dj.db.resquest.PartyMemberLifeNotice;
+import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.serviceimpl.base.BaseService;
 import cn.dlbdata.dj.vo.PageVo;

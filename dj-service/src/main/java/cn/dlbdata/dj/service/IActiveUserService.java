@@ -10,7 +10,7 @@ import java.util.List;
 
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
-import cn.dlbdata.dj.db.resquest.ActiveSignUpRequest;
+import cn.dlbdata.dj.dto.active.ActiveSignUpRequest;
 
 /**
  * <p>Title: IActiveUserService</p>

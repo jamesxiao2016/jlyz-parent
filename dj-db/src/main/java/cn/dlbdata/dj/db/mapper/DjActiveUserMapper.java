@@ -1,8 +1,9 @@
 package cn.dlbdata.dj.db.mapper;
 
+import java.util.Map;
+
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
-import cn.dlbdata.dj.db.resquest.ActiveSignUpRequest;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface DjActiveUserMapper extends Mapper<DjActiveUser> {
@@ -13,6 +14,6 @@ public interface DjActiveUserMapper extends Mapper<DjActiveUser> {
 	 * @param activeSignUpRequest
 	 * @return
 	 */
-	public ResultVo<String> insertActiveSignUp(ActiveSignUpRequest activeSignUpRequest);
+	public ResultVo<String> insertActiveSignUp(Map<String,String> map);
 
 }

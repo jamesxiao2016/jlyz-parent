@@ -1,4 +1,4 @@
-package cn.dlbdata.dj.db.resquest;
+package cn.dlbdata.dj.dto;
 
 import java.util.Date;
 

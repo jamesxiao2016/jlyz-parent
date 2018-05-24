@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.db.resquest.ActiveSignUpRequest;
-import cn.dlbdata.dj.db.resquest.PartyMemberLifeNotice;
+import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
+import cn.dlbdata.dj.dto.active.ActiveSignUpRequest;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.service.IActiveUserService;
 import cn.dlbdata.dj.vo.PageVo;
