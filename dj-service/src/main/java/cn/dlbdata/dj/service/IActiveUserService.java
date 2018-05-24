@@ -9,6 +9,7 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
 import cn.dlbdata.dj.dto.ActiveSignUpRequest;
 
@@ -37,4 +38,11 @@ public interface IActiveUserService {
 	 * @return
 	 */
 	public List<DjActiveUser> selectByExample(Long userId, Long activeId);
+	/**
+	 * 
+	 * <p>Title: getMyJoinActive</p> 
+	 * <p>Description: 已参与党员生活列表</p> 
+	 * @return
+	 */
+	public List<DjActive> getMyJoinActive(Long userId, Integer status);
 }

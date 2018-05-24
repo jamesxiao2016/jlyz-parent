@@ -3,77 +3,61 @@ package cn.dlbdata.dj.vo;
 import java.util.Date;
 
 public class ActiveVo {
-	private Integer offSet;
-	private Integer set;
-	/**
-	 * 活动id
-	 */
-	private Long activeId;
-	/**
-	 * 活动名称
-	 */
+	private Long id;
+	private Long djActiveId;
+	private Long djUserId;
+	private Integer status;
+	private Date createTime;
+	private Date signTime;
 	private String activeName;
-	/**
-	 * 用户id
-	 */
-	private Long userId;
-	/**
-	 * 活动开始时间
-	 */
-	private Date startTime;
-	/**
-	 * 活动结束时间
-	 */
-	private Date endTime;
-	/**
-	 * 地点
-	 */
+	private Long typeId;
+	private Long subTypeId;
 	private String address;
-	/**
-	 * 活动发起人id
-	 */
-	private Long createUserId;
-	/**
-	 * 活动内容
-	 */
-	private String content;
-	/**
-	 * 活动负责人
-	 */
 	private String principalId;
-	/**
-	 * 支部id
-	 */
-	private Long departmentId;
-	public Long getDepartmentId() {
-		return departmentId;
+	private Integer hasAudit;
+	private Date startActiveTime;
+	private Date endActiveTime;
+	private String content;
+	private Long createUserId;
+	private Long picId;
+	private Integer ActiveStatus;
+	private Date createActiveTime;
+	private String userName;
+	public Long getId() {
+		return id;
 	}
-	public void setDepartmentId(Long departmentId) {
-		this.departmentId = departmentId;
+	public void setId(Long id) {
+		this.id = id;
 	}
-	public String getPrincipalId() {
-		return principalId;
+	public Long getDjActiveId() {
+		return djActiveId;
 	}
-	public void setPrincipalId(String principalId) {
-		this.principalId = principalId;
+	public void setDjActiveId(Long djActiveId) {
+		this.djActiveId = djActiveId;
 	}
-	public Integer getOffSet() {
-		return offSet;
+	public Long getDjUserId() {
+		return djUserId;
 	}
-	public void setOffSet(Integer offSet) {
-		this.offSet = offSet;
+	public void setDjUserId(Long djUserId) {
+		this.djUserId = djUserId;
 	}
-	public Integer getSet() {
-		return set;
+	public Integer getStatus() {
+		return status;
 	}
-	public void setSet(Integer set) {
-		this.set = set;
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
-	public Long getActiveId() {
-		return activeId;
+	public Date getCreateTime() {
+		return createTime;
 	}
-	public void setActiveId(Long activeId) {
-		this.activeId = activeId;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	public Date getSignTime() {
+		return signTime;
+	}
+	public void setSignTime(Date signTime) {
+		this.signTime = signTime;
 	}
 	public String getActiveName() {
 		return activeName;
@@ -81,23 +65,17 @@ public class ActiveVo {
 	public void setActiveName(String activeName) {
 		this.activeName = activeName;
 	}
-	public Long getUserId() {
-		return userId;
+	public Long getTypeId() {
+		return typeId;
 	}
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setTypeId(Long typeId) {
+		this.typeId = typeId;
 	}
-	public Date getStartTime() {
-		return startTime;
+	public Long getSubTypeId() {
+		return subTypeId;
 	}
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
-	}
-	public Date getEndTime() {
-		return endTime;
-	}
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
+	public void setSubTypeId(Long subTypeId) {
+		this.subTypeId = subTypeId;
 	}
 	public String getAddress() {
 		return address;
@@ -105,11 +83,29 @@ public class ActiveVo {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public Long getCreateUserId() {
-		return createUserId;
+	public String getPrincipalId() {
+		return principalId;
 	}
-	public void setCreateUserId(Long createUserId) {
-		this.createUserId = createUserId;
+	public void setPrincipalId(String principalId) {
+		this.principalId = principalId;
+	}
+	public Integer getHasAudit() {
+		return hasAudit;
+	}
+	public void setHasAudit(Integer hasAudit) {
+		this.hasAudit = hasAudit;
+	}
+	public Date getStartActiveTime() {
+		return startActiveTime;
+	}
+	public void setStartActiveTime(Date startActiveTime) {
+		this.startActiveTime = startActiveTime;
+	}
+	public Date getEndActiveTime() {
+		return endActiveTime;
+	}
+	public void setEndActiveTime(Date endActiveTime) {
+		this.endActiveTime = endActiveTime;
 	}
 	public String getContent() {
 		return content;
@@ -117,7 +113,36 @@ public class ActiveVo {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	public Long getCreateUserId() {
+		return createUserId;
+	}
+	public void setCreateUserId(Long createUserId) {
+		this.createUserId = createUserId;
+	}
+	public Long getPicId() {
+		return picId;
+	}
+	public void setPicId(Long picId) {
+		this.picId = picId;
+	}
+	public Integer getActiveStatus() {
+		return ActiveStatus;
+	}
+	public void setActiveStatus(Integer activeStatus) {
+		ActiveStatus = activeStatus;
+	}
+	public Date getCreateActiveTime() {
+		return createActiveTime;
+	}
+	public void setCreateActiveTime(Date createActiveTime) {
+		this.createActiveTime = createActiveTime;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	
-
 
 }

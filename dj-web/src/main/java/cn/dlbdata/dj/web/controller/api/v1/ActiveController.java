@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.db.pojo.DjActive;
+import cn.dlbdata.dj.db.pojo.DjActiveUser;
 import cn.dlbdata.dj.dto.ActiveSignUpRequest;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.service.IActiveService;
@@ -76,6 +78,33 @@ public class ActiveController extends BaseController {
 		UserVo data = getCurrentUserFromCache();
 		activeSignUpRequest.setUserId(data.getUserId());
 		result = activeUserService.insertActiveSignUp(activeSignUpRequest);
+		return result;
+	}
+	
+
+	/**
+	 * 
+	 * <p>Title: getEnjoyActiveByUserId</p> 
+	 * <p>Description:查看自己参加的活动 </p> 
+	 * @param userId
+	 * @param all
+	 * @return
+	 */
+	@GetMapping(value = "/getEnjoyActiveByUserId")
+	@ResponseBody
+	public ResultVo<List<DjActive>> getEnjoyActiveByUserId() {
+		ResultVo<List<DjActive>> result = new ResultVo<>();
+		UserVo data = getCurrentUserFromCache();
+		DjActiveUser djActiveUser = new DjActiveUser();
+		djActiveUser.setStatus(1);
+		List<DjActive> list = activeUserService.getMyJoinActive(data.getUserId(), djActiveUser.getStatus());
+		if(list == null || list.size() ==0) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("数据为空");
+			return result;
+		}
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(list);
 		return result;
 	}
 }

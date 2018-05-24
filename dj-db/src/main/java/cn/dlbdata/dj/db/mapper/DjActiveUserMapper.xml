@@ -13,4 +13,46 @@
     <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
   </resultMap>
   
+  
+  
+  
+  
+    <resultMap id="BaseResultMapTwo" type="cn.dlbdata.dj.vo.ActiveVo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="dj_active_id" jdbcType="BIGINT" property="djActiveId" />
+    <result column="dj_user_id" jdbcType="BIGINT" property="djUserId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+    <result column="name" jdbcType="VARCHAR" property="activeName" />
+	<result column="type_id" jdbcType="INTEGER" property="typeId" />
+	<result column="sub_type_id" jdbcType="INTEGER" property="subTypeId" />
+	<result column="address" jdbcType="VARCHAR" property="address" />
+	<result column="principal_id" jdbcType="VARCHAR" property="principalId" />
+	<result column="has_audit" jdbcType="INTEGER" property="hasAudit" />
+	<result column="start_time" jdbcType="TIMESTAMP" property="startActiveTime" />
+	<result column="end_time" jdbcType="TIMESTAMP" property="endActiveTime" />
+	<result column="content" jdbcType="VARCHAR" property="content" />
+	<result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
+	<result column="pic_id" jdbcType="BIGINT" property="picId" />
+	<result column="status" jdbcType="INTEGER" property="ActiveStatus" />
+	<result column="create_time" jdbcType="TIMESTAMP" property="createActiveTime" />
+	<result column="user_name" jdbcType="TIMESTAMP" property="userName" />
+  </resultMap>
+  
+  
+  
+  <select id="getMyJoinActive" parameterType="map" resultMap="BaseResultMapTwo">
+  	SELECT
+  		t.name, t.type_id, t.sub_type_id, t.address, t.principal_id, t.has_audit, t.start_time, t.end_time, t.content, t.create_user_id, t.pic_id, t.create_time,
+  		du.user_name, dtu.dj_active_id, dtu.dj_user_id, dtu.status, dtu.create_time, dtu.sign_time
+  	FROM
+  		dj_active_user dtu
+  	LEFT JOIN dj_active t  ON dtu.dj_active_id =  t.id
+  	left join dj_user du on du.id = dtu.dj_user_id
+  	where dtu.status = #{status} and dtu.dj_user_id = #{userId}
+  </select>
 </mapper>

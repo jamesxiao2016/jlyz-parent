@@ -6,7 +6,9 @@
  */
 package cn.dlbdata.dj.serviceimpl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.mapper.DjActiveMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveUserMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
+import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
 import cn.dlbdata.dj.dto.ActiveSignUpRequest;
 import cn.dlbdata.dj.service.IActiveUserService;
@@ -93,6 +96,24 @@ public class ActiveUserServiceImpl extends BaseService implements IActiveUserSer
 		Example example = new Example(DjActiveUser.class);
 		example.createCriteria().andEqualTo("djUserId", userId).andEqualTo("djActiveId",activeId);
 		return activeUserMapper.selectByExample(example);
+	}
+
+	/* (non-Javadoc)
+	 * <p>Title: getMyJoinActive</p>
+	 * <p>Description: 已参与党员生活列表</p> 
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IActiveUserService#getMyJoinActive()
+	 */
+	@Override
+	public List<DjActive> getMyJoinActive(Long userId, Integer status) {
+		if(userId == null) {
+			return null;
+		}
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("status", status);
+		List<DjActive> list = activeUserMapper.getMyJoinActive(map);
+		return list;
 	}
 	
 	
