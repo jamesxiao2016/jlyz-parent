@@ -7,6 +7,7 @@ import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.vo.PageVo;
 import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
+import cn.dlbdata.dj.vo.study.StudyDetailVo;
 
 /**
  * 活动相关的业务逻辑
@@ -69,6 +70,16 @@ public interface IActiveService {
 	 */
 	//TODO :分页暂缓
 	List<PendingPtMemberVo>getPendingList(Long deptId,Long subTypeId);
+
+
+	/**
+	 * 获取自主学习详情
+	 * @param studyId 自主学习Id
+	 * @return
+	 */
+	StudyDetailVo getStudyDetail(Long studyId);
+
+
 
 	
 }

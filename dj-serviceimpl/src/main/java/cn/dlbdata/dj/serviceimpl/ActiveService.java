@@ -4,8 +4,10 @@ import java.sql.Timestamp;
 import java.util.*;
 
 import cn.dlbdata.dj.db.mapper.*;
+import cn.dlbdata.dj.db.pojo.DjPicRecord;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
+import cn.dlbdata.dj.vo.study.StudyDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,8 @@ public class ActiveService extends BaseService implements IActiveService {
 	private DjScoreMapper scoreMapper;
 	@Autowired
 	private DjStudyMapper studyMapper;
+	@Autowired
+	private DjPicRecordMapper picRecordMapper;
 	
 	
 	@Override
@@ -123,5 +127,25 @@ public class ActiveService extends BaseService implements IActiveService {
 			voList.add(vo);
 		}
 		return voList;
+	}
+
+	/**
+	 * 获取自主学习详情
+	 *
+	 * @param studyId 自主学习Id
+	 * @return
+	 */
+	@Override
+	public StudyDetailVo getStudyDetail(Long studyId) {
+		DjStudy study = studyMapper.selectByPrimaryKey(studyId);
+		StudyDetailVo detailVo = new StudyDetailVo();
+		detailVo.setName(study.getUserName());
+		detailVo.setStatus(study.getStatus());
+		detailVo.setContent(study.getContent());
+		detailVo.setStartTime(study.getStartTime());
+		detailVo.setEndTime(study.getEndTime());
+//		picRecordMapper
+//		detailVo.setPicIds();
+		return null;
 	}
 }
