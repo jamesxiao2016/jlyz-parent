@@ -15,7 +15,7 @@ public class DjPicRecord {
      * 记录表名称
      */
     @Column(name = "table_name")
-    private Integer tableName;
+    private String tableName;
 
     /**
      * 记录ID
@@ -63,7 +63,7 @@ public class DjPicRecord {
      *
      * @return table_name - 记录表名称
      */
-    public Integer getTableName() {
+    public String getTableName() {
         return tableName;
     }
 
@@ -72,7 +72,7 @@ public class DjPicRecord {
      *
      * @param tableName 记录表名称
      */
-    public void setTableName(Integer tableName) {
+    public void setTableName(String tableName) {
         this.tableName = tableName;
     }
 

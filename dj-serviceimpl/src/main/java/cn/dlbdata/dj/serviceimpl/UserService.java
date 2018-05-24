@@ -153,9 +153,12 @@ public class UserService extends BaseService implements IUserService {
 		// 党委
 		data.setPartyCommittee("陆家嘴中心");
 
+		long startTime = System.currentTimeMillis();
 		// 生成token
 		String token = JwtTokenUtil.createToken(user.getId() + "", user.getName(), user.getDeptId() + "", 0);
 		data.setToken(token);
+		long endTime = System.currentTimeMillis();
+		logger.info("create token time:" + (endTime - startTime));
 
 		CacheManager.getInstance().put(user.getId() + "", data);
 
@@ -206,12 +209,12 @@ public class UserService extends BaseService implements IUserService {
 		if (id == null) {
 			return null;
 		}
-		DjUser user = userMapper.selectByPrimaryKey(id);
-		if (user == null) {
-			return null;
-		}
 		UserVo data = (UserVo) CacheManager.getInstance().get(id + "");
 		if (data == null) {
+			DjUser user = userMapper.selectByPrimaryKey(id);
+			if (user == null) {
+				return null;
+			}
 			data = new UserVo();
 			data.setDeptId(user.getDeptId());
 			data.setMemeberId(user.getDjPartymemberId());
@@ -220,7 +223,7 @@ public class UserService extends BaseService implements IUserService {
 			data.setAvatar(user.getAvatar());
 
 			// 获取党员信息
-			DjPartymember member = partyMemberMapper.selectByPrimaryKey(user.getDeptId());
+			DjPartymember member = partyMemberMapper.selectByPrimaryKey(user.getDjPartymemberId());
 			if (member != null) {
 				data.setUserName(member.getName());
 				data.setSex(member.getSexCode());
@@ -290,6 +293,7 @@ public class UserService extends BaseService implements IUserService {
 	 * @return
 	 */
 	String str = "";
+
 	private String checkName(String name) {
 		str = name;
 		if (StringUtils.isEmpty(name)) {

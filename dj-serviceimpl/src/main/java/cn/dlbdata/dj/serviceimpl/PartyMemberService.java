@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import cn.dlbdata.dj.common.core.exception.DlbException;
+import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
@@ -18,6 +19,7 @@ import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.dlbdata.dj.db.mapper.DjActiveMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
 import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
@@ -38,6 +40,9 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 
 	@Autowired
 	private DjPartymemberMapper partymemberMapper;
+	
+	@Autowired
+	private DjActiveMapper activeMapper;
 
 	@Override
 	public DjPartymember getInfoById(Long id) {
@@ -61,6 +66,15 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 	public PartyVo getScoreAndNumByMemberId(Long memberId) {
 		PartyVo result = new PartyVo();
 		result.setMemberId(memberId);
+		
+		Date startTime = DatetimeUtil.getCurrYearFirst();
+		Date endTime = DatetimeUtil.getCurrYearLast();
+		//获取参与活动次数
+		int activeCount = activeMapper.getUserActiveCountByActiveTypeAndTime(memberId, null, startTime, endTime);
+		//获取参与金领驿站活动次数
+		int jlyzCount = activeMapper.getUserActiveCountByActiveTypeAndTime(memberId, ActiveSubTypeEnum.ACTIVE_SUB_E.getActiveSubId(), startTime, endTime);
+		result.setJlyzActiveNum(jlyzCount);
+		result.setActiveNum(activeCount);
 		return result;
 	}
 

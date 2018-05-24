@@ -31,6 +31,7 @@ public class UserController extends BaseController {
 		UserVo data = userService.getUserDetailById(userId);
 		if (data != null) {
 			result.setCode(ResultCode.OK.getCode());
+			result.setData(data);
 		}
 		return result;
 	}
