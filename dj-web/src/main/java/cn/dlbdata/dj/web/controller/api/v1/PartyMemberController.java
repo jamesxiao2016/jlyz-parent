@@ -66,6 +66,9 @@ public class PartyMemberController extends BaseController {
 			year = Calendar.getInstance().get(Calendar.YEAR);
 		}
 		Double score = userService.getSumScoreByUserId(userId, year);
+		if (score == null) {
+			score = 0D;
+		}
 		result.setData(score);
 		return result;
 	}
@@ -110,21 +113,23 @@ public class PartyMemberController extends BaseController {
 
 	/**
 	 *
-	 * @param deptId 支部ID
-	 * @param subTypeId 子活动ID  11："思想汇报自主汇报"，12："思想汇报书面汇报"
+	 * @param deptId
+	 *            支部ID
+	 * @param subTypeId
+	 *            子活动ID 11："思想汇报自主汇报"，12："思想汇报书面汇报"
 	 * @return 思想汇报评分查询党员列表
 	 */
 	@GetMapping("/getReportByDeptId")
 	@ResponseBody
 	public ResultVo<List<ReportPartyMemberVo>> getReportPartyMember(@RequestParam(value = "deptId") Long deptId,
-																	@RequestParam("subTypeId")Long subTypeId){
+			@RequestParam("subTypeId") Long subTypeId) {
 		ResultVo<List<ReportPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
-		List<ReportPartyMemberVo> voList = partyMemberService.getReportPartyMember(deptId,subTypeId);
+		List<ReportPartyMemberVo> voList = partyMemberService.getReportPartyMember(deptId, subTypeId);
 		result.setData(voList);
 		return result;
 	}
 
-    @PostMapping("/scoreCustom")
+	@PostMapping("/scoreCustom")
 	@ResponseBody
 	public ResultVo reportAddScore(@RequestBody ReportAddScoreRequest request) {
 		String token = getHeader("token");
@@ -132,7 +137,7 @@ public class PartyMemberController extends BaseController {
 		// 从缓存中获取当前用户的信息
 		UserVo currUser = getCacheUserByToken(token);
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-		partyMemberService.reportAddScore(request,year,currUser);
-		return new ResultVo(CoreConst.ResultCode.OK.getCode(),"加分成功!");
+		partyMemberService.reportAddScore(request, year, currUser);
+		return new ResultVo(CoreConst.ResultCode.OK.getCode(), "加分成功!");
 	}
 }

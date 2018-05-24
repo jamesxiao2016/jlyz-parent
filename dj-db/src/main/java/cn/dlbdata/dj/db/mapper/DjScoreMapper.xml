@@ -42,14 +42,14 @@
 		left join dj_user u on u.id = s.approver_id 
 		left join dj_sub_type t on t.id = s.dj_sub_type_id
 		where s.add_year = #{year} and s.user_id = #{userId}
+		order by s.add_time desc
 	</select>
 	
 	<select id="getTypeScoreListByUserId" parameterType="Map"
 		resultType="cn.dlbdata.dj.db.pojo.DjScore">
-		SELECT s.dj_type_id,t.name,sum(s.score) score,t.max_score from dj_score s 
-		left join dj_type t on t.id = s.dj_type_id 
-		where s.add_year = #{year} and s.user_id = #{userId}
-		group by s.dj_type_id
+		SELECT t.id,t.name,t.score max_score,(select sum(s.score) score from dj_score s where s.dj_type_id = t.id 
+		where s.add_year = #{year} and s.user_id = #{userId} 
+		GROUP BY s.dj_type_id ) score from dj_type t 
 	</select>
 
 	<select id="getByDeptIdAndTypeIdAndSubTypeIdAndYear"
