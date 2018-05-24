@@ -28,4 +28,23 @@
     select name,id,dept_id from dj_partymember  where dept_id = #{deptId}
     order by post_id desc
   </select>
+  
+  <resultMap id="BaseResultMapTwo" type="cn.dlbdata.dj.vo.PartyMemberVo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex_code" jdbcType="INTEGER" property="sexCode" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="post_id" jdbcType="INTEGER" property="postId" />
+    <result column="totalscore" jdbcType="FLOAT" property="totalScore" />
+  </resultMap>
+   <select id="queryAllPartyMembersByDeptId" parameterType="map" resultMap="BaseResultMapTwo">
+	    select p.id, p.name, p.sex_code, p.post_id,
+		(select sum(djs.score) from dj_score djs where djs.user_id = p.id and #{year} = (select year(now()) )) as totalscore 
+		from dj_partymember p
+	    left join dj_user pu on p.id = pu.id
+	    <if test="deptId != null">
+	    		and p.dept_id = #{deptId}
+	    </if>
+	    order by p.post_id DESC
+   </select>
 </mapper>

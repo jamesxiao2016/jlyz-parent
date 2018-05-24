@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IUserService;
@@ -153,6 +154,29 @@ public class PartyMemberController extends BaseController {
 		List<PioneeringPartyMemberVo> voList = partyMemberService.getPioneeringPartyMembers(deptId);
 		ResultVo<List<PioneeringPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		result.setData(voList);
+		return result;
+	}
+	
+	/**
+	 * 
+	 * <p>Title: getPartyMemberListByDeptId</p> 
+	 * <p>Description: 根据部门ID获取党员列表</p> 
+	 * @return
+	 */
+	@GetMapping("/queryAllPartyMembersByDeptId")
+	@ResponseBody
+	public ResultVo<List<DjPartymember>> queryAllPartyMembersByDeptId(){
+		ResultVo<List<DjPartymember>> result = new ResultVo<>();
+//		UserVo data = getCurrentUserFromCache();
+		List<DjPartymember> list = partyMemberService.queryAllPartyMembersByDeptId(0L);
+		if(list == null || list.size() == 0) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("该党支部没有信息");
+		}
+		else {
+			result.setCode(ResultCode.OK.getCode());
+			result.setData(list);
+		}
 		return result;
 	}
 

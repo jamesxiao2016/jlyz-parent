@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.dlbdata.dj.common.core.exception.DlbException;
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
@@ -244,5 +246,26 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 			}
 		}
 		return voList;
+	}
+
+	/* (non-Javadoc)
+	 * <p>Title: queryAllPartyMembersByDeptId</p>
+	 * <p>Description: 查询支部全部党员的信息以及分数</p> 
+	 * @param deptId
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IPartyMemberService#queryAllPartyMembersByDeptId(java.lang.Long)
+	 */
+	@Override
+	public List<DjPartymember> queryAllPartyMembersByDeptId(Long deptId) {
+		if(deptId == null)
+		{
+			return null;
+		}
+		Map<String,Object> map = new HashMap<>();
+		map.put("deptId", deptId);
+		 Calendar cale =  Calendar.getInstance();    
+	     int year = cale.get(Calendar.YEAR);    
+		map.put("year", year);
+		return partyMemberMapper.queryAllPartyMembersByDeptId(map);
 	}
 }

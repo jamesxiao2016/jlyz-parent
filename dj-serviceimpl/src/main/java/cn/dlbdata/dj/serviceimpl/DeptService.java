@@ -41,11 +41,11 @@ public class DeptService extends BaseService implements IDeptService {
 	 * @see cn.dlbdata.dj.service.IDeptService#getDeptMessage()
 	 */
 	@Override
-	public DjDept getDeptMessage(Long detpartmentId) {
-		if(detpartmentId == null) {
+	public DjDept getDeptMessage(Long deptId) {
+		if(deptId == null) {
 			return null;
 		}
-		return deptMapper.selectByPrimaryKey(detpartmentId);
+		return deptMapper.selectByPrimaryKey(deptId);
 	}
 
 }

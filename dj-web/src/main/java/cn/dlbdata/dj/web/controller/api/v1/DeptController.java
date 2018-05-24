@@ -6,8 +6,6 @@
  */
 package cn.dlbdata.dj.web.controller.api.v1;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,9 +32,9 @@ public class DeptController extends BaseController {
 
     @GetMapping(value="/queryById")
     @ResponseBody
-    public ResultVo<DjDept> queryById(Long departmentId){
+    public ResultVo<DjDept> queryById(Long deptId){
     	ResultVo<DjDept> result = new ResultVo<>();
-    	DjDept djDept = deptService.getDeptMessage(departmentId);
+    	DjDept djDept = deptService.getDeptMessage(deptId);
     	if(djDept == null)
     	{
     		result.setCode(ResultCode.Forbidden.getCode());
