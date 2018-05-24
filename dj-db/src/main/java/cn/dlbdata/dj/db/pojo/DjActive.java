@@ -21,13 +21,13 @@ public class DjActive {
      * 活动分类ID
      */
     @Column(name = "type_id")
-    private Integer typeId;
+    private Long typeId;
 
     /**
      * 二级分类ID
      */
     @Column(name = "sub_type_id")
-    private Integer subTypeId;
+    private Long subTypeId;
 
     /**
      * 地点
@@ -67,7 +67,7 @@ public class DjActive {
      * 活动发起人
      */
     @Column(name = "create_user_id")
-    private Integer createUserId;
+    private Long createUserId;
 
     /**
      * 活动图片ID
@@ -124,7 +124,7 @@ public class DjActive {
      *
      * @return type_id - 活动分类ID
      */
-    public Integer getTypeId() {
+    public Long getTypeId() {
         return typeId;
     }
 
@@ -133,7 +133,7 @@ public class DjActive {
      *
      * @param typeId 活动分类ID
      */
-    public void setTypeId(Integer typeId) {
+    public void setTypeId(Long typeId) {
         this.typeId = typeId;
     }
 
@@ -142,7 +142,7 @@ public class DjActive {
      *
      * @return sub_type_id - 二级分类ID
      */
-    public Integer getSubTypeId() {
+    public Long getSubTypeId() {
         return subTypeId;
     }
 
@@ -151,7 +151,7 @@ public class DjActive {
      *
      * @param subTypeId 二级分类ID
      */
-    public void setSubTypeId(Integer subTypeId) {
+    public void setSubTypeId(Long subTypeId) {
         this.subTypeId = subTypeId;
     }
 
@@ -257,7 +257,7 @@ public class DjActive {
      *
      * @return create_user_id - 活动发起人
      */
-    public Integer getCreateUserId() {
+    public Long getCreateUserId() {
         return createUserId;
     }
 
@@ -274,7 +274,7 @@ public class DjActive {
      *
      * @param createUserId 活动发起人
      */
-    public void setCreateUserId(Integer createUserId) {
+    public void setCreateUserId(Long createUserId) {
         this.createUserId = createUserId;
     }
 

@@ -4,14 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.common.core.util.DigitUtil;
+import cn.dlbdata.dj.common.core.util.constant.CoreConst;
+import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.service.IStudyService;
 import cn.dlbdata.dj.service.IWorkflowService;
+import cn.dlbdata.dj.serviceimpl.base.BaseService;
+import cn.dlbdata.dj.vo.ApplyVo;
 import cn.dlbdata.dj.vo.StudyVo;
+import cn.dlbdata.dj.vo.UserVo;
 
 @Service
-public class StudyServiceImpl implements IStudyService {
+public class StudyServiceImpl extends BaseService implements IStudyService {
 	@Autowired
 	private DjStudyMapper studyMapper;
 
@@ -19,7 +24,7 @@ public class StudyServiceImpl implements IStudyService {
 	private IWorkflowService workflowService;
 
 	@Override
-	public Long saveStudy(StudyVo studyVo) {
+	public Long saveStudy(StudyVo studyVo, UserVo user) {
 		if (studyVo == null) {
 			return 0L;
 		}
@@ -47,6 +52,18 @@ public class StudyServiceImpl implements IStudyService {
 		}
 
 		// TODO 提交申请，写入到申请表中
+		ApplyVo vo = new ApplyVo();
+		vo.setContent(study.getContent());
+		vo.setDjSubTypeId(study.getDjSubTypeId());
+		vo.setDjTypeId(study.getDjTypeId());
+		vo.setRecordId(study.getId());
+		vo.setRemark("自主学习申请");
+		// vo.setScore(score);
+		vo.setTableName(DlbConstant.TABLE_NAME_STUDY);
+		String result = workflowService.apply(vo, user);
+		if (!CoreConst.SUCCESS.equals(result)) {
+			logger.info("提交申请失败");
+		}
 
 		return study.getId();
 	}

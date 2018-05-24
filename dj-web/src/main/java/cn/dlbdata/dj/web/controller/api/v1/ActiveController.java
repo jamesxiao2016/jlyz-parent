@@ -1,6 +1,5 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +19,7 @@ import cn.dlbdata.dj.dto.ActiveSignUpRequest;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.service.IActiveUserService;
+import cn.dlbdata.dj.vo.ActiveVo;
 import cn.dlbdata.dj.vo.PageVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
@@ -33,16 +33,21 @@ import cn.dlbdata.dj.web.base.BaseController;
 @Controller
 @RequestMapping("/api/v1/active")
 public class ActiveController extends BaseController {
-	
+
 	@Autowired
 	private IActiveService activeService;
 	@Autowired
 	private IActiveUserService activeUserService;
-	
+
 	/**
 	 * 党员生活通知接口
-	 * <p>Title: getParticipateActive</p> 
-	 * <p>Description: </p> 
+	 * <p>
+	 * Title: getParticipateActive
+	 * </p>
+	 * <p>
+	 * Description:
+	 * </p>
+	 * 
 	 * @param partyMemberLifeNotice
 	 * @return
 	 */
@@ -54,20 +59,23 @@ public class ActiveController extends BaseController {
 		partyMemberLifeNotice.setUserId(data.getUserId());
 		partyMemberLifeNotice.setDepartmentId(data.getDeptId());
 		result = activeService.getParticipateActive(partyMemberLifeNotice);
-		if(result.getData() == null || result.getData().isEmpty())
-		{
+		if (result.getData() == null || result.getData().isEmpty()) {
 			result.setCode(ResultCode.Forbidden.getCode());
-		}
-		else
-		{	
+		} else {
 			result.setCode(ResultCode.OK.getCode());
 		}
-			return result;
+		return result;
 	}
+
 	/**
 	 * 金领驿站活动报名
-	 * <p>Title: participate</p> 
-	 * <p>Description: </p> 
+	 * <p>
+	 * Title: participate
+	 * </p>
+	 * <p>
+	 * Description:
+	 * </p>
+	 * 
 	 * @param activeId
 	 * @return
 	 */
@@ -80,12 +88,16 @@ public class ActiveController extends BaseController {
 		result = activeUserService.insertActiveSignUp(activeSignUpRequest);
 		return result;
 	}
-	
 
 	/**
 	 * 
-	 * <p>Title: getEnjoyActiveByUserId</p> 
-	 * <p>Description:查看自己参加的活动 </p> 
+	 * <p>
+	 * Title: getEnjoyActiveByUserId
+	 * </p>
+	 * <p>
+	 * Description:查看自己参加的活动
+	 * </p>
+	 * 
 	 * @param userId
 	 * @param all
 	 * @return
@@ -98,7 +110,7 @@ public class ActiveController extends BaseController {
 		DjActiveUser djActiveUser = new DjActiveUser();
 		djActiveUser.setStatus(1);
 		List<DjActive> list = activeUserService.getMyJoinActive(data.getUserId(), djActiveUser.getStatus());
-		if(list == null || list.size() ==0) {
+		if (list == null || list.size() == 0) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("数据为空");
 			return result;
@@ -107,9 +119,13 @@ public class ActiveController extends BaseController {
 		result.setData(list);
 		return result;
 	}
-	
-	
-	
-	
-	
+
+	@PostMapping(value = "/create")
+	@ResponseBody
+	public ResultVo<Long> createActive(ActiveVo vo)
+	{
+		ResultVo<Long> result = new ResultVo<>();
+		
+		return result;
+	}
 }

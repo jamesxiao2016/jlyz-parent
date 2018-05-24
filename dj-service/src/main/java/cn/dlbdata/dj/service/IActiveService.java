@@ -3,9 +3,12 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
+import cn.dlbdata.dj.vo.ActiveVo;
 import cn.dlbdata.dj.vo.PageVo;
+import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
 
 /**
@@ -48,14 +51,21 @@ public interface IActiveService {
 	 * @return
 	 */
 	public Integer getActiveNumByUserId(Long userId, Long activeType);
+
 	/**
 	 * 
 	 */
 	public PageVo<List<Map<String, Object>>> getParticipateActive(PartyMemberLifeNotice PartyMemberLifeNotice);
+
 	/**
-	 *党员生活通知总数
-	 * <p>Title: getParticipateActiveCount</p> 
-	 * <p>Description: </p> 
+	 * 党员生活通知总数
+	 * <p>
+	 * Title: getParticipateActiveCount
+	 * </p>
+	 * <p>
+	 * Description:
+	 * </p>
+	 * 
 	 * @param
 	 * @return
 	 */
@@ -63,12 +73,24 @@ public interface IActiveService {
 
 	/**
 	 * 支书查询待办列表
-	 * @param deptId 支部ID
-	 * @param subTypeId 活动类型Id
+	 * 
+	 * @param deptId
+	 *            支部ID
+	 * @param subTypeId
+	 *            活动类型Id
 	 * @return
 	 */
-	//TODO :分页暂缓
-	List<PendingPtMemberVo>getPendingList(Long deptId,Long subTypeId);
+	// TODO :分页暂缓
+	List<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId);
 
-	
+	/**
+	 * 创建活动
+	 * 
+	 * @param vo
+	 *            活动内容
+	 * @param user
+	 *            当前用户
+	 * @return
+	 */
+	public ResultVo<Long> createActive(ActiveVo vo, UserVo user);
 }

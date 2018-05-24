@@ -4,6 +4,7 @@ import java.util.Date;
 
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.vo.StudyVo;
+import cn.dlbdata.dj.vo.UserVo;
 
 public interface IStudyService {
 
@@ -24,7 +25,7 @@ public interface IStudyService {
 	 *            学习图片数组
 	 * @return
 	 */
-	public Long saveStudy(StudyVo studyVo);
+	public Long saveStudy(StudyVo studyVo, UserVo user);
 
 	/**
 	 * 根据ID获取自主学习详细信息

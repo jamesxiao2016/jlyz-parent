@@ -69,6 +69,11 @@ public class DjApply {
      * 状态
      */
     private Integer status;
+    
+    /**
+     * 分数
+     */
+    private Float score;
 
     /**
      * 业务表
@@ -332,4 +337,12 @@ public class DjApply {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	public Float getScore() {
+		return score;
+	}
+
+	public void setScore(Float score) {
+		this.score = score;
+	}
 }
