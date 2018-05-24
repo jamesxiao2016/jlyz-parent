@@ -61,7 +61,7 @@ public class DjActive {
     /**
      * 活动内容
      */
-    private String conent;
+    private String content;
 
     /**
      * 活动发起人
@@ -250,18 +250,7 @@ public class DjActive {
      *
      * @return conent - 活动内容
      */
-    public String getConent() {
-        return conent;
-    }
 
-    /**
-     * 设置活动内容
-     *
-     * @param conent 活动内容
-     */
-    public void setConent(String conent) {
-        this.conent = conent;
-    }
 
     /**
      * 获取活动发起人
@@ -272,7 +261,15 @@ public class DjActive {
         return createUserId;
     }
 
-    /**
+    public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	/**
      * 设置活动发起人
      *
      * @param createUserId 活动发起人

@@ -7,13 +7,19 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.db.resquest.ActiveSignUpRequest;
+import cn.dlbdata.dj.db.resquest.PartyMemberLifeNotice;
 import cn.dlbdata.dj.service.IActiveService;
-import cn.dlbdata.dj.vo.ActiveVo;
+import cn.dlbdata.dj.service.IActiveUserService;
+import cn.dlbdata.dj.vo.PageVo;
+import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
 
 /**
@@ -28,17 +34,48 @@ public class ActiveController extends BaseController {
 	
 	@Autowired
 	private IActiveService activeService;
+	@Autowired
+	private IActiveUserService activeUserService;
 	
+	/**
+	 * 党员生活通知接口
+	 * <p>Title: getParticipateActive</p> 
+	 * <p>Description: </p> 
+	 * @param partyMemberLifeNotice
+	 * @return
+	 */
 	@GetMapping(value = "/getParticipateActive")
 	@ResponseBody
-	public ResultVo<List<Map<String,Object>>> getParticipateActive(@RequestBody ActiveVo vo) {
-/*		ResultVo<List<Map<String,Object>>> result = new ResultVo<>();
+	public PageVo<List<Map<String, Object>>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
+		PageVo<List<Map<String, Object>>> result = new PageVo<>();
 		UserVo data = getCurrentUserFromCache();
-		vo.setUserId(data.getUserId());
-		vo.setDepartmentId(data.getDeptId());
-		result = activeService.getParticipateActive(vo);*/
-		return null;
+		partyMemberLifeNotice.setUserId(data.getUserId());
+		partyMemberLifeNotice.setDepartmentId(data.getDeptId());
+		result = activeService.getParticipateActive(partyMemberLifeNotice);
+		if(result.getData() == null || result.getData().isEmpty())
+		{
+			result.setCode(ResultCode.Forbidden.getCode());
+		}
+		else
+		{	
+			result.setCode(ResultCode.OK.getCode());
+		}
+			return result;
 	}
-	
-	
+	/**
+	 * 金领驿站活动报名
+	 * <p>Title: participate</p> 
+	 * <p>Description: </p> 
+	 * @param activeId
+	 * @return
+	 */
+	@PostMapping(value = "/participate")
+	@ResponseBody
+	public ResultVo<String> participate(@RequestBody ActiveSignUpRequest activeSignUpRequest) {
+		ResultVo<String> result = new ResultVo<>();
+		UserVo data = getCurrentUserFromCache();
+		activeSignUpRequest.setUserId(data.getUserId());
+		result = activeUserService.insertActiveSignUp(activeSignUpRequest);
+		return result;
+	}
 }

@@ -3,8 +3,12 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjActive;
+import cn.dlbdata.dj.db.resquest.ActiveSignUpRequest;
+import cn.dlbdata.dj.db.resquest.PartyMemberLifeNotice;
 import cn.dlbdata.dj.vo.ActiveVo;
+import cn.dlbdata.dj.vo.PageVo;
 
 /**
  * 活动相关的业务逻辑
@@ -49,5 +53,14 @@ public interface IActiveService {
 	/**
 	 * 
 	 */
-	public List<Map<String,Object>> getParticipateActive(ActiveVo vo);
+	public PageVo<List<Map<String, Object>>> getParticipateActive(PartyMemberLifeNotice PartyMemberLifeNotice);
+	/**
+	 *党员生活通知总数
+	 * <p>Title: getParticipateActiveCount</p> 
+	 * <p>Description: </p> 
+	 * @param PartyMemberLifeNotice
+	 * @return
+	 */
+	public int getParticipateActiveCount(PartyMemberLifeNotice partyMemberLifeNotice);
+	
 }
