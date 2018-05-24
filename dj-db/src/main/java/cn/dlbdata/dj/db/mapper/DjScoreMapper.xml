@@ -48,7 +48,7 @@
 	<select id="getTypeScoreListByUserId" parameterType="Map"
 		resultType="cn.dlbdata.dj.db.pojo.DjScore">
 		SELECT t.id,t.name,t.score max_score,(select sum(s.score) score from dj_score s where s.dj_type_id = t.id 
-		where s.add_year = #{year} and s.user_id = #{userId} 
+		and s.add_year = #{year} and s.user_id = #{userId} 
 		GROUP BY s.dj_type_id ) score from dj_type t 
 	</select>
 

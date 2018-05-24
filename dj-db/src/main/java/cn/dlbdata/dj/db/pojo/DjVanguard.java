@@ -15,7 +15,7 @@ public class DjVanguard {
     /**
      * 类型
      */
-    private Integer type;
+    private Long type;
 
     /**
      * 事迹
@@ -79,7 +79,7 @@ public class DjVanguard {
      *
      * @return type - 类型
      */
-    public Integer getType() {
+    public Long getType() {
         return type;
     }
 
@@ -88,7 +88,7 @@ public class DjVanguard {
      *
      * @param type 类型
      */
-    public void setType(Integer type) {
+    public void setType(Long type) {
         this.type = type;
     }
 

@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="type" jdbcType="BIGINT" property="type" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="vanguard_desc" jdbcType="VARCHAR" property="vanguardDesc" />
     <result column="score" jdbcType="REAL" property="score" />
