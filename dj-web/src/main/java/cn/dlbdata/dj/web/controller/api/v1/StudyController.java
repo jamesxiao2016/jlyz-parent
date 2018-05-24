@@ -4,6 +4,7 @@ import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
+import cn.dlbdata.dj.vo.study.StudyDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,19 @@ public class StudyController extends BaseController {
         List<PendingPtMemberVo> voList = activeService.getPendingList(deptId,subTypeId);
         result.setData(voList);
         return result;
+    }
+
+    /**
+     * 获取自主学习详情
+     * @param studyId 自主学习Id
+     * @return
+     */
+    @GetMapping("/queryById")
+    @ResponseBody
+    public ResultVo<StudyDetailVo> getStudyDetail(@RequestParam("studyId") Long studyId) {
+        //TODO
+        return null;
+
     }
 
 }

@@ -10,6 +10,7 @@ import cn.dlbdata.dj.vo.ActiveVo;
 import cn.dlbdata.dj.vo.PageVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
+import cn.dlbdata.dj.vo.study.StudyDetailVo;
 
 /**
  * 活动相关的业务逻辑
@@ -93,4 +94,14 @@ public interface IActiveService {
 	 * @return
 	 */
 	public ResultVo<Long> createActive(ActiveVo vo, UserVo user);
+
+	/**
+	 * 获取自主学习详情
+	 * 
+	 * @param studyId
+	 *            自主学习Id
+	 * @return
+	 */
+	StudyDetailVo getStudyDetail(Long studyId);
+
 }
