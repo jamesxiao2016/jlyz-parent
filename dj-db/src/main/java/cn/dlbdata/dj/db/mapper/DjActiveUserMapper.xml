@@ -12,4 +12,5 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
   </resultMap>
+  
 </mapper>

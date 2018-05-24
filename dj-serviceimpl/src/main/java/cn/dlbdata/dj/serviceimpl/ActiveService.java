@@ -1,33 +1,23 @@
 package cn.dlbdata.dj.serviceimpl;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.dlbdata.dj.common.core.exception.DlbException;
-import cn.dlbdata.dj.common.core.util.DigitUtil;
-import cn.dlbdata.dj.constant.ActiveTypeEnum;
-import cn.dlbdata.dj.constant.DlbConstant;
-import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
-import cn.dlbdata.dj.db.mapper.DjScoreMapper;
-import cn.dlbdata.dj.db.pojo.DjPartymember;
-import cn.dlbdata.dj.db.pojo.DjScore;
-import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
-import cn.dlbdata.dj.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
-import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
-import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.mapper.DjActiveDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveMapper;
+import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
+import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActiveDept;
+import cn.dlbdata.dj.db.resquest.PartyMemberLifeNotice;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.serviceimpl.base.BaseService;
-import cn.dlbdata.dj.vo.ActiveVo;
+import cn.dlbdata.dj.vo.PageVo;
 
 @Service
 public class ActiveService extends BaseService implements IActiveService {
@@ -39,7 +29,8 @@ public class ActiveService extends BaseService implements IActiveService {
 	private DjPartymemberMapper partymemberMapper;
 	@Autowired
 	private DjScoreMapper scoreMapper;
-
+	
+	
 	@Override
 	public DjActive getActiveInfoById(Long id) {
 		if (id == null) {
@@ -77,22 +68,34 @@ public class ActiveService extends BaseService implements IActiveService {
 		Integer count = activeMapper.getUserActiveCountByActiveTypeAndTime(userId, activeType, startTime, endTime);
 		return count;
 	}
-	
 	@Override
-	public List<Map<String,Object>> getParticipateActive(ActiveVo vo) {
-	/*	ResultVo<List<Map<String,Object>>> result = new ResultVo<>();
-		if(vo == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
-			result.setMsg("参数不能为空");
-			return (List<Map<String, Object>>) result;
+	public PageVo<List<Map<String, Object>>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
+		
+		PageVo<List<Map<String, Object>>> result = new PageVo<>();
+		if(partyMemberLifeNotice == null) {
+			return result;
 		}
-		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("userId", vo.getUserId());
-		map.put("departmentId", vo.getDepartmentId());
-		List<Map<String, Object>> pActiveList = activeMapper.getRunningActive(map);
-		result.setCode(ResultCode.OK.getCode());*/
-		return null;
+		partyMemberLifeNotice.setEndTime(new Date());
+		List<Map<String, Object>> activeList = activeMapper.getRunningActive(partyMemberLifeNotice);
+		result.setTotal(getParticipateActiveCount(partyMemberLifeNotice));
+		result.setData(activeList);
+		return result;
 	}
 
+	/* (non-Javadoc)
+	 * <p>Title: getParticipateActiveCount</p>
+	 * <p>Description: 党员生活通知总数</p> 
+	 * @param PartyMemberLifeNotice
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IActiveService#getParticipateActiveCount(cn.dlbdata.dj.db.resquest.PartyMemberLifeNotice)
+	 */
+	@Override
+	public int getParticipateActiveCount(PartyMemberLifeNotice partyMemberLifeNotice) {
+		if(partyMemberLifeNotice == null) {
+			return 0;
+		}
+		int count = activeMapper.getParticipateActiveCount(partyMemberLifeNotice);
+		return count;
+	}
 
 }

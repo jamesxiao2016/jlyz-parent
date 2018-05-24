@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.db.pojo.DjActive;
+import cn.dlbdata.dj.db.resquest.PartyMemberLifeNotice;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface DjActiveMapper extends Mapper<DjActive> {
@@ -22,9 +23,19 @@ public interface DjActiveMapper extends Mapper<DjActive> {
 
 	/**
 	 * <p>Title: getRunningActive</p> 
-	 * <p>Description: </p> 
+	 * <p>Description:党员生活通知 </p> 
 	 * @param map
 	 * @return
 	 */
-	public List<Map<String, Object>> getRunningActive(Map<String, Object> map);
+	public List<Map<String, Object>> getRunningActive(PartyMemberLifeNotice partyMemberLifeNotice);
+	
+	/**
+	 * 
+	 * <p>Title: getParticipateActiveCount</p> 
+	 * <p>Description: 党员生活通知总数</p> 
+	 * @param PartyMemberLifeNotice
+	 * @return
+	 */
+	public int getParticipateActiveCount(PartyMemberLifeNotice partyMemberLifeNotice);
+
 }
