@@ -7,6 +7,7 @@ import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
 import cn.dlbdata.dj.vo.PartyVo;
 import cn.dlbdata.dj.vo.UserVo;
+import cn.dlbdata.dj.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
 
 /**
@@ -77,4 +78,11 @@ public interface IPartyMemberService {
 	 * @param request 请求Data
 	 */
 	void reportAddScore(ReportAddScoreRequest request, int year, UserVo userVo);
+
+	/**
+	 * 先锋作用评分党员列表
+	 * @param deptId
+	 * @return
+	 */
+	List<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId);
 }

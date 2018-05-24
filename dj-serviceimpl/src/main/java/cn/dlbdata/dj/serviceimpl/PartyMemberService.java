@@ -13,17 +13,15 @@ import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.db.mapper.*;
+import cn.dlbdata.dj.db.pojo.*;
 import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
 import cn.dlbdata.dj.vo.UserVo;
+import cn.dlbdata.dj.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.dlbdata.dj.db.mapper.DjActiveMapper;
-import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
-import cn.dlbdata.dj.db.mapper.DjScoreMapper;
-import cn.dlbdata.dj.db.pojo.DjPartymember;
-import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.serviceimpl.base.BaseService;
 import cn.dlbdata.dj.vo.PartyVo;
@@ -43,6 +41,15 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 	
 	@Autowired
 	private DjActiveMapper activeMapper;
+
+	@Autowired
+	private DjThoughtsMapper thoughtsMapper;
+
+	@Autowired
+	private DjVanguardMapper vanguardMapper;
+
+	@Autowired
+	private DjPicRecordMapper picRecordMapper;
 
 	@Override
 	public DjPartymember getInfoById(Long id) {
@@ -110,6 +117,7 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 			vo.setId(pojo.getId());
 			vo.setName(pojo.getName());
 			vo.setSubTypeId(subTypeId);
+			vo.setDeptId(pojo.getDeptId());
 			vo.setStatus(DlbConstant.AUDIT_STATUS_NO.getValue());
 			voList.add(vo);
 		}
@@ -158,6 +166,31 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 		}catch (ParseException e) {
 			e.printStackTrace();
 		}
+		//TODO 图片ID待设置
+		DjThoughts djThoughts = new DjThoughts();
+		djThoughts.setId(DigitUtil.generatorLongId());
+		djThoughts.setThoughtsInfo(request.getContent());
+		djThoughts.setThoughtsTime(reportDate);
+		djThoughts.setScore(new Float(5));
+		djThoughts.setDjUserId(request.getId());
+		djThoughts.setCreateTime(new Date());
+		djThoughts.setDjDeptId(request.getDeptId());
+		djThoughts.setStatus(DlbConstant.BASEDATA_STATUS_VALID.getValue());
+		thoughtsMapper.insert(djThoughts);
+
+		//todo ：后面需改为batchInsert
+		for (Long pid:request.getPicIds()) {
+			DjPicRecord picRecord = new DjPicRecord();
+			picRecord.setId(DigitUtil.generatorLongId());
+			picRecord.setTableName("dj_thoughts");
+			picRecord.setRecordId(djThoughts.getId());
+            picRecord.setDjPicId(pid);
+			picRecord.setStatus(DlbConstant.BASEDATA_STATUS_VALID.getValue());
+			picRecord.setCreateTime(new Date());
+			picRecordMapper.insert(picRecord);
+		}
+
+
 		DjScore djScore = new DjScore();
 		djScore.setId(DigitUtil.generatorLongId());
 		djScore.setDjTypeId(ActiveTypeEnum.ACTIVE_C.getActiveId());
@@ -171,6 +204,44 @@ public class PartyMemberService extends BaseService implements IPartyMemberServi
 		djScore.setAddYear(year);
 		djScore.setStatus(DlbConstant.BASEDATA_STATUS_VALID.getValue());
 		djScore.setCreateTime(new Date());
+		djScore.setRecordId(djThoughts.getId());
 		scoreMapper.insert(djScore);
+	}
+
+	/**
+	 * 先锋作用评分党员列表
+	 * @param deptId
+	 * @return
+	 */
+	@Override
+	public List<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId) {
+		//获取支部全部党员
+		List<DjPartymember> pojoList = partyMemberMapper.getReportPartyMember(deptId);
+		List<PioneeringPartyMemberVo> voList = new ArrayList<>();
+		for (DjPartymember pm:pojoList) {
+			PioneeringPartyMemberVo vo = new PioneeringPartyMemberVo();
+			vo.setDeptId(pm.getDeptId());
+			vo.setId(pm.getId());
+			vo.setName(pm.getName());
+			voList.add(vo);
+		}
+		for (PioneeringPartyMemberVo vo :voList) {
+
+			//1.判断该党员没有type in(1,2,3) 的记录，则该党员为未审核，否则走2
+			int count1 = vanguardMapper.countUnAuditByPtMemberIdAndType(vo.getId());
+			if (count1 == 0) {
+				//未审核
+				vo.setAuditStatus(DlbConstant.AUDIT_STATUS_NO.getValue());
+			} else {
+				//2.判断该党员有未审核的记录（status =0），则该党员为待审核，否则该党员为已审核
+				int count2 = vanguardMapper.countByPtMemberIdStatus(vo.getId(),DlbConstant.PIONEERING_STATUS_A.getValue());
+				if (count2>0) {
+					vo.setAuditStatus(DlbConstant.AUDIT_STATUS_WAIT.getValue());
+				} else {
+					vo.setAuditStatus(DlbConstant.AUDIT_STATUS_YES.getValue());
+				}
+			}
+		}
+		return voList;
 	}
 }
