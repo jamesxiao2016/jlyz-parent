@@ -1,18 +1,15 @@
 package cn.dlbdata.dj.serviceimpl;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
+import cn.dlbdata.dj.db.mapper.*;
+import cn.dlbdata.dj.db.pojo.DjStudy;
+import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
-import cn.dlbdata.dj.db.mapper.DjActiveDeptMapper;
-import cn.dlbdata.dj.db.mapper.DjActiveMapper;
-import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
-import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActiveDept;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
@@ -30,6 +27,8 @@ public class ActiveService extends BaseService implements IActiveService {
 	private DjPartymemberMapper partymemberMapper;
 	@Autowired
 	private DjScoreMapper scoreMapper;
+	@Autowired
+	private DjStudyMapper studyMapper;
 	
 	
 	@Override
@@ -111,4 +110,18 @@ public class ActiveService extends BaseService implements IActiveService {
 		return count;
 	}
 
+	@Override
+	public List<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId) {
+		List<DjStudy> studies = studyMapper.getStudysByDeptIdAndSubTypeId(deptId,subTypeId);
+		List<PendingPtMemberVo> voList = new ArrayList<>();
+		for (DjStudy study:studies) {
+			PendingPtMemberVo vo = new PendingPtMemberVo();
+			vo.setCreateTime(new Timestamp(study.getCreateTime().getTime()));
+			vo.setStudyId(study.getId());
+			vo.setName(study.getUserName());
+			vo.setStatus(study.getStatus());
+			voList.add(vo);
+		}
+		return voList;
+	}
 }

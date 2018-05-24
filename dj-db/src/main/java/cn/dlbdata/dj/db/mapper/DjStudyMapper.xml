@@ -22,4 +22,9 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+
+  <select id="getStudysByDeptIdAndSubTypeId" resultMap="BaseResultMap">
+    select id,user_name,status,create_time from dj_study where dj_dept_id = #{deptId} and dj_sub_type_id = #{subTypeId}
+     order by has_audit asc
+  </select>
 </mapper>

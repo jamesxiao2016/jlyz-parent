@@ -148,7 +148,7 @@ public class PartyMemberController extends BaseController {
 	 * @param deptId
 	 * @return
 	 */
-	@GetMapping("/getPartymembersByDeptIdForPioneeringParty")
+	@GetMapping("/getPartymembersByDeptIdForPioneering")
 	@ResponseBody
 	public ResultVo<List<PioneeringPartyMemberVo>> getPioneeringPartyMembers(@RequestParam(value = "deptId") Long deptId) {
 		List<PioneeringPartyMemberVo> voList = partyMemberService.getPioneeringPartyMembers(deptId);
