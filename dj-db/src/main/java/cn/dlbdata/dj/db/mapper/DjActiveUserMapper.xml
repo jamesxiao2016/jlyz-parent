@@ -8,6 +8,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="dj_active_id" jdbcType="BIGINT" property="djActiveId" />
     <result column="dj_user_id" jdbcType="BIGINT" property="djUserId" />
+    <result column="dj_dept_id" jdbcType="BIGINT" property="djDeptId" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />

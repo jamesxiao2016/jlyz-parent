@@ -23,6 +23,12 @@ public class DjActiveUser {
      */
     @Column(name = "dj_user_id")
     private Long djUserId;
+    
+    /**
+     * 参与人部门ID
+     */
+    @Column(name = "dj_dept_id")
+    private Long djDeptId;
 
     /**
      * 状态
@@ -148,4 +154,12 @@ public class DjActiveUser {
     public void setSignTime(Date signTime) {
         this.signTime = signTime;
     }
+
+	public Long getDjDeptId() {
+		return djDeptId;
+	}
+
+	public void setDjDeptId(Long djDeptId) {
+		this.djDeptId = djDeptId;
+	}
 }
