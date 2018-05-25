@@ -59,7 +59,7 @@
      <select id="getRunningActiveCount" parameterType="map" resultType="java.util.Map">
 	      SELECT count(*),
 	        t.id, t.name, t.start_time, t.end_time, t.address, t.create_user_id,
-	       	t.content, t.status, t.type_id,	t.has_audit, t.sub_type_id, p.name partyMemberName,
+	       	t.content, t.status, t.dj_type_id,	t.has_audit, t.dj_sub_type_id, p.name partyMemberName,
 	       	(select count(*) from dj_active_user where dj_active_user.dj_user_id = #{userId} and dj_active_user.dj_active_id = t.id)signUp
 	      FROM dj_active t INNER JOIN dj_partymember p on t.create_user_id = p.id
 	      LEFT JOIN dj_active_dept da on da.dj_active_id = t.id 

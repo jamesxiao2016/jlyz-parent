@@ -46,7 +46,7 @@ public class ActiveVo {
 	/**
 	 * 活动负责人名称
 	 */
-	private String principalId;
+	private String principalName;
 	/**
 	 * 活动是否审核
 	 */
@@ -155,11 +155,12 @@ public class ActiveVo {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getPrincipalId() {
-		return principalId;
+
+	public String getPrincipalName() {
+		return principalName;
 	}
-	public void setPrincipalId(String principalId) {
-		this.principalId = principalId;
+	public void setPrincipalName(String principalName) {
+		this.principalName = principalName;
 	}
 	public Integer getHasAudit() {
 		return hasAudit;

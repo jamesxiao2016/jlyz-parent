@@ -160,7 +160,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		active.setId(DigitUtil.generatorLongId());
 		active.setName(activeVo.getActiveName());
 		active.setDjPicId(activeVo.getPicId());
-		active.setPrincipalName(activeVo.getPrincipalId());
+		active.setPrincipalName(activeVo.getPrincipalName());
 		active.setStartTime(activeVo.getStartActiveTime());
 		active.setStatus(1);
 		active.setDjSubTypeId(activeVo.getSubTypeId());
