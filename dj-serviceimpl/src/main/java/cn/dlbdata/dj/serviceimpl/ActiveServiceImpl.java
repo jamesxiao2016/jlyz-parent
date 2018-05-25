@@ -179,22 +179,6 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		active.setDjDeptId(user.getDeptId());
 		activeMapper.insertSelective(active);
 
-		// 保存活动申请记录
-		ApplyVo vo = new ApplyVo();
-		vo.setContent(active.getName());
-		vo.setDjSubTypeId(active.getDjSubTypeId());
-		vo.setDjTypeId(active.getDjTypeId());
-		vo.setRecordId(active.getId());
-		vo.setRemark("活动申请");
-		// vo.setScore(score);
-		vo.setTableName(DlbConstant.TABLE_NAME_STUDY);
-		String rs = workflowService.apply(vo, user);
-		if (!CoreConst.SUCCESS.equals(rs)) {
-			logger.info("提交申请失败");
-			result.setCode(ResultCode.Forbidden.getCode());
-			result.setMsg("提交申请失败");
-		}
-
 		return result;
 	}
 

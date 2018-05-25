@@ -9,19 +9,18 @@ public class DjDiscipline {
      * 记录ID
      */
     @Id
-    @GeneratedValue(generator = "JDBC")
     private Long id;
 
     /**
      * 扣分原因
      */
-    private String name;
+    private String reason;
 
     /**
      * 原因描述
      */
-    @Column(name = "people_num")
-    private Integer peopleNum;
+    @Column(name = "reason_desc")
+    private String reasonDesc;
 
     /**
      * 扣分分数
@@ -69,37 +68,37 @@ public class DjDiscipline {
     /**
      * 获取扣分原因
      *
-     * @return name - 扣分原因
+     * @return reason - 扣分原因
      */
-    public String getName() {
-        return name;
+    public String getReason() {
+        return reason;
     }
 
     /**
      * 设置扣分原因
      *
-     * @param name 扣分原因
+     * @param reason 扣分原因
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     /**
      * 获取原因描述
      *
-     * @return people_num - 原因描述
+     * @return reason_desc - 原因描述
      */
-    public Integer getPeopleNum() {
-        return peopleNum;
+    public String getReasonDesc() {
+        return reasonDesc;
     }
 
     /**
      * 设置原因描述
      *
-     * @param peopleNum 原因描述
+     * @param reasonDesc 原因描述
      */
-    public void setPeopleNum(Integer peopleNum) {
-        this.peopleNum = peopleNum;
+    public void setReasonDesc(String reasonDesc) {
+        this.reasonDesc = reasonDesc;
     }
 
     /**

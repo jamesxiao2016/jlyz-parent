@@ -10,5 +10,6 @@
     <result column="dj_user_id" jdbcType="BIGINT" property="djUserId" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="dj_pic_id" jdbcType="BIGINT" property="djPicId" />
   </resultMap>
 </mapper>

@@ -9,7 +9,6 @@ public class DjActivePic {
      * 记录ID
      */
     @Id
-    @GeneratedValue(generator = "JDBC")
     private Long id;
 
     /**
@@ -34,6 +33,12 @@ public class DjActivePic {
      */
     @Column(name = "create_time")
     private Date createTime;
+
+    /**
+     * 图片id
+     */
+    @Column(name = "dj_pic_id")
+    private Long djPicId;
 
     /**
      * 获取记录ID
@@ -123,5 +128,23 @@ public class DjActivePic {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * 获取图片id
+     *
+     * @return dj_pic_id - 图片id
+     */
+    public Long getDjPicId() {
+        return djPicId;
+    }
+
+    /**
+     * 设置图片id
+     *
+     * @param djPicId 图片id
+     */
+    public void setDjPicId(Long djPicId) {
+        this.djPicId = djPicId;
     }
 }

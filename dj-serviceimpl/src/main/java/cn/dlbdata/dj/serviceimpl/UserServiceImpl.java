@@ -140,7 +140,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		data.setUserId(user.getId());
 		data.setAvatar(user.getAvatar());
 
-		DjPartymember member = partyMemberMapper.selectByPrimaryKey(user.getDeptId());
+		DjPartymember member = partyMemberMapper.selectByPrimaryKey(user.getDjPartymemberId());
 		if (member != null) {
 			data.setUserName(member.getName());
 			data.setSex(member.getSexCode());

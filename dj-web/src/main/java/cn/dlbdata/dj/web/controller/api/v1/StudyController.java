@@ -34,28 +34,6 @@ public class StudyController extends BaseController {
 
 	@Autowired
 	private IActiveService activeService;
-	@Autowired
-	private IStudyService studyService;
-
-	/**
-	 * 发起自主学习
-	 * 
-	 * @param studyVo
-	 * @return
-	 */
-	@PostMapping("/create")
-	@ResponseBody
-	public ResultVo<Long> createStudy(@RequestBody StudyVo studyVo) {
-		ResultVo<Long> result = new ResultVo<>();
-		UserVo user = getCurrentUserFromCache();
-		if (user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
-			return result;
-		}
-		result = studyService.saveStudy(studyVo, user);
-
-		return result;
-	}
 
 	/**
 	 * 点击支书查询待办列表项进去的查询

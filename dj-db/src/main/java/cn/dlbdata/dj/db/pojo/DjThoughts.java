@@ -49,6 +49,12 @@ public class DjThoughts {
     private Date createTime;
 
     /**
+     * 汇报类型
+     */
+    @Column(name = "thoughts_type")
+    private Long thoughtsType;
+
+    /**
      * 获取记录ID
      *
      * @return id - 记录ID
@@ -186,5 +192,23 @@ public class DjThoughts {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * 获取汇报类型
+     *
+     * @return thoughts_type - 汇报类型
+     */
+    public Long getThoughtsType() {
+        return thoughtsType;
+    }
+
+    /**
+     * 设置汇报类型
+     *
+     * @param thoughtsType 汇报类型
+     */
+    public void setThoughtsType(Long thoughtsType) {
+        this.thoughtsType = thoughtsType;
     }
 }

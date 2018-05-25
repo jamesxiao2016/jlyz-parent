@@ -13,5 +13,6 @@
     <result column="dj_dept_id" jdbcType="BIGINT" property="djDeptId" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="thoughts_type" jdbcType="BIGINT" property="thoughtsType" />
   </resultMap>
 </mapper>
