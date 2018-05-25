@@ -103,11 +103,11 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 
 	/*
 	 * (non-Javadoc) <p>Title: getParticipateActiveCount</p> <p>Description: 党员生活通知总数</p>
-	 * 
+	 *
 	 * @param PartyMemberLifeNotice
-	 * 
+	 *
 	 * @return
-	 * 
+	 *
 	 * @see
 	 * cn.dlbdata.dj.service.IActiveService#getParticipateActiveCount(cn.dlbdata.dj.db.resquest.PartyMemberLifeNotice)
 	 */
@@ -184,25 +184,28 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 
 		return result;
 	}
-	
+
 	/**
 	 * 获取自主学习详情
 	 *
-	 * @param studyId
-	 *            自主学习Id
+	 * @param studyId 自主学习Id
 	 * @return
 	 */
 	@Override
 	public StudyDetailVo getStudyDetail(Long studyId) {
 		DjStudy study = studyMapper.selectByPrimaryKey(studyId);
+		if (study == null) {
+			return new StudyDetailVo();
+		}
 		StudyDetailVo detailVo = new StudyDetailVo();
 		detailVo.setName(study.getUserName());
 		detailVo.setStatus(study.getStatus());
 		detailVo.setContent(study.getContent());
 		detailVo.setStartTime(study.getStartTime());
 		detailVo.setEndTime(study.getEndTime());
-		// picRecordMapper
-		// detailVo.setPicIds();
-		return null;
+		String tableName =DlbConstant.TABLE_NAME_STUDY;
+		List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(tableName,studyId);
+		detailVo.setPicIds(picIds);
+		return detailVo;
 	}
 }

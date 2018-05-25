@@ -53,9 +53,10 @@ public class StudyController extends BaseController {
     @GetMapping("/queryById")
     @ResponseBody
     public ResultVo<StudyDetailVo> getStudyDetail(@RequestParam("studyId") Long studyId) {
-        //TODO
-        return null;
-
+        ResultVo<StudyDetailVo> result = new ResultVo<>(CoreConst.ResultCode.OK.getCode());
+        StudyDetailVo vo = activeService.getStudyDetail(studyId);
+        result.setData(vo);
+        return result;
     }
 
 }
