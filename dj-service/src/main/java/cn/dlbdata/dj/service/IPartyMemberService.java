@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjScore;
+import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
 import cn.dlbdata.dj.vo.PartyVo;
 import cn.dlbdata.dj.vo.UserVo;
@@ -93,4 +94,11 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	public List<DjPartymember> queryAllPartyMembersByDeptId(Long deptId);
+
+	/**
+	 * 违章守纪评分党员列表
+	 * @param deptId 支部Id
+	 * @return
+	 */
+	List<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId);
 }

@@ -18,6 +18,7 @@ import cn.dlbdata.dj.constant.AuditStatusEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.*;
 import cn.dlbdata.dj.db.pojo.*;
+import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.party.PioneeringPartyMemberVo;
@@ -53,6 +54,9 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 
 	@Autowired
 	private DjPicRecordMapper picRecordMapper;
+
+	@Autowired
+	private DjDisciplineMapper disciplineMapper;
 
 	@Override
 	public DjPartymember getInfoById(Long id) {
@@ -267,5 +271,29 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	     int year = cale.get(Calendar.YEAR);    
 		map.put("year", year);
 		return partyMemberMapper.queryAllPartyMembersByDeptId(map);
+	}
+
+	/**
+	 * 违章守纪评分党员列表
+	 *
+	 * @param deptId 支部Id
+	 * @return
+	 */
+	@Override
+	public List<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId) {
+		Calendar cale =  Calendar.getInstance();
+		int year = cale.get(Calendar.YEAR);
+		List<ObserveLowPartyMemberVo> voList = partyMemberMapper.getObserveLowPartyMember(deptId,year);
+		for (ObserveLowPartyMemberVo vo:voList) {
+			//取最后一条遵章守纪记录  没有记录则说明该党员未处理，有记录则取最后一条记录的状态
+			//TODO year先这么处理
+			Integer status = disciplineMapper.getOneByUserIdOrderByCreateTimeDesc(vo.getId());
+			if(status ==null) {
+				vo.setStatus(-1);
+			}else {
+				vo.setStatus(status);
+			}
+		}
+		return voList;
 	}
 }

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
+import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface DjPartymemberMapper extends Mapper<DjPartymember> {
@@ -16,4 +18,6 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
      * @return
      */
     public List<DjPartymember> queryAllPartyMembersByDeptId(Map<String,Object> map);
+
+    List<ObserveLowPartyMemberVo> getObserveLowPartyMember(@Param("deptId") Long deptId,@Param("year") int year);
 }
