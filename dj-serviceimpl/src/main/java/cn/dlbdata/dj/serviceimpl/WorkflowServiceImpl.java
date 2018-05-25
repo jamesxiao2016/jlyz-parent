@@ -216,7 +216,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		approve.setStatus(1);
 		approveMapper.insertSelective(approve);
 
-		return null;
+		return CoreConst.SUCCESS;
 	}
 
 	@Override

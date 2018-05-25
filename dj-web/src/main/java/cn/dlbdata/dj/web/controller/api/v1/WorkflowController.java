@@ -47,7 +47,7 @@ public class WorkflowController extends BaseController {
 
 		return result;
 	}
-	
+
 	/**
 	 * 遵章守纪申请
 	 * 
@@ -58,10 +58,16 @@ public class WorkflowController extends BaseController {
 	@ResponseBody
 	public ResultVo<Long> applyDiscipline(DisciplineVo vo) {
 		ResultVo<Long> result = new ResultVo<>();
+		UserVo user = getCurrentUserFromCache();
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
 
+		result = workflowService.applyDiscipline(vo, user);
 		return result;
 	}
-	
+
 	/**
 	 * 先锋作用申请
 	 * 
@@ -72,10 +78,16 @@ public class WorkflowController extends BaseController {
 	@ResponseBody
 	public ResultVo<Long> applyVanguard(VanguardVo[] params) {
 		ResultVo<Long> result = new ResultVo<>();
+		UserVo user = getCurrentUserFromCache();
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
 
+		result = workflowService.applyVanguard(params, user);
 		return result;
 	}
-	
+
 	/**
 	 * 思想汇报申请
 	 * 
@@ -86,7 +98,13 @@ public class WorkflowController extends BaseController {
 	@ResponseBody
 	public ResultVo<Long> applyThoughts(ThoughtsVo vo) {
 		ResultVo<Long> result = new ResultVo<>();
+		UserVo user = getCurrentUserFromCache();
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
 
+		result = workflowService.applyThoughts(vo, user);
 		return result;
 	}
 
@@ -98,6 +116,8 @@ public class WorkflowController extends BaseController {
 		String rs = workflowService.audit(id, result, content, user);
 		if (CoreConst.SUCCESS.equals(rs)) {
 			resultVo.setCode(ResultCode.OK.getCode());
+		} else {
+			resultVo.setMsg(rs);
 		}
 		return resultVo;
 	}
