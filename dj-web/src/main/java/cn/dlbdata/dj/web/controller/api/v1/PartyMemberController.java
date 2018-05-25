@@ -7,6 +7,7 @@ import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.vo.UserVo;
+import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -177,6 +178,20 @@ public class PartyMemberController extends BaseController {
 			result.setCode(ResultCode.OK.getCode());
 			result.setData(list);
 		}
+		return result;
+	}
+
+	/**
+	 * 违章守纪评分党员列表
+	 * @param deptId 支部Id
+	 * @return
+	 */
+	@GetMapping("/getDakDetialByDeptId")
+	@ResponseBody
+	public ResultVo<List<ObserveLowPartyMemberVo>> getObserveLowPartyMember(@RequestParam("deptId") Long deptId) {
+		List<ObserveLowPartyMemberVo> voList = partyMemberService.getObserveLowPartyMember(deptId);
+		ResultVo<List<ObserveLowPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
+		result.setData(voList);
 		return result;
 	}
 
