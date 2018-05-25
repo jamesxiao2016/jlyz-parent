@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
+import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
 
 /**
  * 部门处理相关的业务逻辑
@@ -40,4 +41,11 @@ public interface IDeptService {
 	 * @return
 	 */
 	List<BranchDeptInfoVo>getBranchDeptInfo(Long sectionId);
+
+	/**
+	 * 获取片区信息（片区负责人登录时首页）
+	 * @param userId id
+	 * @return
+	 */
+	SectionInfoVo getSectionInfo(Long userId);
 }

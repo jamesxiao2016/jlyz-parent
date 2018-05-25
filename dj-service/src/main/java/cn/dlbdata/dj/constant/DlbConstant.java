@@ -14,4 +14,7 @@ public class DlbConstant {
 	public static final String TABLE_NAME_DISCIPLINE = "dj_discipline";
 	/** 表名-先锋作用表 */
 	public static final String TABLE_NAME_VANGUARD = "dj_vanguard";
+
+	//TODO：陆家嘴党委，后面需要删除
+	public static final String PARTYCOMMITTEE_LJZ ="陆家嘴中心";
 }

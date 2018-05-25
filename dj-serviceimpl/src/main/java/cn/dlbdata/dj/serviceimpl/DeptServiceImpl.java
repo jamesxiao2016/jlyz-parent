@@ -2,7 +2,11 @@ package cn.dlbdata.dj.serviceimpl;
 
 import java.util.List;
 
+import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.db.mapper.DjSectionMapper;
+import cn.dlbdata.dj.db.pojo.DjSection;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
+import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +20,8 @@ import tk.mybatis.mapper.entity.Example;
 public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	@Autowired
 	private DjDeptMapper deptMapper;
+	@Autowired
+    private DjSectionMapper sectionMapper;
 
 	@Override
 	public DjDept getDeptInfoById(Long id) {
@@ -60,4 +66,21 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 		List<BranchDeptInfoVo> voList = deptMapper.getBranchDeptInfoBySectionId(sectionId);
 		return voList;
 	}
+
+    /**
+     * 获取片区信息（片区负责人登录时首页）
+     *
+     * @param userId id
+     * @return
+     */
+    @Override
+    public SectionInfoVo getSectionInfo(Long userId) {
+        DjSection  section = sectionMapper.getByPrincipalId(userId);
+        if (section == null) {//当前用户不是片区负责人
+            return new SectionInfoVo();
+        }
+        SectionInfoVo sectionInfoVo = sectionMapper.getSectionInfo(section.getId());
+        sectionInfoVo.setPartyCommittee(DlbConstant.PARTYCOMMITTEE_LJZ);
+        return sectionInfoVo;
+    }
 }

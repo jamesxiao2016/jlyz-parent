@@ -7,6 +7,7 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
+import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,4 +63,19 @@ public class DeptController extends BaseController {
 		result.setData(voList);
 		return result;
 	}
+
+
+    /**
+     * 获取片区信息（片区负责人登录时首页）
+     * @param userId id
+     * @return
+     */
+	@GetMapping("/getSectionByUserId")
+    @ResponseBody
+    public ResultVo<SectionInfoVo>getSectionInfo(@RequestParam("userId") Long userId) {
+        ResultVo<SectionInfoVo> result = new ResultVo<>(ResultCode.OK.getCode());
+        SectionInfoVo vo = deptService.getSectionInfo(userId);
+        result.setData(vo);
+        return result;
+    }
 }

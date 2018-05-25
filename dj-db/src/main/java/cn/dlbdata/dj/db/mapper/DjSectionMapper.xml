@@ -13,4 +13,15 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="principal_id" jdbcType="BIGINT" property="principalId" />
   </resultMap>
+  
+  <select id="getByPrincipalId" resultMap="BaseResultMap">
+    select id,name,people_num,address,status,create_time,principal_id from dj_section
+    where principal_id = #{principalId}
+  </select>
+  
+  <select id="getSectionInfo" parameterType="java.lang.Long"
+     resultType="cn.dlbdata.dj.db.vo.party.SectionInfoVo">
+    select sec.name ,(select count(0) from dj_dept  dept where dept.dj_section_id = sec.id) as branchSum,sec.people_num as peopleSum
+    from dj_section sec where sec.id=#{sectionId}
+  </select>
 </mapper>
