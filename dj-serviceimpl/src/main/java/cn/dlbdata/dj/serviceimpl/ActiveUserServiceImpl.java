@@ -6,6 +6,8 @@
  */
 package cn.dlbdata.dj.serviceimpl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +18,11 @@ import org.springframework.stereotype.Service;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.mapper.DjActiveMapper;
+import cn.dlbdata.dj.db.mapper.DjActivePicMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveUserMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
+import cn.dlbdata.dj.db.pojo.DjActivePic;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
 import cn.dlbdata.dj.dto.ActiveSignUpRequest;
 import cn.dlbdata.dj.service.IActiveUserService;
@@ -39,6 +43,8 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 	private DjActiveUserMapper activeUserMapper;
 	@Autowired
 	private DjUserMapper userMapper;
+	@Autowired
+	private DjActivePicMapper activePicMapper;
 	
 	/* (non-Javadoc)
 	 * <p>Title: insertActiveSignUp</p>
@@ -113,6 +119,42 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 		map.put("userId", userId);
 		map.put("status", status);
 		List<DjActive> list = activeUserMapper.getMyJoinActive(map);
+		Example example = new Example(DjActivePic.class);
+		for (DjActive djActive : list) {
+			example.createCriteria().andEqualTo("djActiveId", djActive.getId());
+			List<DjActivePic> picList = activePicMapper.selectByExample(example);
+			if(picList == null || picList.size() == 0) {
+				return null;
+			}
+			/*将与该活动相关的图片的id加入数组中
+			List<Long> picIds = new ArrayList<Long>();
+			picIds =  Arrays.copyOf(picIds, picIds.length+1);
+			picIds[picIds.length-1] = djActivePic.getDjPicId();*/
+			Long[] picIds = new Long[picList.size()];
+			for (int i=0,count=picList.size();i<count;i++) {
+				picIds[i] = picList.get(i).getDjPicId();
+			}
+			djActive.setPicIds(picIds);
+		}
+		return list;
+	}
+
+	/* (non-Javadoc)
+	 * <p>Title: queryActivePicByActiveId</p>
+	 * <p>Description: 查询活动相关的图片集</p> 
+	 * @param activeId
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IActiveUserService#queryActivePicByActiveId(java.lang.Long)
+	 */
+	@Override
+	public List<DjActivePic> queryActivePicByActiveId(Long activeId) {
+		if(activeId == null)
+		{
+			return null;
+		}
+		Example example = new Example(DjActivePic.class);
+		example.createCriteria().andEqualTo("djActiveId", activeId);
+		List<DjActivePic> list = activePicMapper.selectByExample(example);
 		return list;
 	}
 	

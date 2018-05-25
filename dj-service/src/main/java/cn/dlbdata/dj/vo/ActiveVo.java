@@ -95,6 +95,11 @@ public class ActiveVo {
 	 * 活动二级分类内容
 	 */
 	private String subActiveTypeContent;
+	/**
+	 * 活动图片集
+	 */
+	private Long[] picIds;
+	
 	public Long getId() {
 		return id;
 	}
@@ -233,6 +238,12 @@ public class ActiveVo {
 	}
 	public void setSubActiveTypeContent(String subActiveTypeContent) {
 		this.subActiveTypeContent = subActiveTypeContent;
+	}
+	public Long[] getPicIds() {
+		return picIds;
+	}
+	public void setPicIds(Long[] picIds) {
+		this.picIds = picIds;
 	}
 	
 

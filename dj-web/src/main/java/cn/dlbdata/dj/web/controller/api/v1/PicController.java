@@ -165,9 +165,5 @@ public class PicController extends BaseController {
 		}
 		return result;
 	}
-	
-	
-	
-	
-	
+
 }

@@ -93,8 +93,19 @@ public class DjActive {
      */
     @Column(name = "user_name")
     private String userName;
-
     /**
+     * 活动图集
+     */
+    private Long[] picIds;
+    public Long[] getPicIds() {
+		return picIds;
+	}
+
+	public void setPicIds(Long[] picIds) {
+		this.picIds = picIds;
+	}
+
+	/**
      * 获取记录ID
      *
      * @return id - 记录ID

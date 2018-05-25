@@ -51,7 +51,7 @@
   
   <select id="getMyJoinActive" parameterType="map" resultMap="BaseResultMapTwo">
   	SELECT
-  		t.name, t.dj_type_id, t.dj_sub_type_id, t.address, t.principal_name, t.has_audit, t.start_time, t.end_time, t.content, t.create_user_id, t.pic_id, t.create_time,
+  		t.name, t.dj_type_id, t.dj_sub_type_id, t.address, t.principal_name, t.has_audit, t.start_time, t.end_time, t.content, t.create_user_id, t.dj_pic_id, t.create_time,
   		du.user_name, dtu.id, dtu.dj_active_id, dtu.dj_user_id, dtu.status, dtu.create_time, dtu.sign_time, dt.name activeTypeName, dst.name subActiveTypeName, dst.content subActiveTypeContent
   	FROM
   		dj_active_user dtu

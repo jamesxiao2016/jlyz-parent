@@ -10,6 +10,7 @@ import java.util.List;
 
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjActive;
+import cn.dlbdata.dj.db.pojo.DjActivePic;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
 import cn.dlbdata.dj.dto.ActiveSignUpRequest;
 
@@ -45,4 +46,11 @@ public interface IActiveUserService {
 	 * @return
 	 */
 	public List<DjActive> getMyJoinActive(Long userId, Integer status);
+	/**
+	 * 
+	 * <p>Title: queryActivePicByActiveId</p> 
+	 * <p>Description: 查询活动相关的图片集</p> 
+	 * @return
+	 */
+	public List<DjActivePic> queryActivePicByActiveId(Long activeId);
 }
