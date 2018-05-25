@@ -21,7 +21,7 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.mapper.DjPicMapper;
 import cn.dlbdata.dj.db.pojo.DjPic;
 import cn.dlbdata.dj.service.IPictureService;
-import cn.dlbdata.dj.serviceimpl.base.BaseService;
+import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.thirdparty.mp.sdk.model.access.AccessTokenResponse;
 import cn.dlbdata.dj.thirdparty.mp.sdk.model.access.GetaAccessTokenParam;
 import cn.dlbdata.dj.thirdparty.mp.sdk.model.access.GrantType;
@@ -33,7 +33,7 @@ import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 
 @Service
-public class PictureService extends BaseService implements IPictureService {
+public class PictureServiceImpl extends BaseServiceImpl implements IPictureService {
 
 	private String PICTURE_PATH = ConfigUtil.get("pic.rootPath");
 	private final String PREVFIX = "thumbnail_";

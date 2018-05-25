@@ -29,12 +29,12 @@ import cn.dlbdata.dj.db.pojo.DjThoughts;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.pojo.DjVanguard;
 import cn.dlbdata.dj.service.IWorkflowService;
-import cn.dlbdata.dj.serviceimpl.base.BaseService;
+import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.ApplyVo;
 import cn.dlbdata.dj.vo.UserVo;
 
 @Service
-public class WorkflowServiceImpl extends BaseService implements IWorkflowService {
+public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowService {
 	@Autowired
 	private DjApplyMapper applyMapper;
 	@Autowired

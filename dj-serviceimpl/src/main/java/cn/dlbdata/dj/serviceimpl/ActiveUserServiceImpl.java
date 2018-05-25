@@ -22,7 +22,7 @@ import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
 import cn.dlbdata.dj.dto.ActiveSignUpRequest;
 import cn.dlbdata.dj.service.IActiveUserService;
-import cn.dlbdata.dj.serviceimpl.base.BaseService;
+import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import tk.mybatis.mapper.entity.Example;
 
 /**
@@ -32,7 +32,7 @@ import tk.mybatis.mapper.entity.Example;
  * @date 2018年5月23日  
  */
 @Service
-public class ActiveUserServiceImpl extends BaseService implements IActiveUserService{
+public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUserService{
 	@Autowired
 	private DjActiveMapper activeMapper;
 	@Autowired

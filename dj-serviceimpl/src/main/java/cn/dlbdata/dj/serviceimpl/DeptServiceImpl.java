@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.service.IDeptService;
-import cn.dlbdata.dj.serviceimpl.base.BaseService;
+import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import tk.mybatis.mapper.entity.Example;
 
 @Service
-public class DeptService extends BaseService implements IDeptService {
+public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	@Autowired
 	private DjDeptMapper deptMapper;
 

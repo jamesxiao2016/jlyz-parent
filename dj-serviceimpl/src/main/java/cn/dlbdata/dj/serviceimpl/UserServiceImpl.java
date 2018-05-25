@@ -21,12 +21,12 @@ import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.service.IUserService;
-import cn.dlbdata.dj.serviceimpl.base.BaseService;
+import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.LoginVo;
 import cn.dlbdata.dj.vo.UserVo;
 
 @Service
-public class UserService extends BaseService implements IUserService {
+public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
 	@Autowired
 	private DjUserMapper userMapper;

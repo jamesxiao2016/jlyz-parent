@@ -21,14 +21,14 @@ import cn.dlbdata.dj.db.pojo.DjActiveDept;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.service.IWorkflowService;
-import cn.dlbdata.dj.serviceimpl.base.BaseService;
+import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.ActiveVo;
 import cn.dlbdata.dj.vo.ApplyVo;
 import cn.dlbdata.dj.vo.PageVo;
 import cn.dlbdata.dj.vo.UserVo;
 
 @Service
-public class ActiveService extends BaseService implements IActiveService {
+public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService {
 	@Autowired
 	private DjActiveMapper activeMapper;
 	@Autowired
