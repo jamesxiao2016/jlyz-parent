@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.service.IStudyService;
@@ -112,15 +111,15 @@ public class WorkflowController extends BaseController {
 
 	@PostMapping(value = "/audit")
 	@ResponseBody
-	public ResultVo<Long> audit(Long id, Integer result, String content) {
+	public ResultVo<String> audit(Long id, Integer result, String content) {
 		UserVo user = getCurrentUserFromCache();
-		ResultVo<Long> resultVo = new ResultVo<>(ResultCode.Forbidden.getCode());
-		String rs = workflowService.audit(id, result, content, user);
-		if (CoreConst.SUCCESS.equals(rs)) {
-			resultVo.setCode(ResultCode.OK.getCode());
-		} else {
-			resultVo.setMsg(rs);
+		ResultVo<String> resultVo = new ResultVo<>(ResultCode.ParameterError.getCode());
+		if (id == null || result == null) {
+			resultVo.setMsg("参数不完整");
+			return resultVo;
 		}
+		resultVo = workflowService.audit(id, result, content, user);
+
 		return resultVo;
 	}
 

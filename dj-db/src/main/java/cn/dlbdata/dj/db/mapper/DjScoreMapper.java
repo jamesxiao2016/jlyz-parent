@@ -52,4 +52,21 @@ public interface DjScoreMapper extends Mapper<DjScore> {
                                                                @Param("year") int year,
                                                                @Param("partyMemberId") Long partyMemberId);
     
+
+	/**
+	 * 获取用户的总积分
+	 * 
+	 * @param userId
+	 *            用户ID
+	 * @param year
+	 *            年份
+	 * @param djTypeId
+	 *            分类ID
+	 * @param djSubTypeId
+	 *            二级分类ID
+	 * @return
+	 */
+	public Float getSumScoreByUserIdAndYear(@Param("userId") Long userId, @Param("year") Integer year,
+			@Param("djTypeId") Long djTypeId, @Param("djSubTypeId") Long djSubTypeId);
+    
 }

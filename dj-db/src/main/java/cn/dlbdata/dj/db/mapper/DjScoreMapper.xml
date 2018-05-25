@@ -36,6 +36,17 @@
 		</if>
 	</select>
 	
+	<select id="getUserActiveCountByActiveTypeAndTime" parameterType="map" resultType="java.lang.Float">
+		select sum(score) score from dj_score
+		where user_id=#{userId} and add_year=#{year}
+		<if test="djTypeId != null">
+			AND d.dj_type_id = #{djTypeId}
+		</if>
+		<if test="djSubTypeId != null">
+			AND d.dj_sub_type_id = #{djSubTypeId}
+		</if>
+	</select>
+	
 	<select id="getScoreListByUserId" parameterType="Map"
 		resultType="cn.dlbdata.dj.db.pojo.DjScore">
 		SELECT s.user_id,s.score,s.add_time,u.user_name,t.name,s.dj_type_id,s.record_id,s.recrod_desc from dj_score s 

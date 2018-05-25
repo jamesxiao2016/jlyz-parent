@@ -19,7 +19,6 @@ import cn.dlbdata.dj.db.mapper.DjApproveMapper;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjDisciplineMapper;
 import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
-import cn.dlbdata.dj.db.mapper.DjQueryMapper;
 import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.mapper.DjSectionMapper;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
@@ -74,8 +73,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	private DjVanguardMapper vanguardMapper;
 	@Autowired
 	private DjPicRecordMapper picRecordMapper;
-	@Autowired
-	private DjQueryMapper queryMapper;
+//	@Autowired
+//	private DjQueryMapper queryMapper;
 	@Autowired
 	private DjTypeMapper typeMapper;
 	@Autowired
@@ -246,9 +245,9 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		Float subTypeMaxScore = subType.getMaxScore();
 		Float typeMaxScore = type.getMaxScore();
-		Float userSubTypeScore = queryMapper.getSumScoreByUserIdAndYear(apply.getUserId(), year, null,
+		Float userSubTypeScore = scoreMapper.getSumScoreByUserIdAndYear(apply.getUserId(), year, null,
 				apply.getDjSubTypeId());
-		Float userTypeScore = queryMapper.getSumScoreByUserIdAndYear(apply.getUserId(), year, apply.getDjTypeId(),
+		Float userTypeScore = scoreMapper.getSumScoreByUserIdAndYear(apply.getUserId(), year, apply.getDjTypeId(),
 				null);
 
 		// 积分没有积满，则往积分表中插入记录
