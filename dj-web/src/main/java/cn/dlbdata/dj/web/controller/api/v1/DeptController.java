@@ -6,10 +6,12 @@
  */
 package cn.dlbdata.dj.web.controller.api.v1;
 
+import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
@@ -17,6 +19,8 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.service.IDeptService;
 import cn.dlbdata.dj.web.base.BaseController;
+
+import java.util.List;
 
 /**
  * <p>Title: DeptController</p>
@@ -44,4 +48,18 @@ public class DeptController extends BaseController {
         result.setData(djDept);
         return result;
     }
+
+	/**
+	 *
+	 * @param sectionId 片区Id
+	 * @return 支部信息
+	 */
+	@GetMapping("/getDeptListBySectionId")
+	@ResponseBody
+    public ResultVo<List<BranchDeptInfoVo>> getBranchDeptInfo(@RequestParam("sectionId") Long sectionId) {
+		ResultVo<List<BranchDeptInfoVo>> result = new ResultVo<>(ResultCode.OK.getCode());
+		List<BranchDeptInfoVo> voList = deptService.getBranchDeptInfo(sectionId);
+		result.setData(voList);
+		return result;
+	}
 }

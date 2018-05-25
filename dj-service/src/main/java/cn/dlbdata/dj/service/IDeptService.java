@@ -3,6 +3,7 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 
 import cn.dlbdata.dj.db.pojo.DjDept;
+import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 
 /**
  * 部门处理相关的业务逻辑
@@ -32,4 +33,11 @@ public interface IDeptService {
 	 * @return
 	 */
 	public DjDept getDeptMessage(Long departmentId);
+
+	/**
+	 * 片区负责人获取支部信息列表
+	 * @param sectionId
+	 * @return
+	 */
+	List<BranchDeptInfoVo>getBranchDeptInfo(Long sectionId);
 }

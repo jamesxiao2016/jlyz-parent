@@ -19,4 +19,12 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="principal_id" jdbcType="BIGINT" property="principalId" />
   </resultMap>
+
+
+  <select id="getBranchDeptInfoBySectionId" parameterType="java.lang.Long"
+       resultType="cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo">
+    SELECT dept.name as deptName , id as deptId,(SELECT count(0) from dj_partymember where dept_id = dept.id) as total
+    from dj_dept dept
+    where dept.dj_section_id = #{sectionId}
+  </select>
 </mapper>

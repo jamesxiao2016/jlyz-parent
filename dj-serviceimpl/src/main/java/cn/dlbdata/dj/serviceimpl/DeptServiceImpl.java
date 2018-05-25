@@ -2,6 +2,7 @@ package cn.dlbdata.dj.serviceimpl;
 
 import java.util.List;
 
+import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,4 +49,15 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 		return deptMapper.selectByPrimaryKey(deptId);
 	}
 
+	/**
+	 * 片区负责人获取支部信息列表
+	 *
+	 * @param sectionId
+	 * @return
+	 */
+	@Override
+	public List<BranchDeptInfoVo> getBranchDeptInfo(Long sectionId) {
+		List<BranchDeptInfoVo> voList = deptMapper.getBranchDeptInfoBySectionId(sectionId);
+		return voList;
+	}
 }
