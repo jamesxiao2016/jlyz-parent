@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.context.ContextLoader;
 
 import com.google.gson.Gson;
@@ -19,6 +20,7 @@ import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
 import cn.dlbdata.dj.common.core.util.cache.CacheManager;
 import cn.dlbdata.dj.vo.UserVo;
 
+@Controller
 public class BaseController {
 	/**
 	 * 日志对象

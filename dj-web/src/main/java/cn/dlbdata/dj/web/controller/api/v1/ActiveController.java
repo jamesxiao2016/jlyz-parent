@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
 
@@ -222,6 +221,13 @@ public class ActiveController extends BaseController {
 	public ResultVo<Long> createActive(ActiveVo vo)
 	{
 		ResultVo<Long> result = new ResultVo<>();
+		
+		UserVo user = getCurrentUserFromCache();
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		result = activeService.createActive(vo, user);
 		
 		return result;
 	}

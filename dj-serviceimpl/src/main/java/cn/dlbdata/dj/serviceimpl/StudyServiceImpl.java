@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
+import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
+import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.pojo.DjStudy;
@@ -24,9 +26,12 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 	private IWorkflowService workflowService;
 
 	@Override
-	public Long saveStudy(StudyVo studyVo, UserVo user) {
+	public ResultVo<Long> saveStudy(StudyVo studyVo, UserVo user) {
+		ResultVo<Long> result = new ResultVo<>();
 		if (studyVo == null) {
-			return 0L;
+			result.setCode(ResultCode.ParameterError.getCode());
+			result.setMsg("参数错误");
+			return result;
 		}
 		DjStudy study = null;
 		if (studyVo.getId() != null) {
@@ -60,12 +65,16 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		vo.setRemark("自主学习申请");
 		// vo.setScore(score);
 		vo.setTableName(DlbConstant.TABLE_NAME_STUDY);
-		String result = workflowService.apply(vo, user);
-		if (!CoreConst.SUCCESS.equals(result)) {
+		String rs = workflowService.apply(vo, user);
+		if (!CoreConst.SUCCESS.equals(rs)) {
 			logger.info("提交申请失败");
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("提交申请失败");
 		}
 
-		return study.getId();
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(study.getId());
+		return result;
 	}
 
 	@Override
