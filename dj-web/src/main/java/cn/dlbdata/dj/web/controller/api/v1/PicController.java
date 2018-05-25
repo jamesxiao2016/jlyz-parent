@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -149,4 +150,24 @@ public class PicController extends BaseController {
 		}
 		return false;
 	}
+	
+	@DeleteMapping(value = "/deleteActivePicById")
+	@ResponseBody
+	public ResultVo<Integer> deleteActivePicById(Long id) {
+		ResultVo<Integer> result = new ResultVo<>();
+		int count = pictureService.deleteActivePicById(id);
+		if ( count <= 0) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("删除失败");
+		} else {
+			result.setCode(ResultCode.OK.getCode());
+			result.setMsg("删除成功");
+		}
+		return result;
+	}
+	
+	
+	
+	
+	
 }

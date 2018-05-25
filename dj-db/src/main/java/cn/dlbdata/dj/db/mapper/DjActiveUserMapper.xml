@@ -29,16 +29,16 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
     <result column="name" jdbcType="VARCHAR" property="activeName" />
-	<result column="type_id" jdbcType="INTEGER" property="typeId" />
-	<result column="sub_type_id" jdbcType="INTEGER" property="subTypeId" />
+	<result column="dj_type_id" jdbcType="INTEGER" property="typeId" />
+	<result column="dj_sub_type_id" jdbcType="INTEGER" property="subTypeId" />
 	<result column="address" jdbcType="VARCHAR" property="address" />
-	<result column="principal_id" jdbcType="VARCHAR" property="principalId" />
+	<result column="principal_name" jdbcType="VARCHAR" property="principalName" />
 	<result column="has_audit" jdbcType="INTEGER" property="hasAudit" />
 	<result column="start_time" jdbcType="TIMESTAMP" property="startActiveTime" />
 	<result column="end_time" jdbcType="TIMESTAMP" property="endActiveTime" />
 	<result column="content" jdbcType="VARCHAR" property="content" />
 	<result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
-	<result column="pic_id" jdbcType="BIGINT" property="picId" />
+	<result column="dj_pic_id" jdbcType="BIGINT" property="picId" />
 	<result column="status" jdbcType="INTEGER" property="ActiveStatus" />
 	<result column="create_time" jdbcType="TIMESTAMP" property="createActiveTime" />
 	<result column="user_name" jdbcType="TIMESTAMP" property="userName" />
@@ -51,14 +51,14 @@
   
   <select id="getMyJoinActive" parameterType="map" resultMap="BaseResultMapTwo">
   	SELECT
-  		t.name, t.type_id, t.sub_type_id, t.address, t.principal_id, t.has_audit, t.start_time, t.end_time, t.content, t.create_user_id, t.pic_id, t.create_time,
+  		t.name, t.dj_type_id, t.dj_sub_type_id, t.address, t.principal_name, t.has_audit, t.start_time, t.end_time, t.content, t.create_user_id, t.pic_id, t.create_time,
   		du.user_name, dtu.id, dtu.dj_active_id, dtu.dj_user_id, dtu.status, dtu.create_time, dtu.sign_time, dt.name activeTypeName, dst.name subActiveTypeName, dst.content subActiveTypeContent
   	FROM
   		dj_active_user dtu
   	LEFT JOIN dj_active t  ON dtu.dj_active_id =  t.id
   	left join dj_user du on du.id = dtu.dj_user_id
-  	left join dj_type dt on dt.id = t.type_id
-  	left join dj_sub_type dst on dst.id = t.sub_type_id
+  	left join dj_type dt on dt.id = t.dj_type_id
+  	left join dj_sub_type dst on dst.id = t.dj_sub_type_id
   	where dtu.status = #{status} and dtu.dj_user_id = #{userId}
   </select>
 </mapper>
