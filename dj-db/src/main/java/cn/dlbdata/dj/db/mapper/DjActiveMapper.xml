@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.dlbdata.dj.db.mapper.DjActiveMapper">
-	<resultMap id="BaseResultMap" type="cn.dlbdata.dj.db.pojo.DjActive">
-		<!-- WARNING - @mbg.generated -->
-		<id column="id" jdbcType="BIGINT" property="id" />
-		<result column="name" jdbcType="VARCHAR" property="name" />
-		<result column="type_id" jdbcType="INTEGER" property="typeId" />
-		<result column="sub_type_id" jdbcType="INTEGER" property="subTypeId" />
-		<result column="address" jdbcType="VARCHAR" property="address" />
-		<result column="principal_id" jdbcType="VARCHAR" property="principalId" />
-		<result column="has_audit" jdbcType="INTEGER" property="hasAudit" />
-		<result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
-		<result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
-		<result column="content" jdbcType="VARCHAR" property="conent" />
-		<result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
-		<result column="pic_id" jdbcType="BIGINT" property="picId" />
-		<result column="status" jdbcType="INTEGER" property="status" />
-		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-	</resultMap>
+  <resultMap id="BaseResultMap" type="cn.dlbdata.dj.db.pojo.DjActive">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="dj_type_id" jdbcType="BIGINT" property="djTypeId" />
+    <result column="dj_sub_type_id" jdbcType="BIGINT" property="djSubTypeId" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="principal_name" jdbcType="VARCHAR" property="principalName" />
+    <result column="has_audit" jdbcType="INTEGER" property="hasAudit" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+    <result column="dj_pic_id" jdbcType="BIGINT" property="djPicId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="dj_dept_id" jdbcType="BIGINT" property="djDeptId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+  </resultMap>
 
-	<select id="getUserActiveCountByActiveTypeAndTime" parameterType="map"
-		resultType="java.lang.Integer">
+	<select id="getUserActiveCountByActiveTypeAndTime" parameterType="map" resultType="java.lang.Integer">
 		select count(*) from dj_active d
 		WHERE d.id in (
 		SELECT dj_active_id FROM

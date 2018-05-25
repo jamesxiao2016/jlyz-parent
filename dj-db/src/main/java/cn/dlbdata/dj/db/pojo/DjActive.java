@@ -9,7 +9,6 @@ public class DjActive {
      * 记录ID
      */
     @Id
-    @GeneratedValue(generator = "JDBC")
     private Long id;
 
     /**
@@ -20,25 +19,25 @@ public class DjActive {
     /**
      * 活动分类ID
      */
-    @Column(name = "type_id")
-    private Long typeId;
+    @Column(name = "dj_type_id")
+    private Long djTypeId;
 
     /**
      * 二级分类ID
      */
-    @Column(name = "sub_type_id")
-    private Long subTypeId;
+    @Column(name = "dj_sub_type_id")
+    private Long djSubTypeId;
 
     /**
-     * 地点
+     * 活动地点
      */
     private String address;
 
     /**
-     * 负责人
+     * 负责人姓名
      */
-    @Column(name = "principal_id")
-    private String principalId;
+    @Column(name = "principal_name")
+    private String principalName;
 
     /**
      * 是否审核
@@ -70,10 +69,10 @@ public class DjActive {
     private Long createUserId;
 
     /**
-     * 活动图片ID
+     * 海报图片ID
      */
-    @Column(name = "pic_id")
-    private Long picId;
+    @Column(name = "dj_pic_id")
+    private Long djPicId;
 
     /**
      * 状态
@@ -82,6 +81,18 @@ public class DjActive {
 
     @Column(name = "create_time")
     private Date createTime;
+
+    /**
+     * 部门ID
+     */
+    @Column(name = "dj_dept_id")
+    private Long djDeptId;
+
+    /**
+     * 发起人姓名
+     */
+    @Column(name = "user_name")
+    private String userName;
 
     /**
      * 获取记录ID
@@ -122,73 +133,73 @@ public class DjActive {
     /**
      * 获取活动分类ID
      *
-     * @return type_id - 活动分类ID
+     * @return dj_type_id - 活动分类ID
      */
-    public Long getTypeId() {
-        return typeId;
+    public Long getDjTypeId() {
+        return djTypeId;
     }
 
     /**
      * 设置活动分类ID
      *
-     * @param typeId 活动分类ID
+     * @param djTypeId 活动分类ID
      */
-    public void setTypeId(Long typeId) {
-        this.typeId = typeId;
+    public void setDjTypeId(Long djTypeId) {
+        this.djTypeId = djTypeId;
     }
 
     /**
      * 获取二级分类ID
      *
-     * @return sub_type_id - 二级分类ID
+     * @return dj_sub_type_id - 二级分类ID
      */
-    public Long getSubTypeId() {
-        return subTypeId;
+    public Long getDjSubTypeId() {
+        return djSubTypeId;
     }
 
     /**
      * 设置二级分类ID
      *
-     * @param subTypeId 二级分类ID
+     * @param djSubTypeId 二级分类ID
      */
-    public void setSubTypeId(Long subTypeId) {
-        this.subTypeId = subTypeId;
+    public void setDjSubTypeId(Long djSubTypeId) {
+        this.djSubTypeId = djSubTypeId;
     }
 
     /**
-     * 获取地点
+     * 获取活动地点
      *
-     * @return address - 地点
+     * @return address - 活动地点
      */
     public String getAddress() {
         return address;
     }
 
     /**
-     * 设置地点
+     * 设置活动地点
      *
-     * @param address 地点
+     * @param address 活动地点
      */
     public void setAddress(String address) {
         this.address = address;
     }
 
     /**
-     * 获取负责人
+     * 获取负责人姓名
      *
-     * @return principal_id - 负责人
+     * @return principal_name - 负责人姓名
      */
-    public String getPrincipalId() {
-        return principalId;
+    public String getPrincipalName() {
+        return principalName;
     }
 
     /**
-     * 设置负责人
+     * 设置负责人姓名
      *
-     * @param principalId 负责人
+     * @param principalName 负责人姓名
      */
-    public void setPrincipalId(String principalId) {
-        this.principalId = principalId;
+    public void setPrincipalName(String principalName) {
+        this.principalName = principalName;
     }
 
     /**
@@ -248,9 +259,20 @@ public class DjActive {
     /**
      * 获取活动内容
      *
-     * @return conent - 活动内容
+     * @return content - 活动内容
      */
+    public String getContent() {
+        return content;
+    }
 
+    /**
+     * 设置活动内容
+     *
+     * @param content 活动内容
+     */
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     /**
      * 获取活动发起人
@@ -261,15 +283,7 @@ public class DjActive {
         return createUserId;
     }
 
-    public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	/**
+    /**
      * 设置活动发起人
      *
      * @param createUserId 活动发起人
@@ -279,21 +293,21 @@ public class DjActive {
     }
 
     /**
-     * 获取活动图片ID
+     * 获取海报图片ID
      *
-     * @return pic_id - 活动图片ID
+     * @return dj_pic_id - 海报图片ID
      */
-    public Long getPicId() {
-        return picId;
+    public Long getDjPicId() {
+        return djPicId;
     }
 
     /**
-     * 设置活动图片ID
+     * 设置海报图片ID
      *
-     * @param picId 活动图片ID
+     * @param djPicId 海报图片ID
      */
-    public void setPicId(Long picId) {
-        this.picId = picId;
+    public void setDjPicId(Long djPicId) {
+        this.djPicId = djPicId;
     }
 
     /**
@@ -326,5 +340,41 @@ public class DjActive {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * 获取部门ID
+     *
+     * @return dj_dept_id - 部门ID
+     */
+    public Long getDjDeptId() {
+        return djDeptId;
+    }
+
+    /**
+     * 设置部门ID
+     *
+     * @param djDeptId 部门ID
+     */
+    public void setDjDeptId(Long djDeptId) {
+        this.djDeptId = djDeptId;
+    }
+
+    /**
+     * 获取发起人姓名
+     *
+     * @return user_name - 发起人姓名
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     * 设置发起人姓名
+     *
+     * @param userName 发起人姓名
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

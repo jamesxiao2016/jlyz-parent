@@ -159,19 +159,20 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		active.setHasAudit(1);
 		active.setId(DigitUtil.generatorLongId());
 		active.setName(activeVo.getActiveName());
-		active.setPicId(activeVo.getPicId());
-		active.setPrincipalId(activeVo.getPrincipalId());
+		active.setDjPicId(activeVo.getPicId());
+		active.setPrincipalName(activeVo.getPrincipalId());
 		active.setStartTime(activeVo.getStartActiveTime());
 		active.setStatus(1);
-		active.setSubTypeId(activeVo.getSubTypeId());
-		active.setTypeId(activeVo.getTypeId());
+		active.setDjSubTypeId(activeVo.getSubTypeId());
+		active.setDjTypeId(activeVo.getTypeId());
+		active.setDjDeptId(user.getDeptId());
 		activeMapper.insertSelective(active);
 
 		// 保存活动申请记录
 		ApplyVo vo = new ApplyVo();
 		vo.setContent(active.getName());
-		vo.setDjSubTypeId(active.getSubTypeId());
-		vo.setDjTypeId(active.getTypeId());
+		vo.setDjSubTypeId(active.getDjSubTypeId());
+		vo.setDjTypeId(active.getDjTypeId());
 		vo.setRecordId(active.getId());
 		vo.setRemark("活动申请");
 		// vo.setScore(score);
