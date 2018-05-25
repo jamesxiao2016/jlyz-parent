@@ -12,7 +12,9 @@ import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.service.IStudyService;
 import cn.dlbdata.dj.service.IWorkflowService;
+import cn.dlbdata.dj.vo.ApplyVo;
 import cn.dlbdata.dj.vo.DisciplineVo;
+import cn.dlbdata.dj.vo.PageVo;
 import cn.dlbdata.dj.vo.StudyVo;
 import cn.dlbdata.dj.vo.ThoughtsVo;
 import cn.dlbdata.dj.vo.UserVo;
@@ -120,5 +122,19 @@ public class WorkflowController extends BaseController {
 			resultVo.setMsg(rs);
 		}
 		return resultVo;
+	}
+
+	/**
+	 * 获取待办列表
+	 * 
+	 * @param deptId
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	public ResultVo<PageVo<ApplyVo>> getPendingList(Long deptId, Integer pageNum, Integer pageSize) {
+		ResultVo<PageVo<ApplyVo>> result = new ResultVo<>();
+
+		return result;
 	}
 }

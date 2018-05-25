@@ -5,6 +5,10 @@ public class ApplyVo {
 	private Long djTypeId;
 	// 二级分类ID
 	private Long djSubTypeId;
+	// 分类名称
+	private String typeName;
+	// 二级分类名称
+	private String subTypeName;
 	// 加分分数
 	private Float score;
 	// 记录ID
@@ -15,6 +19,10 @@ public class ApplyVo {
 	private String content;
 	// 申请说明
 	private String remark;
+	// 加分人
+	private Long userId;
+	// 加分人姓名
+	private String userName;
 
 	public Long getDjTypeId() {
 		return djTypeId;
@@ -70,6 +78,38 @@ public class ApplyVo {
 
 	public void setScore(Float score) {
 		this.score = score;
+	}
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public String getSubTypeName() {
+		return subTypeName;
+	}
+
+	public void setSubTypeName(String subTypeName) {
+		this.subTypeName = subTypeName;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 }

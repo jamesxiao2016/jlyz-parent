@@ -59,5 +59,5 @@ public interface IWorkflowService {
 	 *            当前登录用户
 	 * @return
 	 */
-	public String audit(Long id, Integer result, String content, UserVo user);
+	public ResultVo<String> audit(Long id, Integer result, String content, UserVo user);
 }

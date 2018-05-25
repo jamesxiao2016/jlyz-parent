@@ -14,10 +14,13 @@
     <result column="apply_desc" jdbcType="VARCHAR" property="applyDesc" />
     <result column="approver_id" jdbcType="BIGINT" property="approverId" />
     <result column="approver_name" jdbcType="VARCHAR" property="approverName" />
-    <result column="dj_dept_id" jdbcType="INTEGER" property="djDeptId" />
+    <result column="dj_dept_id" jdbcType="BIGINT" property="djDeptId" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="table_name" jdbcType="VARCHAR" property="tableName" />
     <result column="record_id" jdbcType="BIGINT" property="recordId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="score" jdbcType="REAL" property="score" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
   </resultMap>
 </mapper>

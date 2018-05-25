@@ -69,11 +69,6 @@ public class DjApply {
      * 状态
      */
     private Integer status;
-    
-    /**
-     * 分数
-     */
-    private Float score;
 
     /**
      * 业务表
@@ -89,6 +84,20 @@ public class DjApply {
 
     @Column(name = "create_time")
     private Date createTime;
+
+    private Float score;
+
+    /**
+     * 加分人ID
+     */
+    @Column(name = "user_id")
+    private Long userId;
+
+    /**
+     * 党员姓名
+     */
+    @Column(name = "user_name")
+    private String userName;
 
     /**
      * 获取记录ID
@@ -338,11 +347,53 @@ public class DjApply {
         this.createTime = createTime;
     }
 
-	public Float getScore() {
-		return score;
-	}
+    /**
+     * @return score
+     */
+    public Float getScore() {
+        return score;
+    }
 
-	public void setScore(Float score) {
-		this.score = score;
-	}
+    /**
+     * @param score
+     */
+    public void setScore(Float score) {
+        this.score = score;
+    }
+
+    /**
+     * 获取加分人ID
+     *
+     * @return user_id - 加分人ID
+     */
+    public Long getUserId() {
+        return userId;
+    }
+
+    /**
+     * 设置加分人ID
+     *
+     * @param userId 加分人ID
+     */
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    /**
+     * 获取党员姓名
+     *
+     * @return user_name - 党员姓名
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     * 设置党员姓名
+     *
+     * @param userName 党员姓名
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }

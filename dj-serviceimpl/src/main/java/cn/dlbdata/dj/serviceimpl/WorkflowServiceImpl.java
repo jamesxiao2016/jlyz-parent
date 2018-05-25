@@ -1,5 +1,6 @@
 package cn.dlbdata.dj.serviceimpl;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,13 @@ import cn.dlbdata.dj.db.mapper.DjApproveMapper;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjDisciplineMapper;
 import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
+import cn.dlbdata.dj.db.mapper.DjQueryMapper;
+import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.mapper.DjSectionMapper;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
+import cn.dlbdata.dj.db.mapper.DjSubTypeMapper;
 import cn.dlbdata.dj.db.mapper.DjThoughtsMapper;
+import cn.dlbdata.dj.db.mapper.DjTypeMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.mapper.DjVanguardMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
@@ -29,9 +34,12 @@ import cn.dlbdata.dj.db.pojo.DjApprove;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjDiscipline;
 import cn.dlbdata.dj.db.pojo.DjPicRecord;
+import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.db.pojo.DjSection;
 import cn.dlbdata.dj.db.pojo.DjStudy;
+import cn.dlbdata.dj.db.pojo.DjSubType;
 import cn.dlbdata.dj.db.pojo.DjThoughts;
+import cn.dlbdata.dj.db.pojo.DjType;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.pojo.DjVanguard;
 import cn.dlbdata.dj.service.IWorkflowService;
@@ -66,6 +74,14 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	private DjVanguardMapper vanguardMapper;
 	@Autowired
 	private DjPicRecordMapper picRecordMapper;
+	@Autowired
+	private DjQueryMapper queryMapper;
+	@Autowired
+	private DjTypeMapper typeMapper;
+	@Autowired
+	private DjSubTypeMapper subTypeMapper;
+	@Autowired
+	private DjScoreMapper scoreMapper;
 
 	@Override
 	public String apply(ApplyVo vo, UserVo user) {
@@ -88,6 +104,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		record.setStatus(0);
 		record.setApplyId(user.getUserId());
 		record.setApplyName(user.getUserName());
+		record.setUserId(vo.getUserId());
+		record.setUserName(vo.getUserName());
 		DjUser approver = null;
 
 		if (vo.getDjTypeId() == ActiveTypeEnum.ACTIVE_A.getActiveId()
@@ -153,14 +171,34 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	}
 
 	@Override
-	public String audit(Long id, Integer result, String content, UserVo user) {
+	public ResultVo<String> audit(Long id, Integer result, String content, UserVo user) {
+		ResultVo<String> resultVo = new ResultVo<>(ResultCode.ParameterError.getCode());
 		if (id == null || result == null || user == null) {
-			return CoreConst.MSG_FAIL_PARAM;
+			logger.error("id is null Or result is null Or user is null");
+			resultVo.setMsg("参数不完整");
+			return resultVo;
 		}
 
 		DjApply apply = applyMapper.selectByPrimaryKey(id);
 		if (apply == null) {
-			return CoreConst.FAIL;
+			logger.error("申请记录查询失败" + id);
+			resultVo.setCode(ResultCode.NotFound.getCode());
+			resultVo.setMsg("审核失败");
+			return resultVo;
+		}
+		DjType type = typeMapper.selectByPrimaryKey(apply.getDjTypeId());
+		if (type == null) {
+			logger.error("类型记录查询失败" + apply.getDjTypeId());
+			resultVo.setCode(ResultCode.NotFound.getCode());
+			resultVo.setMsg("审核失败");
+			return resultVo;
+		}
+		DjSubType subType = subTypeMapper.selectByPrimaryKey(apply.getDjSubTypeId());
+		if (subType == null) {
+			logger.error("二级分类记录查询失败" + apply.getDjSubTypeId());
+			resultVo.setCode(ResultCode.NotFound.getCode());
+			resultVo.setMsg("审核失败");
+			return resultVo;
 		}
 
 		switch (apply.getTableName()) {
@@ -168,43 +206,79 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			DjStudy study = studyMapper.selectByPrimaryKey(apply.getRecordId());
 			if (study != null) {
 				study.setStatus(result);
+				studyMapper.updateByPrimaryKeySelective(study);
 			}
-			studyMapper.updateByPrimaryKeySelective(study);
 			break;
 		case DlbConstant.TABLE_NAME_ACTIVE:
 			DjActive active = activeMapper.selectByPrimaryKey(apply.getRecordId());
 			if (active != null) {
 				active.setStatus(result);
+				activeMapper.updateByPrimaryKeySelective(active);
 			}
-			activeMapper.updateByPrimaryKeySelective(active);
 			break;
-		case DlbConstant.TABLE_NAME_THOUGHTS:
+		case DlbConstant.TABLE_NAME_THOUGHTS:// 思想汇报
 			DjThoughts thoughts = thoughtsMapper.selectByPrimaryKey(apply.getRecordId());
 			if (thoughts != null) {
 				thoughts.setStatus(result);
+				thoughtsMapper.updateByPrimaryKeySelective(thoughts);
 			}
-			thoughtsMapper.updateByPrimaryKeySelective(thoughts);
 			break;
-		case DlbConstant.TABLE_NAME_VANGUARD:
+		case DlbConstant.TABLE_NAME_VANGUARD:// 先锋作用
 			DjVanguard vanguard = vanguardMapper.selectByPrimaryKey(apply.getRecordId());
 			if (vanguard != null) {
 				vanguard.setStatus(result);
+				vanguardMapper.updateByPrimaryKeySelective(vanguard);
 			}
-			vanguardMapper.updateByPrimaryKeySelective(vanguard);
 			break;
-		case DlbConstant.TABLE_NAME_DISCIPLINE:
+		case DlbConstant.TABLE_NAME_DISCIPLINE:// 遵章守纪
 			DjDiscipline discipline = disciplineMapper.selectByPrimaryKey(apply.getRecordId());
 			if (discipline != null) {
 				discipline.setStatus(result);
+				disciplineMapper.updateByPrimaryKeySelective(discipline);
 			}
-			disciplineMapper.updateByPrimaryKeySelective(discipline);
 			break;
 		default:
 			break;
 		}
 
-		// apply.setApproverId(user.getUserId());
-		// apply.setApproverName(user.getUserName());
+		// 写入积分记录表
+		// 根据类型判断最大分数
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		Float subTypeMaxScore = subType.getMaxScore();
+		Float typeMaxScore = type.getMaxScore();
+		Float userSubTypeScore = queryMapper.getSumScoreByUserIdAndYear(apply.getUserId(), year, null,
+				apply.getDjSubTypeId());
+		Float userTypeScore = queryMapper.getSumScoreByUserIdAndYear(apply.getUserId(), year, apply.getDjTypeId(),
+				null);
+
+		// 积分没有积满，则往积分表中插入记录
+		if (userSubTypeScore < subTypeMaxScore && userTypeScore < typeMaxScore) {
+			DjScore record = new DjScore();
+			record.setAddStatus(1);
+			record.setAddTime(new Date());
+			record.setAddYear(year);
+			record.setApplyUserId(apply.getApplyId());
+			record.setApproverId(user.getUserId());
+			record.setCreateTime(new Date());
+			record.setDjSubTypeId(apply.getDjSubTypeId());
+			record.setDjTypeId(apply.getDjTypeId());
+			record.setRecordId(apply.getRecordId());
+			//record.setRecrodDesc(apply.get);
+//			record.setScoreDesc(scoreDesc);
+			record.setStatus(1);
+			record.setUserId(apply.getUserId());
+			//record.setUserName(apply.getUserName());
+			Float score = apply.getScore();
+			// 公益服务,处理9分的问题
+			if (apply.getDjTypeId() == ActiveTypeEnum.ACTIVE_F.getActiveId()) {
+				if ((userTypeScore + apply.getScore()) > typeMaxScore) {
+					score = typeMaxScore - userTypeScore;
+				}
+			}
+
+			record.setScore(score);
+			scoreMapper.insertSelective(record);
+		}
 
 		// 插入审批记录表
 		DjApprove approve = new DjApprove();
@@ -216,7 +290,9 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		approve.setStatus(1);
 		approveMapper.insertSelective(approve);
 
-		return CoreConst.SUCCESS;
+		resultVo.setCode(ResultCode.OK.getCode());
+		resultVo.setMsg("审核成功");
+		return resultVo;
 	}
 
 	@Override
@@ -312,12 +388,12 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			// TODO 提交申请，写入到申请表中
 			ApplyVo vo = new ApplyVo();
 			vo.setContent(record.getContent());
-			vo.setDjSubTypeId(ActiveSubTypeEnum.ACTIVE_SUB_P.getActiveSubId());
-			vo.setDjTypeId(ActiveTypeEnum.ACTIVE_E.getActiveId());
+			vo.setDjSubTypeId(param.getVanguardType());
+			vo.setDjTypeId(ActiveTypeEnum.ACTIVE_D.getActiveId());
 			vo.setRecordId(record.getId());
 			vo.setRemark("获得荣誉申请");
-			
-			vo.setTableName(DlbConstant.TABLE_NAME_DISCIPLINE);
+
+			vo.setTableName(DlbConstant.TABLE_NAME_VANGUARD);
 			String rs = apply(vo, user);
 			if (!CoreConst.SUCCESS.equals(rs)) {
 				logger.info("提交申请失败");

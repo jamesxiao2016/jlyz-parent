@@ -126,15 +126,12 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 			if(picList == null || picList.size() == 0) {
 				return null;
 			}
-			/*将与该活动相关的图片的id加入数组中
-			List<Long> picIds = new ArrayList<Long>();
-			picIds =  Arrays.copyOf(picIds, picIds.length+1);
-			picIds[picIds.length-1] = djActivePic.getDjPicId();*/
+			/*将与该活动相关的图片的id加入数组中*/
 			Long[] picIds = new Long[picList.size()];
 			for (int i=0,count=picList.size();i<count;i++) {
 				picIds[i] = picList.get(i).getDjPicId();
 			}
-			djActive.setPicIds(picIds);
+			//djActive.setPicIds(picIds);
 		}
 		return list;
 	}
