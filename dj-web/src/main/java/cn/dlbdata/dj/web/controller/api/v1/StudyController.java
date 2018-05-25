@@ -31,10 +31,31 @@ import cn.dlbdata.dj.web.base.BaseController;
 @Controller
 @RequestMapping("/api/v1/study")
 public class StudyController extends BaseController {
+
 	@Autowired
 	private IActiveService activeService;
 	@Autowired
 	private IStudyService studyService;
+
+	/**
+	 * 发起自主学习
+	 * 
+	 * @param studyVo
+	 * @return
+	 */
+	@PostMapping("/create")
+	@ResponseBody
+	public ResultVo<Long> createStudy(@RequestBody StudyVo studyVo) {
+		ResultVo<Long> result = new ResultVo<>();
+		UserVo user = getCurrentUserFromCache();
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		result = studyService.saveStudy(studyVo, user);
+
+		return result;
+	}
 
 	/**
 	 * 点击支书查询待办列表项进去的查询
@@ -65,28 +86,9 @@ public class StudyController extends BaseController {
 	@GetMapping("/queryById")
 	@ResponseBody
 	public ResultVo<StudyDetailVo> getStudyDetail(@RequestParam("studyId") Long studyId) {
-		// TODO
-		return null;
-
-	}
-
-	/**
-	 * 发起自主学习
-	 * 
-	 * @param studyVo
-	 * @return
-	 */
-	@PostMapping("/create")
-	@ResponseBody
-	public ResultVo<Long> createStudy(@RequestBody StudyVo studyVo) {
-		ResultVo<Long> result = new ResultVo<>();
-		UserVo user = getCurrentUserFromCache();
-		if (user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
-			return result;
-		}
-		result = studyService.saveStudy(studyVo, user);
-
+		ResultVo<StudyDetailVo> result = new ResultVo<>(CoreConst.ResultCode.OK.getCode());
+		StudyDetailVo vo = activeService.getStudyDetail(studyId);
+		result.setData(vo);
 		return result;
 	}
 }

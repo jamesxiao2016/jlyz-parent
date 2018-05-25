@@ -12,4 +12,8 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+
+  <select id="getIdsByTableNameAndRecordId" resultType="java.lang.Long">
+    select dj_pic_id from dj_pic_record where table_name = #{tableName} and record_id = #{recordId}
+  </select>
 </mapper>
