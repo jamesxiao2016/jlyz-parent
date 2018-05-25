@@ -6,19 +6,19 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="dj_type_id" jdbcType="INTEGER" property="djTypeId" />
-    <result column="dj_sub_type_id" jdbcType="INTEGER" property="djSubTypeId" />
+    <result column="dj_type_id" jdbcType="BIGINT" property="djTypeId" />
+    <result column="dj_sub_type_id" jdbcType="BIGINT" property="djSubTypeId" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="has_audit" jdbcType="INTEGER" property="hasAudit" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="conent" jdbcType="VARCHAR" property="conent" />
-    <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="pic_id" jdbcType="BIGINT" property="picId" />
-    <result column="approve_id" jdbcType="INTEGER" property="approveId" />
-    <result column="dj_dept_id" jdbcType="INTEGER" property="djDeptId" />
+    <result column="approve_id" jdbcType="BIGINT" property="approveId" />
+    <result column="dj_dept_id" jdbcType="BIGINT" property="djDeptId" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>

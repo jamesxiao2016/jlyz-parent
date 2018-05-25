@@ -1,0 +1,132 @@
+package cn.dlbdata.dj.vo;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+
+public class StudyVo {
+	 /**
+     * 记录ID
+     */
+    @Id
+    private Long id;
+
+    /**
+     * 分类ID
+     */
+    @Column(name = "dj_type_id")
+    private Long djTypeId;
+
+    /**
+     * 二级分类ID
+     */
+    @Column(name = "dj_sub_type_id")
+    private Long djSubTypeId;
+    /**
+     * 开始时间
+     */
+    @Column(name = "start_time")
+    private Date startTime;
+
+    /**
+     * 结束时间
+     */
+    @Column(name = "end_time")
+    private Date endTime;
+
+    /**
+     * 学习内容
+     */
+    private String content;
+    
+    /**
+     * 党员ID
+     */
+    @Column(name = "create_user_id")
+    private Long createUserId;
+
+    /**
+     * 党员姓名
+     */
+    @Column(name = "user_name")
+    private String userName;
+    
+    /**
+     * 图片
+     */
+    private String[] pics;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getDjTypeId() {
+		return djTypeId;
+	}
+
+	public void setDjTypeId(Long djTypeId) {
+		this.djTypeId = djTypeId;
+	}
+
+	public Long getDjSubTypeId() {
+		return djSubTypeId;
+	}
+
+	public void setDjSubTypeId(Long djSubTypeId) {
+		this.djSubTypeId = djSubTypeId;
+	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Long getCreateUserId() {
+		return createUserId;
+	}
+
+	public void setCreateUserId(Long createUserId) {
+		this.createUserId = createUserId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String[] getPics() {
+		return pics;
+	}
+
+	public void setPics(String[] pics) {
+		this.pics = pics;
+	}
+    
+}

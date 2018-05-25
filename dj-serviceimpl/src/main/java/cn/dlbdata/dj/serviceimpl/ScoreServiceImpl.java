@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import cn.dlbdata.dj.db.mapper.DjSubTypeMapper;
 import cn.dlbdata.dj.db.pojo.DjSubType;
 import cn.dlbdata.dj.service.IScoreService;
-import cn.dlbdata.dj.serviceimpl.base.BaseService;
+import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 
 /**
  * <p>Title: ScoreServiceImpl</p>
@@ -23,7 +23,7 @@ import cn.dlbdata.dj.serviceimpl.base.BaseService;
  * @date 2018年5月24日  
  */
 @Service
-public class ScoreServiceImpl  extends BaseService implements IScoreService{
+public class ScoreServiceImpl  extends BaseServiceImpl implements IScoreService{
 	
 	@Autowired
 	private DjSubTypeMapper subTypeMapper;

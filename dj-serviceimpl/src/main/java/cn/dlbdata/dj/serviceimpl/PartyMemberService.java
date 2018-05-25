@@ -26,13 +26,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.service.IPartyMemberService;
-import cn.dlbdata.dj.serviceimpl.base.BaseService;
+import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.PartyVo;
 import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-public class PartyMemberService extends BaseService implements IPartyMemberService {
+public class PartyMemberService extends BaseServiceImpl implements IPartyMemberService {
 	@Autowired
 	private DjPartymemberMapper partyMemberMapper;
 

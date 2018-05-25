@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import cn.dlbdata.dj.db.mapper.DjRoleMapper;
 import cn.dlbdata.dj.db.pojo.DjRole;
 import cn.dlbdata.dj.service.IRoleService;
-import cn.dlbdata.dj.serviceimpl.base.BaseService;
+import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 
 @Service
-public class RoleService extends BaseService implements IRoleService {
+public class RoleServiceImpl extends BaseServiceImpl implements IRoleService {
 	@Autowired
 	private DjRoleMapper roleMapper;
 	@Override

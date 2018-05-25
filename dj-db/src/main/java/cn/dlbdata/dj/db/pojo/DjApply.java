@@ -9,20 +9,19 @@ public class DjApply {
      * 记录ID
      */
     @Id
-    @GeneratedValue(generator = "JDBC")
     private Long id;
 
     /**
-     * 申请类型
+     * 业务类型ID
      */
-    @Column(name = "audit_type")
-    private Long auditType;
+    @Column(name = "dj_type_id")
+    private Long djTypeId;
 
     /**
-     * 记录ID
+     * 二级分类ID
      */
-    @Column(name = "record_id")
-    private Long recordId;
+    @Column(name = "dj_sub_type_id")
+    private Long djSubTypeId;
 
     /**
      * 申请内容
@@ -31,10 +30,16 @@ public class DjApply {
     private String applyInfo;
 
     /**
-     * 申请人
+     * 申请人ID
      */
     @Column(name = "apply_id")
     private Long applyId;
+
+    /**
+     * 申请人姓名
+     */
+    @Column(name = "apply_name")
+    private String applyName;
 
     /**
      * 申请说明
@@ -49,15 +54,38 @@ public class DjApply {
     private Long approverId;
 
     /**
+     * 审批人姓名
+     */
+    @Column(name = "approver_name")
+    private String approverName;
+
+    /**
      * 部门ID
      */
     @Column(name = "dj_dept_id")
-    private Integer djDeptId;
+    private Long djDeptId;
 
     /**
      * 状态
      */
     private Integer status;
+    
+    /**
+     * 分数
+     */
+    private Float score;
+
+    /**
+     * 业务表
+     */
+    @Column(name = "table_name")
+    private String tableName;
+
+    /**
+     * 记录ID
+     */
+    @Column(name = "record_id")
+    private Long recordId;
 
     @Column(name = "create_time")
     private Date createTime;
@@ -81,39 +109,39 @@ public class DjApply {
     }
 
     /**
-     * 获取申请类型
+     * 获取业务类型ID
      *
-     * @return audit_type - 申请类型
+     * @return dj_type_id - 业务类型ID
      */
-    public Long getAuditType() {
-        return auditType;
+    public Long getDjTypeId() {
+        return djTypeId;
     }
 
     /**
-     * 设置申请类型
+     * 设置业务类型ID
      *
-     * @param auditType 申请类型
+     * @param djTypeId 业务类型ID
      */
-    public void setAuditType(Long auditType) {
-        this.auditType = auditType;
+    public void setDjTypeId(Long djTypeId) {
+        this.djTypeId = djTypeId;
     }
 
     /**
-     * 获取记录ID
+     * 获取二级分类ID
      *
-     * @return record_id - 记录ID
+     * @return dj_sub_type_id - 二级分类ID
      */
-    public Long getRecordId() {
-        return recordId;
+    public Long getDjSubTypeId() {
+        return djSubTypeId;
     }
 
     /**
-     * 设置记录ID
+     * 设置二级分类ID
      *
-     * @param recordId 记录ID
+     * @param djSubTypeId 二级分类ID
      */
-    public void setRecordId(Long recordId) {
-        this.recordId = recordId;
+    public void setDjSubTypeId(Long djSubTypeId) {
+        this.djSubTypeId = djSubTypeId;
     }
 
     /**
@@ -135,21 +163,39 @@ public class DjApply {
     }
 
     /**
-     * 获取申请人
+     * 获取申请人ID
      *
-     * @return apply_id - 申请人
+     * @return apply_id - 申请人ID
      */
     public Long getApplyId() {
         return applyId;
     }
 
     /**
-     * 设置申请人
+     * 设置申请人ID
      *
-     * @param applyId 申请人
+     * @param applyId 申请人ID
      */
     public void setApplyId(Long applyId) {
         this.applyId = applyId;
+    }
+
+    /**
+     * 获取申请人姓名
+     *
+     * @return apply_name - 申请人姓名
+     */
+    public String getApplyName() {
+        return applyName;
+    }
+
+    /**
+     * 设置申请人姓名
+     *
+     * @param applyName 申请人姓名
+     */
+    public void setApplyName(String applyName) {
+        this.applyName = applyName;
     }
 
     /**
@@ -189,11 +235,29 @@ public class DjApply {
     }
 
     /**
+     * 获取审批人姓名
+     *
+     * @return approver_name - 审批人姓名
+     */
+    public String getApproverName() {
+        return approverName;
+    }
+
+    /**
+     * 设置审批人姓名
+     *
+     * @param approverName 审批人姓名
+     */
+    public void setApproverName(String approverName) {
+        this.approverName = approverName;
+    }
+
+    /**
      * 获取部门ID
      *
      * @return dj_dept_id - 部门ID
      */
-    public Integer getDjDeptId() {
+    public Long getDjDeptId() {
         return djDeptId;
     }
 
@@ -202,7 +266,7 @@ public class DjApply {
      *
      * @param djDeptId 部门ID
      */
-    public void setDjDeptId(Integer djDeptId) {
+    public void setDjDeptId(Long djDeptId) {
         this.djDeptId = djDeptId;
     }
 
@@ -225,6 +289,42 @@ public class DjApply {
     }
 
     /**
+     * 获取业务表
+     *
+     * @return table_name - 业务表
+     */
+    public String getTableName() {
+        return tableName;
+    }
+
+    /**
+     * 设置业务表
+     *
+     * @param tableName 业务表
+     */
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    /**
+     * 获取记录ID
+     *
+     * @return record_id - 记录ID
+     */
+    public Long getRecordId() {
+        return recordId;
+    }
+
+    /**
+     * 设置记录ID
+     *
+     * @param recordId 记录ID
+     */
+    public void setRecordId(Long recordId) {
+        this.recordId = recordId;
+    }
+
+    /**
      * @return create_time
      */
     public Date getCreateTime() {
@@ -237,4 +337,12 @@ public class DjApply {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	public Float getScore() {
+		return score;
+	}
+
+	public void setScore(Float score) {
+		this.score = score;
+	}
 }
