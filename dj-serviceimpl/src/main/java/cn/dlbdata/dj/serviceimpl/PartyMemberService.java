@@ -12,6 +12,8 @@ import java.util.Map;
 import cn.dlbdata.dj.common.core.exception.DlbException;
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
+import cn.dlbdata.dj.common.core.util.PageUtils;
+import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.AuditStatusEnum;
@@ -23,6 +25,8 @@ import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -280,9 +284,10 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	 * @return
 	 */
 	@Override
-	public List<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId) {
+	public Paged<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId, int pageIndex, int pageSize) {
 		Calendar cale =  Calendar.getInstance();
 		int year = cale.get(Calendar.YEAR);
+		Page page = PageHelper.startPage(pageIndex, pageSize);
 		List<ObserveLowPartyMemberVo> voList = partyMemberMapper.getObserveLowPartyMember(deptId,year);
 		for (ObserveLowPartyMemberVo vo:voList) {
 			//取最后一条遵章守纪记录  没有记录则说明该党员未处理，有记录则取最后一条记录的状态
@@ -294,6 +299,6 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 				vo.setStatus(status);
 			}
 		}
-		return voList;
+		return PageUtils.toPaged(page, voList);
 	}
 }

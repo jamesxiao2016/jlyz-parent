@@ -54,6 +54,6 @@
     FROM
         dj_partymember pm
     WHERE
-        pm.dept_id = #{deptId};
+        pm.dept_id = #{deptId}
   </select>
 </mapper>

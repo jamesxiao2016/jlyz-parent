@@ -3,6 +3,7 @@ package cn.dlbdata.dj.web.controller.api.v1;
 import java.util.Calendar;
 import java.util.List;
 
+import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
 import cn.dlbdata.dj.service.IActiveService;
@@ -188,10 +189,16 @@ public class PartyMemberController extends BaseController {
 	 */
 	@GetMapping("/getDakDetialByDeptId")
 	@ResponseBody
-	public ResultVo<List<ObserveLowPartyMemberVo>> getObserveLowPartyMember(@RequestParam("deptId") Long deptId) {
-		List<ObserveLowPartyMemberVo> voList = partyMemberService.getObserveLowPartyMember(deptId);
-		ResultVo<List<ObserveLowPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
-		result.setData(voList);
+	public ResultVo<Paged<ObserveLowPartyMemberVo>> getObserveLowPartyMember(
+			@RequestParam("deptId") Long deptId,
+			@RequestParam(value = "pageIndex",required = false) Integer pageIndex,
+			@RequestParam(value = "pageSize",required = false) Integer pageSize) {
+		pageIndex = Paged.normalizePageIndex(pageIndex);
+		pageSize = Paged.normalizePageSize(pageSize);
+
+		Paged<ObserveLowPartyMemberVo> paged = partyMemberService.getObserveLowPartyMember(deptId,pageIndex,pageSize);
+		ResultVo<Paged<ObserveLowPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
+		result.setData(paged);
 		return result;
 	}
 
