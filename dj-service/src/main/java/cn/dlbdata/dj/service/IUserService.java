@@ -89,7 +89,7 @@ public interface IUserService {
 	 * @param id
 	 * @return
 	 */
-	public Double getSumScoreByUserId(Long userId, Integer year);
+	public Float getSumScoreByUserId(Long userId, Integer year);
 	
 	/**
 	 * 将党员数据导入到用户表中

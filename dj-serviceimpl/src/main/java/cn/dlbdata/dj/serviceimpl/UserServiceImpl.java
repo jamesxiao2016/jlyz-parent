@@ -242,9 +242,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 	}
 
 	@Override
-	public Double getSumScoreByUserId(Long userId, Integer year) {
+	public Float getSumScoreByUserId(Long userId, Integer year) {
 		if (userId == null) {
-			return 0D;
+			return 0F;
 		}
 		return scoreMapper.getSumScoreByUserId(userId, year);
 	}

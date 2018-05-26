@@ -25,6 +25,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
+import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
@@ -33,7 +34,6 @@ import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.service.IActiveUserService;
 import cn.dlbdata.dj.vo.ActiveVo;
-import cn.dlbdata.dj.vo.PageVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
 
@@ -66,8 +66,8 @@ public class ActiveController extends BaseController {
 	 */
 	@GetMapping(value = "/getParticipateActive")
 	@ResponseBody
-	public PageVo<List<Map<String, Object>>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
-		PageVo<List<Map<String, Object>>> result = new PageVo<>();
+	public PageVo<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
+		PageVo<Map<String, Object>> result = new PageVo<>();
 		UserVo data = getCurrentUserFromCache();
 		partyMemberLifeNotice.setUserId(data.getUserId());
 		partyMemberLifeNotice.setDepartmentId(data.getDeptId());

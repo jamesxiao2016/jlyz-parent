@@ -1,7 +1,10 @@
 package cn.dlbdata.dj.service;
 
+import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.vo.ApplyVo;
+import cn.dlbdata.dj.vo.AuditVo;
 import cn.dlbdata.dj.vo.DisciplineVo;
 import cn.dlbdata.dj.vo.ThoughtsVo;
 import cn.dlbdata.dj.vo.UserVo;
@@ -17,7 +20,7 @@ public interface IWorkflowService {
 	 *            当前登录用户
 	 * @return
 	 */
-	public String apply(ApplyVo vo, UserVo user);
+	public String doApply(ApplyVo vo, UserVo user);
 
 	/**
 	 * 遵章守纪申请
@@ -26,7 +29,7 @@ public interface IWorkflowService {
 	 * @param user
 	 * @return
 	 */
-	public ResultVo<Long> applyDiscipline(DisciplineVo param, UserVo user);
+	public ResultVo<Long> doApplyDiscipline(DisciplineVo param, UserVo user);
 
 	/**
 	 * 先锋作用申请
@@ -35,7 +38,7 @@ public interface IWorkflowService {
 	 * @param user
 	 * @return
 	 */
-	public ResultVo<Long> applyVanguard(VanguardVo[] params, UserVo user);
+	public ResultVo<Long> doApplyVanguard(VanguardVo[] params, UserVo user);
 
 	/**
 	 * 思想汇报申请
@@ -44,7 +47,7 @@ public interface IWorkflowService {
 	 * @param user
 	 * @return
 	 */
-	public ResultVo<Long> applyThoughts(ThoughtsVo param, UserVo user);
+	public ResultVo<Long> doApplyThoughts(ThoughtsVo param, UserVo user);
 
 	/**
 	 * 业务审批
@@ -59,5 +62,25 @@ public interface IWorkflowService {
 	 *            当前登录用户
 	 * @return
 	 */
-	public ResultVo<String> audit(Long id, Integer result, String content, UserVo user);
+	public ResultVo<String> doAudit(AuditVo auditVo, UserVo user);
+
+	/**
+	 * 获取待办列表
+	 * 
+	 * @param userId
+	 *            用户ID
+	 * @param deptId
+	 *            部门ID
+	 * @param typeId
+	 *            分类ID
+	 * @param roleId
+	 *            角色ID
+	 * @param pageNo
+	 *            页数
+	 * @param pageSize
+	 *            每页显示数量
+	 * @return
+	 */
+	public PageVo<DjApply> getPendingList(Long userId, Long deptId, Long typeId, Long roleId, Integer pageNum,
+			Integer pageSize);
 }

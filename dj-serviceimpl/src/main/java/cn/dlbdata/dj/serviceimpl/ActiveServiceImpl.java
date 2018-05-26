@@ -14,6 +14,7 @@ import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
+import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.DjActiveDeptMapper;
@@ -31,7 +32,6 @@ import cn.dlbdata.dj.service.IWorkflowService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.ActiveVo;
 import cn.dlbdata.dj.vo.ApplyVo;
-import cn.dlbdata.dj.vo.PageVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
 import cn.dlbdata.dj.vo.study.StudyDetailVo;
@@ -92,9 +92,9 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	}
 
 	@Override
-	public PageVo<List<Map<String, Object>>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
+	public PageVo<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
 
-		PageVo<List<Map<String, Object>>> result = new PageVo<>();
+		PageVo<Map<String, Object>> result = new PageVo<>();
 		if (partyMemberLifeNotice == null) {
 			return result;
 		}

@@ -1,28 +1,27 @@
 package cn.dlbdata.dj.common.core.web.vo;
 
-public class BaseVo {
-	private String result;
-	private String msg;
+import java.io.Serializable;
+
+public class BaseVo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	// 错误码
+	protected int code = 200;
+	// 错误消息
+	protected String msg;
 
 	public BaseVo() {
 
 	}
 
-	public BaseVo(String result) {
-		this.result = result;
+	public int getCode() {
+		return code;
 	}
 
-	public BaseVo(String result, String msg) {
-		this.result = result;
-		this.msg = msg;
-	}
-
-	public String getResult() {
-		return result;
-	}
-
-	public void setResult(String result) {
-		this.result = result;
+	public void setCode(int code) {
+		this.code = code;
 	}
 
 	public String getMsg() {

@@ -23,6 +23,8 @@ public class ApplyVo {
 	private Long userId;
 	// 加分人姓名
 	private String userName;
+	// 审批角色ID
+	private Long roleId;
 
 	public Long getDjTypeId() {
 		return djTypeId;
@@ -110,6 +112,14 @@ public class ApplyVo {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public Long getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
 	}
 
 }

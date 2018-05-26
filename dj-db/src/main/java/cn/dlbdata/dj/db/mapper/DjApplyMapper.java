@@ -8,7 +8,7 @@ import tk.mybatis.mapper.common.Mapper;
 
 public interface DjApplyMapper extends Mapper<DjApply> {
 	/**
-	 * 获取待办业务列表
+	 * 获取待办列表
 	 * 
 	 * @param map
 	 * @return

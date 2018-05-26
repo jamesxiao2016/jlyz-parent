@@ -24,12 +24,23 @@
 	</resultMap>
 
 	<select id="getSumScoreByUserId" parameterType="Map"
-		resultType="java.lang.Double">
+		resultType="java.lang.Float">
 		select sum(score) from dj_score where user_id=#{userId} and add_year=#{year}
+	</select>
+	
+	<select id="getSumScoreByUserIdAndType" parameterType="Map"
+		resultType="java.lang.Float">
+		select sum(score) from dj_score where user_id=#{userId} and add_year=#{year}
+		<if test="djTypeId != null">
+			and dj_type_id=#{djTypeId}
+		</if>
+		<if test="djSubTypeId != null">
+			AND dj_sub_type_id = #{djSubTypeId}
+		</if>
 	</select>
 
 	<select id="getSumScoreByTypeIdAndUserId" parameterType="Map"
-		resultType="java.lang.Double">
+		resultType="java.lang.Float">
 		select sum(score) from dj_score where user_id=#{userId} and add_year=#{year}
 		<if test="typeId != null">
 			and dj_type_id=#{typeId}

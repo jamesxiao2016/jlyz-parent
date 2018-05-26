@@ -98,12 +98,23 @@ public class DjApply {
      */
     @Column(name = "user_name")
     private String userName;
-    
-    @Transient
-    private String typeName;
-    
-    @Transient
-    private String subName;
+
+    /**
+     * 审批角色ID
+     */
+    @Column(name = "dj_role_id")
+    private Long djRoleId;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
+    /**
+     * 审批时间
+     */
+    @Column(name = "approve_time")
+    private Date approveTime;
 
     /**
      * 获取记录ID
@@ -403,19 +414,57 @@ public class DjApply {
         this.userName = userName;
     }
 
-	public String getTypeName() {
-		return typeName;
-	}
+    /**
+     * 获取审批角色ID
+     *
+     * @return dj_role_id - 审批角色ID
+     */
+    public Long getDjRoleId() {
+        return djRoleId;
+    }
 
-	public void setTypeName(String typeName) {
-		this.typeName = typeName;
-	}
+    /**
+     * 设置审批角色ID
+     *
+     * @param djRoleId 审批角色ID
+     */
+    public void setDjRoleId(Long djRoleId) {
+        this.djRoleId = djRoleId;
+    }
 
-	public String getSubName() {
-		return subName;
-	}
+    /**
+     * 获取备注
+     *
+     * @return remark - 备注
+     */
+    public String getRemark() {
+        return remark;
+    }
 
-	public void setSubName(String subName) {
-		this.subName = subName;
-	}
+    /**
+     * 设置备注
+     *
+     * @param remark 备注
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    /**
+     * 获取审批时间
+     *
+     * @return approve_time - 审批时间
+     */
+    public Date getApproveTime() {
+        return approveTime;
+    }
+
+    /**
+     * 设置审批时间
+     *
+     * @param approveTime 审批时间
+     */
+    public void setApproveTime(Date approveTime) {
+        this.approveTime = approveTime;
+    }
 }

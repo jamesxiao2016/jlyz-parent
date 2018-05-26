@@ -16,7 +16,7 @@ public interface DjScoreMapper extends Mapper<DjScore> {
 	 * @param year
 	 * @return
 	 */
-    Double getSumScoreByTypeIdAndUserId(@Param("projectId")Integer projectId, @Param("userId")Integer  userId , @Param("year") Integer year);
+    Float getSumScoreByTypeIdAndUserId(@Param("userId")Integer  userId , @Param("year") Integer year);
 
     /**
      * 获取用户的总积分
@@ -24,7 +24,7 @@ public interface DjScoreMapper extends Mapper<DjScore> {
      * @param year
      * @return
      */
-    Double getSumScoreByUserId(@Param("userId")Long  userId , @Param("year") Integer year);
+    Float getSumScoreByUserId(@Param("userId")Long  userId , @Param("year") Integer year);
     
     /**
      * 获取积分明细
@@ -66,7 +66,7 @@ public interface DjScoreMapper extends Mapper<DjScore> {
 	 *            二级分类ID
 	 * @return
 	 */
-	public Float getSumScoreByUserIdAndYear(@Param("userId") Long userId, @Param("year") Integer year,
+	public Float getSumScoreByUserIdAndType(@Param("userId") Long userId, @Param("year") Integer year,
 			@Param("djTypeId") Long djTypeId, @Param("djSubTypeId") Long djSubTypeId);
     
 }

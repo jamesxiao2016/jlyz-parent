@@ -3,25 +3,30 @@ package cn.dlbdata.dj.web.controller.api.v1;
 import java.util.Calendar;
 import java.util.List;
 
-import cn.dlbdata.dj.common.core.util.Paged;
-import cn.dlbdata.dj.common.core.util.constant.CoreConst;
-import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
-import cn.dlbdata.dj.service.IActiveService;
-import cn.dlbdata.dj.vo.UserVo;
-import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
-import cn.dlbdata.dj.vo.party.PioneeringPartyMemberVo;
-import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.dlbdata.dj.common.core.util.Paged;
+import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjScore;
+import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
+import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
+import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.vo.PartyVo;
+import cn.dlbdata.dj.vo.UserVo;
+import cn.dlbdata.dj.vo.party.PioneeringPartyMemberVo;
+import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
 import cn.dlbdata.dj.web.base.BaseController;
 
 /**
@@ -64,14 +69,14 @@ public class PartyMemberController extends BaseController {
 	 */
 	@GetMapping("/getSumScoreByUserId")
 	@ResponseBody
-	public ResultVo<Double> getSumScoreByUserId(Long userId, Integer year) {
-		ResultVo<Double> result = new ResultVo<>(ResultCode.OK.getCode());
+	public ResultVo<Float> getSumScoreByUserId(Long userId, Integer year) {
+		ResultVo<Float> result = new ResultVo<>(ResultCode.OK.getCode());
 		if (year == null) {
 			year = Calendar.getInstance().get(Calendar.YEAR);
 		}
-		Double score = userService.getSumScoreByUserId(userId, year);
+		Float score = userService.getSumScoreByUserId(userId, year);
 		if (score == null) {
-			score = 0D;
+			score = 0F;
 		}
 		result.setData(score);
 		return result;

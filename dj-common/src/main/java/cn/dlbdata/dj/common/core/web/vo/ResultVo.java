@@ -1,7 +1,5 @@
 package cn.dlbdata.dj.common.core.web.vo;
 
-import java.io.Serializable;
-
 /**
  * 返回结果对象
  * 
@@ -9,15 +7,11 @@ import java.io.Serializable;
  *
  * @param <T>
  */
-public class ResultVo<T> implements Serializable {
+public class ResultVo<T> extends BaseVo {
 
 	private static final long serialVersionUID = -4468686331988970001L;
-	// 错误码
-	protected int code = 200;
-	// 错误消息
-	protected String msg;
 	// 返回的数据（code == 200时有数据）
-	private T data;
+	protected T data;
 
 	public ResultVo() {
 

@@ -17,6 +17,9 @@
     <result column="record_id" jdbcType="BIGINT" property="recordId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="score" jdbcType="REAL" property="score" />
+    <result column="dj_role_id" jdbcType="BIGINT" property="djRoleId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="approve_time" jdbcType="TIMESTAMP" property="approveTime" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="type_name" jdbcType="VARCHAR" property="typeName" />
@@ -30,7 +33,10 @@
   	<where>
   		d.approver_id = #{userId}
   		<if test="deptId != null">
-  			d.dj_dept_id = #{deptId}
+  			and d.dj_dept_id = #{deptId}
+  		</if>
+  		<if test="typeId != null">
+  			and d.dj_type_id = #{typeId}
   		</if>
   	</where>
   </select>

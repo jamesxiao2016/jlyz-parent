@@ -2,13 +2,21 @@ package cn.dlbdata.dj.serviceimpl;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
 import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
+import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
@@ -44,6 +52,7 @@ import cn.dlbdata.dj.db.pojo.DjVanguard;
 import cn.dlbdata.dj.service.IWorkflowService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.ApplyVo;
+import cn.dlbdata.dj.vo.AuditVo;
 import cn.dlbdata.dj.vo.DisciplineVo;
 import cn.dlbdata.dj.vo.ThoughtsVo;
 import cn.dlbdata.dj.vo.UserVo;
@@ -73,8 +82,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	private DjVanguardMapper vanguardMapper;
 	@Autowired
 	private DjPicRecordMapper picRecordMapper;
-//	@Autowired
-//	private DjQueryMapper queryMapper;
+	// @Autowired
+	// private DjQueryMapper queryMapper;
 	@Autowired
 	private DjTypeMapper typeMapper;
 	@Autowired
@@ -83,7 +92,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	private DjScoreMapper scoreMapper;
 
 	@Override
-	public String apply(ApplyVo vo, UserVo user) {
+	@Transactional
+	public String doApply(ApplyVo vo, UserVo user) {
 
 		if (vo == null || user == null) {
 			logger.error("参数错误");
@@ -105,6 +115,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		record.setApplyName(user.getUserName());
 		record.setUserId(vo.getUserId());
 		record.setUserName(vo.getUserName());
+		record.setDjRoleId(vo.getRoleId());
 		DjUser approver = null;
 
 		if (vo.getDjTypeId() == ActiveTypeEnum.ACTIVE_A.getActiveId()
@@ -170,17 +181,18 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	}
 
 	@Override
-	public ResultVo<String> audit(Long id, Integer result, String content, UserVo user) {
+	@Transactional
+	public ResultVo<String> doAudit(AuditVo auditVo, UserVo user) {
 		ResultVo<String> resultVo = new ResultVo<>(ResultCode.ParameterError.getCode());
-		if (id == null || result == null || user == null) {
+		if (auditVo == null || auditVo.getId() == null || auditVo.getResult() == null || user == null) {
 			logger.error("id is null Or result is null Or user is null");
 			resultVo.setMsg("参数不完整");
 			return resultVo;
 		}
 
-		DjApply apply = applyMapper.selectByPrimaryKey(id);
+		DjApply apply = applyMapper.selectByPrimaryKey(auditVo.getId());
 		if (apply == null) {
-			logger.error("申请记录查询失败" + id);
+			logger.error("申请记录查询失败" + auditVo.getId());
 			resultVo.setCode(ResultCode.NotFound.getCode());
 			resultVo.setMsg("审核失败");
 			return resultVo;
@@ -199,7 +211,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			resultVo.setMsg("审核失败");
 			return resultVo;
 		}
-
+		Integer result = auditVo.getResult();
 		switch (apply.getTableName()) {
 		case DlbConstant.TABLE_NAME_STUDY:
 			DjStudy study = studyMapper.selectByPrimaryKey(apply.getRecordId());
@@ -240,16 +252,35 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			break;
 		}
 
+		// 更新申请记录表
+		apply.setStatus(auditVo.getResult());
+		apply.setRemark(auditVo.getContent());
+		apply.setApproveTime(new Date());
+		applyMapper.updateByPrimaryKeySelective(apply);
+
 		// 写入积分记录表
 		// 根据类型判断最大分数
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		Float subTypeMaxScore = subType.getMaxScore();
+		if (subTypeMaxScore == null) {
+			subTypeMaxScore = 0F;
+		}
 		Float typeMaxScore = type.getMaxScore();
-		Float userSubTypeScore = scoreMapper.getSumScoreByUserIdAndYear(apply.getUserId(), year, null,
+		if (typeMaxScore == null) {
+			typeMaxScore = type.getScore();
+			if (typeMaxScore == null)
+				typeMaxScore = 0F;
+		}
+		Float userSubTypeScore = scoreMapper.getSumScoreByUserIdAndType(apply.getUserId(), year, null,
 				apply.getDjSubTypeId());
-		Float userTypeScore = scoreMapper.getSumScoreByUserIdAndYear(apply.getUserId(), year, apply.getDjTypeId(),
+		if (userSubTypeScore == null) {
+			userSubTypeScore = 0F;
+		}
+		Float userTypeScore = scoreMapper.getSumScoreByUserIdAndType(apply.getUserId(), year, apply.getDjTypeId(),
 				null);
-
+		if (userTypeScore == null) {
+			userTypeScore = 0F;
+		}
 		// 积分没有积满，则往积分表中插入记录
 		if (userSubTypeScore < subTypeMaxScore && userTypeScore < typeMaxScore) {
 			DjScore record = new DjScore();
@@ -262,11 +293,11 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			record.setDjSubTypeId(apply.getDjSubTypeId());
 			record.setDjTypeId(apply.getDjTypeId());
 			record.setRecordId(apply.getRecordId());
-			//record.setRecrodDesc(apply.get);
-//			record.setScoreDesc(scoreDesc);
+			// record.setRecrodDesc(apply.get);
+			// record.setScoreDesc(scoreDesc);
 			record.setStatus(1);
 			record.setUserId(apply.getUserId());
-			//record.setUserName(apply.getUserName());
+			// record.setUserName(apply.getUserName());
 			Float score = apply.getScore();
 			// 公益服务,处理9分的问题
 			if (apply.getDjTypeId() == ActiveTypeEnum.ACTIVE_F.getActiveId()) {
@@ -282,10 +313,10 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		// 插入审批记录表
 		DjApprove approve = new DjApprove();
 		approve.setApproveResult(result);
-		approve.setApproveDesc(content);
+		approve.setApproveDesc(auditVo.getContent());
 		approve.setApproverId(user.getUserId());
 		approve.setApproveTime(new Date());
-		approve.setDjApplyId(id);
+		approve.setDjApplyId(auditVo.getId());
 		approve.setStatus(1);
 		approveMapper.insertSelective(approve);
 
@@ -295,7 +326,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	}
 
 	@Override
-	public ResultVo<Long> applyDiscipline(DisciplineVo param, UserVo user) {
+	@Transactional
+	public ResultVo<Long> doApplyDiscipline(DisciplineVo param, UserVo user) {
 		ResultVo<Long> result = new ResultVo<>();
 		if (param == null || user == null) {
 			result.setCode(ResultCode.ParameterError.getCode());
@@ -337,7 +369,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		vo.setRemark("遵章守纪申请");
 		// vo.setScore(score);
 		vo.setTableName(DlbConstant.TABLE_NAME_DISCIPLINE);
-		String rs = apply(vo, user);
+		String rs = doApply(vo, user);
 		if (!CoreConst.SUCCESS.equals(rs)) {
 			logger.info("提交申请失败");
 			result.setCode(ResultCode.Forbidden.getCode());
@@ -350,7 +382,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	}
 
 	@Override
-	public ResultVo<Long> applyVanguard(VanguardVo[] params, UserVo user) {
+	@Transactional
+	public ResultVo<Long> doApplyVanguard(VanguardVo[] params, UserVo user) {
 		ResultVo<Long> result = new ResultVo<>();
 		if (params == null || user == null) {
 			result.setCode(ResultCode.ParameterError.getCode());
@@ -393,7 +426,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			vo.setRemark("获得荣誉申请");
 
 			vo.setTableName(DlbConstant.TABLE_NAME_VANGUARD);
-			String rs = apply(vo, user);
+			String rs = doApply(vo, user);
 			if (!CoreConst.SUCCESS.equals(rs)) {
 				logger.info("提交申请失败");
 				result.setCode(ResultCode.Forbidden.getCode());
@@ -406,7 +439,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	}
 
 	@Override
-	public ResultVo<Long> applyThoughts(ThoughtsVo param, UserVo user) {
+	@Transactional
+	public ResultVo<Long> doApplyThoughts(ThoughtsVo param, UserVo user) {
 		ResultVo<Long> result = new ResultVo<>();
 		if (param == null || user == null) {
 			result.setCode(ResultCode.ParameterError.getCode());
@@ -469,5 +503,35 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		}
 
 		return CoreConst.SUCCESS;
+	}
+
+	@Override
+	public PageVo<DjApply> getPendingList(Long userId, Long deptId, Long typeId, Long roleId, Integer pageNum,
+			Integer pageSize) {
+		if (pageNum == null) {
+			pageNum = 1;
+		}
+
+		if (pageSize == null) {
+			pageSize = 10;
+		}
+		PageVo<DjApply> result = new PageVo<>();
+		Page<DjApply> page = PageHelper.startPage(pageNum, pageSize);
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("userId", userId);
+		paramMap.put("deptId", deptId);
+		paramMap.put("typeId", typeId);
+		paramMap.put("roleId", roleId);
+		List<DjApply> dataList = applyMapper.getPendingList(paramMap);
+
+		if (!page.isEmpty()) {
+			result.setCode(ResultCode.OK.getCode());
+			result.setData(dataList);
+			result.setPageNum(page.getPageNum());
+			result.setTotal(page.getTotal());
+			result.setPageSize(page.getPageSize());
+			result.setPageTotal(page.getPages());
+		}
+		return result;
 	}
 }
