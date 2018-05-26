@@ -98,6 +98,12 @@ public class DjApply {
      */
     @Column(name = "user_name")
     private String userName;
+    
+    @Transient
+    private String typeName;
+    
+    @Transient
+    private String subName;
 
     /**
      * 获取记录ID
@@ -396,4 +402,20 @@ public class DjApply {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public String getSubName() {
+		return subName;
+	}
+
+	public void setSubName(String subName) {
+		this.subName = subName;
+	}
 }
