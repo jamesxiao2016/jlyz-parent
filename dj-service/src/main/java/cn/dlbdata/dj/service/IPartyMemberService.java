@@ -2,6 +2,7 @@ package cn.dlbdata.dj.service;
 
 import java.util.List;
 
+import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
@@ -100,5 +101,5 @@ public interface IPartyMemberService {
 	 * @param deptId 支部Id
 	 * @return
 	 */
-	List<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId);
+	Paged<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId, int pageIndex, int pageSize);
 }
