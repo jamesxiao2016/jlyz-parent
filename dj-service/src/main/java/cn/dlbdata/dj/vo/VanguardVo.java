@@ -11,7 +11,7 @@ public class VanguardVo {
 	// 用户ID
 	private Long userId;
 	// 用户姓名
-	private Long userName;
+	private String userName;
 	// 用户所在部门
 	private Long deptId;
 	// 类型（subTypeId)
@@ -31,11 +31,11 @@ public class VanguardVo {
 		this.userId = userId;
 	}
 
-	public Long getUserName() {
+	public String getUserName() {
 		return userName;
 	}
 
-	public void setUserName(Long userName) {
+	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 

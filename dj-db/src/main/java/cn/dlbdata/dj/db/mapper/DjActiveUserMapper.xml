@@ -14,20 +14,26 @@
     <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
   </resultMap>
   
-  
-  
-  
-  
-    <resultMap id="BaseResultMapTwo" type="cn.dlbdata.dj.vo.ActiveVo">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="dj_active_id" jdbcType="BIGINT" property="djActiveId" />
-    <result column="dj_user_id" jdbcType="BIGINT" property="djUserId" />
+  <resultMap id="BaseResultMapTwo" type="cn.dlbdata.dj.db.pojo.DjActive">
+	<id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="dj_type_id" jdbcType="BIGINT" property="djTypeId" />
+    <result column="dj_sub_type_id" jdbcType="BIGINT" property="djSubTypeId" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="principal_name" jdbcType="VARCHAR" property="principalName" />
+    <result column="has_audit" jdbcType="INTEGER" property="hasAudit" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+    <result column="dj_pic_id" jdbcType="BIGINT" property="djPicId" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="dj_dept_id" jdbcType="BIGINT" property="djDeptId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+
     <result column="name" jdbcType="VARCHAR" property="activeName" />
 	<result column="dj_type_id" jdbcType="INTEGER" property="typeId" />
 	<result column="dj_sub_type_id" jdbcType="INTEGER" property="subTypeId" />
@@ -45,14 +51,20 @@
 	<result column="active_type_name" jdbcType="VARCHAR" property="activeTypeName" />
 	<result column="sub_active_type_name" jdbcType="VARCHAR" property="subActiveTypeName" />
 	<result column="sub_active_type_content" jdbcType="VARCHAR" property="subActiveTypeContent" />
+
   </resultMap>
   
   
   
   <select id="getMyJoinActive" parameterType="map" resultMap="BaseResultMapTwo">
   	SELECT
+
   		t.name, t.dj_type_id, t.dj_sub_type_id, t.address, t.principal_name, t.has_audit, t.start_time, t.end_time, t.content, t.create_user_id, t.dj_pic_id, t.create_time,
   		du.user_name, dtu.id, dtu.dj_active_id, dtu.dj_user_id, dtu.status, dtu.create_time, dtu.sign_time, dt.name active_type_name, dst.name sub_active_type_name, dst.content sub_active_type_content
+
+  		t.id, t.name, t.dj_type_id, t.dj_sub_type_id, t.address, t.principal_name, t.start_time, t.end_time, t.content, t.create_user_id, t.dj_pic_id, t.create_time,
+  		du.user_name, dtu.dj_user_id user_id, dtu.status, dtu.sign_time, dt.name active_type_name, dst.name sub_active_type_name, dst.content sub_active_type_content
+
   	FROM
   		dj_active_user dtu
   	LEFT JOIN dj_active t  ON dtu.dj_active_id =  t.id

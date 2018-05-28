@@ -94,6 +94,27 @@ public class DjActive {
     @Column(name = "user_name")
     private String userName;
     
+    @Transient
+    @Column(name = "user_id")
+    private Long userId;
+    
+    @Transient
+    @Column(name = "sign_time")
+    private Date signTime;
+    
+    @Transient
+    @Column(name = "activeTypeName")
+    private String activeTypeName;
+    
+    @Transient
+    private String subActiveTypeName;
+    
+    @Transient
+    private String subActiveTypeContent;
+    
+    @Transient
+    private Long[] picIds;
+    
 	/**
      * 获取记录ID
      *
@@ -377,5 +398,53 @@ public class DjActive {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Date getSignTime() {
+		return signTime;
+	}
+
+	public void setSignTime(Date signTime) {
+		this.signTime = signTime;
+	}
+
+	public String getActiveTypeName() {
+		return activeTypeName;
+	}
+
+	public void setActiveTypeName(String activeTypeName) {
+		this.activeTypeName = activeTypeName;
+	}
+
+	public String getSubActiveTypeName() {
+		return subActiveTypeName;
+	}
+
+	public void setSubActiveTypeName(String subActiveTypeName) {
+		this.subActiveTypeName = subActiveTypeName;
+	}
+
+	public String getSubActiveTypeContent() {
+		return subActiveTypeContent;
+	}
+
+	public void setSubActiveTypeContent(String subActiveTypeContent) {
+		this.subActiveTypeContent = subActiveTypeContent;
+	}
+
+	public Long[] getPicIds() {
+		return picIds;
+	}
+
+	public void setPicIds(Long[] picIds) {
+		this.picIds = picIds;
+	}
 
 }
