@@ -152,35 +152,41 @@ public class PartyMemberController extends BaseController {
 
 	/**
 	 * 支书查询先锋评定党员列表
+	 * 
 	 * @param deptId
 	 * @return
 	 */
 	@GetMapping("/getPartymembersByDeptIdForPioneering")
 	@ResponseBody
-	public ResultVo<List<PioneeringPartyMemberVo>> getPioneeringPartyMembers(@RequestParam(value = "deptId") Long deptId) {
+	public ResultVo<List<PioneeringPartyMemberVo>> getPioneeringPartyMembers(
+			@RequestParam(value = "deptId") Long deptId) {
 		List<PioneeringPartyMemberVo> voList = partyMemberService.getPioneeringPartyMembers(deptId);
 		ResultVo<List<PioneeringPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		result.setData(voList);
 		return result;
 	}
-	
+
 	/**
 	 * 
-	 * <p>Title: getPartyMemberListByDeptId</p> 
-	 * <p>Description: 根据部门ID获取党员列表</p> 
+	 * <p>
+	 * Title: getPartyMemberListByDeptId
+	 * </p>
+	 * <p>
+	 * Description: 根据部门ID获取党员列表
+	 * </p>
+	 * 
 	 * @return
 	 */
 	@GetMapping("/queryAllPartyMembersByDeptId")
 	@ResponseBody
-	public ResultVo<List<DjPartymember>> queryAllPartyMembersByDeptId(){
+	public ResultVo<List<DjPartymember>> queryAllPartyMembersByDeptId() {
 		ResultVo<List<DjPartymember>> result = new ResultVo<>();
-//		UserVo data = getCurrentUserFromCache();
+		// UserVo data = getCurrentUserFromCache();
 		List<DjPartymember> list = partyMemberService.queryAllPartyMembersByDeptId(0L);
-		if(list == null || list.size() == 0) {
+		if (list == null || list.size() == 0) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("该党支部没有信息");
-		}
-		else {
+		} else {
 			result.setCode(ResultCode.OK.getCode());
 			result.setData(list);
 		}
@@ -189,19 +195,20 @@ public class PartyMemberController extends BaseController {
 
 	/**
 	 * 违章守纪评分党员列表
-	 * @param deptId 支部Id
+	 * 
+	 * @param deptId
+	 *            支部Id
 	 * @return
 	 */
 	@GetMapping("/getDakDetialByDeptId")
 	@ResponseBody
-	public ResultVo<Paged<ObserveLowPartyMemberVo>> getObserveLowPartyMember(
-			@RequestParam("deptId") Long deptId,
-			@RequestParam(value = "pageIndex",required = false) Integer pageIndex,
-			@RequestParam(value = "pageSize",required = false) Integer pageSize) {
-		pageIndex = Paged.normalizePageIndex(pageIndex);
+	public ResultVo<Paged<ObserveLowPartyMemberVo>> getObserveLowPartyMember(@RequestParam("deptId") Long deptId,
+			@RequestParam(value = "pageIndex", required = false) Integer pageNum,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+		pageNum = Paged.normalizePageIndex(pageNum);
 		pageSize = Paged.normalizePageSize(pageSize);
 
-		Paged<ObserveLowPartyMemberVo> paged = partyMemberService.getObserveLowPartyMember(deptId,pageIndex,pageSize);
+		Paged<ObserveLowPartyMemberVo> paged = partyMemberService.getObserveLowPartyMember(deptId, pageNum, pageSize);
 		ResultVo<Paged<ObserveLowPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		result.setData(paged);
 		return result;

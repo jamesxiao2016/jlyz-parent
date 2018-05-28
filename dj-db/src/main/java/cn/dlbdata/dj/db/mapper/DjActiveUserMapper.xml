@@ -14,7 +14,7 @@
     <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
   </resultMap>
   
-  <resultMap id="BaseResultMapTwo" type="cn.dlbdata.dj.db.pojo.DjActive">
+  <resultMap id="ActiveResultMap" type="cn.dlbdata.dj.db.pojo.DjActive">
 	<id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="dj_type_id" jdbcType="BIGINT" property="djTypeId" />
@@ -54,16 +54,18 @@
 
   </resultMap>
   
-  
-  
-  <select id="getMyJoinActive" parameterType="map" resultMap="BaseResultMapTwo">
+  <select id="getMyJoinActive" parameterType="map" resultMap="ActiveResultMap">
   	SELECT
 
   		t.name, t.dj_type_id, t.dj_sub_type_id, t.address, t.principal_name, t.has_audit, t.start_time, t.end_time, t.content, t.create_user_id, t.dj_pic_id, t.create_time,
   		du.user_name, dtu.id, dtu.dj_active_id, dtu.dj_user_id, dtu.status, dtu.create_time, dtu.sign_time, dt.name active_type_name, dst.name sub_active_type_name, dst.content sub_active_type_content
 
   		t.id, t.name, t.dj_type_id, t.dj_sub_type_id, t.address, t.principal_name, t.start_time, t.end_time, t.content, t.create_user_id, t.dj_pic_id, t.create_time,
+
   		du.user_name, dtu.dj_user_id user_id, dtu.status, dtu.sign_time, dt.name active_type_name, dst.name sub_active_type_name, dst.content sub_active_type_content
+
+
+  		du.user_name, dtu.dj_user_id user_id, dtu.dj_dept_id, dtu.status, dtu.sign_time, dt.name activeTypeName, dst.name subActiveTypeName, dst.content subActiveTypeContent
 
   	FROM
   		dj_active_user dtu

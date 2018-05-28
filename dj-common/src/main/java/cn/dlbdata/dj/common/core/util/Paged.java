@@ -3,64 +3,66 @@ package cn.dlbdata.dj.common.core.util;
 import java.util.List;
 
 public class Paged<T> {
-    private int pageSize;//每页数据量
-    private int pageIndex;//第几页
-    private long totalElements;//总数据量
-    private int totalPages;//总页数
-    private List<T> content;
+	private int pageSize;// 每页数据量
+	private int pageNum;// 第几页
+	private long total;// 总数据量
+	private int pages;// 总页数
+	private List<T> data;
 
-    public Paged(int pageSize, int pageIndex, long totalElements, int totalPages, List<T> content) {
-        this.pageSize = pageSize;
-        this.pageIndex = pageIndex;
-        this.totalElements = totalElements;
-        this.totalPages = totalPages;
-        this.content = content;
-    }
+	public Paged(int pageSize, int pageNum, long total, int pages, List<T> data) {
+		this.pageSize = pageSize;
+		this.pageNum = pageNum;
+		this.total = total;
+		this.pages = pages;
+		this.data = data;
+	}
 
-    public int getPageSize() {
-        return pageSize;
-    }
+	public int getPageSize() {
+		return pageSize;
+	}
 
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
 
-    public int getPageIndex() {
-        return pageIndex;
-    }
+	public int getPageNum() {
+		return pageNum;
+	}
 
-    public void setPageIndex(int pageIndex) {
-        this.pageIndex = pageIndex;
-    }
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
+	}
 
-    public long getTotalElements() {
-        return totalElements;
-    }
+	public long getTotal() {
+		return total;
+	}
 
-    public void setTotalElements(long totalElements) {
-        this.totalElements = totalElements;
-    }
+	public void setTotal(long total) {
+		this.total = total;
+	}
 
-    public int getTotalPages() {
-        return totalPages;
-    }
+	public int getPages() {
+		return pages;
+	}
 
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
-    }
+	public void setPages(int pages) {
+		this.pages = pages;
+	}
 
-    public List<T> getContent() {
-        return content;
-    }
+	public List<T> getData() {
+		return data;
+	}
 
-    public void setContent(List<T> content) {
-        this.content = content;
-    }
-    public static int normalizePageSize(Integer pageSize) {
-        return pageSize == null ? 10 : pageSize;
-    }
-    public static int normalizePageIndex(Integer pageIndex) {
-        return pageIndex ==null ? 1 :pageIndex;
+	public void setData(List<T> data) {
+		this.data = data;
+	}
 
-    }
+	public static int normalizePageSize(Integer pageSize) {
+		return pageSize == null ? 10 : pageSize;
+	}
+
+	public static int normalizePageIndex(Integer pageIndex) {
+		return pageIndex == null ? 1 : pageIndex;
+
+	}
 }
