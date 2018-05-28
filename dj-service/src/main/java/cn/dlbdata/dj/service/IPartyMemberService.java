@@ -9,8 +9,8 @@ import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
 import cn.dlbdata.dj.vo.PartyVo;
 import cn.dlbdata.dj.vo.UserVo;
-import cn.dlbdata.dj.vo.party.PioneeringPartyMemberVo;
-import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
 
 /**
  * 党员相关的业务逻辑
@@ -71,8 +71,7 @@ public interface IPartyMemberService {
 	 * @param subTypeId 子活动ID  11："思想汇报自主汇报"，12："思想汇报书面汇报"
 	 * @return 思想汇报评分查询党员列表
 	 */
-	List<ReportPartyMemberVo> getReportPartyMember(long deptId,
-												   long subTypeId);
+	Paged<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId,int pageNum, int pageSize);
 
 
 	/**
@@ -86,7 +85,7 @@ public interface IPartyMemberService {
 	 * @param deptId
 	 * @return
 	 */
-	List<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId);
+	Paged<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId,int pageNum, int pageSize);
 	/**
 	 * 
 	 * <p>Title: queryAllPartyMembersByDeptId</p> 

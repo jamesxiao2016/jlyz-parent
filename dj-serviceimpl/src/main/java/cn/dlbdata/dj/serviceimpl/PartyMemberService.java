@@ -23,8 +23,8 @@ import cn.dlbdata.dj.db.pojo.*;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
 import cn.dlbdata.dj.vo.UserVo;
-import cn.dlbdata.dj.vo.party.PioneeringPartyMemberVo;
-import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,7 +113,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	}
 
 	@Override
-	public List<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId) {
+	public Paged<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId,int pageNum, int pageSize) {
 		if (subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId()
 				&& subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_L.getActiveSubId()) {
 			throw new DlbException("subTypeId不合法!");
@@ -121,16 +121,10 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		Calendar ca = Calendar.getInstance();
 		int year = ca.get(Calendar.YEAR);
 		System.out.println(year);
-		List<DjPartymember> pojoList = partyMemberMapper.getReportPartyMember(deptId);
-		List<ReportPartyMemberVo> voList = new ArrayList<>();
-		for (DjPartymember pojo : pojoList) {
-			ReportPartyMemberVo vo = new ReportPartyMemberVo();
-			vo.setId(pojo.getId());
-			vo.setName(pojo.getName());
+		Page<ReportPartyMemberVo> page = PageHelper.startPage(pageNum, pageSize);
+		List<ReportPartyMemberVo> voList = partyMemberMapper.getReportPartyMembers(deptId);
+		for (ReportPartyMemberVo vo:voList) {
 			vo.setSubTypeId(subTypeId);
-			vo.setDeptId(pojo.getDeptId());
-			vo.setStatus(AuditStatusEnum.UNDONE.getValue());
-			voList.add(vo);
 		}
 		if (!voList.isEmpty()) {
 			// 查询有积分记录的用户ID
@@ -144,7 +138,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 				}
 			}
 		}
-		return voList;
+		return PageUtils.toPaged(page);
 	}
 
 	/**
@@ -226,17 +220,10 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	 * @return
 	 */
 	@Override
-	public List<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId) {
+	public Paged<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId,int pageNum, int pageSize) {
 		// 获取支部全部党员
-		List<DjPartymember> pojoList = partyMemberMapper.getReportPartyMember(deptId);
-		List<PioneeringPartyMemberVo> voList = new ArrayList<>();
-		for (DjPartymember pm : pojoList) {
-			PioneeringPartyMemberVo vo = new PioneeringPartyMemberVo();
-			vo.setDeptId(pm.getDeptId());
-			vo.setId(pm.getId());
-			vo.setName(pm.getName());
-			voList.add(vo);
-		}
+		Page<PioneeringPartyMemberVo> page = PageHelper.startPage(pageNum, pageSize);
+		List<PioneeringPartyMemberVo> voList = partyMemberMapper.getPioneeringPartyMembers(deptId);
 		for (PioneeringPartyMemberVo vo : voList) {
 
 			// 1.判断该党员没有type in(13，14，15) 的记录，则该党员为未审核，否则走2
@@ -254,7 +241,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 				}
 			}
 		}
-		return voList;
+		return PageUtils.toPaged(page);
 	}
 
 	/*

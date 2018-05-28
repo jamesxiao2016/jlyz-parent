@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.service.IActiveService;
-import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
+import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
 import cn.dlbdata.dj.vo.study.StudyDetailVo;
 import cn.dlbdata.dj.web.base.BaseController;
 

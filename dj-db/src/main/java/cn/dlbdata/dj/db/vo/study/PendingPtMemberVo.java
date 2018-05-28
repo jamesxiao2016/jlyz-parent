@@ -1,6 +1,5 @@
 package cn.dlbdata.dj.db.vo.study;
 
-
 import java.sql.Timestamp;
 
 public class PendingPtMemberVo {

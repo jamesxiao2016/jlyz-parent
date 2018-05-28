@@ -24,8 +24,13 @@
     <result column="party_post_code" jdbcType="VARCHAR" property="partyPostCode" />
   </resultMap>
   
-  <select id="getReportPartyMember" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select name,id,dept_id from dj_partymember  where dept_id = #{deptId}
+  <select id="getPioneeringPartyMembers" parameterType="java.lang.Long" resultType="cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo">
+    select name,id,dept_id as deptId from dj_partymember  where dept_id = #{deptId}
+    order by post_id desc
+  </select>
+
+  <select id="getReportPartyMembers" parameterType="java.lang.Long" resultType="cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo">
+    select name,id,dept_id as deptId,-1 as status from dj_partymember  where dept_id = #{deptId}
     order by post_id desc
   </select>
   

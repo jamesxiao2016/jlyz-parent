@@ -9,7 +9,7 @@ import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.vo.ActiveVo;
 import cn.dlbdata.dj.vo.UserVo;
-import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
+import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
 import cn.dlbdata.dj.vo.study.StudyDetailVo;
 
 /**

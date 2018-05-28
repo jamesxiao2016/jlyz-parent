@@ -42,7 +42,7 @@ import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.ActiveVo;
 import cn.dlbdata.dj.vo.UserVo;
-import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
+import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
 import cn.dlbdata.dj.vo.study.StudyDetailVo;
 import tk.mybatis.mapper.entity.Example;
 
@@ -152,17 +152,17 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 
 	@Override
 	public List<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId) {
-		List<DjStudy> studies = studyMapper.getStudysByDeptIdAndSubTypeId(deptId, subTypeId);
-		List<PendingPtMemberVo> voList = new ArrayList<>();
-		for (DjStudy study : studies) {
-			PendingPtMemberVo vo = new PendingPtMemberVo();
-			vo.setCreateTime(new Timestamp(study.getCreateTime().getTime()));
-			vo.setStudyId(study.getId());
-			vo.setName(study.getUserName());
-			vo.setStatus(study.getStatus());
-			voList.add(vo);
-		}
-		return voList;
+		List<PendingPtMemberVo> studies = studyMapper.getStudysByDeptIdAndSubTypeId(deptId, subTypeId);
+//		List<PendingPtMemberVo> voList = new ArrayList<>();
+//		for (DjStudy study : studies) {
+//			PendingPtMemberVo vo = new PendingPtMemberVo();
+//			vo.setCreateTime(new Timestamp(study.getCreateTime().getTime()));
+//			vo.setStudyId(study.getId());
+//			vo.setName(study.getUserName());
+//			vo.setStatus(study.getStatus());
+//			voList.add(vo);
+//		}
+		return studies;
 	}
 
 	@Override
