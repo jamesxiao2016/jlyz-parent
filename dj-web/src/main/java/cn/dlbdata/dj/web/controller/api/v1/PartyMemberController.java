@@ -203,7 +203,7 @@ public class PartyMemberController extends BaseController {
 	@GetMapping("/getDakDetialByDeptId")
 	@ResponseBody
 	public ResultVo<Paged<ObserveLowPartyMemberVo>> getObserveLowPartyMember(@RequestParam("deptId") Long deptId,
-			@RequestParam(value = "pageIndex", required = false) Integer pageNum,
+			@RequestParam(value = "pageNum", required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
 		pageNum = Paged.normalizePageIndex(pageNum);
 		pageSize = Paged.normalizePageSize(pageSize);
