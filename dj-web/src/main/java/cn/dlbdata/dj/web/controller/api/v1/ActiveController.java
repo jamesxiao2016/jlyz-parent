@@ -135,8 +135,13 @@ public class ActiveController extends BaseController {
 
 	/**
 	 * 
-	 * <p>Title: showQrCode</p> 
-	 * <p>Description:显示二维码 </p> 
+	 * <p>
+	 * Title: showQrCode
+	 * </p>
+	 * <p>
+	 * Description:显示二维码
+	 * </p>
+	 * 
 	 * @param activeId
 	 * @param response
 	 */
@@ -156,7 +161,7 @@ public class ActiveController extends BaseController {
 			ImageIO.write(image, "JPEG", out);
 			out.flush();
 		} catch (Exception e) {
-//			log.error(e.getMessage(), e);
+			// log.error(e.getMessage(), e);
 		} finally {
 			if (out != null) {
 				try {
@@ -166,9 +171,9 @@ public class ActiveController extends BaseController {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	private BufferedImage genPic(String content) throws Exception {
 		// int qr_size = 400;
 		// int qr_size = 213;
@@ -195,7 +200,7 @@ public class ActiveController extends BaseController {
 		}
 		return image;
 	}
-	
+
 	/**
 	 * 删除白边
 	 */
@@ -214,21 +219,47 @@ public class ActiveController extends BaseController {
 		}
 		return resMatrix;
 	}
-	
 
 	@PostMapping(value = "/create")
 	@ResponseBody
-	public ResultVo<Long> createActive(ActiveVo vo)
-	{
+	public ResultVo<Long> createActive(ActiveVo vo) {
 		ResultVo<Long> result = new ResultVo<>();
-		
+
 		UserVo user = getCurrentUserFromCache();
 		if (user == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
 		result = activeService.createActive(vo, user);
-		
+
+		return result;
+	}
+
+	@PostMapping(value = "/signIn")
+	@ResponseBody
+	public ResultVo<String> signIn(Long activeId) {
+		ResultVo<String> result = new ResultVo<>();
+		UserVo user = getCurrentUserFromCache();
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		result = activeService.signIn(activeId, user);
+
+		return result;
+	}
+	
+	@PostMapping(value = "/signUp")
+	@ResponseBody
+	public ResultVo<String> signUp(Long activeId) {
+		ResultVo<String> result = new ResultVo<>();
+		UserVo user = getCurrentUserFromCache();
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		result = activeService.signUp(activeId, user);
+
 		return result;
 	}
 }

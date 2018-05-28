@@ -18,10 +18,12 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.DjActiveDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveMapper;
+import cn.dlbdata.dj.db.mapper.DjActiveUserMapper;
 import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActiveDept;
+import cn.dlbdata.dj.db.pojo.DjActiveUser;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.service.IActiveService;
@@ -35,6 +37,8 @@ import cn.dlbdata.dj.vo.study.StudyDetailVo;
 public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService {
 	@Autowired
 	private DjActiveMapper activeMapper;
+	@Autowired
+	private DjActiveUserMapper activeUserMapper;
 	@Autowired
 	private DjActiveDeptMapper activeDeptMapper;
 	@Autowired
@@ -120,7 +124,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		map.put("startTime", partyMemberLifeNotice.getStartTime());
 		map.put("endTime", partyMemberLifeNotice.getEndTime());
 		map.put("departmentId", partyMemberLifeNotice.getDepartmentId());
-//		List<Map<String, Object>> activeList = activeMapper.getRunningActive(map);
+		// List<Map<String, Object>> activeList = activeMapper.getRunningActive(map);
 		int count = activeMapper.getParticipateActiveCount(map);
 		return count;
 	}
@@ -174,7 +178,8 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	/**
 	 * 获取自主学习详情
 	 *
-	 * @param studyId 自主学习Id
+	 * @param studyId
+	 *            自主学习Id
 	 * @return
 	 */
 	@Override
@@ -189,9 +194,103 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		detailVo.setContent(study.getContent());
 		detailVo.setStartTime(study.getStartTime());
 		detailVo.setEndTime(study.getEndTime());
-		String tableName =DlbConstant.TABLE_NAME_STUDY;
-		List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(tableName,studyId);
+		String tableName = DlbConstant.TABLE_NAME_STUDY;
+		List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(tableName, studyId);
 		detailVo.setPicIds(picIds);
 		return detailVo;
+	}
+
+	@Override
+	public ResultVo<String> signIn(Long activeId, UserVo user) {
+		ResultVo<String> result = new ResultVo<>();
+		if (activeId == null || user == null) {
+			result.setCode(ResultCode.ParameterError.getCode());
+			return result;
+		}
+
+		// 查询活动信息
+		DjActive active = activeMapper.selectByPrimaryKey(activeId);
+		if (active == null) {
+			result.setCode(ResultCode.NotFound.getCode());
+			result.setMsg("获取不存在或已取消");
+			return result;
+		}
+
+		// 查询活动报名信息
+		DjActiveUser activeUser = new DjActiveUser();
+		activeUser.setDjActiveId(activeId);
+		activeUser.setDjUserId(user.getUserId());
+		List<DjActiveUser> list = activeUserMapper.select(activeUser);
+		if (list == null || list.isEmpty()) {
+			result.setCode(ResultCode.NotFound.getCode());
+			result.setMsg("活动未报名，签到失败。");
+			return result;
+		}
+
+		// 获取报名信息
+		activeUser = list.get(0);
+		Integer status = activeUser.getStatus();
+		if (DlbConstant.BASEDATA_STATUS_VALID == status) {
+			result.setCode(ResultCode.NotFound.getCode());
+			result.setMsg("已签到，请勿重复签到。");
+			return result;
+		}
+
+		// 更新签到信息
+		activeUser.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+		activeUser.setSignTime(new Date());
+
+		activeUserMapper.updateByPrimaryKeySelective(activeUser);
+
+		result.setCode(ResultCode.OK.getCode());
+		result.setMsg("签到成功");
+
+		return result;
+	}
+
+	@Override
+	public ResultVo<String> signUp(Long activeId, UserVo user) {
+		ResultVo<String> result = new ResultVo<>(ResultCode.BadRequest.getCode());
+		if (activeId == null || user == null) {
+			logger.error("参数错误");
+			result.setCode(ResultCode.ParameterError.getCode());
+			return result;
+		}
+
+		// 查询活动信息
+		DjActive active = activeMapper.selectByPrimaryKey(activeId);
+		if (active == null) {
+			logger.error("查询活动失败->" + activeId);
+			result.setCode(ResultCode.NotFound.getCode());
+			result.setMsg("获取不存在或已取消");
+			return result;
+		}
+
+		// 查询活动报名信息
+		DjActiveUser activeUserCondition = new DjActiveUser();
+		activeUserCondition.setDjActiveId(activeId);
+		activeUserCondition.setDjUserId(user.getUserId());
+		List<DjActiveUser> list = activeUserMapper.select(activeUserCondition);
+		if (list != null && !list.isEmpty()) {
+			result.setCode(ResultCode.NotFound.getCode());
+			result.setMsg("已报名。");
+			return result;
+		}
+
+		// 更新签到信息
+		DjActiveUser activeUser = new DjActiveUser();
+		activeUser.setCreateTime(new Date());
+		activeUser.setDjActiveId(activeId);
+		activeUser.setDjDeptId(user.getDeptId());
+		activeUser.setDjUserId(user.getUserId());
+		activeUser.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+
+		int count = activeUserMapper.insertSelective(activeUser);
+		if (count > 0) {
+			result.setCode(ResultCode.OK.getCode());
+			result.setMsg("报名成功");
+		}
+
+		return result;
 	}
 }

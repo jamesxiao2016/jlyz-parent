@@ -104,4 +104,22 @@ public interface IActiveService {
 	 */
 	StudyDetailVo getStudyDetail(Long studyId);
 
+	/**
+	 * 活动报名
+	 * 
+	 * @param activeId
+	 * @param user
+	 * @return
+	 */
+	public ResultVo<String> signUp(Long activeId, UserVo user);
+
+	/**
+	 * 活动签到
+	 * 
+	 * @param activeId
+	 * @param user
+	 * @return
+	 */
+	public ResultVo<String> signIn(Long activeId, UserVo user);
+
 }
