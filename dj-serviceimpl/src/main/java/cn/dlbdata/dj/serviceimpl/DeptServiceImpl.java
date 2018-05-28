@@ -5,6 +5,7 @@ import java.util.List;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.DjSectionMapper;
 import cn.dlbdata.dj.db.pojo.DjSection;
+import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,9 +92,20 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	 * @return  
 	 * @see cn.dlbdata.dj.service.IDeptService#selectDeptNameByDeptId(java.lang.Long)
 	 */
+//	@Override
+//	public DjDept selectDeptNameByDeptId(Long deptId) {
+//		
+//		return deptMapper.selectByPrimaryKey(deptId);
+//	}
+	/**
+	 * 查询片区内的党支部Id和Name
+	 *
+	 * @param sectionId 片区Id
+	 * @return DeptIdNameDto
+	 */
 	@Override
-	public DjDept selectDeptNameByDeptId(Long deptId) {
-		
-		return deptMapper.selectByPrimaryKey(deptId);
+	public List<DeptIdNameDto> getBranchDeptNameAndId(Long sectionId) {
+		List<DeptIdNameDto> list = deptMapper.getBranchDeptIdAndName(sectionId);
+		return list;
 	}
 }

@@ -1,6 +1,12 @@
 package cn.dlbdata.dj.vo;
 
-public class ApplyVo {
+import java.io.Serializable;
+
+public class ApplyVo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// 分类ID
 	private Long djTypeId;
 	// 二级分类ID

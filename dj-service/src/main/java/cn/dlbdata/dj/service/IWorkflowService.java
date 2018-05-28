@@ -1,8 +1,10 @@
 package cn.dlbdata.dj.service;
 
+import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjApply;
+import cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo;
 import cn.dlbdata.dj.vo.ApplyVo;
 import cn.dlbdata.dj.vo.AuditVo;
 import cn.dlbdata.dj.vo.DisciplineVo;
@@ -83,4 +85,12 @@ public interface IWorkflowService {
 	 */
 	public PageVo<DjApply> getPendingList(Long userId, Long deptId, Long typeId, Long roleId, Integer pageNum,
 			Integer pageSize);
+
+	/**
+	 * 查询积分审核列表
+	 * @param user user
+	 * @param status 审核状态
+	 * @return
+	 */
+	Paged<ScoreApplyVo> getScoreAuditList(UserVo user,Integer status,int pageNum,int pageSize);
 }

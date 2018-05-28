@@ -1,6 +1,12 @@
 package cn.dlbdata.dj.vo;
 
-public class UserVo {
+import java.io.Serializable;
+
+public class UserVo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7776555013755792960L;
 	// 用户ID
 	private Long userId;
 	// 党员ID

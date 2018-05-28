@@ -15,9 +15,11 @@ import org.springframework.web.context.ContextLoader;
 
 import com.google.gson.Gson;
 
+import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.JsonUtil;
 import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
 import cn.dlbdata.dj.common.core.util.cache.CacheManager;
+import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.vo.UserVo;
 
 @Controller
@@ -31,6 +33,8 @@ public class BaseController {
 	protected HttpServletRequest request;
 	@Autowired
 	protected HttpServletResponse response;
+	@Autowired
+	private IUserService userService;
 
 	/**
 	 * 获取当前用户的信息
@@ -76,7 +80,13 @@ public class BaseController {
 		if (tokenMap == null) {
 			return null;
 		}
-		UserVo currUser = (UserVo) CacheManager.getInstance().get(tokenMap.get(JwtTokenUtil.KEY_UID));
+		String userId = tokenMap.get(JwtTokenUtil.KEY_UID);
+		UserVo currUser = (UserVo) CacheManager.getInstance().get(userId);
+		// 如果缓存中获取失败，从数据库中查询
+		if (currUser == null) {
+			currUser = userService.getUserDetailById(DigitUtil.parseToLong(userId));
+			CacheManager.getInstance().put(userId, currUser);
+		}
 		return currUser;
 	}
 

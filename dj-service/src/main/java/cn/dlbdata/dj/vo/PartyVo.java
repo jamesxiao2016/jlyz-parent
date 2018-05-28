@@ -1,6 +1,12 @@
 package cn.dlbdata.dj.vo;
 
-public class PartyVo {
+import java.io.Serializable;
+
+public class PartyVo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// 党员ID
 	private Long memberId;
 	// 党员评级

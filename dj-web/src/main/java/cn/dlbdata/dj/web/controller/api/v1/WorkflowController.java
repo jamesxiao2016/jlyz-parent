@@ -1,12 +1,10 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
+import cn.dlbdata.dj.common.core.util.Paged;
+import cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.PageVo;
@@ -144,5 +142,27 @@ public class WorkflowController extends BaseController {
 		}
 		result = workflowService.getPendingList(user.getUserId(), deptId, typeId, null, pageNum, pageSize);
 		return result;
+	}
+
+	/**
+	 *积分审核列表
+	 * @param status 审核状态
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	@GetMapping("/getScoreAuditList")
+	@ResponseBody
+	public ResultVo<Paged<ScoreApplyVo>> getScoreAuditList(
+			@RequestParam(value = "status",required = false) Integer status,
+			@RequestParam(value = "pageNum", required = false) Integer pageNum,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+		UserVo user = getCurrentUserFromCache();
+		pageNum = Paged.normalizePageIndex(pageNum);
+		pageSize = Paged.normalizePageSize(pageSize);
+		Paged<ScoreApplyVo> paged = workflowService.getScoreAuditList(user,status,pageNum,pageSize);
+		ResultVo<Paged<ScoreApplyVo>> result = new ResultVo<>(ResultCode.OK.getCode());
+		result.setData(paged);
+		return  result;
 	}
 }

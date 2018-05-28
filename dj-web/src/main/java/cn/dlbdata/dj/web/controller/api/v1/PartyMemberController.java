@@ -20,7 +20,6 @@ import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
-import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.vo.PartyVo;
@@ -42,8 +41,6 @@ public class PartyMemberController extends BaseController {
 	private IPartyMemberService partyMemberService;
 	@Autowired
 	private IUserService userService;
-	@Autowired
-	private IActiveService activeService;
 
 	/**
 	 * 获取党员参与活动次数
@@ -140,14 +137,14 @@ public class PartyMemberController extends BaseController {
 
 	@PostMapping("/scoreCustom")
 	@ResponseBody
-	public ResultVo reportAddScore(@RequestBody ReportAddScoreRequest request) {
+	public ResultVo<String> reportAddScore(@RequestBody ReportAddScoreRequest request) {
 		String token = getHeader("token");
 
 		// 从缓存中获取当前用户的信息
 		UserVo currUser = getCacheUserByToken(token);
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		partyMemberService.reportAddScore(request, year, currUser);
-		return new ResultVo(CoreConst.ResultCode.OK.getCode(), "加分成功!");
+		return new ResultVo<String>(CoreConst.ResultCode.OK.getCode(), "加分成功!");
 	}
 
 	/**
@@ -203,7 +200,7 @@ public class PartyMemberController extends BaseController {
 	@GetMapping("/getDakDetialByDeptId")
 	@ResponseBody
 	public ResultVo<Paged<ObserveLowPartyMemberVo>> getObserveLowPartyMember(@RequestParam("deptId") Long deptId,
-			@RequestParam(value = "pageIndex", required = false) Integer pageNum,
+			@RequestParam(value = "pageNum", required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
 		pageNum = Paged.normalizePageIndex(pageNum);
 		pageSize = Paged.normalizePageSize(pageSize);

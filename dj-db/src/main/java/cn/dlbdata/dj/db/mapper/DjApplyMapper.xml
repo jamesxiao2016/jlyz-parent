@@ -40,4 +40,21 @@
   		</if>
   	</where>
   </select>
+    
+    <select id="getScoreAuditList" resultType="cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo">
+        select ap.id as applyId,ap.status,ap.user_name as partyMemberName,ap.apply_name as leaderName,(
+        select sum(sco.score)  from dj_score sco where sco.user_id = ap.user_id) as totalScore from  dj_apply ap
+        <where>
+            ap.approver_id=#{approverId}
+            <if test="yearTimeStart !=null">
+                and ap.create_time &gt;= #{yearTimeStart}
+            </if>
+            <if test="yearTimeEnd !=null">
+                and ap.create_time &lt;= #{yearTimeEnd}
+            </if>
+            <if test="status != null">
+                and ap.status = #{status}
+            </if>
+        </where>
+    </select>
 </mapper>

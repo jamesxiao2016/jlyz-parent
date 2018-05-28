@@ -1,6 +1,13 @@
 package cn.dlbdata.dj.vo;
 
-public class PicVo {
+import java.io.Serializable;
+
+public class PicVo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 微信返回的字符串
 	 */

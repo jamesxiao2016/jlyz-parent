@@ -1,5 +1,6 @@
 package cn.dlbdata.dj.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,11 @@ import java.util.Date;
  * @author xiaowei
  *
  */
-public class ThoughtsVo {
+public class ThoughtsVo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	// 用户ID
 	private Long userId;

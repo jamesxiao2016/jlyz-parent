@@ -18,7 +18,6 @@ import com.alibaba.fastjson.JSONObject;
 
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
-import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
@@ -29,7 +28,6 @@ import cn.dlbdata.dj.db.mapper.DjActiveUserMapper;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
 import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
-import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
@@ -41,10 +39,8 @@ import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.service.IActiveService;
-import cn.dlbdata.dj.service.IWorkflowService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.ActiveVo;
-import cn.dlbdata.dj.vo.ApplyVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
 import cn.dlbdata.dj.vo.study.StudyDetailVo;
@@ -57,13 +53,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	@Autowired
 	private DjActiveDeptMapper activeDeptMapper;
 	@Autowired
-	private DjPartymemberMapper partymemberMapper;
-	@Autowired
-	private DjScoreMapper scoreMapper;
-	@Autowired
 	private DjStudyMapper studyMapper;
-	@Autowired
-	private IWorkflowService workflowService;
 	@Autowired
 	private DjPicRecordMapper picRecordMapper;
 	@Autowired
@@ -72,6 +62,8 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	private DjDeptMapper deptMapper;
 	@Autowired
 	private DjUserMapper userMapper;
+	@Autowired
+	private DjPartymemberMapper partymemberMapper;
 
 	@Override
 	public DjActive getActiveInfoById(Long id) {
@@ -153,7 +145,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		map.put("startTime", partyMemberLifeNotice.getStartTime());
 		map.put("endTime", partyMemberLifeNotice.getEndTime());
 		map.put("departmentId", partyMemberLifeNotice.getDepartmentId());
-		List<Map<String, Object>> activeList = activeMapper.getRunningActive(map);
+//		List<Map<String, Object>> activeList = activeMapper.getRunningActive(map);
 		int count = activeMapper.getParticipateActiveCount(map);
 		return count;
 	}

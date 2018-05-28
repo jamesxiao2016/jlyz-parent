@@ -1,12 +1,18 @@
 package cn.dlbdata.dj.vo;
 
+import java.io.Serializable;
+
 /**
  * 遵章守纪VO
  * 
  * @author xiaowei
  *
  */
-public class DisciplineVo {
+public class DisciplineVo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	// 用户ID
 	private Long userId;
