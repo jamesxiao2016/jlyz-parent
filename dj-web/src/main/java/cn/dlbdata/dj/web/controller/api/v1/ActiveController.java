@@ -141,8 +141,13 @@ public class ActiveController extends BaseController {
 
 	/**
 	 * 
-	 * <p>Title: showQrCode</p> 
-	 * <p>Description:显示二维码 </p> 
+	 * <p>
+	 * Title: showQrCode
+	 * </p>
+	 * <p>
+	 * Description:显示二维码
+	 * </p>
+	 * 
 	 * @param activeId
 	 * @param response
 	 */
@@ -162,7 +167,11 @@ public class ActiveController extends BaseController {
 			ImageIO.write(image, "JPEG", out);
 			out.flush();
 		} catch (Exception e) {
+<<<<<<< HEAD
 			logger.error(e.getMessage(), e);
+=======
+			// log.error(e.getMessage(), e);
+>>>>>>> e8e604cf0a0450a3f4a519b85ad1e1270866d51f
 		} finally {
 			if (out != null) {
 				try {
@@ -172,24 +181,100 @@ public class ActiveController extends BaseController {
 				}
 			}
 		}
-		
+
 	}
+<<<<<<< HEAD
 	
 	
+=======
+
+	private BufferedImage genPic(String content) throws Exception {
+		// int qr_size = 400;
+		// int qr_size = 213;
+		int qr_size = 150;
+		Object errorCorrectionLevel = ErrorCorrectionLevel.H;
+		Map hints = new HashMap();
+		hints.put(EncodeHintType.ERROR_CORRECTION, errorCorrectionLevel);
+		// hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+		hints.put(EncodeHintType.MARGIN, 1);
+		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+		BitMatrix bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, qr_size, qr_size, hints);
+		BufferedImage image = toBufferedImage(deleteWhite(bitMatrix));
+		return image;
+	}
+
+	private BufferedImage toBufferedImage(BitMatrix matrix) {
+		int width = matrix.getWidth();
+		int height = matrix.getHeight();
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				image.setRGB(x, y, matrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+			}
+		}
+		return image;
+	}
+
+	/**
+	 * 删除白边
+	 */
+	private static BitMatrix deleteWhite(BitMatrix matrix) {
+		int[] rec = matrix.getEnclosingRectangle();
+		int resWidth = rec[2] + 1;
+		int resHeight = rec[3] + 1;
+
+		BitMatrix resMatrix = new BitMatrix(resWidth, resHeight);
+		resMatrix.clear();
+		for (int i = 0; i < resWidth; i++) {
+			for (int j = 0; j < resHeight; j++) {
+				if (matrix.get(i + rec[0], j + rec[1]))
+					resMatrix.set(i, j);
+			}
+		}
+		return resMatrix;
+	}
+>>>>>>> e8e604cf0a0450a3f4a519b85ad1e1270866d51f
 
 	@PostMapping(value = "/create")
 	@ResponseBody
-	public ResultVo<Long> createActive(ActiveVo vo)
-	{
+	public ResultVo<Long> createActive(ActiveVo vo) {
 		ResultVo<Long> result = new ResultVo<>();
-		
+
 		UserVo user = getCurrentUserFromCache();
 		if (user == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
 		result = activeService.createActive(vo, user);
-		
+
+		return result;
+	}
+
+	@PostMapping(value = "/signIn")
+	@ResponseBody
+	public ResultVo<String> signIn(Long activeId) {
+		ResultVo<String> result = new ResultVo<>();
+		UserVo user = getCurrentUserFromCache();
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		result = activeService.signIn(activeId, user);
+
+		return result;
+	}
+	
+	@PostMapping(value = "/signUp")
+	@ResponseBody
+	public ResultVo<String> signUp(Long activeId) {
+		ResultVo<String> result = new ResultVo<>();
+		UserVo user = getCurrentUserFromCache();
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		result = activeService.signUp(activeId, user);
+
 		return result;
 	}
 	
