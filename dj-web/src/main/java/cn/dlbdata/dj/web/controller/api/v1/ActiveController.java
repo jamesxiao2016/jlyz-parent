@@ -167,11 +167,7 @@ public class ActiveController extends BaseController {
 			ImageIO.write(image, "JPEG", out);
 			out.flush();
 		} catch (Exception e) {
-<<<<<<< HEAD
 			logger.error(e.getMessage(), e);
-=======
-			// log.error(e.getMessage(), e);
->>>>>>> e8e604cf0a0450a3f4a519b85ad1e1270866d51f
 		} finally {
 			if (out != null) {
 				try {
@@ -183,10 +179,6 @@ public class ActiveController extends BaseController {
 		}
 
 	}
-<<<<<<< HEAD
-	
-	
-=======
 
 	private BufferedImage genPic(String content) throws Exception {
 		// int qr_size = 400;
@@ -233,7 +225,6 @@ public class ActiveController extends BaseController {
 		}
 		return resMatrix;
 	}
->>>>>>> e8e604cf0a0450a3f4a519b85ad1e1270866d51f
 
 	@PostMapping(value = "/create")
 	@ResponseBody
