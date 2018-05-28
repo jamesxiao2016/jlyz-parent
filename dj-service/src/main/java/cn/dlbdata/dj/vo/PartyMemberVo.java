@@ -6,13 +6,19 @@
  */
 package cn.dlbdata.dj.vo;
 
+import java.io.Serializable;
+
 /**
  * <p>Title: MemberVo</p>
  * @author zhouxuan
  * <p>Description: </p>
  * @date 2018年5月24日  
  */
-public class PartyMemberVo {
+public class PartyMemberVo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 党员id
 	 */

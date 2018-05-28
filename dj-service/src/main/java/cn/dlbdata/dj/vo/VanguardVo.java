@@ -1,12 +1,18 @@
 package cn.dlbdata.dj.vo;
 
+import java.io.Serializable;
+
 /**
  * 先锋作用VO
  * 
  * @author xiaowei
  *
  */
-public class VanguardVo {
+public class VanguardVo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6241975440130813359L;
 	private Long id;
 	// 用户ID
 	private Long userId;

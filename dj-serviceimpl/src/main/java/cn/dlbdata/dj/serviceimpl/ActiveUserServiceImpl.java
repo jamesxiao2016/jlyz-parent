@@ -6,13 +6,10 @@
  */
 package cn.dlbdata.dj.serviceimpl;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +25,6 @@ import cn.dlbdata.dj.db.pojo.DjActiveUser;
 import cn.dlbdata.dj.dto.ActiveSignUpRequest;
 import cn.dlbdata.dj.service.IActiveUserService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
-import cn.dlbdata.dj.vo.ActiveVo;
 import tk.mybatis.mapper.entity.Example;
 
 /**

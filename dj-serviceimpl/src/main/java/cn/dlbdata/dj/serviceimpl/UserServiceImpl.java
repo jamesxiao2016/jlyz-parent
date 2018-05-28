@@ -132,26 +132,11 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		// TODO 角色权限判断，判断登录的角色是否匹配(后续处理）
 
 		// 返回数据处理
-		UserVo data = new UserVo();
-		data.setDeptId(user.getDeptId());
-		data.setMemeberId(user.getDjPartymemberId());
-		data.setName(vo.getName());
-		// data.setToken(token);
-		data.setUserId(user.getId());
-		data.setAvatar(user.getAvatar());
-
-		DjPartymember member = partyMemberMapper.selectByPrimaryKey(user.getDjPartymemberId());
-		if (member != null) {
-			data.setUserName(member.getName());
-			data.setSex(member.getSexCode());
+		UserVo data = getUserDetailById(user.getId());
+		if (data == null) {
+			logger.error("获取用户信息失败");
+			return result;
 		}
-		DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
-		if (dept != null) {
-			data.setPartyBranchName(dept.getPrincipalId() + "");
-			data.setDeptName(dept.getName());
-		}
-		// 党委
-		data.setPartyCommittee("陆家嘴中心");
 
 		long startTime = System.currentTimeMillis();
 		// 生成token
@@ -209,35 +194,31 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		if (id == null) {
 			return null;
 		}
-		UserVo data = (UserVo) CacheManager.getInstance().get(id + "");
-		if (data == null) {
-			DjUser user = userMapper.selectByPrimaryKey(id);
-			if (user == null) {
-				return null;
-			}
-			data = new UserVo();
-			data.setDeptId(user.getDeptId());
-			data.setMemeberId(user.getDjPartymemberId());
-			data.setName(user.getName());
-			data.setUserId(user.getId());
-			data.setAvatar(user.getAvatar());
-
-			// 获取党员信息
-			DjPartymember member = partyMemberMapper.selectByPrimaryKey(user.getDjPartymemberId());
-			if (member != null) {
-				data.setUserName(member.getName());
-				data.setSex(member.getSexCode());
-			}
-			DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
-			if (dept != null) {
-				data.setPartyBranchName(dept.getPrincipalId() + "");
-				data.setDeptName(dept.getName());
-			}
-			// 党委
-			data.setPartyCommittee("陆家嘴中心");
-			CacheManager.getInstance().put(user.getId() + "", data);
+		
+		DjUser user = userMapper.selectByPrimaryKey(id);
+		if (user == null) {
+			return null;
 		}
+		UserVo data = new UserVo();
+		data.setDeptId(user.getDeptId());
+		data.setMemeberId(user.getDjPartymemberId());
+		data.setName(user.getName());
+		data.setUserId(user.getId());
+		data.setAvatar(user.getAvatar());
 
+		// 获取党员信息
+		DjPartymember member = partyMemberMapper.selectByPrimaryKey(user.getDjPartymemberId());
+		if (member != null) {
+			data.setUserName(member.getName());
+			data.setSex(member.getSexCode());
+		}
+		DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
+		if (dept != null) {
+			data.setPartyBranchName(dept.getPrincipalId() + "");
+			data.setDeptName(dept.getName());
+		}
+		// 党委
+		data.setPartyCommittee("陆家嘴中心");
 		return data;
 	}
 

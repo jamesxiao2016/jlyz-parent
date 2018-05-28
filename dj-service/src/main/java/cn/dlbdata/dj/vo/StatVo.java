@@ -1,6 +1,12 @@
 package cn.dlbdata.dj.vo;
 
-public class StatVo {
+import java.io.Serializable;
+
+public class StatVo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// 活动次数
 	private int activeNum;
 	// 驿站活动次数

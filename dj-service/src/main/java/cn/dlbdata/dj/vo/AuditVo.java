@@ -1,12 +1,18 @@
 package cn.dlbdata.dj.vo;
 
+import java.io.Serializable;
+
 /**
  * 审核的VO
  * 
  * @author xiaowei
  *
  */
-public class AuditVo {
+public class AuditVo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private Integer result;
 	private String content;

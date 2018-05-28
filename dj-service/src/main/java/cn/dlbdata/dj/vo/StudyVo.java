@@ -1,12 +1,18 @@
 package cn.dlbdata.dj.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 
-public class StudyVo {
+public class StudyVo implements Serializable {
 	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
      * 记录ID
      */
     @Id
