@@ -235,6 +235,12 @@ public class ActiveController extends BaseController {
 	}
 >>>>>>> e8e604cf0a0450a3f4a519b85ad1e1270866d51f
 
+	/**
+	 * 发起活动
+	 * 
+	 * @param vo
+	 * @return
+	 */
 	@PostMapping(value = "/create")
 	@ResponseBody
 	public ResultVo<Long> createActive(ActiveVo vo) {
@@ -250,6 +256,12 @@ public class ActiveController extends BaseController {
 		return result;
 	}
 
+	/**
+	 * 活动签到
+	 * 
+	 * @param activeId
+	 * @return
+	 */
 	@PostMapping(value = "/signIn")
 	@ResponseBody
 	public ResultVo<String> signIn(Long activeId) {
@@ -263,7 +275,13 @@ public class ActiveController extends BaseController {
 
 		return result;
 	}
-	
+
+	/**
+	 * 活动报名
+	 * 
+	 * @param activeId
+	 * @return
+	 */
 	@PostMapping(value = "/signUp")
 	@ResponseBody
 	public ResultVo<String> signUp(Long activeId) {
