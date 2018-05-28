@@ -6,6 +6,7 @@
  */
 package cn.dlbdata.dj.web.controller.api.v1;
 
+import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,4 +79,18 @@ public class DeptController extends BaseController {
         result.setData(vo);
         return result;
     }
+
+	/**
+	 * 查询片区内的党支部Id和Name.
+	 * @param sectionId 片区Id
+	 * @return
+	 */
+	@GetMapping("/branchIdNameInit")
+	@ResponseBody
+	public ResultVo<List<DeptIdNameDto>> getBranchDeptNameAndId(@RequestParam("sectionId") Long sectionId) {
+		List<DeptIdNameDto> list = deptService.getBranchDeptNameAndId(sectionId);
+		ResultVo<List<DeptIdNameDto>> result = new ResultVo<>(ResultCode.OK.getCode());
+		result.setData(list);
+		return result;
+	}
 }
