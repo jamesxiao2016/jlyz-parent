@@ -183,6 +183,12 @@ public class ActiveController extends BaseController {
 
 	}
 
+	/**
+	 * 发起活动
+	 * 
+	 * @param vo
+	 * @return
+	 */
 	@PostMapping(value = "/create")
 	@ResponseBody
 	public ResultVo<Long> createActive(ActiveVo vo) {

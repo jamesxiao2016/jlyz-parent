@@ -112,24 +112,6 @@ public class PicController extends BaseController {
 		}
 	}
 
-	private void thumbnailImage(String imagePath, int w, int h, String prevfix, boolean force) {
-		File imgFile = new File(imagePath);
-		if (imgFile.exists()) {
-			try {
-				String p = imgFile.getPath();
-				File outFile = new File(
-						p.substring(0, p.lastIndexOf(File.separator)) + File.separator + prevfix + imgFile.getName());
-				compressPic(imgFile, outFile, w, h);
-
-				logger.debug("缩略图在原路径下生成成功");
-			} catch (Exception e) {
-				logger.error("generate thumbnail image failed.", e);
-			}
-		} else {
-			logger.warn("the image is not exist.");
-		}
-	}
-
 	public boolean compressPic(File inputFile, File outputFile, int w, int h) {
 		try {
 			Thumbnails.Builder<File> fileBuilder = Thumbnails.of(inputFile).scale(1.0).outputQuality(1.0);

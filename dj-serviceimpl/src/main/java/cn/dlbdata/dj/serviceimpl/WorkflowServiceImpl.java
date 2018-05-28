@@ -1,17 +1,11 @@
 package cn.dlbdata.dj.serviceimpl;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.dlbdata.dj.common.core.util.DatetimeUtil;
-import cn.dlbdata.dj.common.core.util.PageUtils;
-import cn.dlbdata.dj.common.core.util.Paged;
-import cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo;
-import cn.dlbdata.dj.thirdparty.mp.sdk.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
+import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
+import cn.dlbdata.dj.common.core.util.PageUtils;
+import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.PageVo;
@@ -55,6 +52,7 @@ import cn.dlbdata.dj.db.pojo.DjThoughts;
 import cn.dlbdata.dj.db.pojo.DjType;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.pojo.DjVanguard;
+import cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo;
 import cn.dlbdata.dj.service.IWorkflowService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.ApplyVo;
@@ -553,8 +551,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
 		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
 		Page<ScoreApplyVo> page = PageHelper.startPage(pageNum, pageSize);
-		//TODO 為了便於測試，userId先定為1106
-		List<ScoreApplyVo> voList = applyMapper.getScoreAuditList(1106L,status,yearTimeStart,yearTimeEnd);
+		applyMapper.getScoreAuditList(user.getUserId(),status,yearTimeStart,yearTimeEnd);
 		return PageUtils.toPaged(page);
 	}
 
