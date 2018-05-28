@@ -57,13 +57,13 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	@Autowired
 	private DjPicRecordMapper picRecordMapper;
 	@Autowired
-	private DjActiveUserMapper activeUserMapper;
-	@Autowired
 	private DjDeptMapper deptMapper;
 	@Autowired
 	private DjUserMapper userMapper;
 	@Autowired
 	private DjPartymemberMapper partymemberMapper;
+	@Autowired
+	private DjActiveUserMapper activeUserMapper;
 
 	@Override
 	public DjActive getActiveInfoById(Long id) {
