@@ -63,6 +63,11 @@ public class ActiveController extends BaseController {
 	public PageVo<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
 		PageVo<Map<String, Object>> result = new PageVo<>();
 		UserVo data = getCurrentUserFromCache();
+		if(data == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("请重新登录");
+			return result;
+		}
 		partyMemberLifeNotice.setUserId(data.getUserId());
 		partyMemberLifeNotice.setDepartmentId(data.getDeptId());
 		result = activeService.getParticipateActive(partyMemberLifeNotice);
@@ -91,6 +96,11 @@ public class ActiveController extends BaseController {
 	public ResultVo<String> participate(@RequestBody ActiveSignUpRequest activeSignUpRequest) {
 		ResultVo<String> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
+		if(data == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("请重新登录");
+			return result;
+		}
 		activeSignUpRequest.setUserId(data.getUserId());
 		result = activeUserService.insertActiveSignUp(activeSignUpRequest);
 		return result;
