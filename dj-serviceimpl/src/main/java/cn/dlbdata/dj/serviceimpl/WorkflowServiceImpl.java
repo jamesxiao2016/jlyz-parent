@@ -1,11 +1,17 @@
 package cn.dlbdata.dj.serviceimpl;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.common.core.util.DatetimeUtil;
+import cn.dlbdata.dj.common.core.util.PageUtils;
+import cn.dlbdata.dj.common.core.util.Paged;
+import cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo;
+import cn.dlbdata.dj.thirdparty.mp.sdk.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -534,4 +540,22 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		}
 		return result;
 	}
+
+	/**
+	 * 查询积分审核列表
+	 *
+	 * @param user   user
+	 * @param status 审核状态
+	 * @return
+	 */
+	@Override
+	public Paged<ScoreApplyVo> getScoreAuditList(UserVo user, Integer status,int pageNum,int pageSize) {
+		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
+		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
+		Page<ScoreApplyVo> page = PageHelper.startPage(pageNum, pageSize);
+		//TODO 為了便於測試，userId先定為1106
+		List<ScoreApplyVo> voList = applyMapper.getScoreAuditList(1106L,status,yearTimeStart,yearTimeEnd);
+		return PageUtils.toPaged(page);
+	}
+
 }
