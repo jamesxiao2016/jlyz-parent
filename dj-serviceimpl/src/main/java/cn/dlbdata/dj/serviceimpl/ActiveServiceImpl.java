@@ -25,22 +25,16 @@ import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.DjActiveDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveUserMapper;
-<<<<<<< HEAD
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
-=======
->>>>>>> e8e604cf0a0450a3f4a519b85ad1e1270866d51f
 import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActiveDept;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
-<<<<<<< HEAD
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
-=======
->>>>>>> e8e604cf0a0450a3f4a519b85ad1e1270866d51f
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
@@ -64,8 +58,6 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	private DjStudyMapper studyMapper;
 	@Autowired
 	private DjPicRecordMapper picRecordMapper;
-	@Autowired
-	private DjActiveUserMapper activeUserMapper;
 	@Autowired
 	private DjDeptMapper deptMapper;
 	@Autowired
@@ -229,7 +221,6 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		return detailVo;
 	}
 
-<<<<<<< HEAD
 	/*
 	 * (non-Javadoc) <p>Title: queryActiveById</p> <p>Description: 获取活动详情</p>
 	 * 
@@ -394,7 +385,6 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		return result;
 	}
 
-=======
 	@Override
 	public ResultVo<String> signIn(Long activeId, UserVo user) {
 		ResultVo<String> result = new ResultVo<>();
@@ -488,5 +478,4 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 
 		return result;
 	}
->>>>>>> e8e604cf0a0450a3f4a519b85ad1e1270866d51f
 }
