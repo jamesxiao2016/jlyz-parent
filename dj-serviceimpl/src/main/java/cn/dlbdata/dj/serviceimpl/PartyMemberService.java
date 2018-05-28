@@ -35,7 +35,6 @@ import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.PartyVo;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Service
 public class PartyMemberService extends BaseServiceImpl implements IPartyMemberService {
 	@Autowired
@@ -46,7 +45,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 
 	@Autowired
 	private DjPartymemberMapper partymemberMapper;
-	
+
 	@Autowired
 	private DjActiveMapper activeMapper;
 
@@ -84,13 +83,14 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	public PartyVo getScoreAndNumByMemberId(Long memberId) {
 		PartyVo result = new PartyVo();
 		result.setMemberId(memberId);
-		
+
 		Date startTime = DatetimeUtil.getCurrYearFirst();
 		Date endTime = DatetimeUtil.getCurrYearLast();
-		//获取参与活动次数
+		// 获取参与活动次数
 		int activeCount = activeMapper.getUserActiveCountByActiveTypeAndTime(memberId, null, startTime, endTime);
-		//获取参与金领驿站活动次数
-		int jlyzCount = activeMapper.getUserActiveCountByActiveTypeAndTime(memberId, ActiveSubTypeEnum.ACTIVE_SUB_E.getActiveSubId(), startTime, endTime);
+		// 获取参与金领驿站活动次数
+		int jlyzCount = activeMapper.getUserActiveCountByActiveTypeAndTime(memberId,
+				ActiveSubTypeEnum.ACTIVE_SUB_E.getActiveSubId(), startTime, endTime);
 		result.setJlyzActiveNum(jlyzCount);
 		result.setActiveNum(activeCount);
 		return result;
@@ -114,8 +114,8 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 
 	@Override
 	public List<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId) {
-		if(subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId() &&
-				subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_L.getActiveSubId()) {
+		if (subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId()
+				&& subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_L.getActiveSubId()) {
 			throw new DlbException("subTypeId不合法!");
 		}
 		Calendar ca = Calendar.getInstance();
@@ -123,7 +123,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		System.out.println(year);
 		List<DjPartymember> pojoList = partyMemberMapper.getReportPartyMember(deptId);
 		List<ReportPartyMemberVo> voList = new ArrayList<>();
-		for (DjPartymember pojo :pojoList) {
+		for (DjPartymember pojo : pojoList) {
 			ReportPartyMemberVo vo = new ReportPartyMemberVo();
 			vo.setId(pojo.getId());
 			vo.setName(pojo.getName());
@@ -133,11 +133,11 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 			voList.add(vo);
 		}
 		if (!voList.isEmpty()) {
-			//查询有积分记录的用户ID
+			// 查询有积分记录的用户ID
 			List<Long> userIdList = scoreMapper.getByDeptIdAndTypeIdAndSubTypeIdAndYear(deptId,
-					ActiveTypeEnum.ACTIVE_C.getActiveId(),subTypeId,year);
-			for (int i = 0;i<userIdList.size();i++) {
-				for (int j = 0;j<voList.size();j++) {
+					ActiveTypeEnum.ACTIVE_C.getActiveId(), subTypeId, year);
+			for (int i = 0; i < userIdList.size(); i++) {
+				for (int j = 0; j < voList.size(); j++) {
 					if (voList.get(j).getId().equals(userIdList.get(i))) {
 						voList.get(j).setStatus(AuditStatusEnum.PASS.getValue());
 					}
@@ -148,15 +148,16 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	}
 
 	/**
-	 *思想汇报直接加分
-	 * @param request 请求Data
+	 * 思想汇报直接加分
+	 * 
+	 * @param request
+	 *            请求Data
 	 */
 	@Transactional
 	@Override
 	public void reportAddScore(ReportAddScoreRequest request, int year, UserVo userVo) {
-		if (request.getId() == null ||
-				request.getSubTypeId() == null || request.getReportTime() == null ||
-				"".equals(request.getReportTime())) {
+		if (request.getId() == null || request.getSubTypeId() == null || request.getReportTime() == null
+				|| "".equals(request.getReportTime())) {
 			throw new DlbException("请求参数不完整");
 		}
 		DjPartymember partymember = partymemberMapper.selectByPrimaryKey(request.getId());
@@ -164,20 +165,20 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 			throw new DlbException("该党员不存在");
 		}
 		// TODO 校验当前登录用户做该操作的权限
-		//查询是否有思想汇报记录
+		// 查询是否有思想汇报记录
 		List<DjScore> scoreIds = scoreMapper.getScoreIdsByTypeIdAndSubTypeIdAndYearAndPartyMemberId(
-				ActiveTypeEnum.ACTIVE_C.getActiveId(),request.getSubTypeId(),year,request.getId());
-		if (scoreIds.size()>=1) {
+				ActiveTypeEnum.ACTIVE_C.getActiveId(), request.getSubTypeId(), year, request.getId());
+		if (scoreIds.size() >= 1) {
 			throw new DlbException("请勿重复加分!");
 		}
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date reportDate = null;
 		try {
 			reportDate = formatter.parse(request.getReportTime());
-		}catch (ParseException e) {
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		//TODO 图片ID待设置
+		// TODO 图片ID待设置
 		DjThoughts djThoughts = new DjThoughts();
 		djThoughts.setId(DigitUtil.generatorLongId());
 		djThoughts.setThoughtsInfo(request.getContent());
@@ -189,18 +190,17 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		djThoughts.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		thoughtsMapper.insert(djThoughts);
 
-		//todo ：后面需改为batchInsert
-		for (Long pid:request.getPicIds()) {
+		// todo ：后面需改为batchInsert
+		for (Long pid : request.getPicIds()) {
 			DjPicRecord picRecord = new DjPicRecord();
 			picRecord.setId(DigitUtil.generatorLongId());
 			picRecord.setTableName("dj_thoughts");
 			picRecord.setRecordId(djThoughts.getId());
-            picRecord.setDjPicId(pid);
+			picRecord.setDjPicId(pid);
 			picRecord.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 			picRecord.setCreateTime(new Date());
 			picRecordMapper.insert(picRecord);
 		}
-
 
 		DjScore djScore = new DjScore();
 		djScore.setId(DigitUtil.generatorLongId());
@@ -209,7 +209,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		djScore.setScore(new Float(5));
 		djScore.setUserId(request.getId());
 		djScore.setAddTime(reportDate);
-		//TODO 目前User的信息获取不到，先写成1
+		// TODO 目前User的信息获取不到，先写成1
 		djScore.setApplyUserId(1L);
 		djScore.setApproverId(1L);
 		djScore.setAddYear(year);
@@ -221,32 +221,33 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 
 	/**
 	 * 先锋作用评分党员列表
+	 * 
 	 * @param deptId
 	 * @return
 	 */
 	@Override
 	public List<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId) {
-		//获取支部全部党员
+		// 获取支部全部党员
 		List<DjPartymember> pojoList = partyMemberMapper.getReportPartyMember(deptId);
 		List<PioneeringPartyMemberVo> voList = new ArrayList<>();
-		for (DjPartymember pm:pojoList) {
+		for (DjPartymember pm : pojoList) {
 			PioneeringPartyMemberVo vo = new PioneeringPartyMemberVo();
 			vo.setDeptId(pm.getDeptId());
 			vo.setId(pm.getId());
 			vo.setName(pm.getName());
 			voList.add(vo);
 		}
-		for (PioneeringPartyMemberVo vo :voList) {
+		for (PioneeringPartyMemberVo vo : voList) {
 
-			//1.判断该党员没有type in(13，14，15) 的记录，则该党员为未审核，否则走2
+			// 1.判断该党员没有type in(13，14，15) 的记录，则该党员为未审核，否则走2
 			int count1 = vanguardMapper.countUnAuditByPtMemberIdAndType(vo.getId());
 			if (count1 == 0) {
-				//未审核
+				// 未审核
 				vo.setAuditStatus(AuditStatusEnum.UNDONE.getValue());
 			} else {
-				//2.判断该党员有待审核的记录（status =0），则该党员为待审核，否则该党员为已审核
-				int count2 = vanguardMapper.countByPtMemberIdStatus(vo.getId(),AuditStatusEnum.WAITING.getValue());
-				if (count2>0) {
+				// 2.判断该党员有待审核的记录（status =0），则该党员为待审核，否则该党员为已审核
+				int count2 = vanguardMapper.countByPtMemberIdStatus(vo.getId(), AuditStatusEnum.WAITING.getValue());
+				if (count2 > 0) {
 					vo.setAuditStatus(AuditStatusEnum.WAITING.getValue());
 				} else {
 					vo.setAuditStatus(AuditStatusEnum.PASS.getValue());
@@ -256,23 +257,24 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		return voList;
 	}
 
-	/* (non-Javadoc)
-	 * <p>Title: queryAllPartyMembersByDeptId</p>
-	 * <p>Description: 查询支部全部党员的信息以及分数</p> 
+	/*
+	 * (non-Javadoc) <p>Title: queryAllPartyMembersByDeptId</p> <p>Description: 查询支部全部党员的信息以及分数</p>
+	 * 
 	 * @param deptId
-	 * @return  
+	 * 
+	 * @return
+	 * 
 	 * @see cn.dlbdata.dj.service.IPartyMemberService#queryAllPartyMembersByDeptId(java.lang.Long)
 	 */
 	@Override
 	public List<DjPartymember> queryAllPartyMembersByDeptId(Long deptId) {
-		if(deptId == null)
-		{
+		if (deptId == null) {
 			return null;
 		}
-		Map<String,Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("deptId", deptId);
-		 Calendar cale =  Calendar.getInstance();    
-	     int year = cale.get(Calendar.YEAR);    
+		Calendar cale = Calendar.getInstance();
+		int year = cale.get(Calendar.YEAR);
 		map.put("year", year);
 		return partyMemberMapper.queryAllPartyMembersByDeptId(map);
 	}
@@ -280,25 +282,26 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	/**
 	 * 违章守纪评分党员列表
 	 *
-	 * @param deptId 支部Id
+	 * @param deptId
+	 *            支部Id
 	 * @return
 	 */
 	@Override
-	public Paged<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId, int pageIndex, int pageSize) {
-		Calendar cale =  Calendar.getInstance();
+	public Paged<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId, int pageNum, int pageSize) {
+		Calendar cale = Calendar.getInstance();
 		int year = cale.get(Calendar.YEAR);
-		Page page = PageHelper.startPage(pageIndex, pageSize);
-		List<ObserveLowPartyMemberVo> voList = partyMemberMapper.getObserveLowPartyMember(deptId,year);
-		for (ObserveLowPartyMemberVo vo:voList) {
-			//取最后一条遵章守纪记录  没有记录则说明该党员未处理，有记录则取最后一条记录的状态
-			//TODO year先这么处理
+		Page<ObserveLowPartyMemberVo> page = PageHelper.startPage(pageNum, pageSize);
+		List<ObserveLowPartyMemberVo> voList = partyMemberMapper.getObserveLowPartyMember(deptId, year);
+		for (ObserveLowPartyMemberVo vo : voList) {
+			// 取最后一条遵章守纪记录 没有记录则说明该党员未处理，有记录则取最后一条记录的状态
+			// TODO year先这么处理
 			Integer status = disciplineMapper.getOneByUserIdOrderByCreateTimeDesc(vo.getId());
-			if(status ==null) {
+			if (status == null) {
 				vo.setStatus(-1);
-			}else {
+			} else {
 				vo.setStatus(status);
 			}
 		}
-		return PageUtils.toPaged(page, voList);
+		return PageUtils.toPaged(page);
 	}
 }
