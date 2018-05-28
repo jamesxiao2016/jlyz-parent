@@ -1,7 +1,9 @@
 package cn.dlbdata.dj.constant;
 
 public class DlbConstant {
+	/** 无效 */
 	public static final int BASEDATA_STATUS_INVALID = 0;
+	/** 有效 */
 	public static final int BASEDATA_STATUS_VALID = 1;
 
 	/** 表名-自主学习表 */

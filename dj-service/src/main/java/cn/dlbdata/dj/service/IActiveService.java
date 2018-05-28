@@ -29,22 +29,6 @@ public interface IActiveService {
 	public DjActive getActiveInfoById(Long id);
 
 	/**
-	 * 根据部门ID获取活动列表
-	 * 
-	 * @param deptId
-	 * @return
-	 */
-	public List<DjActive> getActiveListByDeptId(Long deptId);
-
-	/**
-	 * 根据多个部门ID获取活动列表
-	 * 
-	 * @param deptIds
-	 * @return
-	 */
-	public List<DjActive> getActiveListByDeptIds(Long[] deptIds);
-
-	/**
 	 * 根据用户ID获取活动次数（包含驿站活动次数）
 	 * 
 	 * @param userId

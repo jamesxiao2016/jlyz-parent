@@ -84,6 +84,8 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 		DjActiveUser record = new DjActiveUser();
 		record.setDjActiveId(activeSignUpRequest.getActiveId());
 		record.setDjUserId(activeSignUpRequest.getUserId());
+		//TODO setDeptId   
+		// record.setDjDeptId(djDeptId);
 		record.setStatus(0);
 		activeUserMapper.insertSelective(record);
 		result.setCode(ResultCode.OK.getCode());

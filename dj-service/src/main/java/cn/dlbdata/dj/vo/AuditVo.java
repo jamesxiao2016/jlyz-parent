@@ -14,6 +14,7 @@ public class AuditVo implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;
+	// 审批结果 （1 ：审批通过 -2：驳回）
 	private Integer result;
 	private String content;
 

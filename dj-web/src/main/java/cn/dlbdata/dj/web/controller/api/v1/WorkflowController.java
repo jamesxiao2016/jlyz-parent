@@ -109,6 +109,11 @@ public class WorkflowController extends BaseController {
 		return result;
 	}
 
+	/**
+	 * 业务处理
+	 * @param auditVo
+	 * @return
+	 */
 	@PostMapping(value = "/audit")
 	@ResponseBody
 	public ResultVo<String> audit(@RequestBody AuditVo auditVo) {
