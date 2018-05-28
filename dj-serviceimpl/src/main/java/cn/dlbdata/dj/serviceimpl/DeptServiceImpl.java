@@ -83,4 +83,17 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
         sectionInfoVo.setPartyCommittee(DlbConstant.PARTYCOMMITTEE_LJZ);
         return sectionInfoVo;
     }
+
+	/* (non-Javadoc)
+	 * <p>Title: selectDeptNameByDeptId</p>
+	 * <p>Description: 获取支部名称</p> 
+	 * @param deptId
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IDeptService#selectDeptNameByDeptId(java.lang.Long)
+	 */
+	@Override
+	public DjDept selectDeptNameByDeptId(Long deptId) {
+		
+		return deptMapper.selectByPrimaryKey(deptId);
+	}
 }

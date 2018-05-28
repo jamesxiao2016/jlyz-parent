@@ -102,4 +102,5 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	Paged<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId, int pageIndex, int pageSize);
+
 }

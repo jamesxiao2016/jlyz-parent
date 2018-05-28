@@ -24,6 +24,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+import cn.dlbdata.dj.common.core.util.ImageUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
@@ -120,6 +121,11 @@ public class ActiveController extends BaseController {
 	public ResultVo<List<DjActive>> getEnjoyActiveByUserId() {
 		ResultVo<List<DjActive>> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
+		if(data == null ) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("请先登录");
+			return result;
+		}
 		DjActiveUser djActiveUser = new DjActiveUser();
 		djActiveUser.setStatus(1);
 		List<DjActive> list = activeUserService.getMyJoinActive(data.getUserId(), djActiveUser.getStatus());
@@ -146,7 +152,7 @@ public class ActiveController extends BaseController {
 		OutputStream out = null;
 		BufferedImage image;
 		try {
-			image = genPic(content);
+			image = ImageUtil.genPic(content);
 			response.setContentType("image/jpeg");
 			// 设置页面不缓存
 			response.setHeader("Pragma", "No-cache");
@@ -156,7 +162,7 @@ public class ActiveController extends BaseController {
 			ImageIO.write(image, "JPEG", out);
 			out.flush();
 		} catch (Exception e) {
-//			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 		} finally {
 			if (out != null) {
 				try {
@@ -169,51 +175,6 @@ public class ActiveController extends BaseController {
 		
 	}
 	
-	private BufferedImage genPic(String content) throws Exception {
-		// int qr_size = 400;
-		// int qr_size = 213;
-		int qr_size = 150;
-		Object errorCorrectionLevel = ErrorCorrectionLevel.H;
-		Map hints = new HashMap();
-		hints.put(EncodeHintType.ERROR_CORRECTION, errorCorrectionLevel);
-		// hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-		hints.put(EncodeHintType.MARGIN, 1);
-		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-		BitMatrix bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, qr_size, qr_size, hints);
-		BufferedImage image = toBufferedImage(deleteWhite(bitMatrix));
-		return image;
-	}
-
-	private BufferedImage toBufferedImage(BitMatrix matrix) {
-		int width = matrix.getWidth();
-		int height = matrix.getHeight();
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				image.setRGB(x, y, matrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
-			}
-		}
-		return image;
-	}
-	
-	/**
-	 * 删除白边
-	 */
-	private static BitMatrix deleteWhite(BitMatrix matrix) {
-		int[] rec = matrix.getEnclosingRectangle();
-		int resWidth = rec[2] + 1;
-		int resHeight = rec[3] + 1;
-
-		BitMatrix resMatrix = new BitMatrix(resWidth, resHeight);
-		resMatrix.clear();
-		for (int i = 0; i < resWidth; i++) {
-			for (int j = 0; j < resHeight; j++) {
-				if (matrix.get(i + rec[0], j + rec[1]))
-					resMatrix.set(i, j);
-			}
-		}
-		return resMatrix;
-	}
 	
 
 	@PostMapping(value = "/create")
@@ -231,4 +192,27 @@ public class ActiveController extends BaseController {
 		
 		return result;
 	}
+	
+	 @GetMapping(value="/queryActiveById")
+	 @ResponseBody
+	 public ResultVo<Map<String, Object>> queryActiveById(Long activeId){
+		ResultVo<Map<String, Object>> result = new ResultVo<>();
+		UserVo data = getCurrentUserFromCache();
+		if(data == null ) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("请先登录");
+			return result;
+		}
+		ResultVo<Map<String, Object>> res = activeService.queryActiveById(activeId, data.getUserId());
+		if(res == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("没有相关的活动");
+			return result;
+		}
+			result.setCode(ResultCode.OK.getCode());
+			result.setData(res.getData());
+			return result;
+	 }
+	
+	
 }

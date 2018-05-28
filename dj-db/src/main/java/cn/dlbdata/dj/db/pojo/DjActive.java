@@ -103,7 +103,7 @@ public class DjActive {
     private Date signTime;
     
     @Transient
-    @Column(name = "activeTypeName")
+    @Column(name = "active_type_name")
     private String activeTypeName;
     
     @Transient

@@ -3,6 +3,7 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 
 import cn.dlbdata.dj.db.pojo.DjDept;
+import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
 
@@ -48,4 +49,12 @@ public interface IDeptService {
 	 * @return
 	 */
 	SectionInfoVo getSectionInfo(Long userId);
+	/**
+	 * 
+	 * <p>Title: selectDeptNameByDeptId</p> 
+	 * <p>Description:	获取支部名称</p> 
+	 * @param deptId
+	 * @return
+	 */
+	DjDept selectDeptNameByDeptId(Long deptId);
 }

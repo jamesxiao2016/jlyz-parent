@@ -47,6 +47,9 @@ public class DjPartymember {
      */
     @Column(name = "dept_id")
     private Long deptId;
+    
+    @Transient
+    private String deptName;
 
     /**
      * 转入支部
@@ -398,4 +401,13 @@ public class DjPartymember {
     public void setPartyPostCode(String partyPostCode) {
         this.partyPostCode = partyPostCode;
     }
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+    
 }

@@ -103,5 +103,13 @@ public interface IActiveService {
 	 * @return
 	 */
 	StudyDetailVo getStudyDetail(Long studyId);
+	/**
+	 * 
+	 * <p>Title: queryActiveById</p> 
+	 * <p>Description: 获取活动详情</p> 
+	 * @param activeId
+	 * @return
+	 */
+	ResultVo<Map<String, Object>> queryActiveById(Long activeId, Long userId);
 
 }
