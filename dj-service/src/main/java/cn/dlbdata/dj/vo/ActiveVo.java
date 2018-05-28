@@ -68,7 +68,7 @@ public class ActiveVo {
 	 */
 	private Long createUserId;
 	/**
-	 * 活动图片id
+	 * 活动海报id
 	 */
 	private Long picId;
 	/**
