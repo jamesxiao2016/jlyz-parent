@@ -3,13 +3,14 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.vo.ActiveVo;
 import cn.dlbdata.dj.vo.UserVo;
-import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
+import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
 import cn.dlbdata.dj.vo.study.StudyDetailVo;
 
 /**
@@ -27,22 +28,6 @@ public interface IActiveService {
 	 * @return
 	 */
 	public DjActive getActiveInfoById(Long id);
-
-	/**
-	 * 根据部门ID获取活动列表
-	 * 
-	 * @param deptId
-	 * @return
-	 */
-	public List<DjActive> getActiveListByDeptId(Long deptId);
-
-	/**
-	 * 根据多个部门ID获取活动列表
-	 * 
-	 * @param deptIds
-	 * @return
-	 */
-	public List<DjActive> getActiveListByDeptIds(Long[] deptIds);
 
 	/**
 	 * 根据用户ID获取活动次数（包含驿站活动次数）
@@ -82,7 +67,7 @@ public interface IActiveService {
 	 * @return
 	 */
 	// TODO :分页暂缓
-	List<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId);
+	Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize);
 
 	/**
 	 * 创建活动

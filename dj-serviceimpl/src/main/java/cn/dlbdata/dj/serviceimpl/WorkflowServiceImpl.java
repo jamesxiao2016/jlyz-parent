@@ -549,12 +549,12 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	 * @return
 	 */
 	@Override
-	public Paged<ScoreApplyVo> getScoreAuditList(UserVo user, Integer status,int pageNum,int pageSize) {
+	public Paged<ScoreApplyVo> getScoreAuditList(UserVo user, Integer status,int pageNum,int pageSize,Long deptId) {
 		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
 		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
 		Page<ScoreApplyVo> page = PageHelper.startPage(pageNum, pageSize);
 		//TODO 為了便於測試，userId先定為1106
-		List<ScoreApplyVo> voList = applyMapper.getScoreAuditList(1106L,status,yearTimeStart,yearTimeEnd);
+		List<ScoreApplyVo> voList = applyMapper.getScoreAuditList(1106L,status,yearTimeStart,yearTimeEnd,deptId);
 		return PageUtils.toPaged(page);
 	}
 

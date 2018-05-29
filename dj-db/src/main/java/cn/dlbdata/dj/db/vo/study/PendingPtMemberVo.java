@@ -1,4 +1,4 @@
-package cn.dlbdata.dj.vo.study;
+package cn.dlbdata.dj.db.vo.study;
 
 import java.sql.Timestamp;
 

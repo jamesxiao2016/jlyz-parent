@@ -5,11 +5,16 @@ import java.util.Map;
 
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface DjPartymemberMapper extends Mapper<DjPartymember> {
-    List<DjPartymember> getReportPartyMember(Long deptId);
+
+    List<ReportPartyMemberVo> getReportPartyMembers(Long deptId);
+
+    List<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId);
     /**
      * 
      * <p>Title: queryAllPartyMembersByDeptId</p> 

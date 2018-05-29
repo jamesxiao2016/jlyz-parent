@@ -1,4 +1,4 @@
-package cn.dlbdata.dj.vo.party;
+package cn.dlbdata.dj.db.vo.party;
 
 /**
  * Created by Administrator on 2018/5/23.

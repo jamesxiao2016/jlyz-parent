@@ -1,7 +1,7 @@
 package cn.dlbdata.dj.serviceimpl;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import cn.dlbdata.dj.common.core.util.PageUtils;
+import cn.dlbdata.dj.common.core.util.Paged;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +27,9 @@ import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.constant.RoleEnum;
 import cn.dlbdata.dj.db.mapper.DjActiveDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveUserMapper;
@@ -33,7 +39,6 @@ import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
-import cn.dlbdata.dj.db.pojo.DjActiveDept;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
@@ -45,7 +50,7 @@ import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.ActiveVo;
 import cn.dlbdata.dj.vo.UserVo;
-import cn.dlbdata.dj.vo.study.PendingPtMemberVo;
+import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
 import cn.dlbdata.dj.vo.study.StudyDetailVo;
 import tk.mybatis.mapper.entity.Example;
 
@@ -74,25 +79,6 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			return null;
 		}
 		return activeMapper.selectByPrimaryKey(id);
-	}
-
-	@Override
-	public List<DjActive> getActiveListByDeptId(Long deptId) {
-		if (deptId == null) {
-			return null;
-		}
-		DjActiveDept condition = new DjActiveDept();
-		condition.setDjDeptId(deptId);
-		List<DjActiveDept> list = activeDeptMapper.select(condition);
-		return null;
-	}
-
-	@Override
-	public List<DjActive> getActiveListByDeptIds(Long[] deptIds) {
-		if (deptIds == null) {
-			return null;
-		}
-		return null;
 	}
 
 	@Override
@@ -139,15 +125,13 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	}
 
 	/*
-	 * (non-Javadoc) <p>Title: getParticipateActiveCount</p> <p>Description:
-	 * 党员生活通知总数</p>
+	 * (non-Javadoc) <p>Title: getParticipateActiveCount</p> <p>Description: 党员生活通知总数</p>
 	 *
 	 * @param PartyMemberLifeNotice
 	 *
 	 * @return
 	 *
-	 * @see
-	 * cn.dlbdata.dj.service.IActiveService#getParticipateActiveCount(cn.dlbdata.dj.
+	 * @see cn.dlbdata.dj.service.IActiveService#getParticipateActiveCount(cn.dlbdata.dj.
 	 * db.resquest.PartyMemberLifeNotice)
 	 */
 	@Override
@@ -168,18 +152,10 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	}
 
 	@Override
-	public List<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId) {
-		List<DjStudy> studies = studyMapper.getStudysByDeptIdAndSubTypeId(deptId, subTypeId);
-		List<PendingPtMemberVo> voList = new ArrayList<>();
-		for (DjStudy study : studies) {
-			PendingPtMemberVo vo = new PendingPtMemberVo();
-			vo.setCreateTime(new Timestamp(study.getCreateTime().getTime()));
-			vo.setStudyId(study.getId());
-			vo.setName(study.getUserName());
-			vo.setStatus(study.getStatus());
-			voList.add(vo);
-		}
-		return voList;
+	public Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize) {
+		Page<PendingPtMemberVo> page = PageHelper.startPage(pageNum, pageSize);
+		studyMapper.getStudysByDeptIdAndSubTypeId(deptId, subTypeId);
+		return PageUtils.toPaged(page);
 	}
 
 	@Override
@@ -207,8 +183,25 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		active.setStatus(1);
 		active.setDjSubTypeId(activeVo.getSubTypeId());
 		active.setDjTypeId(activeVo.getTypeId());
-		active.setDjDeptId(user.getDeptId());
+		if (user.getRoleId() != null && user.getRoleId() == RoleEnum.BRANCH_SECRETARY.getId()) {
+			active.setDjDeptId(user.getDeptId());
+		} else {
+			active.setDjDeptId(0L);
+		}
 		activeMapper.insertSelective(active);
+
+		// TODO 不是金领驿站的项目自动报名
+		if (activeVo.getTypeId() != ActiveSubTypeEnum.ACTIVE_SUB_E.getActiveSubId()) {
+			if (activeVo.getDeptIds() != null) {
+				List<Long> deptIds = Arrays.asList(activeVo.getDeptIds());
+				Example condition = new Example(DjUser.class);
+				condition.createCriteria().andIn("deptId", deptIds);
+				List<DjUser> users = userMapper.selectByExample(condition);
+				if (users != null) {
+					activeUserMapper.insertList(users, active.getId());
+				}
+			}
+		}
 
 		return result;
 	}
@@ -276,7 +269,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			return result;
 			// json.put("activeCreatePeopleName", createUser.getName());
 		}
-		if (createUser.getRoleId() == 1) {
+		if (createUser.getRoleId() == RoleEnum.PARTY.getId()) {
 			result.setCode(ResultCode.OK.getCode());
 			result.setData(json);
 			return result;
@@ -285,13 +278,12 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		example.createCriteria().andEqualTo("djActiveId", activeId);
 		List<DjActiveUser> participateList = activeUserMapper.selectByExample(example);
 		if (participateList != null && participateList.size() > 0) {
-
 			List<Long> inList = new ArrayList<>();
 			List<Long> outList = new ArrayList<>();
 			for (DjActiveUser item : participateList) {
 				if (Integer.valueOf(DlbConstant.BASEDATA_STATUS_VALID).equals(item.getStatus())) {
 					inList.add(item.getDjUserId());
-				} else if (Integer.valueOf(0).equals(item.getStatus())) {
+				} else if (Integer.valueOf(DlbConstant.BASEDATA_STATUS_INVALID).equals(item.getStatus())) {
 					outList.add(item.getDjUserId());
 				}
 			}

@@ -5,6 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="dj_type_id" jdbcType="BIGINT" property="djTypeId" />
     <result column="dj_sub_type_id" jdbcType="BIGINT" property="djSubTypeId" />
+    <result column="sub_type_name" jdbcType="VARCHAR" property="subTypeId" />
     <result column="apply_info" jdbcType="VARCHAR" property="applyInfo" />
     <result column="apply_id" jdbcType="BIGINT" property="applyId" />
     <result column="apply_name" jdbcType="VARCHAR" property="applyName" />
@@ -42,18 +43,49 @@
   </select>
     
     <select id="getScoreAuditList" resultType="cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo">
-        select ap.id as applyId,ap.status,ap.user_name as partyMemberName,ap.apply_name as leaderName,(
-        select sum(sco.score)  from dj_score sco where sco.user_id = ap.user_id) as totalScore from  dj_apply ap
+        select pm.id as partyMemberId,pm.name as partyMemberName,
+        ifnull((select sum(sco.score)  from dj_score sco where sco.user_id = pm.id),0) as totalScore,
+        dt.principal_name as leaderName
+        from dj_partymember pm
+        left join dj_dept dt on dt.id = pm.dept_id
         <where>
-            ap.approver_id=#{approverId}
-            <if test="yearTimeStart !=null">
-                and ap.create_time &gt;= #{yearTimeStart}
-            </if>
-            <if test="yearTimeEnd !=null">
-                and ap.create_time &lt;= #{yearTimeEnd}
-            </if>
-            <if test="status != null">
-                and ap.status = #{status}
+            <choose>
+                <when test="status==0">
+                    <!-- 传入的状态为待处理 则党员存在未处理的申请-->
+                    exists (select * from dj_apply ap where ap.status =0 and ap.user_id = pm.id
+                    <if test="yearTimeStart !=null">
+                        and ap.create_time &gt;= #{yearTimeStart}
+                    </if>
+                    <if test="yearTimeEnd !=null">
+                        and ap.create_time &lt;= #{yearTimeEnd}
+                    </if>
+                    and ap.dj_sub_type_id in(13,14,15)
+                    )
+                </when>
+                <otherwise>
+                    <!-- 传入的状态为已审核 则党员不存在未处理的申请，且存在已处理的申请(所有的申请都已审核)-->
+                    not exists (SELECT * FROM dj_apply ap WHERE ap. status = 0 AND ap.user_id = pm.id
+                    <if test="yearTimeStart !=null">
+                        and ap.create_time &gt;= #{yearTimeStart}
+                    </if>
+                    <if test="yearTimeEnd !=null">
+                        and ap.create_time &lt;= #{yearTimeEnd}
+                        and ap.dj_sub_type_id in(13,14,15)
+                    </if>)
+                    AND exists (
+                    SELECT * FROM dj_apply ap WHERE ap. status in(1,-2) and ap.user_id = pm.id
+                    <if test="yearTimeStart !=null">
+                        and ap.create_time &gt;= #{yearTimeStart}
+                    </if>
+                    <if test="yearTimeEnd !=null">
+                        and ap.create_time &lt;= #{yearTimeEnd}
+                    </if>
+                    and ap.dj_sub_type_id in(13,14,15)
+                    )
+                </otherwise>
+            </choose>
+            <if test="deptId != null">
+                and pm.dept_id = #{deptId}
             </if>
         </where>
     </select>

@@ -22,6 +22,12 @@ public class DjApply {
      */
     @Column(name = "dj_sub_type_id")
     private Long djSubTypeId;
+    
+    /**
+     * 二级分类名称
+     */
+    @Column(name = "sub_type_name")
+    private String subTypeName;
 
     /**
      * 申请内容
@@ -467,4 +473,12 @@ public class DjApply {
     public void setApproveTime(Date approveTime) {
         this.approveTime = approveTime;
     }
+
+	public String getSubTypeName() {
+		return subTypeName;
+	}
+
+	public void setSubTypeName(String subTypeName) {
+		this.subTypeName = subTypeName;
+	}
 }

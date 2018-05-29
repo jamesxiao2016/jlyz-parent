@@ -109,6 +109,11 @@ public class WorkflowController extends BaseController {
 		return result;
 	}
 
+	/**
+	 * 业务处理
+	 * @param auditVo
+	 * @return
+	 */
 	@PostMapping(value = "/audit")
 	@ResponseBody
 	public ResultVo<String> audit(@RequestBody AuditVo auditVo) {
@@ -154,13 +159,14 @@ public class WorkflowController extends BaseController {
 	@GetMapping("/getScoreAuditList")
 	@ResponseBody
 	public ResultVo<Paged<ScoreApplyVo>> getScoreAuditList(
-			@RequestParam(value = "status",required = false) Integer status,
+			@RequestParam(value = "status") Integer status,
+			@RequestParam(value = "deptId",required = false) Long deptId,
 			@RequestParam(value = "pageNum", required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
 		UserVo user = getCurrentUserFromCache();
 		pageNum = Paged.normalizePageIndex(pageNum);
 		pageSize = Paged.normalizePageSize(pageSize);
-		Paged<ScoreApplyVo> paged = workflowService.getScoreAuditList(user,status,pageNum,pageSize);
+		Paged<ScoreApplyVo> paged = workflowService.getScoreAuditList(user,status,pageNum,pageSize,deptId);
 		ResultVo<Paged<ScoreApplyVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		result.setData(paged);
 		return  result;

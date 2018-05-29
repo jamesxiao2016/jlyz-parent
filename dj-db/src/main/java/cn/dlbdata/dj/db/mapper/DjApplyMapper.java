@@ -18,8 +18,18 @@ public interface DjApplyMapper extends Mapper<DjApply> {
 	 */
 	public List<DjApply> getPendingList(Map<String, Object> map);
 
+	/**
+	 *查询积分审核列表
+	 * @param approverId 审批人Id
+	 * @param status 审批状态
+	 * @param yearTimeStart 今年开始的时间
+	 * @param yearTimeEnd 今年结束的时间
+	 * @param deptId 支部ID
+	 * @return
+	 */
 	List<ScoreApplyVo> getScoreAuditList(@Param("approverId") Long approverId,
-										 @Param("status") Integer status,
+										 @Param("status") int status,
 										 @Param("yearTimeStart")Date yearTimeStart,
-										 @Param("yearTimeEnd") Date yearTimeEnd);
+										 @Param("yearTimeEnd") Date yearTimeEnd,
+										 @Param("deptId") Long deptId);
 }

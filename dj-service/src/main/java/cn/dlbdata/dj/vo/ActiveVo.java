@@ -101,6 +101,10 @@ public class ActiveVo implements Serializable {
 	 */
 	private String subActiveTypeContent;
 	/**
+	 * 参与部门列表
+	 */
+	private Long[] deptIds;
+	/**
 	 * 活动图片集
 	 */
 	private Long[] picIds;
@@ -295,6 +299,14 @@ public class ActiveVo implements Serializable {
 
 	public void setPicIds(Long[] picIds) {
 		this.picIds = picIds;
+	}
+
+	public Long[] getDeptIds() {
+		return deptIds;
+	}
+
+	public void setDeptIds(Long[] deptIds) {
+		this.deptIds = deptIds;
 	}
 
 }

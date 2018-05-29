@@ -34,11 +34,30 @@ public class JwtTokenUtil {
 	public static String KEY_UTYPE = "UTYPE";
 
 	/**
+	 * 生成签名的时候使用的秘钥secret,这个方法本地封装了的，一般可以从本地配置文件中读取，切记这个秘钥不能外露哦。<br/>
+	 * 它就是你服务端的私钥，在任何场景都不应该流露出去。一旦客户端得知这个secret,那就意味着客户端是可以自我签发jwt了。
+	 */
+	static SecretKey key = generalKey();
+
+	static JwtTokenUtil instance = new JwtTokenUtil();
+
+	private JwtTokenUtil() {
+
+	}
+
+	public static JwtTokenUtil getInstance() {
+		return instance;
+	}
+
+	/**
 	 * 创建token
 	 * 
-	 * @param uid 用户ID
-	 * @param uname 用户姓名
-	 * @param cid 部门ID
+	 * @param uid
+	 *            用户ID
+	 * @param uname
+	 *            用户姓名
+	 * @param cid
+	 *            部门ID
 	 * @param ttlMillis
 	 * @return
 	 */
@@ -51,8 +70,7 @@ public class JwtTokenUtil {
 			claims.put(KEY_UID, uid);
 			claims.put(KEY_UNAME, uname);
 			claims.put(KEY_CID, cid);
-			SecretKey key = generalKey();// 生成签名的时候使用的秘钥secret,这个方法本地封装了的，一般可以从本地配置文件中读取，切记这个秘钥不能外露哦。它就是你服务端的私钥，在任何场景都不应该流露出去。一旦客户端得知这个secret,
-											// 那就意味着客户端是可以自我签发jwt了。
+
 			// 下面就是在为payload添加各种标准声明和私有声明了
 			JwtBuilder builder = Jwts.builder() // 这里其实就是new一个JwtBuilder，设置jwt的body
 					.setClaims(claims) // 如果有私有声明，一定要先设置这个自己创建的私有的声明，这个是给builder的claim赋值，一旦写在标准的声明赋值之后，就是覆盖了那些标准的声明的

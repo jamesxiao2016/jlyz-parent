@@ -48,4 +48,22 @@
   	left join dj_sub_type dst on dst.id = t.dj_sub_type_id
   	where dtu.status = #{status} and dtu.dj_user_id = #{userId}
   </select>
+  
+  <insert id="insertList" parameterType="Map">
+    insert into dj_active_user ( dj_active_id,dj_user_id,dj_dept_id,status) values
+    <trim suffixOverrides=",">
+      <foreach collection ="users" item="user" index="index" separator =",">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="activeId != null">
+            #{activeId,jdbcType=BIGINT},
+          </if>
+          <if test="user != null">
+            #{user.id,jdbcType=BIGINT},
+            #{user.deptId,jdbcType=BIGINT},
+          </if>
+          0
+        </trim>
+      </foreach>
+    </trim>
+  </insert>
 </mapper>

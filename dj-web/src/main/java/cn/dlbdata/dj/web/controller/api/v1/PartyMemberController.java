@@ -24,8 +24,8 @@ import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.vo.PartyVo;
 import cn.dlbdata.dj.vo.UserVo;
-import cn.dlbdata.dj.vo.party.PioneeringPartyMemberVo;
-import cn.dlbdata.dj.vo.party.ReportPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
 import cn.dlbdata.dj.web.base.BaseController;
 
 /**
@@ -127,10 +127,15 @@ public class PartyMemberController extends BaseController {
 	 */
 	@GetMapping("/getReportByDeptId")
 	@ResponseBody
-	public ResultVo<List<ReportPartyMemberVo>> getReportPartyMember(@RequestParam(value = "deptId") Long deptId,
-			@RequestParam("subTypeId") Long subTypeId) {
-		ResultVo<List<ReportPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
-		List<ReportPartyMemberVo> voList = partyMemberService.getReportPartyMember(deptId, subTypeId);
+	public ResultVo<Paged<ReportPartyMemberVo>> getReportPartyMember(
+												@RequestParam(value = "deptId") Long deptId,
+												@RequestParam("subTypeId") Long subTypeId,
+												@RequestParam(value = "pageNum", required = false) Integer pageNum,
+												@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+		pageNum = Paged.normalizePageIndex(pageNum);
+		pageSize = Paged.normalizePageSize(pageSize);
+		ResultVo<Paged<ReportPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
+		Paged<ReportPartyMemberVo> voList = partyMemberService.getReportPartyMember(deptId, subTypeId,pageNum,pageSize);
 		result.setData(voList);
 		return result;
 	}
@@ -155,10 +160,14 @@ public class PartyMemberController extends BaseController {
 	 */
 	@GetMapping("/getPartymembersByDeptIdForPioneering")
 	@ResponseBody
-	public ResultVo<List<PioneeringPartyMemberVo>> getPioneeringPartyMembers(
-			@RequestParam(value = "deptId") Long deptId) {
-		List<PioneeringPartyMemberVo> voList = partyMemberService.getPioneeringPartyMembers(deptId);
-		ResultVo<List<PioneeringPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
+	public ResultVo<Paged<PioneeringPartyMemberVo>> getPioneeringPartyMembers(
+			@RequestParam(value = "deptId") Long deptId,
+			@RequestParam(value = "pageNum", required = false) Integer pageNum,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+		pageNum = Paged.normalizePageIndex(pageNum);
+		pageSize = Paged.normalizePageSize(pageSize);
+		Paged<PioneeringPartyMemberVo> voList = partyMemberService.getPioneeringPartyMembers(deptId,pageNum,pageSize);
+		ResultVo<Paged<PioneeringPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		result.setData(voList);
 		return result;
 	}

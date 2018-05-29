@@ -15,7 +15,7 @@ import com.hazelcast.core.HazelcastInstance;
 public class CacheManager {
 	private static CacheManager instance = new CacheManager();
 	static Map<String, Object> cacheMap = new ConcurrentHashMap<>();
-	HazelcastInstance hazelcastInstance = Hazelcast.newHazelcastInstance();
+	static HazelcastInstance hazelcastInstance = Hazelcast.newHazelcastInstance();
 	static String CACHE_NAME = "CACHE_MASTER";
 	
 	private CacheManager() {
