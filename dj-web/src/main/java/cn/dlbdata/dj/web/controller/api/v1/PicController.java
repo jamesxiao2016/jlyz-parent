@@ -110,8 +110,13 @@ public class PicController extends BaseController {
 
 	/**
 	 * 
-	 * <p>Title: deleteActivePicById</p> 
-	 * <p>Description: 删除活动图片</p> 
+	 * <p>
+	 * Title: deleteActivePicById
+	 * </p>
+	 * <p>
+	 * Description: 删除活动图片
+	 * </p>
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -120,7 +125,7 @@ public class PicController extends BaseController {
 	public ResultVo<Integer> deleteActivePicById(Long id) {
 		ResultVo<Integer> result = new ResultVo<>();
 		int count = pictureService.deleteActivePicById(id);
-		if ( count <= 0) {
+		if (count <= 0) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("删除失败");
 		} else {
