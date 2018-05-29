@@ -6,14 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.dlbdata.dj.common.core.util.DatetimeUtil;
-import cn.dlbdata.dj.common.core.util.PageUtils;
-import cn.dlbdata.dj.common.core.util.Paged;
-import cn.dlbdata.dj.db.mapper.*;
-import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
-import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
-import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
-import cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
+import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
+import cn.dlbdata.dj.common.core.util.PageUtils;
+import cn.dlbdata.dj.common.core.util.Paged;
+import cn.dlbdata.dj.common.core.util.StringUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.PageVo;
@@ -29,6 +25,21 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.db.mapper.DjActiveMapper;
+import cn.dlbdata.dj.db.mapper.DjApplyMapper;
+import cn.dlbdata.dj.db.mapper.DjApproveMapper;
+import cn.dlbdata.dj.db.mapper.DjDeptMapper;
+import cn.dlbdata.dj.db.mapper.DjDisciplineMapper;
+import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
+import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
+import cn.dlbdata.dj.db.mapper.DjScoreMapper;
+import cn.dlbdata.dj.db.mapper.DjSectionMapper;
+import cn.dlbdata.dj.db.mapper.DjStudyMapper;
+import cn.dlbdata.dj.db.mapper.DjSubTypeMapper;
+import cn.dlbdata.dj.db.mapper.DjThoughtsMapper;
+import cn.dlbdata.dj.db.mapper.DjTypeMapper;
+import cn.dlbdata.dj.db.mapper.DjUserMapper;
+import cn.dlbdata.dj.db.mapper.DjVanguardMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.pojo.DjApprove;
@@ -43,6 +54,11 @@ import cn.dlbdata.dj.db.pojo.DjThoughts;
 import cn.dlbdata.dj.db.pojo.DjType;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.pojo.DjVanguard;
+import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
+import cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo;
+import cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo;
 import cn.dlbdata.dj.service.IWorkflowService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.ApplyVo;
@@ -98,7 +114,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 
 		DjApply record = new DjApply();
 		record.setApplyDesc(vo.getRemark());
-		record.setApplyInfo(vo.getContent());
+		record.setApplyInfo(StringUtil.subString(vo.getContent(), 128));
 		record.setCreateTime(new Date());
 		record.setDjDeptId(user.getDeptId());
 		record.setDjTypeId(vo.getDjTypeId());
@@ -254,57 +270,9 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		apply.setApproveTime(new Date());
 		applyMapper.updateByPrimaryKeySelective(apply);
 
-		// 写入积分记录表
-		// 根据类型判断最大分数
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		Float subTypeMaxScore = subType.getMaxScore();
-		if (subTypeMaxScore == null) {
-			subTypeMaxScore = 0F;
-		}
-		Float typeMaxScore = type.getMaxScore();
-		if (typeMaxScore == null) {
-			typeMaxScore = type.getScore();
-			if (typeMaxScore == null)
-				typeMaxScore = 0F;
-		}
-		Float userSubTypeScore = scoreMapper.getSumScoreByUserIdAndType(apply.getUserId(), year, null,
-				apply.getDjSubTypeId());
-		if (userSubTypeScore == null) {
-			userSubTypeScore = 0F;
-		}
-		Float userTypeScore = scoreMapper.getSumScoreByUserIdAndType(apply.getUserId(), year, apply.getDjTypeId(),
-				null);
-		if (userTypeScore == null) {
-			userTypeScore = 0F;
-		}
-		// 积分没有积满，则往积分表中插入记录
-		if (userSubTypeScore < subTypeMaxScore && userTypeScore < typeMaxScore) {
-			DjScore record = new DjScore();
-			record.setAddStatus(1);
-			record.setAddTime(new Date());
-			record.setAddYear(year);
-			record.setApplyUserId(apply.getApplyId());
-			record.setApproverId(user.getUserId());
-			record.setCreateTime(new Date());
-			record.setDjSubTypeId(apply.getDjSubTypeId());
-			record.setDjTypeId(apply.getDjTypeId());
-			record.setRecordId(apply.getRecordId());
-			// record.setRecrodDesc(apply.get);
-			// record.setScoreDesc(scoreDesc);
-			record.setStatus(1);
-			record.setUserId(apply.getUserId());
-			// record.setUserName(apply.getUserName());
-			Float score = apply.getScore();
-			// 公益服务,处理9分的问题
-			if (apply.getDjTypeId() == ActiveTypeEnum.ACTIVE_F.getActiveId()) {
-				if ((userTypeScore + apply.getScore()) > typeMaxScore) {
-					score = typeMaxScore - userTypeScore;
-				}
-			}
-
-			record.setScore(score);
-			scoreMapper.insertSelective(record);
-		}
+		// 处理分数，插入到积分明细表中
+		handScore(apply.getDjSubTypeId(), apply.getUserId(), apply.getApplyId(), apply.getApproverId(),
+				apply.getScore(), apply.getRecordId(), apply.getRemark());
 
 		// 插入审批记录表
 		DjApprove approve = new DjApprove();
@@ -319,6 +287,76 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		resultVo.setCode(ResultCode.OK.getCode());
 		resultVo.setMsg("审核成功");
 		return resultVo;
+	}
+
+	/**
+	 * 处理积分的问题
+	 * 
+	 * @param subTypeId
+	 * @param userId
+	 * @param applyerId
+	 * @param approverId
+	 * @param applySocre
+	 * @param recordId
+	 * @param recordDesc
+	 */
+	private void handScore(Long subTypeId, Long userId, Long applyerId, Long approverId, Float applySocre,
+			Long recordId, String recordDesc) {
+		DjSubType subType = subTypeMapper.selectByPrimaryKey(subTypeId);
+		if (subType == null) {
+			return;
+		}
+		DjType type = typeMapper.selectByPrimaryKey(subType.getDjTypeId());
+		if (type == null) {
+			return;
+		}
+		// 写入积分记录表
+		// 根据类型判断最大分数
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		Float subTypeMaxScore = subType.getMaxScore();
+		if (subTypeMaxScore == null) {
+			subTypeMaxScore = 0F;
+		}
+		Float typeMaxScore = type.getMaxScore();
+		if (typeMaxScore == null) {
+			typeMaxScore = type.getScore();
+			if (typeMaxScore == null)
+				typeMaxScore = 0F;
+		}
+		Float userSubTypeScore = scoreMapper.getSumScoreByUserIdAndType(userId, year, null, subTypeId);
+		if (userSubTypeScore == null) {
+			userSubTypeScore = 0F;
+		}
+		Float userTypeScore = scoreMapper.getSumScoreByUserIdAndType(userId, year, subType.getDjTypeId(), null);
+		if (userTypeScore == null) {
+			userTypeScore = 0F;
+		}
+		// 积分没有积满，则往积分表中插入记录
+		if (userSubTypeScore < subTypeMaxScore && userTypeScore < typeMaxScore) {
+			DjScore record = new DjScore();
+			record.setAddStatus(DlbConstant.BASEDATA_STATUS_VALID);
+			record.setAddTime(new Date());
+			record.setAddYear(year);
+			record.setUserId(userId);
+			record.setApplyUserId(applyerId);
+			record.setApproverId(approverId);
+			record.setCreateTime(new Date());
+			record.setDjSubTypeId(subTypeId);
+			record.setDjTypeId(type.getId());
+			record.setRecordId(recordId);
+			record.setRecrodDesc(recordDesc);
+			record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+			Float score = applySocre;
+			// 公益服务,处理9分的问题
+			if (type.getId() == ActiveTypeEnum.ACTIVE_F.getActiveId()) {
+				if ((userTypeScore + applySocre) > typeMaxScore) {
+					score = typeMaxScore - userTypeScore;
+				}
+			}
+
+			record.setScore(score);
+			scoreMapper.insertSelective(record);
+		}
 	}
 
 	@Override
@@ -443,6 +481,15 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			result.setMsg("参数错误");
 			return result;
 		}
+		// 获取二级分类信息
+		DjSubType subType = subTypeMapper.selectByPrimaryKey(param.getReportType());
+		if (subType == null) {
+			logger.error("获取二级分类失败");
+			result.setCode(ResultCode.NotFound.getCode());
+			result.setMsg("提交失败");
+			return result;
+		}
+
 		DjThoughts record = null;
 		if (param.getId() != null) {
 			record = thoughtsMapper.selectByPrimaryKey(param.getId());
@@ -453,6 +500,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			record = new DjThoughts();
 			record.setId(DigitUtil.generatorLongId());
 		}
+
 		record.setCreateTime(new Date());
 		record.setDjDeptId(param.getDeptId());
 		record.setDjUserId(param.getUserId());
@@ -460,7 +508,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		record.setThoughtsInfo(param.getContent());
 		record.setThoughtsTime(param.getReportTime());
 		record.setScore(5F);
-		record.setStatus(1);
+		record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		if (isSave) {
 			thoughtsMapper.insertSelective(record);
 		} else {
@@ -469,7 +517,9 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		// 保存图片
 		savePics(record.getId(), DlbConstant.TABLE_NAME_THOUGHTS, param.getPics());
 
-		// 判断是否需要审批，不需要审批，直接加分
+		// TODO 不需要审批，直接加分
+		handScore(param.getReportType(), param.getUserId(), user.getUserId(), user.getUserId(), subType.getScore(),
+				record.getId(), param.getContent());
 
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(record.getId());
@@ -534,17 +584,19 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	/**
 	 * 查询积分审核列表
 	 *
-	 * @param user   user
-	 * @param status 审核状态
+	 * @param user
+	 *            user
+	 * @param status
+	 *            审核状态
 	 * @return
 	 */
 	@Override
-	public Paged<ScoreApplyVo> getScoreAuditList(UserVo user, Integer status,int pageNum,int pageSize,Long deptId) {
+	public Paged<ScoreApplyVo> getScoreAuditList(UserVo user, Integer status, int pageNum, int pageSize, Long deptId) {
 		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
 		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
 		Page<ScoreApplyVo> page = PageHelper.startPage(pageNum, pageSize);
-		//TODO 為了便於測試，userId先定為1106
-		List<ScoreApplyVo> voList = applyMapper.getScoreAuditList(1106L,status,yearTimeStart,yearTimeEnd,deptId);
+		// TODO 為了便於測試，userId先定為1106
+		applyMapper.getScoreAuditList(1106L, status, yearTimeStart, yearTimeEnd, deptId);
 		return PageUtils.toPaged(page);
 	}
 

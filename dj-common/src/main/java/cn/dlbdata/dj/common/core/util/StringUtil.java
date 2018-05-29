@@ -1,8 +1,6 @@
 package cn.dlbdata.dj.common.core.util;
 
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,5 +43,26 @@ public class StringUtil extends StringUtils {
 			sex = "男";
 		}
 		return sex;
+	}
+
+	/**
+	 * 截取字符串
+	 * 
+	 * @param str
+	 * @param max
+	 *            最大长度
+	 * @return
+	 */
+	public static String subString(String str, int max) {
+		if (StringUtils.isEmpty(str)) {
+			return str;
+		}
+
+		int length = str.length();
+		if (length > max) {
+			return str.substring(0, max) + "...";
+		}
+
+		return str;
 	}
 }

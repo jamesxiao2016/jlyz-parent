@@ -1,7 +1,5 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,8 +23,6 @@ import cn.dlbdata.dj.service.IPictureService;
 import cn.dlbdata.dj.vo.PicVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
-import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.geometry.Positions;
 
 @Controller
 @RequestMapping("/api/v1/picture")
@@ -112,26 +108,6 @@ public class PicController extends BaseController {
 		}
 	}
 
-	public boolean compressPic(File inputFile, File outputFile, int w, int h) {
-		try {
-			Thumbnails.Builder<File> fileBuilder = Thumbnails.of(inputFile).scale(1.0).outputQuality(1.0);
-			BufferedImage src = fileBuilder.asBufferedImage();
-			int height = src.getHeight();
-			int width = src.getWidth();
-			int square = width;
-			if (width > height) {
-				square = height;
-			} else {
-				square = width;
-			}
-
-			Thumbnails.of(inputFile).size(w, h).sourceRegion(Positions.CENTER, square, square).toFile(outputFile);
-			return true;
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-		}
-		return false;
-	}
 	/**
 	 * 
 	 * <p>Title: deleteActivePicById</p> 

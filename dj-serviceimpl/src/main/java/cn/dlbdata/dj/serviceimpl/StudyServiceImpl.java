@@ -85,7 +85,7 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		vo.setTableName(DlbConstant.TABLE_NAME_STUDY);
 		vo.setUserId(user.getUserId());
 		vo.setUserName(user.getUserName());
-		vo.setRoleId(RoleEnum.BRANCH_SECRETARY.getId());
+		vo.setRoleId(RoleEnum.BRANCH_PARTY.getId());
 		vo.setScore(score);
 		String rs = workflowService.doApply(vo, user);
 		if (!CoreConst.SUCCESS.equals(rs)) {
