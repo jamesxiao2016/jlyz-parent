@@ -24,6 +24,7 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.constant.RoleEnum;
 import cn.dlbdata.dj.db.mapper.DjActiveMapper;
 import cn.dlbdata.dj.db.mapper.DjApplyMapper;
 import cn.dlbdata.dj.db.mapper.DjApproveMapper;
@@ -123,6 +124,12 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		record.setUserId(vo.getUserId());
 		record.setUserName(vo.getUserName());
 		record.setDjRoleId(vo.getRoleId());
+		record.setDjRoleId(vo.getRoleId());
+		DjSubType subType = subTypeMapper.selectByPrimaryKey(vo.getDjSubTypeId());
+		if (subType != null) {
+			record.setScore(subType.getScore());
+			record.setSubTypeName(subType.getName());
+		}
 		DjUser approver = null;
 
 		if (vo.getDjTypeId() == ActiveTypeEnum.ACTIVE_A.getActiveId()
@@ -196,6 +203,14 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			return resultVo;
 		}
 
+		// 检查用户权限
+		if (user.getRoleId() != RoleEnum.BRANCH_PARTY.getId()
+				|| user.getRoleId() != RoleEnum.HEADER_OF_DISTRICT.getId()) {
+			resultVo.setCode(ResultCode.Forbidden.getCode());
+			resultVo.setMsg("当前用户没有权限");
+			return resultVo;
+		}
+
 		DjApply apply = applyMapper.selectByPrimaryKey(auditVo.getId());
 		if (apply == null) {
 			logger.error("申请记录查询失败" + auditVo.getId());
@@ -264,9 +279,13 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		apply.setApproveTime(new Date());
 		applyMapper.updateByPrimaryKeySelective(apply);
 
+		Float score = apply.getScore();
+		if (score == null || score == 0) {
+			score = subType.getScore();
+		}
 		// 处理分数，插入到积分明细表中
-		handScore(apply.getDjSubTypeId(), apply.getUserId(), apply.getApplyId(), apply.getApproverId(),
-				apply.getScore(), apply.getRecordId(), apply.getRemark());
+		handScore(apply.getDjSubTypeId(), apply.getUserId(), apply.getApplyId(), apply.getApproverId(), score,
+				apply.getRecordId(), apply.getRemark());
 
 		// 插入审批记录表
 		DjApprove approve = new DjApprove();
@@ -392,7 +411,11 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		vo.setContent(record.getReason());
 		vo.setDjSubTypeId(ActiveSubTypeEnum.ACTIVE_SUB_P.getActiveSubId());
 		vo.setDjTypeId(ActiveTypeEnum.ACTIVE_E.getActiveId());
+		vo.setRoleId(RoleEnum.HEADER_OF_DISTRICT.getId());
 		vo.setRecordId(record.getId());
+		vo.setDjDeptId(user.getDeptId());
+		vo.setUserId(param.getUserId());
+		vo.setUserName(param.getUserName());
 		vo.setRemark("遵章守纪申请");
 		// vo.setScore(score);
 		vo.setTableName(DlbConstant.TABLE_NAME_DISCIPLINE);
@@ -448,7 +471,11 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			vo.setContent(record.getContent());
 			vo.setDjSubTypeId(param.getVanguardType());
 			vo.setDjTypeId(ActiveTypeEnum.ACTIVE_D.getActiveId());
+			vo.setRoleId(RoleEnum.HEADER_OF_DISTRICT.getId());
 			vo.setRecordId(record.getId());
+			vo.setDjDeptId(user.getDeptId());
+			vo.setUserId(param.getUserId());
+			vo.setUserName(param.getUserName());
 			vo.setRemark("获得荣誉申请");
 
 			vo.setTableName(DlbConstant.TABLE_NAME_VANGUARD);
@@ -586,34 +613,36 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
 		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
 		Page<ScoreApplyVo> page = PageHelper.startPage(pageNum, pageSize);
-		applyMapper.getScoreAuditList( status, yearTimeStart, yearTimeEnd, deptId);
+		applyMapper.getScoreAuditList(status, yearTimeStart, yearTimeEnd, deptId);
 		return PageUtils.toPaged(page);
 	}
 
-    /**
-     * 查询积分审核详情(先锋作用的三个)
-     *
-     * @param partyMemberId 党员Id
-     * @return
-     */
-    @Override
-    public PioneeringApplyDetailVo getPioneeringApplyDetail(Long partyMemberId) {
-        Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
-        Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
-        IdNameTotalScoreVo idNameTotalScoreVo= partymemberMapper.getTotalScoreById(partyMemberId);
+	/**
+	 * 查询积分审核详情(先锋作用的三个)
+	 *
+	 * @param partyMemberId
+	 *            党员Id
+	 * @return
+	 */
+	@Override
+	public PioneeringApplyDetailVo getPioneeringApplyDetail(Long partyMemberId) {
+		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
+		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
+		IdNameTotalScoreVo idNameTotalScoreVo = partymemberMapper.getTotalScoreById(partyMemberId);
 		PioneeringApplyDetailVo pioneeringApplyDetailVo = new PioneeringApplyDetailVo();
 		pioneeringApplyDetailVo.setPartyMemberName(idNameTotalScoreVo.getName());
 		pioneeringApplyDetailVo.setTotalScore(idNameTotalScoreVo.getTotalScore());
-        List<ScoreAuditDetailVo> voList = applyMapper.getScoreAuditDetailByPtMemberId(yearTimeStart,yearTimeEnd,
-                partyMemberId);
-        for (ScoreAuditDetailVo vo:voList) {
-        	if (vo.getRecordId() != null) {
-				List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_VANGUARD,vo.getRecordId());
+		List<ScoreAuditDetailVo> voList = applyMapper.getScoreAuditDetailByPtMemberId(yearTimeStart, yearTimeEnd,
+				partyMemberId);
+		for (ScoreAuditDetailVo vo : voList) {
+			if (vo.getRecordId() != null) {
+				List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_VANGUARD,
+						vo.getRecordId());
 				vo.setPicIds(picIds);
 			}
 		}
-        pioneeringApplyDetailVo.setDetail(voList);
+		pioneeringApplyDetailVo.setDetail(voList);
 
-        return pioneeringApplyDetailVo;
-    }
+		return pioneeringApplyDetailVo;
+	}
 }

@@ -29,6 +29,8 @@ public class ApplyVo implements Serializable {
 	private Long userId;
 	// 加分人姓名
 	private String userName;
+	//申请人所在部门
+	private Long djDeptId;
 	// 审批角色ID
 	private Long roleId;
 
@@ -126,6 +128,14 @@ public class ApplyVo implements Serializable {
 
 	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
+	}
+
+	public Long getDjDeptId() {
+		return djDeptId;
+	}
+
+	public void setDjDeptId(Long djDeptId) {
+		this.djDeptId = djDeptId;
 	}
 
 }
