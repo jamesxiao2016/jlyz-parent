@@ -17,7 +17,7 @@
   </resultMap>
 
   <select id="countUnAuditByPtMemberIdAndType" resultType="int">
-    select count(0) from dj_vanguard where dj_user_id =#{id} and type in(13,14,15)
+    select count(0) from dj_vanguard where dj_user_id =#{id} and type in(41,42,43)
   </select>
 
   <select id="countByPtMemberIdStatus" resultType="int">
