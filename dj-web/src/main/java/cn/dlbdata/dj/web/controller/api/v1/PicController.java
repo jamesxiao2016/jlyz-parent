@@ -10,10 +10,12 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,6 +24,7 @@ import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjPic;
 import cn.dlbdata.dj.service.IPictureService;
+import cn.dlbdata.dj.vo.DjActivePicVo;
 import cn.dlbdata.dj.vo.PicVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
@@ -139,11 +142,11 @@ public class PicController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@DeleteMapping(value = "/deleteActivePicById")
+	@PostMapping(value = "/deleteActivePicById")
 	@ResponseBody
-	public ResultVo<Integer> deleteActivePicById(Long id) {
+	public ResultVo<Integer> deleteActivePicById(@RequestBody DjActivePicVo vo) {
 		ResultVo<Integer> result = new ResultVo<>();
-		int count = pictureService.deleteActivePicById(id);
+		int count = pictureService.deleteActivePicById( vo.getDjActiveId(), vo.getDjPicId() );
 		if ( count <= 0) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("删除失败");

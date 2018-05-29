@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.util.ImageUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
-import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
@@ -148,7 +147,7 @@ public class ActiveController extends BaseController {
 	 * Title: showQrCode
 	 * </p>
 	 * <p>
-	 * Description:显示二维码
+	 * Description:显示活动二维码
 	 * </p>
 	 * 
 	 * @param activeId

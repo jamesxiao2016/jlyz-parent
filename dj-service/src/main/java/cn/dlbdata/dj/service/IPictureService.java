@@ -15,5 +15,5 @@ public interface IPictureService {
 	 * @param id
 	 * @return
 	 */
-	public int deleteActivePicById(Long id);
+	public int deleteActivePicById(Long djActiveId , Long djPicId);
 }

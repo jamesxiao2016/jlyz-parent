@@ -20,6 +20,8 @@ import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.mapper.DjActivePicMapper;
 import cn.dlbdata.dj.db.mapper.DjPicMapper;
+import cn.dlbdata.dj.db.pojo.DjActivePic;
+import cn.dlbdata.dj.db.pojo.DjActiveUser;
 import cn.dlbdata.dj.db.pojo.DjPic;
 import cn.dlbdata.dj.service.IPictureService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
@@ -32,6 +34,7 @@ import cn.dlbdata.dj.thirdparty.mp.sdk.util.LocalCache;
 import cn.dlbdata.dj.vo.PicVo;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
+import tk.mybatis.mapper.entity.Example;
 
 @Service
 public class PictureServiceImpl extends BaseServiceImpl implements IPictureService {
@@ -251,11 +254,13 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 	 * @see cn.dlbdata.dj.service.IPictureService#deleteActivePicById(java.lang.Long)
 	 */
 	@Override
-	public int deleteActivePicById(Long id) {
-		if(id == null) {
+	public int deleteActivePicById(Long djActiveId ,Long djPicId) {
+		if(djActiveId == null || djPicId == null ) {
 			return 0;
 		}
-		return activePicMapper.deleteByPrimaryKey(id);
+		Example example = new Example(DjActivePic.class);
+		example.createCriteria().andEqualTo("djActiveId", djActiveId).andEqualTo("djPicId", djPicId);
+		return activePicMapper.deleteByExample(example);
 	}
 
 	
