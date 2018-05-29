@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
@@ -42,6 +44,7 @@ import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.pojo.DjUser;
+import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
@@ -88,23 +91,36 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		Integer count = activeMapper.getUserActiveCountByActiveTypeAndTime(userId, activeType, startTime, endTime);
 		return count;
 	}
-
+	/**
+	 * 党员生活通知列表
+	 */
 	@Override
-	public PageVo<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
+	public ResultVo<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
 
-		PageVo<Map<String, Object>> result = new PageVo<>();
+		ResultVo<Map<String, Object>> result = new ResultVo<>();
 		if (partyMemberLifeNotice == null) {
 			return result;
 		}
 		partyMemberLifeNotice.setEndTime(new Date());
+		//报名的集合
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", partyMemberLifeNotice.getUserId());
 		map.put("startTime", partyMemberLifeNotice.getStartTime());
 		map.put("endTime", partyMemberLifeNotice.getEndTime());
 		map.put("departmentId", partyMemberLifeNotice.getDepartmentId());
-		List<Map<String, Object>> activeList = activeMapper.getRunningActive(map);
-		result.setTotal(getParticipateActiveCount(partyMemberLifeNotice));
-		result.setData(activeList);
+		map.put("signUp", DlbConstant.BASEDATA_STATUS_VALID);
+		Page<Map<String, Object>> page = PageHelper.startPage(1, 1);
+		List<Map<String, Object>> inList = activeMapper.getRunningActive(map);
+		//未报名的集合
+		map.put("signUp", DlbConstant.BASEDATA_STATUS_INVALID);
+		Page<Map<String, Object>> page2 = PageHelper.startPage(1, 1);
+		List<Map<String, Object>> outList = activeMapper.getRunningActive(map);
+		Map<String, Object> mapThree = new HashMap<String, Object>();
+		mapThree.put("registered", page.getResult());
+		mapThree.put("noRegistered", page2.getResult());
+		int count = getParticipateActiveCount(partyMemberLifeNotice);
+		result.setMsg(String.valueOf(count));
+		result.setData(mapThree);
 		return result;
 	}
 
@@ -121,6 +137,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	@Override
 	public int getParticipateActiveCount(PartyMemberLifeNotice partyMemberLifeNotice) {
 		if (partyMemberLifeNotice == null) {
+			logger.error("参数错误");
 			return 0;
 		}
 		partyMemberLifeNotice.setEndTime(new Date());
@@ -227,24 +244,26 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	public ResultVo<Map<String, Object>> queryActiveById(Long activeId, Long userId) {
 		ResultVo<Map<String, Object>> result = new ResultVo<>();
 		if (activeId == null) {
+			logger.error("参数错误");
 			result.setCode(ResultCode.Forbidden.getCode());
-			result.setMsg("活动id不能为空");
 			return result;
 		}
 		if (userId == null) {
+			logger.error("参数错误");
 			result.setCode(ResultCode.Forbidden.getCode());
-			result.setMsg("用户id不能为空");
 			return result;
 		}
 		DjActive active = activeMapper.selectByPrimaryKey(activeId);
 		if (active == null) {
+			logger.error("参数错误");
 			result.setCode(ResultCode.Forbidden.getCode());
-			result.setMsg("没用相关的活动");
+			result.setMsg("获取活动失败");
 			return result;
 		}
 		JSONObject json = JSON.parseObject(JSON.toJSONString(active));
 		DjUser createUser = userMapper.selectByPrimaryKey(userId);
 		if (createUser == null) {
+			logger.error("没有用户信息");
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("没有用户信息");
 			return result;
@@ -262,7 +281,6 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			List<Long> inList = new ArrayList<>();
 			List<Long> outList = new ArrayList<>();
 			for (DjActiveUser item : participateList) {
-				// TODO 换成常量
 				if (Integer.valueOf(DlbConstant.BASEDATA_STATUS_VALID).equals(item.getStatus())) {
 					inList.add(item.getDjUserId());
 				} else if (Integer.valueOf(DlbConstant.BASEDATA_STATUS_INVALID).equals(item.getStatus())) {

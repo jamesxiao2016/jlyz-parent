@@ -60,8 +60,8 @@ public class ActiveController extends BaseController {
 	 */
 	@GetMapping(value = "/getParticipateActive")
 	@ResponseBody
-	public PageVo<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
-		PageVo<Map<String, Object>> result = new PageVo<>();
+	public ResultVo<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
+		ResultVo<Map<String, Object>> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
 		if(data == null) {
 			result.setCode(ResultCode.Forbidden.getCode());

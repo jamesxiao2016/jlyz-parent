@@ -41,7 +41,7 @@ public interface IActiveService {
 	/**
 	 * 
 	 */
-	public PageVo<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice PartyMemberLifeNotice);
+	public ResultVo<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice PartyMemberLifeNotice);
 
 	/**
 	 * 党员生活通知总数

@@ -27,6 +27,7 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	@Override
 	public DjDept getDeptInfoById(Long id) {
 		if (id == null) {
+			logger.error("参数获取失败");
 			return null;
 		}
 		return deptMapper.selectByPrimaryKey(id);
