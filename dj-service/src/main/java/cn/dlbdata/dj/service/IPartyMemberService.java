@@ -45,7 +45,7 @@ public interface IPartyMemberService {
 	 *            党员ID
 	 * @return
 	 */
-	public PartyVo getScoreAndNumByMemberId(Long memberId);
+	public PartyVo getScoreAndNumByMemberId(Long memberId, Integer year);
 
 	/**
 	 * 获取积分明细

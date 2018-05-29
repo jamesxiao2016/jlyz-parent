@@ -102,7 +102,7 @@ public class ActiveController extends BaseController {
 			return result;
 		}
 		activeSignUpRequest.setUserId(data.getUserId());
-		result = activeUserService.insertActiveSignUp(activeSignUpRequest);
+		result = activeUserService.insertActiveSignUp(activeSignUpRequest,data);
 		return result;
 	}
 
