@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import cn.dlbdata.dj.db.pojo.DjApply;
-import cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -32,4 +33,14 @@ public interface DjApplyMapper extends Mapper<DjApply> {
 										 @Param("yearTimeStart")Date yearTimeStart,
 										 @Param("yearTimeEnd") Date yearTimeEnd,
 										 @Param("deptId") Long deptId);
+
+    /**
+     * 查询积分审核详情(先锋作用的三个)
+     *
+     * @param partyMemberId 党员Id
+     * @return
+     */
+    List<ScoreAuditDetailVo> getScoreAuditDetailByPtMemberId( @Param("yearTimeStart")Date yearTimeStart,
+                                                              @Param("yearTimeEnd") Date yearTimeEnd,
+                                                              @Param("partyMemberId") Long partyMemberId);
 }

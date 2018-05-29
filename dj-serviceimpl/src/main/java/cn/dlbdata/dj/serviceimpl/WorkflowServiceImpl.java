@@ -1,18 +1,11 @@
 package cn.dlbdata.dj.serviceimpl;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.dlbdata.dj.common.core.util.DatetimeUtil;
-import cn.dlbdata.dj.common.core.util.PageUtils;
-import cn.dlbdata.dj.common.core.util.Paged;
-import cn.dlbdata.dj.common.core.util.StringUtil;
-import cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo;
-import cn.dlbdata.dj.thirdparty.mp.sdk.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
+import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
+import cn.dlbdata.dj.common.core.util.PageUtils;
+import cn.dlbdata.dj.common.core.util.Paged;
+import cn.dlbdata.dj.common.core.util.StringUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.PageVo;
@@ -33,6 +30,7 @@ import cn.dlbdata.dj.db.mapper.DjApplyMapper;
 import cn.dlbdata.dj.db.mapper.DjApproveMapper;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjDisciplineMapper;
+import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
 import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
 import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.mapper.DjSectionMapper;
@@ -56,6 +54,11 @@ import cn.dlbdata.dj.db.pojo.DjThoughts;
 import cn.dlbdata.dj.db.pojo.DjType;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.pojo.DjVanguard;
+import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
+import cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo;
+import cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo;
 import cn.dlbdata.dj.service.IWorkflowService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.ApplyVo;
@@ -97,6 +100,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	private DjSubTypeMapper subTypeMapper;
 	@Autowired
 	private DjScoreMapper scoreMapper;
+	@Autowired
+	private DjPartymemberMapper partymemberMapper;
 
 	@Override
 	@Transactional
@@ -595,4 +600,30 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		return PageUtils.toPaged(page);
 	}
 
+    /**
+     * 查询积分审核详情(先锋作用的三个)
+     *
+     * @param partyMemberId 党员Id
+     * @return
+     */
+    @Override
+    public PioneeringApplyDetailVo getPioneeringApplyDetail(Long partyMemberId) {
+        Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
+        Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
+        IdNameTotalScoreVo idNameTotalScoreVo= partymemberMapper.getTotalScoreById(partyMemberId);
+		PioneeringApplyDetailVo pioneeringApplyDetailVo = new PioneeringApplyDetailVo();
+		pioneeringApplyDetailVo.setPartyMemberName(idNameTotalScoreVo.getName());
+		pioneeringApplyDetailVo.setTotalScore(idNameTotalScoreVo.getTotalScore());
+        List<ScoreAuditDetailVo> voList = applyMapper.getScoreAuditDetailByPtMemberId(yearTimeStart,yearTimeEnd,
+                partyMemberId);
+        for (ScoreAuditDetailVo vo:voList) {
+        	if (vo.getRecordId() != null) {
+				List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_VANGUARD,vo.getRecordId());
+				vo.setPicIds(picIds);
+			}
+		}
+        pioneeringApplyDetailVo.setDetail(voList);
+
+        return pioneeringApplyDetailVo;
+    }
 }

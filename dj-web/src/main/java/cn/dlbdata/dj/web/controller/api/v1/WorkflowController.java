@@ -1,7 +1,9 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
 import cn.dlbdata.dj.common.core.util.Paged;
-import cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo;
+import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,8 @@ import cn.dlbdata.dj.vo.ThoughtsVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.VanguardVo;
 import cn.dlbdata.dj.web.base.BaseController;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/v1/flow")
@@ -169,6 +173,21 @@ public class WorkflowController extends BaseController {
 		Paged<ScoreApplyVo> paged = workflowService.getScoreAuditList(user,status,pageNum,pageSize,deptId);
 		ResultVo<Paged<ScoreApplyVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		result.setData(paged);
+		return  result;
+	}
+
+	/**
+	 *查询积分审核详情(先锋作用的三个)
+	 * @param partyMemberId 党员Id
+	 * @return
+	 */
+	@GetMapping("/getPioneeringApplyDetail")
+	@ResponseBody
+	public ResultVo<PioneeringApplyDetailVo>getPioneeringApplyDetail(
+			@RequestParam("partyMemberId") Long partyMemberId) {
+		PioneeringApplyDetailVo vo = workflowService.getPioneeringApplyDetail(partyMemberId);
+		ResultVo<PioneeringApplyDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
+		result.setData(vo);
 		return  result;
 	}
 }

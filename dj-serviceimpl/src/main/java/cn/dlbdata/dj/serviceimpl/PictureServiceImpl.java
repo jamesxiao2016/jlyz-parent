@@ -18,6 +18,7 @@ import cn.dlbdata.dj.common.core.util.ConfigUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.db.mapper.DjActivePicMapper;
 import cn.dlbdata.dj.db.mapper.DjPicMapper;
 import cn.dlbdata.dj.db.pojo.DjPic;
 import cn.dlbdata.dj.service.IPictureService;
@@ -42,6 +43,8 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 
 	@Autowired
 	private AccessService accessService;
+	@Autowired
+	private DjActivePicMapper activePicMapper; 
 	@Autowired
 	private DjPicMapper picMapper;
 
@@ -252,7 +255,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 		if(id == null) {
 			return 0;
 		}
-		return picMapper.deleteByPrimaryKey(id);
+		return activePicMapper.deleteByPrimaryKey(id);
 	}
 
 	
