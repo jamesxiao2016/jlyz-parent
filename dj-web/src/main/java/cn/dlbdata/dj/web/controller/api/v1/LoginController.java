@@ -14,6 +14,7 @@ import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
 import cn.dlbdata.dj.common.core.util.cache.CacheManager;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.common.util.StringUtil;
 import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.vo.LoginVo;
 import cn.dlbdata.dj.vo.UserVo;
@@ -41,7 +42,10 @@ public class LoginController extends BaseController {
 	@ResponseBody
 	@PostMapping("/login")
 	public ResultVo<UserVo> login(@RequestBody LoginVo vo) {
+		long start = System.currentTimeMillis();
+		vo.setPwd(StringUtil.getMD5Digest32(vo.getPwd()));
 		ResultVo<UserVo> result = userService.login(vo);
+		logger.info("登录耗时->" + (System.currentTimeMillis() - start));
 		return result;
 	}
 
@@ -80,14 +84,14 @@ public class LoginController extends BaseController {
 		}
 		return result;
 	}
-	
+
 	@ResponseBody
 	@PostMapping("/updatePwd")
 	public ResultVo<String> updatePwd(@RequestBody LoginVo vo) {
 		ResultVo<String> result = userService.updatePwd(vo);
 		return result;
 	}
-	
+
 	@ResponseBody
 	@GetMapping("/getAllList")
 	public ResultVo<String> getAllList() {

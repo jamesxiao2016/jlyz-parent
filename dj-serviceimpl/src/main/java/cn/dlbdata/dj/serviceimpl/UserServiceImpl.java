@@ -13,6 +13,7 @@ import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.common.util.PingyinUtil;
 import cn.dlbdata.dj.common.util.StringUtil;
+import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
 import cn.dlbdata.dj.db.mapper.DjScoreMapper;
@@ -112,7 +113,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			result.setMsg("请输入用户名或密码");
 			return result;
 		}
-
+		long startTime = System.currentTimeMillis();
 		// 用户检查
 		DjUser user = getUserInfoByName(vo.getName());
 		if (user == null) {
@@ -120,6 +121,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			result.setMsg("用户名或密码错误");
 			return result;
 		}
+		long endUserTime = System.currentTimeMillis();
+		logger.info("查询用户->" + (endUserTime - startTime));
 
 		// 密码验证
 		if (!vo.getPwd().equalsIgnoreCase(user.getPwd())) {
@@ -132,21 +135,22 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		// TODO 角色权限判断，判断登录的角色是否匹配(后续处理）
 
 		// 返回数据处理
-		UserVo data = getUserDetailById(user.getId());
+		UserVo data = getUserDetailByUser(user);
 		if (data == null) {
 			logger.error("获取用户信息失败");
 			return result;
 		}
 
-		long startTime = System.currentTimeMillis();
+		long endQueryUserInfoTime = System.currentTimeMillis();
+		logger.info("查询用户详细信息->" + (endQueryUserInfoTime - endUserTime));
 		// 生成token
 		String token = JwtTokenUtil.createToken(user.getId() + "", user.getName(), user.getDeptId() + "", 0);
 		data.setToken(token);
 		long endTime = System.currentTimeMillis();
-		logger.info("create token time:" + (endTime - startTime));
+		logger.info("create token time:" + (endTime - endQueryUserInfoTime));
 
 		CacheManager.getInstance().put(user.getId() + "", data);
-
+		logger.info("total time" + (endTime - startTime));
 		// 返回结果
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(data);
@@ -194,11 +198,25 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		if (id == null) {
 			return null;
 		}
-		
+
 		DjUser user = userMapper.selectByPrimaryKey(id);
 		if (user == null) {
 			return null;
 		}
+		UserVo data = getUserDetailByUser(user);
+		return data;
+	}
+
+	/**
+	 * 根据用户对象获取用户的详细信息
+	 * @param user
+	 * @return
+	 */
+	private UserVo getUserDetailByUser(DjUser user) {
+		if (user == null) {
+			return null;
+		}
+
 		UserVo data = new UserVo();
 		data.setDeptId(user.getDeptId());
 		data.setMemeberId(user.getDjPartymemberId());
@@ -218,7 +236,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			data.setDeptName(dept.getName());
 		}
 		// 党委
-		data.setPartyCommittee("陆家嘴中心");
+		data.setPartyCommittee(DlbConstant.PARTYCOMMITTEE_LJZ);
 		return data;
 	}
 

@@ -35,16 +35,25 @@ public class CoreConst {
 	public static ApplicationContext springContext = null;
 
 	/**
-	 * 返回值状态
+	 * 返回值状态枚举
 	 * 
-	 * @author SW
+	 * @author xw
 	 *
 	 */
 	public static enum ResultCode {
-		OK(200, "OK"), BadRequest(400, "Bad Request"), Unauthorized(401, "Unauthorized"), ParameterError(402,
-				"Parameter Error"), Forbidden(403, "Forbidden"), NotFound(404, "Not Found"), MethodNotAllowed(405,
-						"Method Not Allowed"), InternalServerError(500,
-								"500 Internal Server Error"), ServiceUnavailable(503, "Service Unavailable");
+		OK(200, "OK"), // 成功统一返回
+		BadRequest(400, "Bad Request"), // 默认返回此错误码
+		Unauthorized(401, "Unauthorized"), // 请求要求身份验证，未登录返回此错误码
+		ParameterError(402, "Parameter Error"), // 参数错误统一返回此错误码
+		Forbidden(403, "Forbidden"), // 资源不能访问
+		NotFound(404, "Not Found"), // 资源不存在
+		MethodNotAllowed(405, "Method Not Allowed"), // 方法不允许访问
+		NotAcceptable(406, "Not Acceptable"), //
+		ProxyAuthenticationRequired(407, "Proxy Authentication Required"), //
+		RequestTimeout(408, "Request Timeout"), //
+		InternalServerError(500, "500 Internal Server Error"), //
+		ServiceUnavailable(503, "Service Unavailable");
+		
 		ResultCode(int code, String desc) {
 			this.code = code;
 			this.desc = desc;
