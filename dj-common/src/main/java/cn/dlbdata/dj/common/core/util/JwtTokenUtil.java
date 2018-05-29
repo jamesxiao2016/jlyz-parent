@@ -39,6 +39,16 @@ public class JwtTokenUtil {
 	 */
 	static SecretKey key = generalKey();
 
+	static JwtTokenUtil instance = new JwtTokenUtil();
+
+	private JwtTokenUtil() {
+
+	}
+
+	public static JwtTokenUtil getInstance() {
+		return instance;
+	}
+
 	/**
 	 * 创建token
 	 * 
