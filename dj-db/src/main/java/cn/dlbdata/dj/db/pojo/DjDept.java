@@ -75,6 +75,12 @@ public class DjDept {
      */
     @Column(name = "principal_id")
     private Long principalId;
+    
+    /**
+     * 部门负责人姓名
+     */
+    @Column(name = "principal_name")
+    private String principalName;
 
     /**
      * 获取记录ID
@@ -305,4 +311,12 @@ public class DjDept {
     public void setPrincipalId(Long principalId) {
         this.principalId = principalId;
     }
+
+	public String getPrincipalName() {
+		return principalName;
+	}
+
+	public void setPrincipalName(String principalName) {
+		this.principalName = principalName;
+	}
 }

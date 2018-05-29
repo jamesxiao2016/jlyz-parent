@@ -18,6 +18,7 @@
     <result column="dept_level" jdbcType="VARCHAR" property="deptLevel" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="principal_id" jdbcType="BIGINT" property="principalId" />
+    <result column="principal_name" jdbcType="VARCHAR" property="principalName" />
   </resultMap>
 
 
