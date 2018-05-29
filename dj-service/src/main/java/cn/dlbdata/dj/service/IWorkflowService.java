@@ -92,5 +92,5 @@ public interface IWorkflowService {
 	 * @param status 审核状态
 	 * @return
 	 */
-	Paged<ScoreApplyVo> getScoreAuditList(UserVo user,Integer status,int pageNum,int pageSize);
+	Paged<ScoreApplyVo> getScoreAuditList(UserVo user,Integer status,int pageNum,int pageSize,Long deptId);
 }

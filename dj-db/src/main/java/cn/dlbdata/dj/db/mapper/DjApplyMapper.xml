@@ -55,6 +55,9 @@
             <if test="status != null">
                 and ap.status = #{status}
             </if>
+            <if test="deptId != null">
+                and ap.dj_dept_id = #{deptId}
+            </if>
         </where>
     </select>
 </mapper>
