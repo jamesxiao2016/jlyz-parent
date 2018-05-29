@@ -1,17 +1,21 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
-import cn.dlbdata.dj.common.core.util.Paged;
-import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
-import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
-import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjApply;
+import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
 import cn.dlbdata.dj.service.IStudyService;
 import cn.dlbdata.dj.service.IWorkflowService;
 import cn.dlbdata.dj.vo.AuditVo;
@@ -21,8 +25,6 @@ import cn.dlbdata.dj.vo.ThoughtsVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.VanguardVo;
 import cn.dlbdata.dj.web.base.BaseController;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/api/v1/flow")

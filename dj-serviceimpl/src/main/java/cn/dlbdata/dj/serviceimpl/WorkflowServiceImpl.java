@@ -58,7 +58,6 @@ import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
 import cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo;
-import cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo;
 import cn.dlbdata.dj.service.IWorkflowService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.ApplyVo;
