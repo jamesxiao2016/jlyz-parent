@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.DjActiveMapper;
 import cn.dlbdata.dj.db.mapper.DjActivePicMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveUserMapper;
@@ -22,6 +23,7 @@ import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActivePic;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
+import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.dto.ActiveSignUpRequest;
 import cn.dlbdata.dj.service.IActiveUserService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
@@ -66,25 +68,30 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 			result.setMsg("请求参数不能为空");
 			return result;
 		}
-		if (activeMapper.selectByPrimaryKey(activeSignUpRequest.getActiveId()) == null) {
+		DjActive djActive = activeMapper.selectByPrimaryKey(activeSignUpRequest.getActiveId());
+		if ( djActive == null) {
 			result.setMsg("活动不存在！");
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
-		if (userMapper.selectByPrimaryKey(activeSignUpRequest.getUserId()) == null) {
+		DjUser djUser = userMapper.selectByPrimaryKey(activeSignUpRequest.getUserId());
+		if ( djUser == null) {
 			result.setMsg("用户不存在！");
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
-		if (selectByExample(activeSignUpRequest.getUserId(), activeSignUpRequest.getActiveId()).size() > 0) {
-			result.setMsg("请勿重复报名");
+		List<DjActiveUser> list = selectByExample(activeSignUpRequest.getUserId(), activeSignUpRequest.getActiveId());
+		
+		if (list.size() > 0) {
+			logger.error("请勿重复报名");
 			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("请勿重复报名");
 			return result;
 		}
 		DjActiveUser record = new DjActiveUser();
 		record.setDjActiveId(activeSignUpRequest.getActiveId());
 		record.setDjUserId(activeSignUpRequest.getUserId());
-		record.setStatus(0);
+		record.setStatus(DlbConstant.BASEDATA_STATUS_INVALID);
 		activeUserMapper.insertSelective(record);
 		result.setCode(ResultCode.OK.getCode());
 		result.setMsg("报名成功");
@@ -161,6 +168,7 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 	@Override
 	public List<DjActivePic> queryActivePicByActiveId(Long activeId) {
 		if (activeId == null) {
+			logger.error("参数获取失败");
 			return null;
 		}
 		Example example = new Example(DjActivePic.class);
