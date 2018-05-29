@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import cn.dlbdata.dj.common.core.util.PageUtils;
+import cn.dlbdata.dj.common.core.util.Paged;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -131,18 +135,10 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	}
 
 	@Override
-	public List<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId) {
-		List<PendingPtMemberVo> studies = studyMapper.getStudysByDeptIdAndSubTypeId(deptId, subTypeId);
-//		List<PendingPtMemberVo> voList = new ArrayList<>();
-//		for (DjStudy study : studies) {
-//			PendingPtMemberVo vo = new PendingPtMemberVo();
-//			vo.setCreateTime(new Timestamp(study.getCreateTime().getTime()));
-//			vo.setStudyId(study.getId());
-//			vo.setName(study.getUserName());
-//			vo.setStatus(study.getStatus());
-//			voList.add(vo);
-//		}
-		return studies;
+	public Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize) {
+		Page<PendingPtMemberVo> page = PageHelper.startPage(pageNum, pageSize);
+		studyMapper.getStudysByDeptIdAndSubTypeId(deptId, subTypeId);
+		return PageUtils.toPaged(page);
 	}
 
 	@Override

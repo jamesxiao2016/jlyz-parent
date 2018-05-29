@@ -3,6 +3,7 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjActive;
@@ -66,7 +67,7 @@ public interface IActiveService {
 	 * @return
 	 */
 	// TODO :分页暂缓
-	List<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId);
+	Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize);
 
 	/**
 	 * 创建活动

@@ -2,6 +2,7 @@ package cn.dlbdata.dj.web.controller.api.v1;
 
 import java.util.List;
 
+import cn.dlbdata.dj.common.core.util.Paged;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,10 +41,14 @@ public class StudyController extends BaseController {
 	 */
 	@GetMapping("/getPendingListByDeptId")
 	@ResponseBody
-	public ResultVo<List<PendingPtMemberVo>> getPendingList(@RequestParam("deptId") Long deptId,
-			@RequestParam("subTypeId") Long subTypeId) {
-		ResultVo<List<PendingPtMemberVo>> result = new ResultVo<>(CoreConst.ResultCode.OK.getCode());
-		List<PendingPtMemberVo> voList = activeService.getPendingList(deptId, subTypeId);
+	public ResultVo<Paged<PendingPtMemberVo>> getPendingList(@RequestParam("deptId") Long deptId,
+			@RequestParam("subTypeId") Long subTypeId,
+			@RequestParam(value = "pageNum", required = false) Integer pageNum,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+		pageNum = Paged.normalizePageIndex(pageNum);
+		pageSize = Paged.normalizePageSize(pageSize);
+		ResultVo<Paged<PendingPtMemberVo>> result = new ResultVo<>(CoreConst.ResultCode.OK.getCode());
+		Paged<PendingPtMemberVo> voList = activeService.getPendingList(deptId, subTypeId,pageNum,pageSize);
 		result.setData(voList);
 		return result;
 	}
