@@ -159,7 +159,7 @@ public class WorkflowController extends BaseController {
 	@GetMapping("/getScoreAuditList")
 	@ResponseBody
 	public ResultVo<Paged<ScoreApplyVo>> getScoreAuditList(
-			@RequestParam(value = "status",required = false) Integer status,
+			@RequestParam(value = "status") Integer status,
 			@RequestParam(value = "deptId",required = false) Long deptId,
 			@RequestParam(value = "pageNum", required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {

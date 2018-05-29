@@ -1,11 +1,10 @@
 package cn.dlbdata.dj.db.vo.vo.apply;
 
 public class ScoreApplyVo {
-    private String partyMemberName;
-    private String leaderName;
-    private Float totalScore;
-    private Integer status;
-    private Long applyId;
+    private String partyMemberName;//党员姓名
+    private String leaderName;//支部书记姓名
+    private Float totalScore;//总分数
+    private Long partyMemberId;//党员ID
 
     public String getPartyMemberName() {
         return partyMemberName;
@@ -31,19 +30,11 @@ public class ScoreApplyVo {
         this.totalScore = totalScore;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Long getPartyMemberId() {
+        return partyMemberId;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Long getApplyId() {
-        return applyId;
-    }
-
-    public void setApplyId(Long applyId) {
-        this.applyId = applyId;
+    public void setPartyMemberId(Long partyMemberId) {
+        this.partyMemberId = partyMemberId;
     }
 }
