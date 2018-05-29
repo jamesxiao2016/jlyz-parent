@@ -147,10 +147,10 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		String token = JwtTokenUtil.createToken(user.getId() + "", user.getName(), user.getDeptId() + "", 0);
 		data.setToken(token);
 		long endTime = System.currentTimeMillis();
-		logger.info("create token time:" + (endTime - endQueryUserInfoTime));
+		logger.info("create token time->" + (endTime - endQueryUserInfoTime));
 
 		CacheManager.getInstance().put(user.getId() + "", data);
-		logger.info("total time" + (endTime - startTime));
+		logger.info("total time->" + (endTime - startTime));
 		// 返回结果
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(data);
