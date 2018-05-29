@@ -1,20 +1,19 @@
 package cn.dlbdata.dj.service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
-import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
 import cn.dlbdata.dj.vo.ApplyVo;
 import cn.dlbdata.dj.vo.AuditVo;
 import cn.dlbdata.dj.vo.DisciplineVo;
 import cn.dlbdata.dj.vo.ThoughtsVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.VanguardVo;
-
-import java.util.List;
 
 public interface IWorkflowService {
 
@@ -26,6 +25,7 @@ public interface IWorkflowService {
 	 *            当前登录用户
 	 * @return
 	 */
+	@Transactional
 	public String doApply(ApplyVo vo, UserVo user);
 
 	/**
@@ -35,6 +35,7 @@ public interface IWorkflowService {
 	 * @param user
 	 * @return
 	 */
+	@Transactional
 	public ResultVo<Long> doApplyDiscipline(DisciplineVo param, UserVo user);
 
 	/**
@@ -44,6 +45,7 @@ public interface IWorkflowService {
 	 * @param user
 	 * @return
 	 */
+	@Transactional
 	public ResultVo<Long> doApplyVanguard(VanguardVo[] params, UserVo user);
 
 	/**
@@ -53,6 +55,7 @@ public interface IWorkflowService {
 	 * @param user
 	 * @return
 	 */
+	@Transactional
 	public ResultVo<Long> doApplyThoughts(ThoughtsVo param, UserVo user);
 
 	/**
@@ -68,6 +71,7 @@ public interface IWorkflowService {
 	 *            当前登录用户
 	 * @return
 	 */
+	@Transactional
 	public ResultVo<String> doAudit(AuditVo auditVo, UserVo user);
 
 	/**

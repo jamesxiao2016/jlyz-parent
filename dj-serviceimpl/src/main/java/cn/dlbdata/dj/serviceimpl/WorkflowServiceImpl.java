@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -91,8 +90,6 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	private DjVanguardMapper vanguardMapper;
 	@Autowired
 	private DjPicRecordMapper picRecordMapper;
-	// @Autowired
-	// private DjQueryMapper queryMapper;
 	@Autowired
 	private DjTypeMapper typeMapper;
 	@Autowired
@@ -103,7 +100,6 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	private DjPartymemberMapper partymemberMapper;
 
 	@Override
-	@Transactional
 	public String doApply(ApplyVo vo, UserVo user) {
 
 		if (vo == null || user == null) {
@@ -192,7 +188,6 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	}
 
 	@Override
-	@Transactional
 	public ResultVo<String> doAudit(AuditVo auditVo, UserVo user) {
 		ResultVo<String> resultVo = new ResultVo<>(ResultCode.ParameterError.getCode());
 		if (auditVo == null || auditVo.getId() == null || auditVo.getResult() == null || user == null) {
@@ -359,7 +354,6 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	}
 
 	@Override
-	@Transactional
 	public ResultVo<Long> doApplyDiscipline(DisciplineVo param, UserVo user) {
 		ResultVo<Long> result = new ResultVo<>();
 		if (param == null || user == null) {
@@ -415,7 +409,6 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	}
 
 	@Override
-	@Transactional
 	public ResultVo<Long> doApplyVanguard(VanguardVo[] params, UserVo user) {
 		ResultVo<Long> result = new ResultVo<>();
 		if (params == null || user == null) {
@@ -472,7 +465,6 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	}
 
 	@Override
-	@Transactional
 	public ResultVo<Long> doApplyThoughts(ThoughtsVo param, UserVo user) {
 		ResultVo<Long> result = new ResultVo<>();
 		if (param == null || user == null) {

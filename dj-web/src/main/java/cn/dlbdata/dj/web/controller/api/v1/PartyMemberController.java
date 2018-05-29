@@ -223,4 +223,16 @@ public class PartyMemberController extends BaseController {
 		return result;
 	}
 
+	/**
+	 * 根据身份证号获取党员积分
+	 * @param idCard
+	 * @return
+	 */
+	@GetMapping("/getSumScoreByIdCard")
+	@ResponseBody
+	public ResultVo<Float> getSumScoreByIdCard(@RequestParam("idCard") String idCard){
+		ResultVo<Float> result = new ResultVo<>();
+		
+		return result;
+	}
 }

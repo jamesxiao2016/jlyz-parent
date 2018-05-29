@@ -58,7 +58,7 @@ public class Paged<T> {
 	}
 
 	public static int normalizePageSize(Integer pageSize) {
-		return pageSize == null ? 10 : pageSize;
+		return pageSize == null ? 20 : pageSize;
 	}
 
 	public static int normalizePageIndex(Integer pageIndex) {

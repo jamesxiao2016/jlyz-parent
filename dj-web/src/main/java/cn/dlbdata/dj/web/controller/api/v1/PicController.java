@@ -70,7 +70,6 @@ public class PicController extends BaseController {
 			try {
 				out = response.getWriter();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			out.println(JsonUtil.toJsonString(result));
