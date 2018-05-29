@@ -27,6 +27,7 @@ import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.dto.ActiveSignUpRequest;
 import cn.dlbdata.dj.service.IActiveUserService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
+import cn.dlbdata.dj.vo.UserVo;
 import tk.mybatis.mapper.entity.Example;
 
 /**
@@ -61,9 +62,9 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 	 * @see cn.dlbdata.dj.service.IActiveUserService#insertActiveSignUp(cn.dlbdata.dj.db.resquest.ActiveSignUpRequest)
 	 */
 	@Override
-	public ResultVo<String> insertActiveSignUp(ActiveSignUpRequest activeSignUpRequest) {
+	public ResultVo<String> insertActiveSignUp(ActiveSignUpRequest activeSignUpRequest,UserVo user) {
 		ResultVo<String> result = new ResultVo<>();
-		if (activeSignUpRequest == null) {
+		if (activeSignUpRequest == null || user == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("请求参数不能为空");
 			return result;
@@ -91,7 +92,9 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 		DjActiveUser record = new DjActiveUser();
 		record.setDjActiveId(activeSignUpRequest.getActiveId());
 		record.setDjUserId(activeSignUpRequest.getUserId());
+		record.setDjDeptId(user.getDeptId());
 		record.setStatus(DlbConstant.BASEDATA_STATUS_INVALID);
+
 		activeUserMapper.insertSelective(record);
 		result.setCode(ResultCode.OK.getCode());
 		result.setMsg("报名成功");

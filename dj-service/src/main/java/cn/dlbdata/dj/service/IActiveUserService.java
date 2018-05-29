@@ -13,6 +13,7 @@ import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActivePic;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
 import cn.dlbdata.dj.dto.ActiveSignUpRequest;
+import cn.dlbdata.dj.vo.UserVo;
 
 /**
  * <p>Title: IActiveUserService</p>
@@ -28,7 +29,7 @@ public interface IActiveUserService {
 	 * @param activeSignUpRequest
 	 * @return
 	 */
-	public ResultVo<String> insertActiveSignUp(ActiveSignUpRequest activeSignUpRequest);
+	public ResultVo<String> insertActiveSignUp(ActiveSignUpRequest activeSignUpRequest,UserVo user);
 	
 	/**
 	 * 

@@ -48,11 +48,14 @@ public class PartyMemberController extends BaseController {
 	 * @param memberId
 	 * @return
 	 */
-	@GetMapping("/getScoreAndNum")
+	@GetMapping("/getActiveNumByUserId")
 	@ResponseBody
-	public ResultVo<PartyVo> getScoreAndNumByMemberId(Long memberId) {
+	public ResultVo<PartyVo> getActiveNumByUserId(Long userId, Integer year) {
 		ResultVo<PartyVo> result = new ResultVo<>(ResultCode.OK.getCode());
-		PartyVo data = partyMemberService.getScoreAndNumByMemberId(memberId);
+		if (year == null) {
+			year = Calendar.getInstance().get(Calendar.YEAR);
+		}
+		PartyVo data = partyMemberService.getScoreAndNumByMemberId(userId, year);
 		result.setData(data);
 		return result;
 	}
@@ -127,22 +130,22 @@ public class PartyMemberController extends BaseController {
 	 */
 	@GetMapping("/getReportByDeptId")
 	@ResponseBody
-	public ResultVo<Paged<ReportPartyMemberVo>> getReportPartyMember(
-												@RequestParam(value = "deptId") Long deptId,
-												@RequestParam("subTypeId") Long subTypeId,
-												@RequestParam(value = "pageNum", required = false) Integer pageNum,
-												@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+	public ResultVo<Paged<ReportPartyMemberVo>> getReportPartyMember(@RequestParam(value = "deptId") Long deptId,
+			@RequestParam("subTypeId") Long subTypeId,
+			@RequestParam(value = "pageNum", required = false) Integer pageNum,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
 		pageNum = Paged.normalizePageIndex(pageNum);
 		pageSize = Paged.normalizePageSize(pageSize);
 		ResultVo<Paged<ReportPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
-		Paged<ReportPartyMemberVo> voList = partyMemberService.getReportPartyMember(deptId, subTypeId,pageNum,pageSize);
+		Paged<ReportPartyMemberVo> voList = partyMemberService.getReportPartyMember(deptId, subTypeId, pageNum,
+				pageSize);
 		result.setData(voList);
 		return result;
 	}
 
 	@PostMapping("/scoreCustom")
 	@ResponseBody
-	public ResultVo<String> reportAddScore(@RequestBody ReportAddScoreRequest request) {
+	public ResultVo<String> scoreCustom(@RequestBody ReportAddScoreRequest request) {
 		String token = getHeader("token");
 
 		// 从缓存中获取当前用户的信息
@@ -166,7 +169,7 @@ public class PartyMemberController extends BaseController {
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
 		pageNum = Paged.normalizePageIndex(pageNum);
 		pageSize = Paged.normalizePageSize(pageSize);
-		Paged<PioneeringPartyMemberVo> voList = partyMemberService.getPioneeringPartyMembers(deptId,pageNum,pageSize);
+		Paged<PioneeringPartyMemberVo> voList = partyMemberService.getPioneeringPartyMembers(deptId, pageNum, pageSize);
 		ResultVo<Paged<PioneeringPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		result.setData(voList);
 		return result;

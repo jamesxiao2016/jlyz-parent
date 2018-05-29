@@ -2,12 +2,18 @@ package cn.dlbdata.dj.serviceimpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
 import cn.dlbdata.dj.common.core.exception.DlbException;
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
@@ -18,22 +24,25 @@ import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.AuditStatusEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
-import cn.dlbdata.dj.db.mapper.*;
-import cn.dlbdata.dj.db.pojo.*;
+import cn.dlbdata.dj.db.mapper.DjActiveMapper;
+import cn.dlbdata.dj.db.mapper.DjDisciplineMapper;
+import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
+import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
+import cn.dlbdata.dj.db.mapper.DjScoreMapper;
+import cn.dlbdata.dj.db.mapper.DjThoughtsMapper;
+import cn.dlbdata.dj.db.mapper.DjVanguardMapper;
+import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.pojo.DjPicRecord;
+import cn.dlbdata.dj.db.pojo.DjScore;
+import cn.dlbdata.dj.db.pojo.DjThoughts;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
-import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
-import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.PartyVo;
-import org.springframework.transaction.annotation.Transactional;
+import cn.dlbdata.dj.vo.UserVo;
 
 @Service
 public class PartyMemberService extends BaseServiceImpl implements IPartyMemberService {
@@ -80,12 +89,12 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	}
 
 	@Override
-	public PartyVo getScoreAndNumByMemberId(Long memberId) {
+	public PartyVo getScoreAndNumByMemberId(Long memberId, Integer year) {
 		PartyVo result = new PartyVo();
 		result.setMemberId(memberId);
 
-		Date startTime = DatetimeUtil.getCurrYearFirst();
-		Date endTime = DatetimeUtil.getCurrYearLast();
+		Date startTime = DatetimeUtil.getYearFirst(year);
+		Date endTime = DatetimeUtil.getYearLast(year);
 		// 获取参与活动次数
 		int activeCount = activeMapper.getUserActiveCountByActiveTypeAndTime(memberId, null, startTime, endTime);
 		// 获取参与金领驿站活动次数
