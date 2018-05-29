@@ -42,7 +42,7 @@
   	</where>
   </select>
     
-    <select id="getScoreAuditList" resultType="cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo">
+    <select id="getScoreAuditList" resultType="cn.dlbdata.dj.db.vo.apply.ScoreApplyVo">
         select pm.id as partyMemberId,pm.name as partyMemberName,
         ifnull((select sum(sco.score)  from dj_score sco where sco.user_id = pm.id),0) as totalScore,
         dt.principal_name as leaderName
@@ -88,5 +88,11 @@
                 and pm.dept_id = #{deptId}
             </if>
         </where>
+    </select>
+
+    <select id="getScoreAuditDetailByPtMemberId" resultType="cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo">
+        select ap.id,ap.sub_type_name as subTypeName,ap.apply_info as content,ap.score,ap.status,ap.remark as refuseReason,
+        ap.record_id as recordId
+         from dj_apply ap where user_id =#{partyMemberId}  and ap.create_time &gt;= #{yearTimeStart}  and ap.create_time &lt;= #{yearTimeEnd}
     </select>
 </mapper>

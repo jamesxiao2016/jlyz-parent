@@ -249,7 +249,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 	/* (non-Javadoc)
 	 * <p>Title: deleteActivePicById</p>
 	 * <p>Description: 删除活动图片</p> 
-	 * @param id
+	 * @param djActiveId, djPicId
 	 * @return  
 	 * @see cn.dlbdata.dj.service.IPictureService#deleteActivePicById(java.lang.Long)
 	 */
