@@ -61,4 +61,8 @@
     WHERE
         pm.dept_id = #{deptId}
   </select>
+
+  <select id="getTotalScoreById" parameterType="long" resultType="cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo">
+    select id,name,ifnull((SELECT sum(score) FROM dj_score sc WHERE sc.user_id = pm.id),0) as score from dj_partymember pm where id =#{id}
+  </select>
 </mapper>

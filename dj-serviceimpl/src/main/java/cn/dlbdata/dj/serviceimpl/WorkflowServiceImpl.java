@@ -1,6 +1,5 @@
 package cn.dlbdata.dj.serviceimpl;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,8 +9,11 @@ import java.util.Map;
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.PageUtils;
 import cn.dlbdata.dj.common.core.util.Paged;
-import cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo;
-import cn.dlbdata.dj.thirdparty.mp.sdk.util.PageUtil;
+import cn.dlbdata.dj.db.mapper.*;
+import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
+import cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,20 +29,6 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
-import cn.dlbdata.dj.db.mapper.DjActiveMapper;
-import cn.dlbdata.dj.db.mapper.DjApplyMapper;
-import cn.dlbdata.dj.db.mapper.DjApproveMapper;
-import cn.dlbdata.dj.db.mapper.DjDeptMapper;
-import cn.dlbdata.dj.db.mapper.DjDisciplineMapper;
-import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
-import cn.dlbdata.dj.db.mapper.DjScoreMapper;
-import cn.dlbdata.dj.db.mapper.DjSectionMapper;
-import cn.dlbdata.dj.db.mapper.DjStudyMapper;
-import cn.dlbdata.dj.db.mapper.DjSubTypeMapper;
-import cn.dlbdata.dj.db.mapper.DjThoughtsMapper;
-import cn.dlbdata.dj.db.mapper.DjTypeMapper;
-import cn.dlbdata.dj.db.mapper.DjUserMapper;
-import cn.dlbdata.dj.db.mapper.DjVanguardMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.pojo.DjApprove;
@@ -96,6 +84,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	private DjSubTypeMapper subTypeMapper;
 	@Autowired
 	private DjScoreMapper scoreMapper;
+	@Autowired
+	private DjPartymemberMapper partymemberMapper;
 
 	@Override
 	@Transactional
@@ -558,4 +548,30 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		return PageUtils.toPaged(page);
 	}
 
+    /**
+     * 查询积分审核详情(先锋作用的三个)
+     *
+     * @param partyMemberId 党员Id
+     * @return
+     */
+    @Override
+    public PioneeringApplyDetailVo getPioneeringApplyDetail(Long partyMemberId) {
+        Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
+        Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
+        IdNameTotalScoreVo idNameTotalScoreVo= partymemberMapper.getTotalScoreById(partyMemberId);
+		PioneeringApplyDetailVo pioneeringApplyDetailVo = new PioneeringApplyDetailVo();
+		pioneeringApplyDetailVo.setPartyMemberName(idNameTotalScoreVo.getName());
+		pioneeringApplyDetailVo.setTotalScore(idNameTotalScoreVo.getTotalScore());
+        List<ScoreAuditDetailVo> voList = applyMapper.getScoreAuditDetailByPtMemberId(yearTimeStart,yearTimeEnd,
+                partyMemberId);
+        for (ScoreAuditDetailVo vo:voList) {
+        	if (vo.getRecordId() != null) {
+				List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_VANGUARD,vo.getRecordId());
+				vo.setPicIds(picIds);
+			}
+		}
+        pioneeringApplyDetailVo.setDetail(voList);
+
+        return pioneeringApplyDetailVo;
+    }
 }

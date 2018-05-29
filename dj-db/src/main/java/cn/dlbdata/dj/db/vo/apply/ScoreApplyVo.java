@@ -1,4 +1,4 @@
-package cn.dlbdata.dj.db.vo.vo.apply;
+package cn.dlbdata.dj.db.vo.apply;
 
 public class ScoreApplyVo {
     private String partyMemberName;//党员姓名

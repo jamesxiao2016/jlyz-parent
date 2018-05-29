@@ -4,13 +4,17 @@ import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjApply;
-import cn.dlbdata.dj.db.vo.vo.apply.ScoreApplyVo;
+import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
 import cn.dlbdata.dj.vo.ApplyVo;
 import cn.dlbdata.dj.vo.AuditVo;
 import cn.dlbdata.dj.vo.DisciplineVo;
 import cn.dlbdata.dj.vo.ThoughtsVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.VanguardVo;
+
+import java.util.List;
 
 public interface IWorkflowService {
 
@@ -93,4 +97,11 @@ public interface IWorkflowService {
 	 * @return
 	 */
 	Paged<ScoreApplyVo> getScoreAuditList(UserVo user,Integer status,int pageNum,int pageSize,Long deptId);
+
+    /**
+     *查询积分审核详情(先锋作用的三个)
+     * @param partyMemberId 党员Id
+     * @return
+     */
+    PioneeringApplyDetailVo getPioneeringApplyDetail(Long partyMemberId);
 }

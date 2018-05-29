@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
@@ -25,4 +26,11 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
     public List<DjPartymember> queryAllPartyMembersByDeptId(Map<String,Object> map);
 
     List<ObserveLowPartyMemberVo> getObserveLowPartyMember(@Param("deptId") Long deptId,@Param("year") int year);
+
+    /**
+     * 通过党员的Id查询，name和总分数
+     * @param id
+     * @return
+     */
+    IdNameTotalScoreVo getTotalScoreById(long id);
 }
