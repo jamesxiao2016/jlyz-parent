@@ -255,7 +255,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			return result;
 			// json.put("activeCreatePeopleName", createUser.getName());
 		}
-		if (createUser.getRoleId() == 1) {
+		if (createUser.getRoleId() == RoleEnum.PARTY.getId()) {
 			result.setCode(ResultCode.OK.getCode());
 			result.setData(json);
 			return result;
@@ -268,10 +268,9 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			List<Long> outList = new ArrayList<>();
 			for (DjActiveUser item : participateList) {
 				// TODO 换成常量
-				int status = DlbConstant.BASEDATA_STATUS_INVALID;
-				if (Integer.valueOf(1).equals(item.getStatus())) {
+				if (Integer.valueOf(DlbConstant.BASEDATA_STATUS_VALID).equals(item.getStatus())) {
 					inList.add(item.getDjUserId());
-				} else if (Integer.valueOf(0).equals(item.getStatus())) {
+				} else if (Integer.valueOf(DlbConstant.BASEDATA_STATUS_INVALID).equals(item.getStatus())) {
 					outList.add(item.getDjUserId());
 				}
 			}
