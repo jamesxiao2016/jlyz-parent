@@ -52,9 +52,9 @@ public class DeptController extends BaseController {
     }
 
 	/**
-	 *
+	 * 片区负责人获取支部信息列表
 	 * @param sectionId 片区Id
-	 * @return 支部信息
+	 * @return
 	 */
 	@GetMapping("/getDeptListBySectionId")
 	@ResponseBody

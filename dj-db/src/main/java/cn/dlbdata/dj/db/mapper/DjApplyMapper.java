@@ -28,7 +28,7 @@ public interface DjApplyMapper extends Mapper<DjApply> {
 	 * @param deptId 支部ID
 	 * @return
 	 */
-	List<ScoreApplyVo> getScoreAuditList(@Param("approverId") Long approverId,
+	List<ScoreApplyVo> getScoreAuditList(
 										 @Param("status") int status,
 										 @Param("yearTimeStart")Date yearTimeStart,
 										 @Param("yearTimeEnd") Date yearTimeEnd,

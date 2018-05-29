@@ -64,7 +64,6 @@ public interface IActiveService {
 	 *            活动类型Id
 	 * @return
 	 */
-	// TODO :分页暂缓
 	Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize);
 
 	/**

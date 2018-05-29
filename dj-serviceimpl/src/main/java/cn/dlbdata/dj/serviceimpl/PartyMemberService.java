@@ -156,71 +156,71 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	 * @param request
 	 *            请求Data
 	 */
-	@Transactional
-	@Override
-	public void reportAddScore(ReportAddScoreRequest request, int year, UserVo userVo) {
-		if (request.getId() == null || request.getSubTypeId() == null || request.getReportTime() == null
-				|| "".equals(request.getReportTime())) {
-			throw new DlbException("请求参数不完整");
-		}
-		DjPartymember partymember = partymemberMapper.selectByPrimaryKey(request.getId());
-		if (partymember == null) {
-			throw new DlbException("该党员不存在");
-		}
-		// TODO 校验当前登录用户做该操作的权限
-		// 查询是否有思想汇报记录
-		List<DjScore> scoreIds = scoreMapper.getScoreIdsByTypeIdAndSubTypeIdAndYearAndPartyMemberId(
-				ActiveTypeEnum.ACTIVE_C.getActiveId(), request.getSubTypeId(), year, request.getId());
-		if (scoreIds.size() >= 1) {
-			throw new DlbException("请勿重复加分!");
-		}
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date reportDate = null;
-		try {
-			reportDate = formatter.parse(request.getReportTime());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		// TODO 图片ID待设置
-		DjThoughts djThoughts = new DjThoughts();
-		djThoughts.setId(DigitUtil.generatorLongId());
-		djThoughts.setThoughtsInfo(request.getContent());
-		djThoughts.setThoughtsTime(reportDate);
-		djThoughts.setScore(new Float(5));
-		djThoughts.setDjUserId(request.getId());
-		djThoughts.setCreateTime(new Date());
-		djThoughts.setDjDeptId(request.getDeptId());
-		djThoughts.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
-		thoughtsMapper.insert(djThoughts);
-
-		// todo ：后面需改为batchInsert
-		for (Long pid : request.getPicIds()) {
-			DjPicRecord picRecord = new DjPicRecord();
-			picRecord.setId(DigitUtil.generatorLongId());
-			picRecord.setTableName("dj_thoughts");
-			picRecord.setRecordId(djThoughts.getId());
-			picRecord.setDjPicId(pid);
-			picRecord.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
-			picRecord.setCreateTime(new Date());
-			picRecordMapper.insert(picRecord);
-		}
-
-		DjScore djScore = new DjScore();
-		djScore.setId(DigitUtil.generatorLongId());
-		djScore.setDjTypeId(ActiveTypeEnum.ACTIVE_C.getActiveId());
-		djScore.setDjSubTypeId(request.getSubTypeId());
-		djScore.setScore(new Float(5));
-		djScore.setUserId(request.getId());
-		djScore.setAddTime(reportDate);
-		// TODO 目前User的信息获取不到，先写成1
-		djScore.setApplyUserId(1L);
-		djScore.setApproverId(1L);
-		djScore.setAddYear(year);
-		djScore.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
-		djScore.setCreateTime(new Date());
-		djScore.setRecordId(djThoughts.getId());
-		scoreMapper.insert(djScore);
-	}
+//	@Transactional
+//	@Override
+//	public void reportAddScore(ReportAddScoreRequest request, int year, UserVo userVo) {
+//		if (request.getId() == null || request.getSubTypeId() == null || request.getReportTime() == null
+//				|| "".equals(request.getReportTime())) {
+//			throw new DlbException("请求参数不完整");
+//		}
+//		DjPartymember partymember = partymemberMapper.selectByPrimaryKey(request.getId());
+//		if (partymember == null) {
+//			throw new DlbException("该党员不存在");
+//		}
+//		// TODO校验当前登录用户做该操作的权限
+//		// 查询是否有思想汇报记录
+//		List<DjScore> scoreIds = scoreMapper.getScoreIdsByTypeIdAndSubTypeIdAndYearAndPartyMemberId(
+//				ActiveTypeEnum.ACTIVE_C.getActiveId(), request.getSubTypeId(), year, request.getId());
+//		if (scoreIds.size() >= 1) {
+//			throw new DlbException("请勿重复加分!");
+//		}
+//		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		Date reportDate = null;
+//		try {
+//			reportDate = formatter.parse(request.getReportTime());
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//		// TODO图片ID待设置
+//		DjThoughts djThoughts = new DjThoughts();
+//		djThoughts.setId(DigitUtil.generatorLongId());
+//		djThoughts.setThoughtsInfo(request.getContent());
+//		djThoughts.setThoughtsTime(reportDate);
+//		djThoughts.setScore(new Float(5));
+//		djThoughts.setDjUserId(request.getId());
+//		djThoughts.setCreateTime(new Date());
+//		djThoughts.setDjDeptId(request.getDeptId());
+//		djThoughts.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+//		thoughtsMapper.insert(djThoughts);
+//
+//		todo后面需改为batchInsert
+//		for (Long pid : request.getPicIds()) {
+//			DjPicRecord picRecord = new DjPicRecord();
+//			picRecord.setId(DigitUtil.generatorLongId());
+//			picRecord.setTableName("dj_thoughts");
+//			picRecord.setRecordId(djThoughts.getId());
+//			picRecord.setDjPicId(pid);
+//			picRecord.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+//			picRecord.setCreateTime(new Date());
+//			picRecordMapper.insert(picRecord);
+//		}
+//
+//		DjScore djScore = new DjScore();
+//		djScore.setId(DigitUtil.generatorLongId());
+//		djScore.setDjTypeId(ActiveTypeEnum.ACTIVE_C.getActiveId());
+//		djScore.setDjSubTypeId(request.getSubTypeId());
+//		djScore.setScore(new Float(5));
+//		djScore.setUserId(request.getId());
+//		djScore.setAddTime(reportDate);
+//		//TODO目前User的信息获取不到，先写成1
+//		djScore.setApplyUserId(1L);
+//		djScore.setApproverId(1L);
+//		djScore.setAddYear(year);
+//		djScore.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+//		djScore.setCreateTime(new Date());
+//		djScore.setRecordId(djThoughts.getId());
+//		scoreMapper.insert(djScore);
+//	}
 
 	/**
 	 * 先锋作用评分党员列表
@@ -285,13 +285,14 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	@Override
 	public Paged<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId, int pageNum, int pageSize) {
 		Calendar cale = Calendar.getInstance();
+		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
+		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
 		int year = cale.get(Calendar.YEAR);
 		Page<ObserveLowPartyMemberVo> page = PageHelper.startPage(pageNum, pageSize);
 		List<ObserveLowPartyMemberVo> voList = partyMemberMapper.getObserveLowPartyMember(deptId, year);
 		for (ObserveLowPartyMemberVo vo : voList) {
 			// 取最后一条遵章守纪记录 没有记录则说明该党员未处理，有记录则取最后一条记录的状态
-			// TODO year先这么处理
-			Integer status = disciplineMapper.getOneByUserIdOrderByCreateTimeDesc(vo.getId());
+			Integer status = disciplineMapper.getOneByUserIdOrderByCreateTimeDesc(vo.getId(),yearTimeStart,yearTimeEnd);
 			if (status == null) {
 				vo.setStatus(-1);
 			} else {

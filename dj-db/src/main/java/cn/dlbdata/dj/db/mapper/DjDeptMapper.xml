@@ -24,7 +24,8 @@
 
   <select id="getBranchDeptInfoBySectionId" parameterType="java.lang.Long"
        resultType="cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo">
-    SELECT dept.name as deptName , id as deptId,(SELECT count(0) from dj_partymember where dept_id = dept.id) as total
+    SELECT dept.name as deptName , id as deptId,(SELECT count(0) from dj_partymember where dept_id = dept.id) as total,
+    dept.principal_name as leaderName
     from dj_dept dept
     where dept.dj_section_id = #{sectionId}
   </select>

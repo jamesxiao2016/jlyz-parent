@@ -47,10 +47,10 @@ public interface DjScoreMapper extends Mapper<DjScore> {
                                                           @Param("subTypeId") Long subTypeId,
                                                           @Param("year") int year);
 
-    List<DjScore> getScoreIdsByTypeIdAndSubTypeIdAndYearAndPartyMemberId(@Param("typeId") Long typeId,
-                                                               @Param("subTypeId") Long subTypeId,
-                                                               @Param("year") int year,
-                                                               @Param("partyMemberId") Long partyMemberId);
+//    List<DjScore> getScoreIdsByTypeIdAndSubTypeIdAndYearAndPartyMemberId(@Param("typeId") Long typeId,
+//                                                               @Param("subTypeId") Long subTypeId,
+//                                                               @Param("year") int year,
+//                                                               @Param("partyMemberId") Long partyMemberId);
     
 
 	/**

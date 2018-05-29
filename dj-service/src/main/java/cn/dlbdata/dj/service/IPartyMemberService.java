@@ -74,11 +74,12 @@ public interface IPartyMemberService {
 	Paged<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId,int pageNum, int pageSize);
 
 
-	/**
-	 *思想汇报直接加分
-	 * @param request 请求Data
-	 */
-	void reportAddScore(ReportAddScoreRequest request, int year, UserVo userVo);
+//	/**
+//	 *思想汇报直接加分
+//	 * @param request 请求Data
+//	 */
+//	@Deprecated
+//	void reportAddScore(ReportAddScoreRequest request, int year, UserVo userVo);
 
 	/**
 	 * 先锋作用评分党员列表
