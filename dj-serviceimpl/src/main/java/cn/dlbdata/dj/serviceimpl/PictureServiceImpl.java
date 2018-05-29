@@ -21,7 +21,6 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.mapper.DjActivePicMapper;
 import cn.dlbdata.dj.db.mapper.DjPicMapper;
 import cn.dlbdata.dj.db.pojo.DjActivePic;
-import cn.dlbdata.dj.db.pojo.DjActiveUser;
 import cn.dlbdata.dj.db.pojo.DjPic;
 import cn.dlbdata.dj.service.IPictureService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
@@ -260,7 +259,13 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 		}
 		Example example = new Example(DjActivePic.class);
 		example.createCriteria().andEqualTo("djActiveId", djActiveId).andEqualTo("djPicId", djPicId);
-		return activePicMapper.deleteByExample(example);
+		int count = activePicMapper.deleteByExample(example);
+		if(count > 0) {
+		 count = picMapper.deleteByPrimaryKey(djPicId);
+		}else {
+			return 0;
+		}
+		return count;
 	}
 
 	
