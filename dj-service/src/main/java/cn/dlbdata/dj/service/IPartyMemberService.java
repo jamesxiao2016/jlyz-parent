@@ -5,12 +5,11 @@ import java.util.List;
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjScore;
+import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
-import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
-import cn.dlbdata.dj.vo.PartyVo;
-import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
+import cn.dlbdata.dj.vo.PartyVo;
 
 /**
  * 党员相关的业务逻辑
@@ -63,7 +62,7 @@ public interface IPartyMemberService {
 	 * @param year
 	 * @return
 	 */
-	public List<DjScore> getTypeScoreListByUserId(Long userId, Integer year);
+	public List<ScoreTypeVo> getTypeScoreListByUserId(Long userId, Integer year);
 
 	/**
 	 *

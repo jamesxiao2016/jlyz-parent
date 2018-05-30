@@ -18,14 +18,18 @@ import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.AuditStatusEnum;
+import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.DjActiveMapper;
 import cn.dlbdata.dj.db.mapper.DjApplyMapper;
 import cn.dlbdata.dj.db.mapper.DjDisciplineMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
 import cn.dlbdata.dj.db.mapper.DjScoreMapper;
+import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.mapper.DjThoughtsMapper;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjScore;
+import cn.dlbdata.dj.db.pojo.DjStudy;
+import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
@@ -37,24 +41,18 @@ import cn.dlbdata.dj.vo.PartyVo;
 public class PartyMemberService extends BaseServiceImpl implements IPartyMemberService {
 	@Autowired
 	private DjPartymemberMapper partyMemberMapper;
-
 	@Autowired
 	private DjScoreMapper scoreMapper;
-
-	@Autowired
-	private DjPartymemberMapper partymemberMapper;
-
 	@Autowired
 	private DjActiveMapper activeMapper;
-
 	@Autowired
 	private DjThoughtsMapper thoughtsMapper;
-
 	@Autowired
 	private DjDisciplineMapper disciplineMapper;
-
 	@Autowired
 	private DjApplyMapper applyMapper;
+	@Autowired
+	private DjStudyMapper studyMapper;
 
 	@Override
 	public DjPartymember getInfoById(Long id) {
@@ -100,15 +98,32 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	}
 
 	@Override
-	public List<DjScore> getTypeScoreListByUserId(Long userId, Integer year) {
+	public List<ScoreTypeVo> getTypeScoreListByUserId(Long userId, Integer year) {
 		if (userId == null) {
 			return null;
 		}
-		return scoreMapper.getTypeScoreListByUserId(userId, year);
+		List<ScoreTypeVo> list = scoreMapper.getTypeScoreListByUserId(userId, year);
+		if (list != null) {
+			for (ScoreTypeVo vo : list) {
+				if (vo.getId() == ActiveTypeEnum.ACTIVE_A.getActiveId()
+						|| vo.getId() == ActiveTypeEnum.ACTIVE_B.getActiveId()
+						|| vo.getId() == ActiveTypeEnum.ACTIVE_F.getActiveId()) {
+					DjStudy record = new DjStudy();
+					record.setDjTypeId(vo.getId());
+					record.setStatus(DlbConstant.BASEDATA_STATUS_INVALID);
+					record.setCreateUserId(userId);
+					int count = studyMapper.selectCount(record);
+					vo.setPendingNum(count);
+				} else {
+					vo.setPendingNum(0);
+				}
+			}
+		}
+		return list;
 	}
 
 	@Override
-	public Paged<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId,int pageNum, int pageSize) {
+	public Paged<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId, int pageNum, int pageSize) {
 		if (subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId()
 				&& subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_L.getActiveSubId()) {
 			return new Paged<ReportPartyMemberVo>();
@@ -119,12 +134,13 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
 		Page<ReportPartyMemberVo> page = PageHelper.startPage(pageNum, pageSize);
 		List<ReportPartyMemberVo> voList = partyMemberMapper.getReportPartyMembers(deptId);
-		for (ReportPartyMemberVo vo:voList) {
+		for (ReportPartyMemberVo vo : voList) {
 			vo.setSubTypeId(subTypeId);
 		}
 		if (!voList.isEmpty()) {
 			// 查询有积分记录的用户ID
-			List<Long> userIdList = thoughtsMapper.getByDeptIdAndTypeIdAndSubTypeIdAndYear(deptId, subTypeId,yearTimeStart,yearTimeEnd);
+			List<Long> userIdList = thoughtsMapper.getByDeptIdAndTypeIdAndSubTypeIdAndYear(deptId, subTypeId,
+					yearTimeStart, yearTimeEnd);
 			for (int i = 0; i < userIdList.size(); i++) {
 				for (int j = 0; j < voList.size(); j++) {
 					if (voList.get(j).getId().equals(userIdList.get(i))) {
@@ -142,71 +158,71 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	 * @param request
 	 *            请求Data
 	 */
-//	@Transactional
-//	@Override
-//	public void reportAddScore(ReportAddScoreRequest request, int year, UserVo userVo) {
-//		if (request.getId() == null || request.getSubTypeId() == null || request.getReportTime() == null
-//				|| "".equals(request.getReportTime())) {
-//			throw new DlbException("请求参数不完整");
-//		}
-//		DjPartymember partymember = partymemberMapper.selectByPrimaryKey(request.getId());
-//		if (partymember == null) {
-//			throw new DlbException("该党员不存在");
-//		}
-//		// TODO校验当前登录用户做该操作的权限
-//		// 查询是否有思想汇报记录
-//		List<DjScore> scoreIds = scoreMapper.getScoreIdsByTypeIdAndSubTypeIdAndYearAndPartyMemberId(
-//				ActiveTypeEnum.ACTIVE_C.getActiveId(), request.getSubTypeId(), year, request.getId());
-//		if (scoreIds.size() >= 1) {
-//			throw new DlbException("请勿重复加分!");
-//		}
-//		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//		Date reportDate = null;
-//		try {
-//			reportDate = formatter.parse(request.getReportTime());
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
-//		// TODO图片ID待设置
-//		DjThoughts djThoughts = new DjThoughts();
-//		djThoughts.setId(DigitUtil.generatorLongId());
-//		djThoughts.setThoughtsInfo(request.getContent());
-//		djThoughts.setThoughtsTime(reportDate);
-//		djThoughts.setScore(new Float(5));
-//		djThoughts.setDjUserId(request.getId());
-//		djThoughts.setCreateTime(new Date());
-//		djThoughts.setDjDeptId(request.getDeptId());
-//		djThoughts.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
-//		thoughtsMapper.insert(djThoughts);
-//
-//		todo后面需改为batchInsert
-//		for (Long pid : request.getPicIds()) {
-//			DjPicRecord picRecord = new DjPicRecord();
-//			picRecord.setId(DigitUtil.generatorLongId());
-//			picRecord.setTableName("dj_thoughts");
-//			picRecord.setRecordId(djThoughts.getId());
-//			picRecord.setDjPicId(pid);
-//			picRecord.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
-//			picRecord.setCreateTime(new Date());
-//			picRecordMapper.insert(picRecord);
-//		}
-//
-//		DjScore djScore = new DjScore();
-//		djScore.setId(DigitUtil.generatorLongId());
-//		djScore.setDjTypeId(ActiveTypeEnum.ACTIVE_C.getActiveId());
-//		djScore.setDjSubTypeId(request.getSubTypeId());
-//		djScore.setScore(new Float(5));
-//		djScore.setUserId(request.getId());
-//		djScore.setAddTime(reportDate);
-//		//TODO目前User的信息获取不到，先写成1
-//		djScore.setApplyUserId(1L);
-//		djScore.setApproverId(1L);
-//		djScore.setAddYear(year);
-//		djScore.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
-//		djScore.setCreateTime(new Date());
-//		djScore.setRecordId(djThoughts.getId());
-//		scoreMapper.insert(djScore);
-//	}
+	// @Transactional
+	// @Override
+	// public void reportAddScore(ReportAddScoreRequest request, int year, UserVo userVo) {
+	// if (request.getId() == null || request.getSubTypeId() == null || request.getReportTime() == null
+	// || "".equals(request.getReportTime())) {
+	// throw new DlbException("请求参数不完整");
+	// }
+	// DjPartymember partymember = partymemberMapper.selectByPrimaryKey(request.getId());
+	// if (partymember == null) {
+	// throw new DlbException("该党员不存在");
+	// }
+	// // TODO校验当前登录用户做该操作的权限
+	// // 查询是否有思想汇报记录
+	// List<DjScore> scoreIds = scoreMapper.getScoreIdsByTypeIdAndSubTypeIdAndYearAndPartyMemberId(
+	// ActiveTypeEnum.ACTIVE_C.getActiveId(), request.getSubTypeId(), year, request.getId());
+	// if (scoreIds.size() >= 1) {
+	// throw new DlbException("请勿重复加分!");
+	// }
+	// SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	// Date reportDate = null;
+	// try {
+	// reportDate = formatter.parse(request.getReportTime());
+	// } catch (ParseException e) {
+	// e.printStackTrace();
+	// }
+	// // TODO图片ID待设置
+	// DjThoughts djThoughts = new DjThoughts();
+	// djThoughts.setId(DigitUtil.generatorLongId());
+	// djThoughts.setThoughtsInfo(request.getContent());
+	// djThoughts.setThoughtsTime(reportDate);
+	// djThoughts.setScore(new Float(5));
+	// djThoughts.setDjUserId(request.getId());
+	// djThoughts.setCreateTime(new Date());
+	// djThoughts.setDjDeptId(request.getDeptId());
+	// djThoughts.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+	// thoughtsMapper.insert(djThoughts);
+	//
+	// todo后面需改为batchInsert
+	// for (Long pid : request.getPicIds()) {
+	// DjPicRecord picRecord = new DjPicRecord();
+	// picRecord.setId(DigitUtil.generatorLongId());
+	// picRecord.setTableName("dj_thoughts");
+	// picRecord.setRecordId(djThoughts.getId());
+	// picRecord.setDjPicId(pid);
+	// picRecord.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+	// picRecord.setCreateTime(new Date());
+	// picRecordMapper.insert(picRecord);
+	// }
+	//
+	// DjScore djScore = new DjScore();
+	// djScore.setId(DigitUtil.generatorLongId());
+	// djScore.setDjTypeId(ActiveTypeEnum.ACTIVE_C.getActiveId());
+	// djScore.setDjSubTypeId(request.getSubTypeId());
+	// djScore.setScore(new Float(5));
+	// djScore.setUserId(request.getId());
+	// djScore.setAddTime(reportDate);
+	// //TODO目前User的信息获取不到，先写成1
+	// djScore.setApplyUserId(1L);
+	// djScore.setApproverId(1L);
+	// djScore.setAddYear(year);
+	// djScore.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+	// djScore.setCreateTime(new Date());
+	// djScore.setRecordId(djThoughts.getId());
+	// scoreMapper.insert(djScore);
+	// }
 
 	/**
 	 * 先锋作用评分党员列表
@@ -215,7 +231,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	 * @return
 	 */
 	@Override
-	public Paged<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId,int pageNum, int pageSize) {
+	public Paged<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId, int pageNum, int pageSize) {
 		pageNum = PageUtils.normalizePageIndex(pageNum);
 		pageSize = PageUtils.normalizePageSize(pageSize);
 		// 获取支部全部党员
@@ -226,15 +242,15 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		for (PioneeringPartyMemberVo vo : voList) {
 
 			// 1.查询党员是否有先锋作用的审核申请,没有就说明该党员为未处理（去处理）（typeId =4），否则走2
-			int haveApply = applyMapper.countUnAuditByPtMemberIdAndType(vo.getId(),ActiveTypeEnum.ACTIVE_D.getActiveId(),year);
+			int haveApply = applyMapper.countUnAuditByPtMemberIdAndType(vo.getId(),
+					ActiveTypeEnum.ACTIVE_D.getActiveId(), year);
 			if (haveApply == 0) {
 				// 未审核
 				vo.setAuditStatus(AuditStatusEnum.UNDONE.getValue());
 			} else {
 				// 2.判断该党员有待审核的记录（status =0），则该党员为待审核，否则该党员为已审核
-				int haveWaitApply = applyMapper.countByPtMemberIdStatus(vo.getId(),
-																		AuditStatusEnum.WAITING.getValue(),
-																		ActiveTypeEnum.ACTIVE_D.getActiveId(),year);
+				int haveWaitApply = applyMapper.countByPtMemberIdStatus(vo.getId(), AuditStatusEnum.WAITING.getValue(),
+						ActiveTypeEnum.ACTIVE_D.getActiveId(), year);
 				if (haveWaitApply > 0) {
 					vo.setAuditStatus(AuditStatusEnum.WAITING.getValue());
 				} else {
@@ -286,7 +302,8 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		List<ObserveLowPartyMemberVo> voList = partyMemberMapper.getObserveLowPartyMember(deptId, year);
 		for (ObserveLowPartyMemberVo vo : voList) {
 			// 取最后一条遵章守纪记录 没有记录则说明该党员未处理，有记录则取最后一条记录的状态
-			Integer status = disciplineMapper.getOneByUserIdOrderByCreateTimeDesc(vo.getId(),yearTimeStart,yearTimeEnd);
+			Integer status = disciplineMapper.getOneByUserIdOrderByCreateTimeDesc(vo.getId(), yearTimeStart,
+					yearTimeEnd);
 			if (status == null) {
 				vo.setStatus(-1);
 			} else {

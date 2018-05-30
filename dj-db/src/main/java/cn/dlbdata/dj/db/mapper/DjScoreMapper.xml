@@ -69,9 +69,9 @@
 	
 	<select id="getTypeScoreListByUserId" parameterType="Map"
 		resultType="cn.dlbdata.dj.db.vo.apply.ScoreTypeVo">
-		SELECT t.id,t.name,t.score score,(select sum(s.score) score from dj_score s where s.dj_type_id = t.id 
+		SELECT t.id,t.name,t.score score,ifnull((select sum(s.score) score from dj_score s where s.dj_type_id = t.id 
 		and s.add_year = #{year} and s.user_id = #{userId} 
-		GROUP BY s.dj_type_id ) total from dj_type t 
+		GROUP BY s.dj_type_id),0) total from dj_type t 
 	</select>
 
 	

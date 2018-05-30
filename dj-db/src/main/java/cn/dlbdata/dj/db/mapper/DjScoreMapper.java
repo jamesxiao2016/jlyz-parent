@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.db.pojo.DjScore;
+import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface DjScoreMapper extends Mapper<DjScore> {
@@ -40,7 +41,7 @@ public interface DjScoreMapper extends Mapper<DjScore> {
      * @param year
      * @return
      */
-    List<DjScore> getTypeScoreListByUserId(@Param("userId")Long  userId , @Param("year") Integer year);
+    List<ScoreTypeVo> getTypeScoreListByUserId(@Param("userId")Long  userId , @Param("year") Integer year);
 
 
 

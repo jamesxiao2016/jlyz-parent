@@ -1,10 +1,16 @@
 package cn.dlbdata.dj.db.vo.apply;
 
 public class ScoreTypeVo {
+	// 类型ID
 	private Long id;
+	// 类型名称
 	private String name;
+	// 最大分数
 	private Float score;
+	// 已获积分
 	private Float total;
+	// 待处理数量
+	private Integer pendingNum;
 
 	public Long getId() {
 		return id;
@@ -36,6 +42,14 @@ public class ScoreTypeVo {
 
 	public void setTotal(Float total) {
 		this.total = total;
+	}
+
+	public Integer getPendingNum() {
+		return pendingNum;
+	}
+
+	public void setPendingNum(Integer pendingNum) {
+		this.pendingNum = pendingNum;
 	}
 
 }
