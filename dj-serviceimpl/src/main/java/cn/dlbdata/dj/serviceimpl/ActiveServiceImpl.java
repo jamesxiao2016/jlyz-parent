@@ -191,7 +191,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		}
 
 		// TODO 不是金领驿站的项目自动报名
-		if (activeVo.getTypeId() != ActiveSubTypeEnum.ACTIVE_SUB_E.getActiveSubId()) {
+		if (activeVo.getSubTypeId() != ActiveSubTypeEnum.ACTIVE_SUB_E.getActiveSubId()) {
 			if (activeVo.getDeptIds() != null) {
 				List<Long> deptIds = Arrays.asList(activeVo.getDeptIds());
 				Example condition = new Example(DjUser.class);

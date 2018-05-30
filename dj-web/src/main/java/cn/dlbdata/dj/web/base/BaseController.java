@@ -21,6 +21,7 @@ import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
 import cn.dlbdata.dj.common.core.util.cache.CacheManager;
 import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.vo.UserVo;
+import cn.dlbdata.dj.web.vo.TokenVo;
 
 @Controller
 public class BaseController {
@@ -49,6 +50,25 @@ public class BaseController {
 		UserVo currUser = getCacheUserByToken(token);
 
 		return currUser;
+	}
+
+	/**
+	 * 获取Token中用户ID
+	 * 
+	 * @return
+	 */
+	protected TokenVo getTokenUserInfo() {
+		// 从header中获取token
+		String token = getHeader("token");
+		Map<String, String> tokenMap = JwtTokenUtil.getTokenInfo(token);
+		if (tokenMap == null) {
+			return null;
+		}
+		TokenVo vo = new TokenVo();
+		vo.setUserId(DigitUtil.parseToLong(tokenMap.get(JwtTokenUtil.KEY_UID)));
+		vo.setUserName(tokenMap.get(JwtTokenUtil.KEY_UNAME));
+		vo.setDeptId(DigitUtil.parseToLong(tokenMap.get(JwtTokenUtil.KEY_CID)));
+		return vo;
 	}
 
 	/**

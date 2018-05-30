@@ -23,6 +23,7 @@ import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.vo.PartyVo;
 import cn.dlbdata.dj.web.base.BaseController;
+import cn.dlbdata.dj.web.vo.TokenVo;
 
 /**
  * 处理党员相关的controller
@@ -48,6 +49,16 @@ public class PartyMemberController extends BaseController {
 	@ResponseBody
 	public ResultVo<PartyVo> getActiveNumByUserId(Long userId, Integer year) {
 		ResultVo<PartyVo> result = new ResultVo<>(ResultCode.OK.getCode());
+		TokenVo tokenVo = getTokenUserInfo();
+		if (tokenVo == null) {
+			logger.error("用户未登录");
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("用户未报名或登录已过期");
+			return result;
+		}
+		if (userId == null) {
+			userId = tokenVo.getUserId();
+		}
 		if (year == null) {
 			year = Calendar.getInstance().get(Calendar.YEAR);
 		}
@@ -67,6 +78,15 @@ public class PartyMemberController extends BaseController {
 	@ResponseBody
 	public ResultVo<Float> getSumScoreByUserId(Long userId, Integer year) {
 		ResultVo<Float> result = new ResultVo<>(ResultCode.OK.getCode());
+		TokenVo vo = getTokenUserInfo();
+		if (vo == null) {
+			logger.error("用户未登录");
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		if (userId == null) {
+			userId = vo.getUserId();
+		}
 		if (year == null) {
 			year = Calendar.getInstance().get(Calendar.YEAR);
 		}
@@ -89,6 +109,15 @@ public class PartyMemberController extends BaseController {
 	@ResponseBody
 	public ResultVo<List<DjScore>> getScoreListByUserId(Long userId, Integer year) {
 		ResultVo<List<DjScore>> result = new ResultVo<>(ResultCode.OK.getCode());
+		TokenVo vo = getTokenUserInfo();
+		if (vo == null) {
+			logger.error("用户未登录");
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		if (userId == null) {
+			userId = vo.getUserId();
+		}
 		if (year == null) {
 			year = Calendar.getInstance().get(Calendar.YEAR);
 		}
@@ -108,6 +137,15 @@ public class PartyMemberController extends BaseController {
 	@ResponseBody
 	public ResultVo<List<DjScore>> getTypeScoreListByUserId(Long userId, Integer year) {
 		ResultVo<List<DjScore>> result = new ResultVo<>(ResultCode.OK.getCode());
+		TokenVo vo = getTokenUserInfo();
+		if (vo == null) {
+			logger.error("用户未登录");
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		if (userId == null) {
+			userId = vo.getUserId();
+		}
 		if (year == null) {
 			year = Calendar.getInstance().get(Calendar.YEAR);
 		}
@@ -139,17 +177,17 @@ public class PartyMemberController extends BaseController {
 		return result;
 	}
 
-//	@PostMapping("/scoreCustom")
-//	@ResponseBody
-//	public ResultVo<String> scoreCustom(@RequestBody ReportAddScoreRequest request) {
-//		String token = getHeader("token");
-//
-//		// 从缓存中获取当前用户的信息
-//		UserVo currUser = getCacheUserByToken(token);
-//		int year = Calendar.getInstance().get(Calendar.YEAR);
-//		partyMemberService.reportAddScore(request, year, currUser);
-//		return new ResultVo<String>(CoreConst.ResultCode.OK.getCode(), "加分成功!");
-//	}
+	// @PostMapping("/scoreCustom")
+	// @ResponseBody
+	// public ResultVo<String> scoreCustom(@RequestBody ReportAddScoreRequest request) {
+	// String token = getHeader("token");
+	//
+	// // 从缓存中获取当前用户的信息
+	// UserVo currUser = getCacheUserByToken(token);
+	// int year = Calendar.getInstance().get(Calendar.YEAR);
+	// partyMemberService.reportAddScore(request, year, currUser);
+	// return new ResultVo<String>(CoreConst.ResultCode.OK.getCode(), "加分成功!");
+	// }
 
 	/**
 	 * 支书查询先锋评定党员列表
@@ -186,8 +224,13 @@ public class PartyMemberController extends BaseController {
 	@ResponseBody
 	public ResultVo<List<DjPartymember>> queryAllPartyMembersByDeptId() {
 		ResultVo<List<DjPartymember>> result = new ResultVo<>();
-		// UserVo data = getCurrentUserFromCache();
-		List<DjPartymember> list = partyMemberService.queryAllPartyMembersByDeptId(0L);
+		TokenVo vo = getTokenUserInfo();
+		if (vo == null) {
+			logger.error("用户未登录");
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		List<DjPartymember> list = partyMemberService.queryAllPartyMembersByDeptId(vo.getDeptId());
 		if (list == null || list.size() == 0) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("该党支部没有信息");
@@ -221,14 +264,15 @@ public class PartyMemberController extends BaseController {
 
 	/**
 	 * 根据身份证号获取党员积分
+	 * 
 	 * @param idCard
 	 * @return
 	 */
 	@GetMapping("/getSumScoreByIdCard")
 	@ResponseBody
-	public ResultVo<Float> getSumScoreByIdCard(@RequestParam("idCard") String idCard){
+	public ResultVo<Float> getSumScoreByIdCard(@RequestParam("idCard") String idCard) {
 		ResultVo<Float> result = new ResultVo<>();
-		
+
 		return result;
 	}
 }
