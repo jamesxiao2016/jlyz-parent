@@ -1,8 +1,6 @@
 package cn.dlbdata.dj.thirdparty.mp.sdk.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 /**
  * @Author: linfujun
@@ -12,7 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 public class DefaultConfigs {
 
-  public static String API_URL_PREFIX;
+  public static String API_URL_PREFIX = "https://api.weixin.qq.com/cgi-bin/";
 
   public void setApiUrlPrefix(String value) {
     API_URL_PREFIX = value;

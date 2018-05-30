@@ -19,4 +19,16 @@ public class DlbConstant {
 
 	//TODO：陆家嘴党委，后面需要删除
 	public static final String PARTYCOMMITTEE_LJZ ="陆家嘴中心";
+	
+	/** KEY-app_id */
+	public static final String KEY_WX_APP_ID = "wx_app_id";
+	/** KEY-secret */
+	public static final String KEY_WX_SECRET = "wx_secret";
+	/** KEY-ACCESS_TOKEN */
+	public static final String KEY_ACCESS_TOKEN = "ACCESS_TOKEN";
+	/** KEY-TICKET */
+	public static final String KEY_TICKET = "TICKET";
+	/** KEY-MEDIA_ID */
+	public static final String KEY_MEDIA_ID = "MEDIA_ID";
+	
 }

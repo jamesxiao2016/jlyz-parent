@@ -18,6 +18,7 @@ import cn.dlbdata.dj.common.core.util.ConfigUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.DjActivePicMapper;
 import cn.dlbdata.dj.db.mapper.DjPicMapper;
 import cn.dlbdata.dj.db.pojo.DjActivePic;
@@ -46,7 +47,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 	@Autowired
 	private AccessService accessService;
 	@Autowired
-	private DjActivePicMapper activePicMapper; 
+	private DjActivePicMapper activePicMapper;
 	@Autowired
 	private DjPicMapper picMapper;
 
@@ -72,7 +73,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 		pic.setId(picId);
 		pic.setCreateTime(new Date());
 		pic.setPicUrl(path);
-		pic.setPicName(picId+"");
+		pic.setPicName(picId + "");
 		pic.setStatus(1);
 		int count = picMapper.insert(pic);
 		if (count > 0) {
@@ -100,14 +101,16 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 		String picturePath = null;
 
 		GetaAccessTokenParam getaAccessTokenParam = new GetaAccessTokenParam();
-		getaAccessTokenParam.setSecret("8d72463ffdf8a2232241985b442c1c93");
-		getaAccessTokenParam.setAppid("wxef4c83c01085bb38");
+		// getaAccessTokenParam.setSecret("8d72463ffdf8a2232241985b442c1c93");
+		// getaAccessTokenParam.setAppid("wxef4c83c01085bb38");
+		getaAccessTokenParam.setAppid(ConfigUtil.get(DlbConstant.KEY_WX_APP_ID));
+		getaAccessTokenParam.setSecret(ConfigUtil.get(DlbConstant.KEY_WX_SECRET));
 		getaAccessTokenParam.setGrantType(GrantType.client_credential);
-		String token = LocalCache.TICKET_CACHE.getIfPresent("ACCESS_TOKEN");
+		String token = LocalCache.TICKET_CACHE.getIfPresent(DlbConstant.KEY_ACCESS_TOKEN);
 		if (StringUtils.isEmpty(token)) {
 			AccessTokenResponse accessTokenResponse = accessService.getAccessToken(getaAccessTokenParam);
 			token = accessTokenResponse.getAccessToken();
-			LocalCache.TICKET_CACHE.put("ACCESS_TOKEN", token);
+			LocalCache.TICKET_CACHE.put(DlbConstant.KEY_ACCESS_TOKEN, token);
 		}
 		// 如果token为空
 		if (StringUtils.isEmpty(token)) {
@@ -115,7 +118,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 			return "";
 		}
 
-		requestUrl = requestUrl.replace("ACCESS_TOKEN", token).replace("MEDIA_ID", mediaId);
+		requestUrl = requestUrl.replace(DlbConstant.KEY_ACCESS_TOKEN, token).replace(DlbConstant.KEY_MEDIA_ID, mediaId);
 
 		HttpURLConnection conn = null;
 		BufferedInputStream bis = null;
@@ -186,7 +189,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 		if (imgFile.exists()) {
 			try {
 				String p = imgFile.getCanonicalPath();
-				File outFile = new File(p +"_thumbnail.jpg");
+				File outFile = new File(p + "_thumbnail.jpg");
 				compressPic(imgFile, outFile, w, h);
 
 				logger.debug("缩略图在原路径下生成成功");
@@ -218,6 +221,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 		}
 		return false;
 	}
+
 	/**
 	 * 获取缩略图的路径
 	 */
@@ -245,28 +249,29 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * <p>Title: deleteActivePicById</p>
-	 * <p>Description: 删除活动图片</p> 
+	/*
+	 * (non-Javadoc) <p>Title: deleteActivePicById</p> <p>Description: 删除活动图片</p>
+	 * 
 	 * @param djActiveId, djPicId
-	 * @return  
+	 * 
+	 * @return
+	 * 
 	 * @see cn.dlbdata.dj.service.IPictureService#deleteActivePicById(java.lang.Long)
 	 */
 	@Override
-	public int deleteActivePicById(Long djActiveId ,Long djPicId) {
-		if(djActiveId == null || djPicId == null ) {
+	public int deleteActivePicById(Long djActiveId, Long djPicId) {
+		if (djActiveId == null || djPicId == null) {
 			return 0;
 		}
 		Example example = new Example(DjActivePic.class);
 		example.createCriteria().andEqualTo("djActiveId", djActiveId).andEqualTo("djPicId", djPicId);
 		int count = activePicMapper.deleteByExample(example);
-		if(count > 0) {
-		 count = picMapper.deleteByPrimaryKey(djPicId);
-		}else {
+		if (count > 0) {
+			count = picMapper.deleteByPrimaryKey(djPicId);
+		} else {
 			return 0;
 		}
 		return count;
 	}
 
-	
 }

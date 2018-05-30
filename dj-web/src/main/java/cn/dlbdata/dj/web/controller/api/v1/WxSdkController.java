@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.DangjianException;
+import cn.dlbdata.dj.common.core.util.ConfigUtil;
 import cn.dlbdata.dj.common.util.HttpResult;
 import cn.dlbdata.dj.common.util.ResultUtil;
+import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.thirdparty.mp.sdk.model.access.AccessTokenResponse;
 import cn.dlbdata.dj.thirdparty.mp.sdk.model.access.GetUserInfo;
 import cn.dlbdata.dj.thirdparty.mp.sdk.model.access.GetaAccessTokenParam;
@@ -31,11 +33,12 @@ import cn.dlbdata.dj.thirdparty.mp.sdk.service.AccessService;
 import cn.dlbdata.dj.thirdparty.mp.sdk.service.CustomMenuService;
 import cn.dlbdata.dj.thirdparty.mp.sdk.service.UserInfoService;
 import cn.dlbdata.dj.thirdparty.mp.sdk.util.LocalCache;
+import cn.dlbdata.dj.web.base.BaseController;
 import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/api/v1/wx")
-public class WxSdkController {
+public class WxSdkController extends BaseController {
 	Logger logger = LoggerFactory.getLogger(WxSdkController.class);
 
 	@Autowired
@@ -98,19 +101,21 @@ public class WxSdkController {
 
 		ResultUtil result = new ResultUtil();
 		GetaAccessTokenParam getaAccessTokenParam = new GetaAccessTokenParam();
-		getaAccessTokenParam.setSecret("8d72463ffdf8a2232241985b442c1c93");
-		getaAccessTokenParam.setAppid("wxef4c83c01085bb38");
+//		getaAccessTokenParam.setSecret("8d72463ffdf8a2232241985b442c1c93");
+//		getaAccessTokenParam.setAppid("wxef4c83c01085bb38");
+		getaAccessTokenParam.setAppid(ConfigUtil.get(DlbConstant.KEY_WX_APP_ID));
+		getaAccessTokenParam.setSecret(ConfigUtil.get(DlbConstant.KEY_WX_SECRET));
 		getaAccessTokenParam.setGrantType(GrantType.client_credential);
 		try {
-			String Token = LocalCache.TICKET_CACHE.getIfPresent("ACCESS_TOKEN");
-			if (null == Token || "".equals(Token)) {
+			String token = LocalCache.TICKET_CACHE.getIfPresent(DlbConstant.KEY_ACCESS_TOKEN);
+			if (null == token || "".equals(token)) {
 				AccessTokenResponse accessTokenResponse = accessService.getAccessToken(getaAccessTokenParam);
-				Token = accessTokenResponse.getAccessToken();
-				LocalCache.TICKET_CACHE.put("ACCESS_TOKEN", Token);
+				token = accessTokenResponse.getAccessToken();
+				LocalCache.TICKET_CACHE.put(DlbConstant.KEY_ACCESS_TOKEN, token);
 			}
-			getaAccessTokenParam.setToken(Token);
+			getaAccessTokenParam.setToken(token);
 			// 获取Ticket
-			String jsapi_ticket = getTicket(Token);
+			String jsapi_ticket = getTicket(token);
 
 			// 拿noncestr
 			String noncestr = UUID.randomUUID().toString().replace("-", "").substring(0, 16);// 随机字符串
@@ -136,8 +141,8 @@ public class WxSdkController {
 		return result.getResult();
 	}
 
-	public static String getTicket(String access_token) {
-		String ticket = LocalCache.TOKEN_CACHE.getIfPresent("TICKET");
+	public String getTicket(String access_token) {
+		String ticket = LocalCache.TOKEN_CACHE.getIfPresent(DlbConstant.KEY_TICKET);
 		if (null != ticket && !"".equals(ticket)) {
 			return ticket;
 		}
@@ -158,7 +163,7 @@ public class WxSdkController {
 			is.read(jsonBytes);
 			String message = new String(jsonBytes, "UTF-8");
 			JSONObject demoJson = JSONObject.fromObject(message);
-			System.out.println("JSON字符串：" + demoJson);
+			logger.info("JSON字符串：" + demoJson);
 			ticket = demoJson.getString("ticket");
 			is.close();
 		} catch (Exception e) {
@@ -174,7 +179,7 @@ public class WxSdkController {
 	 * @param requestStr
 	 * @return
 	 */
-	private static String getSHA1(String requestStr) {
+	private String getSHA1(String requestStr) {
 		String signature = new String();
 		try {
 			MessageDigest crypt = MessageDigest.getInstance("SHA-1");
@@ -195,7 +200,7 @@ public class WxSdkController {
 	 * @param hash
 	 * @return
 	 */
-	private static String byteToHex(final byte[] hash) {
+	private String byteToHex(final byte[] hash) {
 		Formatter formatter = new Formatter();
 		for (byte b : hash) {
 			formatter.format("%02x", b);
