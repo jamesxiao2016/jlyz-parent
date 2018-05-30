@@ -223,6 +223,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		data.setName(user.getName());
 		data.setUserId(user.getId());
 		data.setAvatar(user.getAvatar());
+		data.setRoleId(user.getRoleId());
 
 		// 获取党员信息
 		DjPartymember member = partyMemberMapper.selectByPrimaryKey(user.getDjPartymemberId());
