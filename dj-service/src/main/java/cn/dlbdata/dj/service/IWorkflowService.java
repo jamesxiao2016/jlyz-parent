@@ -3,7 +3,6 @@ package cn.dlbdata.dj.service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.dlbdata.dj.common.core.util.Paged;
-import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
@@ -91,7 +90,7 @@ public interface IWorkflowService {
 	 *            每页显示数量
 	 * @return
 	 */
-	public PageVo<DjApply> getPendingList(Long userId, Long deptId, Long typeId, Long roleId, Integer pageNum,
+	public Paged<DjApply> getPendingList(Long userId, Long deptId, Long typeId, Long roleId, Integer pageNum,
 			Integer pageSize);
 
 	/**

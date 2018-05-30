@@ -25,20 +25,18 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="type_name" jdbcType="VARCHAR" property="typeName" />
-    <result column="sub_name" jdbcType="VARCHAR" property="subName" />
   </resultMap>
   
-  <select id="getPendingList" parameterType="map" resultType="cn.dlbdata.dj.db.pojo.DjApply">
-  	select d.id,d.user_name,d.create_time,d.status,t.name type_name,tt.name sub_name from dj_apply d
+  <select id="getPendingList" parameterType="map" resultMap="BaseResultMap">
+  	select d.id,d.user_id,d.user_name,d.create_time,d.sub_type_name,d.status,t.name type_name from dj_apply d
 	left join dj_type t on t.id = d.dj_type_id
-	left join dj_sub_type tt on tt.id = d.dj_sub_type_id
   	<where>
   		d.approver_id = #{userId}
   		<if test="deptId != null">
   			and d.dj_dept_id = #{deptId}
   		</if>
   		<if test="typeId != null">
-  			and d.dj_type_id = #{typeId}
+  			and d.dj_sub_type_id = #{subTypeId}
   		</if>
   	</where>
   </select>

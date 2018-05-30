@@ -1,5 +1,7 @@
 package cn.dlbdata.dj.serviceimpl;
 
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,6 +90,7 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		vo.setRoleId(RoleEnum.BRANCH_PARTY.getId());
 		vo.setDjDeptId(user.getDeptId());
 		vo.setScore(score);
+		vo.setApplyYear(Calendar.getInstance().get(Calendar.YEAR));
 		String rs = workflowService.doApply(vo, user);
 		if (!CoreConst.SUCCESS.equals(rs)) {
 			logger.info("提交申请失败");

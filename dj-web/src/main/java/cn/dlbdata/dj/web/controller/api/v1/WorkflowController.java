@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
-import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
@@ -117,6 +116,7 @@ public class WorkflowController extends BaseController {
 
 	/**
 	 * 业务处理
+	 * 
 	 * @param auditVo
 	 * @return
 	 */
@@ -125,6 +125,12 @@ public class WorkflowController extends BaseController {
 	public ResultVo<String> audit(@RequestBody AuditVo auditVo) {
 		UserVo user = getCurrentUserFromCache();
 		ResultVo<String> resultVo = new ResultVo<>(ResultCode.ParameterError.getCode());
+		if (user == null) {
+			logger.error("用户未登录");
+			resultVo.setCode(ResultCode.Forbidden.getCode());
+			resultVo.setMsg("用户未登录或用户已退出");
+			return resultVo;
+		}
 		if (auditVo == null || auditVo.getId() == null || auditVo.getResult() == null) {
 			resultVo.setMsg("参数不完整");
 			return resultVo;
@@ -144,52 +150,57 @@ public class WorkflowController extends BaseController {
 	 */
 	@GetMapping(value = "/getPendingList")
 	@ResponseBody
-	public PageVo<DjApply> getPendingList(Long typeId, Long deptId, Integer pageNum, Integer pageSize) {
-		PageVo<DjApply> result = new PageVo<DjApply>();
+	public ResultVo<Paged<DjApply>> getPendingList(Long typeId, Long deptId, Integer pageNum, Integer pageSize) {
+		ResultVo<Paged<DjApply>> result = new ResultVo<Paged<DjApply>>();
 		UserVo user = getCurrentUserFromCache();
 		if (user == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
-		result = workflowService.getPendingList(user.getUserId(), deptId, typeId, null, pageNum, pageSize);
+		Paged<DjApply> data = workflowService.getPendingList(user.getUserId(), deptId, typeId, null, pageNum, pageSize);
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(data);
 		return result;
 	}
 
 	/**
-	 *积分审核列表
-	 * @param status 审核状态
+	 * 积分审核列表
+	 * 
+	 * @param status
+	 *            审核状态
 	 * @param pageNum
 	 * @param pageSize
 	 * @return
 	 */
 	@GetMapping("/getScoreAuditList")
 	@ResponseBody
-	public ResultVo<Paged<ScoreApplyVo>> getScoreAuditList(
-			@RequestParam(value = "status") Integer status,
-			@RequestParam(value = "deptId",required = false) Long deptId,
+	public ResultVo<Paged<ScoreApplyVo>> getScoreAuditList(@RequestParam(value = "status") Integer status,
+			@RequestParam(value = "deptId", required = false) Long deptId,
 			@RequestParam(value = "pageNum", required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
 		UserVo user = getCurrentUserFromCache();
 		pageNum = Paged.normalizePageIndex(pageNum);
 		pageSize = Paged.normalizePageSize(pageSize);
-		Paged<ScoreApplyVo> paged = workflowService.getScoreAuditList(user,status,pageNum,pageSize,deptId);
+		Paged<ScoreApplyVo> paged = workflowService.getScoreAuditList(user, status, pageNum, pageSize, deptId);
 		ResultVo<Paged<ScoreApplyVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		result.setData(paged);
-		return  result;
+		return result;
 	}
 
 	/**
-	 *查询积分审核详情(先锋作用的三个)
-	 * @param partyMemberId 党员Id
+	 * 查询积分审核详情(先锋作用的三个)
+	 * 
+	 * @param partyMemberId
+	 *            党员Id
 	 * @return
 	 */
 	@GetMapping("/getPioneeringApplyDetail")
 	@ResponseBody
-	public ResultVo<PioneeringApplyDetailVo>getPioneeringApplyDetail(
+	public ResultVo<PioneeringApplyDetailVo> getPioneeringApplyDetail(
 			@RequestParam("partyMemberId") Long partyMemberId) {
 		PioneeringApplyDetailVo vo = workflowService.getPioneeringApplyDetail(partyMemberId);
 		ResultVo<PioneeringApplyDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
 		result.setData(vo);
-		return  result;
+		return result;
 	}
 }
