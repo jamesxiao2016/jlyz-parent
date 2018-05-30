@@ -18,4 +18,11 @@ public class PageUtils {
 		return new Paged<T>(page.getPageSize(), page.getPageNum(), page.getTotal(), page.getPages(), page.getResult());
 	}
 
+	public static int normalizePageSize(Integer pageSize) {
+		return pageSize == null ? 20 : pageSize;
+	}
+
+	public static int normalizePageIndex(Integer pageIndex) {
+		return pageIndex == null ? 1 : pageIndex;
+	}
 }

@@ -575,9 +575,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	@Override
 	public Paged<DjApply> getPendingList(Long userId, Long deptId, Long typeId, Long roleId, Integer pageNum,
 			Integer pageSize) {
-		pageNum = Paged.normalizePageIndex(pageNum);
-		pageSize = Paged.normalizePageSize(pageSize);
-		
+		pageNum = PageUtils.normalizePageIndex(pageNum);
+		pageSize = PageUtils.normalizePageSize(pageSize);
 		Page<DjApply> page = PageHelper.startPage(pageNum, pageSize);
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("userId", userId);
@@ -600,6 +599,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	 */
 	@Override
 	public Paged<ScoreApplyVo> getScoreAuditList(UserVo user, Integer status, int pageNum, int pageSize, Long deptId) {
+		pageNum = PageUtils.normalizePageIndex(pageNum);
+		pageSize = PageUtils.normalizePageSize(pageSize);
 		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
 		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
 		Page<ScoreApplyVo> page = PageHelper.startPage(pageNum, pageSize);

@@ -1,42 +1,37 @@
 package cn.dlbdata.dj.serviceimpl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.dlbdata.dj.db.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
-import cn.dlbdata.dj.common.core.exception.DlbException;
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
-import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.PageUtils;
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.AuditStatusEnum;
-import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.db.mapper.DjActiveMapper;
+import cn.dlbdata.dj.db.mapper.DjApplyMapper;
+import cn.dlbdata.dj.db.mapper.DjDisciplineMapper;
+import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
+import cn.dlbdata.dj.db.mapper.DjScoreMapper;
+import cn.dlbdata.dj.db.mapper.DjThoughtsMapper;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
-import cn.dlbdata.dj.db.pojo.DjPicRecord;
 import cn.dlbdata.dj.db.pojo.DjScore;
-import cn.dlbdata.dj.db.pojo.DjThoughts;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
-import cn.dlbdata.dj.dto.active.ReportAddScoreRequest;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.PartyVo;
-import cn.dlbdata.dj.vo.UserVo;
 
 @Service
 public class PartyMemberService extends BaseServiceImpl implements IPartyMemberService {
@@ -54,12 +49,6 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 
 	@Autowired
 	private DjThoughtsMapper thoughtsMapper;
-
-	@Autowired
-	private DjVanguardMapper vanguardMapper;
-
-	@Autowired
-	private DjPicRecordMapper picRecordMapper;
 
 	@Autowired
 	private DjDisciplineMapper disciplineMapper;
@@ -122,8 +111,10 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	public Paged<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId,int pageNum, int pageSize) {
 		if (subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId()
 				&& subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_L.getActiveSubId()) {
-			return Paged.empty();
+			return new Paged<ReportPartyMemberVo>();
 		}
+		pageNum = PageUtils.normalizePageIndex(pageNum);
+		pageSize = PageUtils.normalizePageSize(pageSize);
 		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
 		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
 		Page<ReportPartyMemberVo> page = PageHelper.startPage(pageNum, pageSize);
@@ -225,6 +216,8 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	 */
 	@Override
 	public Paged<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId,int pageNum, int pageSize) {
+		pageNum = PageUtils.normalizePageIndex(pageNum);
+		pageSize = PageUtils.normalizePageSize(pageSize);
 		// 获取支部全部党员
 		Page<PioneeringPartyMemberVo> page = PageHelper.startPage(pageNum, pageSize);
 		List<PioneeringPartyMemberVo> voList = partyMemberMapper.getPioneeringPartyMembers(deptId);
@@ -284,6 +277,8 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	@Override
 	public Paged<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId, int pageNum, int pageSize) {
 		Calendar cale = Calendar.getInstance();
+		pageNum = PageUtils.normalizePageIndex(pageNum);
+		pageSize = PageUtils.normalizePageSize(pageSize);
 		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
 		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
 		int year = cale.get(Calendar.YEAR);

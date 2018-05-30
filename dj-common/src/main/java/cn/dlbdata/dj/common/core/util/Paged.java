@@ -1,6 +1,6 @@
 package cn.dlbdata.dj.common.core.util;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Paged<T> {
@@ -8,7 +8,11 @@ public class Paged<T> {
 	private int pageNum;// 第几页
 	private long total;// 总数据量
 	private int pages;// 总页数
-	private List<T> data;
+	private List<T> data = Collections.emptyList();
+
+	public Paged() {
+
+	}
 
 	public Paged(int pageSize, int pageNum, long total, int pages, List<T> data) {
 		this.pageSize = pageSize;
@@ -58,17 +62,4 @@ public class Paged<T> {
 		this.data = data;
 	}
 
-	public static int normalizePageSize(Integer pageSize) {
-		return pageSize == null ? 20 : pageSize;
-	}
-
-	public static int normalizePageIndex(Integer pageIndex) {
-		return pageIndex == null ? 1 : pageIndex;
-
-	}
-
-	public static Paged empty(){
-		return new Paged(0,0,0,0,new ArrayList());
-
-	}
 }
