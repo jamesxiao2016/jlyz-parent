@@ -11,6 +11,7 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
+import cn.dlbdata.dj.web.vo.TokenVo;
 
 @Controller
 @RequestMapping("/api/v1/user")
@@ -28,6 +29,15 @@ public class UserController extends BaseController {
 	@ResponseBody
 	public ResultVo<UserVo> getUserInfoById(Long userId) {
 		ResultVo<UserVo> result = new ResultVo<>(ResultCode.Forbidden.getCode());
+		TokenVo vo = getTokenUserInfo();
+		if (vo == null) {
+			logger.error("用户未登录");
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		if (userId == null) {
+			userId = vo.getUserId();
+		}
 		UserVo data = userService.getUserDetailById(userId);
 		if (data != null) {
 			result.setCode(ResultCode.OK.getCode());

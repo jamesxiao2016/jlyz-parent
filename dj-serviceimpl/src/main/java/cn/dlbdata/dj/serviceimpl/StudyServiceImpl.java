@@ -78,8 +78,9 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		study.setDjTypeId(studyVo.getDjTypeId());
 		study.setDjSubTypeId(studyVo.getDjSubTypeId());
 		study.setContent(studyVo.getContent());
-		study.setCreateUserId(studyVo.getCreateUserId());
-		study.setUserName(studyVo.getUserName());
+		study.setCreateUserId(user.getUserId());
+		study.setUserName(user.getUserName());
+		study.setDjDeptId(user.getDeptId());
 		if (isSave) {
 			studyMapper.insertSelective(study);
 		} else {

@@ -209,6 +209,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
 	/**
 	 * 根据用户对象获取用户的详细信息
+	 * 
 	 * @param user
 	 * @return
 	 */
@@ -224,6 +225,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		data.setUserId(user.getId());
 		data.setAvatar(user.getAvatar());
 		data.setRoleId(user.getRoleId());
+		data.setUserName(user.getUserName());
 
 		// 获取党员信息
 		DjPartymember member = partyMemberMapper.selectByPrimaryKey(user.getDjPartymemberId());
@@ -233,7 +235,14 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		}
 		DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
 		if (dept != null) {
-			data.setPartyBranchName(dept.getPrincipalId() + "");
+			String name = dept.getPrincipalName();
+			if (StringUtils.isEmpty(name)) {
+				DjUser principal = userMapper.selectByPrimaryKey(dept.getPrincipalId());
+				if (principal != null) {
+					name = principal.getUserName();
+				}
+			}
+			data.setPartyBranchName(name);
 			data.setDeptName(dept.getName());
 		}
 		// 党委
