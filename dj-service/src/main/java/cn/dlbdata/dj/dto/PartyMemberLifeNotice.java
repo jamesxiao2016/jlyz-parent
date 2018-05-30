@@ -19,6 +19,10 @@ public class PartyMemberLifeNotice {
 	 * 支部id
 	 */
 	private Long departmentId;
+	
+	private Integer pageNum;
+	
+	private Integer pageSize;
 	public Long getUserId() {
 		return userId;
 	}
@@ -42,6 +46,18 @@ public class PartyMemberLifeNotice {
 	}
 	public void setDepartmentId(Long departmentId) {
 		this.departmentId = departmentId;
+	}
+	public Integer getPageNum() {
+		return pageNum;
+	}
+	public void setPageNum(Integer pageNum) {
+		this.pageNum = pageNum;
+	}
+	public Integer getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
 	}
 	
 

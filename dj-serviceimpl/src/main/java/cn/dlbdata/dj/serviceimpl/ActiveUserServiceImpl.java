@@ -75,13 +75,13 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
-		DjUser djUser = userMapper.selectByPrimaryKey(activeSignUpRequest.getUserId());
+		DjUser djUser = userMapper.selectByPrimaryKey(user.getUserId());
 		if ( djUser == null) {
 			result.setMsg("用户不存在！");
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
-		List<DjActiveUser> list = selectByExample(activeSignUpRequest.getUserId(), activeSignUpRequest.getActiveId());
+		List<DjActiveUser> list = selectByExample(user.getUserId(), activeSignUpRequest.getActiveId());
 		
 		if (list.size() > 0) {
 			logger.error("请勿重复报名");

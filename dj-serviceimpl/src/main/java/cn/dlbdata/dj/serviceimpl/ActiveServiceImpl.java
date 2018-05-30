@@ -121,8 +121,8 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	}
 
 	/*
-	 * (non-Javadoc) <p>Title: getParticipateActiveCount</p> <p>Description: 党员生活通知总数</p>
-	 *
+	 * (non-Javadoc) <p>Title: getParticipateActiveCount</p> 
+	 *	<p>Description: 党员生活通知总数</p>
 	 * @param PartyMemberLifeNotice
 	 *
 	 * @return
