@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import cn.dlbdata.dj.db.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +20,6 @@ import com.github.pagehelper.PageHelper;
 
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
-import cn.dlbdata.dj.common.core.util.PageUtils;
-import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
@@ -33,16 +30,18 @@ import cn.dlbdata.dj.db.mapper.DjActiveMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveUserMapper;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
-import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
-import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
-import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
+import cn.dlbdata.dj.db.pojo.DjActive;
+import cn.dlbdata.dj.db.pojo.DjActiveDept;
+import cn.dlbdata.dj.db.pojo.DjActiveUser;
+import cn.dlbdata.dj.db.pojo.DjDept;
+import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.ActiveVo;
 import cn.dlbdata.dj.vo.UserVo;
-import cn.dlbdata.dj.vo.study.StudyDetailVo;
 import tk.mybatis.mapper.entity.Example;
 
 @Service
@@ -51,10 +50,6 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	private DjActiveMapper activeMapper;
 	@Autowired
 	private DjActiveDeptMapper activeDeptMapper;
-	@Autowired
-	private DjStudyMapper studyMapper;
-	@Autowired
-	private DjPicRecordMapper picRecordMapper;
 	@Autowired
 	private DjDeptMapper deptMapper;
 	@Autowired
@@ -82,6 +77,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		Integer count = activeMapper.getUserActiveCountByActiveTypeAndTime(userId, activeType, startTime, endTime);
 		return count;
 	}
+
 	/**
 	 * 党员生活通知列表
 	 */
@@ -93,7 +89,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			return result;
 		}
 		partyMemberLifeNotice.setEndTime(new Date());
-		//报名的集合
+		// 报名的集合
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", partyMemberLifeNotice.getUserId());
 		map.put("startTime", partyMemberLifeNotice.getStartTime());
@@ -102,7 +98,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		map.put("signUp", DlbConstant.BASEDATA_STATUS_VALID);
 		Page<Map<String, Object>> page = PageHelper.startPage(1, 1);
 		List<Map<String, Object>> inList = activeMapper.getRunningActive(map);
-		//未报名的集合
+		// 未报名的集合
 		map.put("signUp", DlbConstant.BASEDATA_STATUS_INVALID);
 		Page<Map<String, Object>> page2 = PageHelper.startPage(1, 1);
 		List<Map<String, Object>> outList = activeMapper.getRunningActive(map);
@@ -171,15 +167,27 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		active.setDjPicId(activeVo.getPicId());
 		active.setPrincipalName(activeVo.getPrincipalName());
 		active.setStartTime(activeVo.getStartActiveTime());
-		active.setStatus(1);
+		active.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		active.setDjSubTypeId(activeVo.getSubTypeId());
 		active.setDjTypeId(activeVo.getTypeId());
-		if (user.getRoleId() != null && user.getRoleId() == RoleEnum.BRANCH_SECRETARY.getId()) {
+		if (user.getRoleId() != null && user.getRoleId() == RoleEnum.BRANCH_PARTY.getId()) {
 			active.setDjDeptId(user.getDeptId());
 		} else {
 			active.setDjDeptId(0L);
 		}
 		activeMapper.insertSelective(active);
+
+		//保存活动参与部门表
+		if (activeVo.getDeptIds() != null) {
+			for (Long deptId : activeVo.getDeptIds()) {
+				DjActiveDept dept = new DjActiveDept();
+				dept.setCreateTime(new Date());
+				dept.setDjActiveId(active.getId());
+				dept.setDjDeptId(deptId);
+				dept.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+				activeDeptMapper.insertSelective(dept);
+			}
+		}
 
 		// TODO 不是金领驿站的项目自动报名
 		if (activeVo.getTypeId() != ActiveSubTypeEnum.ACTIVE_SUB_E.getActiveSubId()) {
