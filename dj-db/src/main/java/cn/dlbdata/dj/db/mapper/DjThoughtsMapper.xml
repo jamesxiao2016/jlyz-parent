@@ -15,4 +15,16 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="thoughts_type" jdbcType="BIGINT" property="thoughtsType" />
   </resultMap>
+
+  <select id="getByDeptIdAndTypeIdAndSubTypeIdAndYear"
+          resultType="java.lang.Long">
+		SELECT th.dj_user_id from dj_thoughts th LEFT JOIN dj_partymember u on th.dj_user_id = u.id
+		where  u.dept_id = #{deptId} and th.thoughts_type = #{typeId}
+        <if test="yearTimeStart !=null">
+          and th.thoughts_time &gt;= #{yearTimeStart}
+        </if>
+        <if test="yearTimeEnd !=null">
+          and th.thoughts_time &lt;= #{yearTimeEnd}
+        </if>
+	</select>
 </mapper>
