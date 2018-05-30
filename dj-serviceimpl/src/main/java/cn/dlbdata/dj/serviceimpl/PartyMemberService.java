@@ -122,11 +122,10 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	public Paged<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId,int pageNum, int pageSize) {
 		if (subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId()
 				&& subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_L.getActiveSubId()) {
-			throw new DlbException("subTypeId不合法!");
+			return Paged.empty();
 		}
-		Calendar ca = Calendar.getInstance();
-		int year = ca.get(Calendar.YEAR);
-		System.out.println(year);
+		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
+		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
 		Page<ReportPartyMemberVo> page = PageHelper.startPage(pageNum, pageSize);
 		List<ReportPartyMemberVo> voList = partyMemberMapper.getReportPartyMembers(deptId);
 		for (ReportPartyMemberVo vo:voList) {
@@ -134,8 +133,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		}
 		if (!voList.isEmpty()) {
 			// 查询有积分记录的用户ID
-			List<Long> userIdList = scoreMapper.getByDeptIdAndTypeIdAndSubTypeIdAndYear(deptId,
-					ActiveTypeEnum.ACTIVE_C.getActiveId(), subTypeId, year);
+			List<Long> userIdList = thoughtsMapper.getByDeptIdAndTypeIdAndSubTypeIdAndYear(deptId, subTypeId,yearTimeStart,yearTimeEnd);
 			for (int i = 0; i < userIdList.size(); i++) {
 				for (int j = 0; j < voList.size(); j++) {
 					if (voList.get(j).getId().equals(userIdList.get(i))) {

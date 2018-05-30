@@ -1,5 +1,6 @@
 package cn.dlbdata.dj.common.core.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Paged<T> {
@@ -63,6 +64,11 @@ public class Paged<T> {
 
 	public static int normalizePageIndex(Integer pageIndex) {
 		return pageIndex == null ? 1 : pageIndex;
+
+	}
+
+	public static Paged empty(){
+		return new Paged(0,0,0,0,new ArrayList());
 
 	}
 }
