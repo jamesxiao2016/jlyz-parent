@@ -127,6 +127,9 @@ public class DjApply {
      */
     @Column(name = "apply_year")
     private Integer applyYear;
+    
+    @Transient
+    private String typeName;
 
     /**
      * 获取记录ID
@@ -494,5 +497,13 @@ public class DjApply {
 
 	public void setApplyYear(Integer applyYear) {
 		this.applyYear = applyYear;
+	}
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
 	}
 }

@@ -16,11 +16,4 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 
-  <select id="countUnAuditByPtMemberIdAndType" resultType="int">
-    select count(0) from dj_vanguard where dj_user_id =#{id} and type in(41,42,43)
-  </select>
-
-  <select id="countByPtMemberIdStatus" resultType="int">
-    select count(0) from dj_vanguard where dj_user_id =#{pid} and status=#{status}
-  </select>
 </mapper>

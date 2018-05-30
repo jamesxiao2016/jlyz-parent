@@ -1,5 +1,13 @@
 package cn.dlbdata.dj.serviceimpl;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.List;
+
+import cn.dlbdata.dj.db.mapper.DjApplyMapper;
+import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
+import cn.dlbdata.dj.db.pojo.DjApply;
+import cn.dlbdata.dj.vo.study.StudyDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +38,12 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 
 	@Autowired
 	private IWorkflowService workflowService;
+
+	@Autowired
+	private DjApplyMapper applyMapper;
+
+	@Autowired
+	private DjPicRecordMapper picRecordMapper;
 
 	@Override
 	@Transactional
@@ -88,6 +102,7 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		vo.setRoleId(RoleEnum.BRANCH_PARTY.getId());
 		vo.setDjDeptId(user.getDeptId());
 		vo.setScore(score);
+		vo.setApplyYear(Calendar.getInstance().get(Calendar.YEAR));
 		String rs = workflowService.doApply(vo, user);
 		if (!CoreConst.SUCCESS.equals(rs)) {
 			logger.info("提交申请失败");
@@ -114,6 +129,37 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 			return 0;
 		}
 		return studyMapper.deleteByPrimaryKey(studyId);
+	}
+
+	/**
+	 * 获取自主学习详情
+	 *
+	 * @param applyId 申请Id
+	 * @return
+	 */
+	@Override
+	public StudyDetailVo getStudyDetail(Long applyId) {
+		DjApply djApply = applyMapper.selectByPrimaryKey(applyId);
+		if (djApply == null) {
+			return new StudyDetailVo();
+		}
+		StudyDetailVo detailVo = new StudyDetailVo();
+		detailVo.setName(djApply.getUserName());
+		detailVo.setStatus(djApply.getStatus());
+		if (djApply.getRecordId() == null) {
+			return detailVo;
+		}
+		DjStudy djStudy = studyMapper.selectByPrimaryKey(djApply.getRecordId());
+		if (djStudy == null) {
+			return detailVo;
+		}
+		detailVo.setStartTime(djStudy.getStartTime() == null?null:new Timestamp(djStudy.getStartTime().getTime()));
+		detailVo.setEndTime(djStudy.getEndTime() == null?null:new Timestamp(djStudy.getEndTime().getTime()));
+		detailVo.setContent(djStudy.getContent());
+		List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_STUDY,
+					djStudy.getId());
+		detailVo.setPicIds(picIds);
+		return detailVo;
 	}
 
 }

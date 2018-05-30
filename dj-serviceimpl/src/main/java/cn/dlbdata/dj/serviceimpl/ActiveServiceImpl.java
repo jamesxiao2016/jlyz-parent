@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import cn.dlbdata.dj.db.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,12 +36,6 @@ import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
 import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
-import cn.dlbdata.dj.db.pojo.DjActive;
-import cn.dlbdata.dj.db.pojo.DjActiveUser;
-import cn.dlbdata.dj.db.pojo.DjDept;
-import cn.dlbdata.dj.db.pojo.DjPartymember;
-import cn.dlbdata.dj.db.pojo.DjStudy;
-import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.service.IActiveService;
@@ -147,12 +142,12 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		return count;
 	}
 
-	@Override
-	public Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize) {
-		Page<PendingPtMemberVo> page = PageHelper.startPage(pageNum, pageSize);
-		studyMapper.getStudysByDeptIdAndSubTypeId(deptId, subTypeId);
-		return PageUtils.toPaged(page);
-	}
+//	@Override
+//	public Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize) {
+//		Page<PendingPtMemberVo> page = PageHelper.startPage(pageNum, pageSize);
+//		studyMapper.getStudysByDeptIdAndSubTypeId(deptId, subTypeId);
+//		return PageUtils.toPaged(page);
+//	}
 
 	@Override
 	public ResultVo<Long> createActive(ActiveVo activeVo, UserVo user) {
@@ -202,30 +197,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		return result;
 	}
 
-	/**
-	 * 获取自主学习详情
-	 *
-	 * @param studyId
-	 *            自主学习Id
-	 * @return
-	 */
-	@Override
-	public StudyDetailVo getStudyDetail(Long studyId) {
-		DjStudy study = studyMapper.selectByPrimaryKey(studyId);
-		if (study == null) {
-			return new StudyDetailVo();
-		}
-		StudyDetailVo detailVo = new StudyDetailVo();
-		detailVo.setName(study.getUserName());
-		detailVo.setStatus(study.getStatus());
-		detailVo.setContent(study.getContent());
-		detailVo.setStartTime(study.getStartTime());
-		detailVo.setEndTime(study.getEndTime());
-		String tableName = DlbConstant.TABLE_NAME_STUDY;
-		List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(tableName, studyId);
-		detailVo.setPicIds(picIds);
-		return detailVo;
-	}
+
 
 	/*
 	 * (non-Javadoc) <p>Title: queryActiveById</p> <p>Description: 获取活动详情</p>

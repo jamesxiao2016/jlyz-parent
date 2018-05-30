@@ -10,7 +10,6 @@ import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
-
 public interface DjPartymemberMapper extends Mapper<DjPartymember> {
 
     List<ReportPartyMemberVo> getReportPartyMembers(Long deptId);

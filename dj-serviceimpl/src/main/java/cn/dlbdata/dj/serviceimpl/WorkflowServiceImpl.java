@@ -19,7 +19,6 @@ import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.StringUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
-import cn.dlbdata.dj.common.core.web.vo.PageVo;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
@@ -574,33 +573,20 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	}
 
 	@Override
-	public PageVo<DjApply> getPendingList(Long userId, Long deptId, Long typeId, Long roleId, Integer pageNum,
+	public Paged<DjApply> getPendingList(Long userId, Long deptId, Long typeId, Long roleId, Integer pageNum,
 			Integer pageSize) {
-		if (pageNum == null) {
-			pageNum = 1;
-		}
-
-		if (pageSize == null) {
-			pageSize = 10;
-		}
-		PageVo<DjApply> result = new PageVo<>();
+		pageNum = Paged.normalizePageIndex(pageNum);
+		pageSize = Paged.normalizePageSize(pageSize);
+		
 		Page<DjApply> page = PageHelper.startPage(pageNum, pageSize);
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("userId", userId);
 		paramMap.put("deptId", deptId);
-		paramMap.put("typeId", typeId);
+		paramMap.put("subTypeId", typeId);
 		paramMap.put("roleId", roleId);
-		List<DjApply> dataList = applyMapper.getPendingList(paramMap);
+		applyMapper.getPendingList(paramMap);
 
-		if (!page.isEmpty()) {
-			result.setCode(ResultCode.OK.getCode());
-			result.setData(dataList);
-			result.setPageNum(page.getPageNum());
-			result.setTotal(page.getTotal());
-			result.setPageSize(page.getPageSize());
-			result.setPageTotal(page.getPages());
-		}
-		return result;
+		return PageUtils.toPaged(page);
 	}
 
 	/**
