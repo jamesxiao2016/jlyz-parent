@@ -106,6 +106,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		mapThree.put("registered", page.getResult());
 		mapThree.put("noRegistered", page2.getResult());
 		int count = getParticipateActiveCount(partyMemberLifeNotice);
+		mapThree.put("count", count);
 		result.setMsg(String.valueOf(count));
 		result.setData(mapThree);
 		return result;
