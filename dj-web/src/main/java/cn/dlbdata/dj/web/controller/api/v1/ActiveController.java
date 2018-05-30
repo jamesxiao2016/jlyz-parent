@@ -190,7 +190,7 @@ public class ActiveController extends BaseController {
 	 */
 	@PostMapping(value = "/create")
 	@ResponseBody
-	public ResultVo<Long> createActive(ActiveVo vo) {
+	public ResultVo<Long> createActive(@RequestBody ActiveVo vo) {
 		ResultVo<Long> result = new ResultVo<>();
 
 		UserVo user = getCurrentUserFromCache();
