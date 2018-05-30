@@ -6,10 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * JDBC工具类
- * Created by shenan on 2017/1/10.
- */
 public class JdbcUtil {
 
 	// 定义数据库的链接

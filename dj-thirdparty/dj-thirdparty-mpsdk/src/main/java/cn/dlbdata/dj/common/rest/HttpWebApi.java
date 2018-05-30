@@ -6,11 +6,6 @@ import java.util.Map;
 
 import cn.dlbdata.dj.common.DangjianException;
 
-/**
- * @Author: linfujun
- * @Description: 封装了Http REST 请求
- * @Date: Created on 10:56 2018/2/26
- */
 public interface HttpWebApi {
 
     /**

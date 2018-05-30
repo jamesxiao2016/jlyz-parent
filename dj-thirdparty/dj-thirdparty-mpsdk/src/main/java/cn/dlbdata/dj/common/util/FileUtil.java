@@ -3,13 +3,6 @@ package cn.dlbdata.dj.common.util;
 import java.io.File;
 import java.io.FileOutputStream;
 
-/**
- * @packageName FileUtil
- * @anthor wayne QQ:353733479
- * @date 2018/3/31.
- * @change
- * @describe 文件处理工具
- */
 public class FileUtil {
 
     /**

@@ -3,8 +3,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.model.domain.req;
 /**
  * ClassName: LinkMessage
  * @Description: 连接消息
- * @author XiaoJiu
- * @date 2017-10-18
  */
 public class LinkMessage extends BaseMessage{
 	// 消息标题

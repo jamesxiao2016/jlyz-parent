@@ -3,7 +3,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.util;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.util.LinkedMultiValueMap;
@@ -13,13 +12,10 @@ import cn.dlbdata.dj.common.DangjianException;
 import cn.dlbdata.dj.common.IValueObject;
 import cn.dlbdata.dj.common.rest.HttpParamUtil;
 import cn.dlbdata.dj.common.rest.HttpWebApi;
-import cn.dlbdata.dj.thirdparty.mp.sdk.common.AccessTokenProvider;
 
 
 /**
- * @Author: linfujun
  * @Description: Http客户端，带oauth2的token
- * @Date: Created on 18:07 2017/12/27
  */
 public class TokenBasedHttpClient {
 

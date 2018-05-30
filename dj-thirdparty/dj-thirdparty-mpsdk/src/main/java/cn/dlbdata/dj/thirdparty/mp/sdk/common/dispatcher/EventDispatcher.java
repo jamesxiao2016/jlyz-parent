@@ -8,13 +8,6 @@ import org.springframework.util.StringUtils;
 import cn.dlbdata.dj.thirdparty.mp.sdk.model.domain.res.TextMessage;
 import cn.dlbdata.dj.thirdparty.mp.sdk.util.MessageUtil;
 
-/**
- * ClassName: EventDispatcher
- * @Description: 事件消息业务分发器
- * @author XiaoJiu
- * @date 2017-10-18
- */
-
 public class EventDispatcher {
     public static String processEvent(Map<String, String> map) {
     	

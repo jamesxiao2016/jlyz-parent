@@ -2,11 +2,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.model.access;
 
 import cn.dlbdata.dj.common.wrapped.EnumDescriptor;
 
-/**
- * @Author: linfujun
- * @Description:
- * @Date: Created on 0:53 2018/3/25
- */
 public enum GrantType implements EnumDescriptor {
 
     /**

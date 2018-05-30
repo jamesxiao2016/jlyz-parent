@@ -39,13 +39,11 @@ import net.sf.json.JSONObject;
 @Controller
 @RequestMapping("/api/v1/wx")
 public class WxSdkController extends BaseController {
-	Logger logger = LoggerFactory.getLogger(WxSdkController.class);
-
+	private static Logger logger = LoggerFactory.getLogger(WxSdkController.class);
 	@Autowired
 	private CustomMenuService customMenuService;
 	@Autowired
 	private UserInfoService userInfoService;
-
 	@Autowired
 	private AccessService accessService;
 
@@ -53,7 +51,6 @@ public class WxSdkController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> createMenu(String json) {
 		ResultUtil result = new ResultUtil();
-
 		try {
 			customMenuService.createMenu(json);
 			result.setSuccess(true);

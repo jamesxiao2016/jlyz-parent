@@ -8,11 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-/**
- * @Author: linfujun
- * @Description: 重试处理
- * @Date: Created on 14:12 2018/2/26
- */
 public class HttpRetryHandler implements HttpRequestRetryHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpRetryHandler.class);

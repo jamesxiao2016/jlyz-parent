@@ -3,9 +3,7 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.service;
 import java.util.Map;
 
 /**
- * @Author: linfujun
  * @Description: 自定义菜单服务
- * @Date: Created on 1:24 2018/3/25
  */
 public interface SendOutMobileMessageService {
 

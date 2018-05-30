@@ -3,9 +3,7 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.util;
 import cn.dlbdata.dj.common.DangjianException;
 
 /**
- * @Author: linfujun
  * @Description: 错误码
- * @Date: Created on 10:10 2017/12/28
  */
 public class ErrorHandler {
     public static final int PARSE_TO_OBJECT_ERROR = 110000;

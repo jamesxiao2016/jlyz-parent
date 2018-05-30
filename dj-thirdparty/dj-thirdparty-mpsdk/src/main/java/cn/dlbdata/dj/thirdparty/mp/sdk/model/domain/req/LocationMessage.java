@@ -3,8 +3,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.model.domain.req;
 /**
  * ClassName: LocationMessage
  * @Description: 地理位置消息
- * @author XiaoJiu
- * @date 2017-10-18
  */
 public class LocationMessage extends BaseMessage {
 	// 地理位置维度   

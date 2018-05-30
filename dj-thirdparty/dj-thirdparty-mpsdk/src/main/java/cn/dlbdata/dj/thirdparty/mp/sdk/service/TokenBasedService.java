@@ -14,9 +14,7 @@ import cn.dlbdata.dj.thirdparty.mp.sdk.model.common.BaseParam;
 import cn.dlbdata.dj.thirdparty.mp.sdk.util.TokenBasedHttpClient;
 
 /**
- * @Author: linfujun
  * @Description: 服务基类
- * @Date: Created on 18:24 2017/12/13
  */
 public abstract class TokenBasedService {
 

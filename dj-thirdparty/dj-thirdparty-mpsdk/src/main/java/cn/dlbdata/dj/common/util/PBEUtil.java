@@ -4,11 +4,6 @@ import org.jasypt.encryption.StringEncryptor;
 
 import cn.dlbdata.dj.common.secret.EncryptorFactory;
 
-/**
- * @Author: linfujun
- * @Description: 基于密码加密的对称加密算法
- * @Date: Created on 15:16 2018/2/13
- */
 public class PBEUtil {
     private final static StringEncryptor stringEncryptor = EncryptorFactory.newStringEncryptor();
 

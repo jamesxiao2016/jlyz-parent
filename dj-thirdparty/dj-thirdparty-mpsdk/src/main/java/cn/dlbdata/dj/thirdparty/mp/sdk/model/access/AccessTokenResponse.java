@@ -4,11 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.dlbdata.dj.thirdparty.mp.sdk.model.common.BaseMpApiResponse;
 
-/**
- * @Author: linfujun
- * @Description:
- * @Date: Created on 1:16 2018/3/25
- */
 public class AccessTokenResponse extends BaseMpApiResponse {
 
     @JsonProperty("access_token")

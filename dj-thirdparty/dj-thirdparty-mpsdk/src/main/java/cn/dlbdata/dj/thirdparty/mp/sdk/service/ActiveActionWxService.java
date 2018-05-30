@@ -7,8 +7,6 @@ import java.util.Map;
 /**
  * 类ActiveActionWxService.java的描述： 主动微信请求接口
  * 
- * @author lxl 2014年10月24日 下午15:38:54
- * 
  */
 public interface ActiveActionWxService {
 	

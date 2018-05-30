@@ -3,8 +3,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.model.domain.res;
 /**
  * ClassName: Article
  * @Description: 图文消息体
- * @author XiaoJiu
- * @date 2017-10-18
  */
 public class Article {
 	// 图文消息名称   

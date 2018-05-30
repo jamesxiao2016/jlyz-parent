@@ -18,11 +18,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
 
-/**
- * @Author: linfujun
- * @Description:
- * @Date: Created on 10:38 2018/2/26
- */
 @Configuration
 public class RestTemplateConfiguration {
 

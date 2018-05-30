@@ -5,12 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 /**
- * ClassName: SignUtil
  * @Description: 请求校验工具类 
- * @author XiaoJiu
- * @date 2017-10-17
  */
-
 public class SignUtil {  
     // 与接口配置信息中的 Token 要一致   
     private static String token = "xiaojiuWechat";  

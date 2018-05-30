@@ -17,11 +17,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import cn.dlbdata.dj.common.IValueObject;
 
-
-/**
- * @author yuguo
- * @description 请求TencentAPI的返回
- */
 public class BaseMpApiResponse implements IValueObject {
   /**
    * 状态码

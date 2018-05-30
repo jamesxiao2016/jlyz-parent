@@ -8,13 +8,6 @@ import java.util.Map;
 import cn.dlbdata.dj.thirdparty.mp.sdk.model.domain.res.TextMessage;
 import cn.dlbdata.dj.thirdparty.mp.sdk.util.MessageUtil;
 
-/**
- * ClassName: MsgDispatcher
- * @Description: 消息业务处理分发器
- * @author XiaoJiu
- * @date 2017-10-18
- */
-
 public class MsgDispatcher {
     public static String processMessage(Map<String, String> map) throws Exception {
     	

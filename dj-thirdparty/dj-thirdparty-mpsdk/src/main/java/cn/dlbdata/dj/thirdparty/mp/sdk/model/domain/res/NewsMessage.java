@@ -5,8 +5,6 @@ import java.util.List;
 /**
  * ClassName: NewsMessage
  * @Description: 多图文消息
- * @author XiaoJiu
- * @date 2017-10-18
  */
 public class NewsMessage extends BaseMessage{
 	// 图文消息个数，限制为 10 条以内   

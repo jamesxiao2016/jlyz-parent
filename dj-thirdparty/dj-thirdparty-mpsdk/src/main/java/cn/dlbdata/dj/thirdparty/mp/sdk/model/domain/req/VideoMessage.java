@@ -3,8 +3,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.model.domain.req;
 /**
  * ClassName: VideoMessage
  * @Description: 视频/小视屏消息
- * @author XiaoJiu
- * @date 2017-10-18
  */
 public class VideoMessage extends BaseMessage {
 	private String MediaId; // 视频消息媒体 id，可以调用多媒体文件下载接口拉取数据

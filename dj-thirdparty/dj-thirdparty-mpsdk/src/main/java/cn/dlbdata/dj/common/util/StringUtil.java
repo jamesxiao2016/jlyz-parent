@@ -8,10 +8,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * String 工具类
- * Created by shenan on 2016/12/07.
- */
 public class StringUtil {
 
     private static Pattern linePattern = Pattern.compile("_(\\w)");

@@ -3,13 +3,6 @@ package cn.dlbdata.dj.common.util;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * @packageName DateUtil
- * @anthor wayne QQ:353733479
- * @date 2018/4/1.
- * @change
- * @describe 时间日期工具类
- */
 public class DateUtil {
 
     /**

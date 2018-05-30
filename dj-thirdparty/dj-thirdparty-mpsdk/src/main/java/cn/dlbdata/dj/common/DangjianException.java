@@ -1,10 +1,5 @@
 package cn.dlbdata.dj.common;
 
-/**
- * @Author: linfujun
- * @Description: TSA异常
- * @Date: Created on 17:44 2017/12/12
- */
 public class DangjianException extends Exception {
     private static final long serialVersionUID = 1L;
 

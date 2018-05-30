@@ -1,7 +1,5 @@
 package cn.dlbdata.dj.thirdparty.mp.sdk.model.access;
 
-import cn.dlbdata.dj.thirdparty.mp.sdk.model.common.BaseParam;
-
 public class GetUserInfo {
     private String openid;
     private String lang;

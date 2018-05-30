@@ -2,11 +2,6 @@ package cn.dlbdata.dj.common.http;
 
 import cn.dlbdata.dj.common.DangjianException;
 
-/**
- * @Author: linfujun
- * @Description: 统一的异常处理
- * @Date: Created on 21:36 2017/12/12
- */
 public class ErrorHandler {
 
     public static final int PARSE_TO_JSON_ERROR = 100000;

@@ -1,26 +1,25 @@
 package cn.dlbdata.dj.common.rest;
 
+import java.lang.reflect.Type;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import cn.dlbdata.dj.common.DangjianException;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
-import java.lang.reflect.Type;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-
-/**
- * @Author: linfujun
- * @Description:
- * @Date: Created on 15:44 2018/2/26
- */
 @Component
 public class RestTemplateHttpWebApi implements HttpWebApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpWebApi.class);

@@ -3,7 +3,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.common.DangjianException;
 import cn.dlbdata.dj.thirdparty.mp.sdk.constant.RequestUrls;
@@ -19,11 +18,7 @@ import cn.dlbdata.dj.thirdparty.mp.sdk.util.LocalCache;
 import cn.dlbdata.dj.thirdparty.mp.sdk.util.TokenBasedHttpClient;
 import net.sf.json.JSONObject;
 
-/**
- * @Author: linfujun
- * @Description:
- * @Date: Created on 16:57 2018/3/25
- */
+
 public class UserInfoServiceImpl extends TokenBasedService implements UserInfoService {
     Logger logger = LoggerFactory.getLogger(UserInfoServiceImpl.class);
 

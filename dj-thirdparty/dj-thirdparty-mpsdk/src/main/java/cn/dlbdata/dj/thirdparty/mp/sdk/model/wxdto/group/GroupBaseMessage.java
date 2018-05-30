@@ -5,8 +5,6 @@ import java.util.List;
 /**
  * 群发消息基本类型
  * 
- * @author lxl
- *
  */
 public class GroupBaseMessage {
 	

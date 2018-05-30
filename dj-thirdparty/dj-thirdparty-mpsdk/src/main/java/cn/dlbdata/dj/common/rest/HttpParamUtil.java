@@ -13,11 +13,6 @@ import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Map;
 
-/**
- * @Author: linfujun
- * @Description:
- * @Date: Created on 15:54 2018/2/26
- */
 public class HttpParamUtil {
 
     private static final String CHARSET = "UTF-8";

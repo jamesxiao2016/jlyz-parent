@@ -6,8 +6,6 @@ import cn.dlbdata.dj.thirdparty.mp.sdk.model.common.ConstantUtil;
 /**
  * 主动文本消息
  * 
- * @author Administrator
- *
  */
 public class GroupTextMessage extends GroupBaseMessage {
 	

@@ -3,8 +3,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.model.wxdto.active;
 /**
  * 被动消息
  * 
- * @author Administrator
- * 
  */
 public abstract class ActiveBaseMessage {
 

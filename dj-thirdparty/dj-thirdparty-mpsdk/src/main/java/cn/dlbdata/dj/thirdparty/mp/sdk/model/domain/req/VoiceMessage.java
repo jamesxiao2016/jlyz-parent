@@ -3,8 +3,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.model.domain.req;
 /**
  * ClassName: VoiceMessage
  * @Description: 语音消息
- * @author XiaoJiu
- * @date 2017-10-18
  */
 public class VoiceMessage extends BaseMessage {
 	// 媒体 ID   

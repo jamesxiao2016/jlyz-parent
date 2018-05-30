@@ -3,8 +3,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.model.domain.res;
 /**
  * ClassName: Music
  * @Description: 音乐消息消息体
- * @author XiaoJiu
- * @date 2017-10-18
  */
 public class Music {
 	// 音乐名称   

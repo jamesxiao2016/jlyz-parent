@@ -3,8 +3,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.model.domain.res;
 /**
  * ClassName: Video
  * @Description: 视频消息体
- * @author XiaoJiu
- * @date 2017-10-18
  */
 public class Video {
 	// 通过素材管理中的接口上传多媒体文件，得到的id

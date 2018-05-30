@@ -6,8 +6,6 @@ import cn.dlbdata.dj.thirdparty.mp.sdk.model.common.ConstantUtil;
 /**
  * 主动图片消息
  * 
- * @author Administrator
- *
  */
 public class ActiveImageMessage extends ActiveBaseMessage {
 	

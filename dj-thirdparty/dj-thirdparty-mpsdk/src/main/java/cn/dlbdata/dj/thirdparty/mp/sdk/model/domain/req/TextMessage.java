@@ -3,8 +3,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.model.domain.req;
 /**
  * ClassName: TextMessage
  * @Description: 文本消息
- * @author XiaoJiu
- * @date 2017-10-18
  */
 public class TextMessage extends BaseMessage {
 	// 消息内容   

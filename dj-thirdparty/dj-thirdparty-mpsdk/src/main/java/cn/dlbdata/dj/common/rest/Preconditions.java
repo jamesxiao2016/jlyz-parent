@@ -1,10 +1,5 @@
 package cn.dlbdata.dj.common.rest;
 
-/**
- * @Author: linfujun
- * @Description: 预先检查器
- * @Date: Created on 14:18 2018/2/26
- */
 public class Preconditions {
 
     /**

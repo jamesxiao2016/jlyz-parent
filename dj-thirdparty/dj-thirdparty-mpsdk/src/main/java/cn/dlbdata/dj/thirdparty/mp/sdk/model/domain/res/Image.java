@@ -3,8 +3,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.model.domain.res;
 /**
  * ClassName: Image
  * @Description: 图片回复消息体
- * @author XiaoJiu
- * @date 2017-10-18
  */
 public class Image {
 	private String MediaId;

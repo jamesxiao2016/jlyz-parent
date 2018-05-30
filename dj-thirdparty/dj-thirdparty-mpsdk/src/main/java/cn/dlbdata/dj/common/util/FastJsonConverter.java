@@ -5,11 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
-/**
- * @Author: linfujun
- * @Description: json转换器
- * @Date: Created on 14:57 2017/12/29
- */
 public class FastJsonConverter {
     public static ObjectMapper objectMapper = new ObjectMapper();
 

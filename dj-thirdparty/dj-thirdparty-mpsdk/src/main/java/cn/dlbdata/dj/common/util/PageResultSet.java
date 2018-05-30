@@ -2,11 +2,6 @@ package cn.dlbdata.dj.common.util;
 
 import java.util.List;
 
-/**
- * 分页
- *
- * @param <T>
- */
 public class PageResultSet<T> {
 
 	public static int DEFAULT_PAGE_SIZE = 10;

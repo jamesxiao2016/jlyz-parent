@@ -8,11 +8,6 @@ import cn.dlbdata.dj.common.http.ErrorHandler;
 import java.lang.reflect.Field;
 import java.util.*;
 
-/**
- * @Author: linfujun
- * @Description: 注释解释器
- * @Date: Created on 10:06 2017/12/15
- */
 public class AnnotationExplainer {
     /**
      * 将参数实体类标注了@Param的解析出来放入参数表map

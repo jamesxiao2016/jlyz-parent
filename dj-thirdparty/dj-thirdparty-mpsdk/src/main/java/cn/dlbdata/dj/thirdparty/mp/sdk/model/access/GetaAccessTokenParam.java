@@ -3,13 +3,6 @@ package cn.dlbdata.dj.thirdparty.mp.sdk.model.access;
 import cn.dlbdata.dj.common.http.annotations.Param;
 import cn.dlbdata.dj.thirdparty.mp.sdk.model.common.BaseParam;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-/**
- * @Author: linfujun
- * @Description:
- * @Date: Created on 0:47 2018/3/25
- */
 public class GetaAccessTokenParam extends BaseParam {
 
     @Param(key = "grant_type", required = true)

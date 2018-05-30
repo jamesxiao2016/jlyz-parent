@@ -4,11 +4,6 @@ import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 
-/**
- * @Author: linfujun
- * @Description: Encryptor工厂类，用于加密密码等
- * @Date: Created on 14:59 2018/2/13
- */
 public class EncryptorFactory {
     /**
      * 这里的password类似于salt,不要写在外部文件
