@@ -1,12 +1,13 @@
 package cn.dlbdata.dj.vo.study;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
 public class StudyDetailVo {
     private String name;//党员姓名
-    private Date startTime;//活动开始时间
-    private Date endTime;//活动结束时间
+    private Timestamp startTime;//活动开始时间
+    private Timestamp endTime;//活动结束时间
     private String content;//主要内容
     private List<Long> picIds;//图片IdList
     private Integer status;
@@ -19,19 +20,19 @@ public class StudyDetailVo {
         this.name = name;
     }
 
-    public Date getStartTime() {
+    public Timestamp getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public Timestamp getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
     }
 

@@ -4,6 +4,7 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.vo.StudyVo;
 import cn.dlbdata.dj.vo.UserVo;
+import cn.dlbdata.dj.vo.study.StudyDetailVo;
 
 public interface IStudyService {
 
@@ -43,4 +44,12 @@ public interface IStudyService {
 	 * @return
 	 */
 	public int deleteStudyById(Long studyId);
+
+	/**
+	 * 获取自主学习详情
+	 *
+	 * @param applyId 申请Id
+	 * @return
+	 */
+	StudyDetailVo getStudyDetail(Long applyId);
 }
