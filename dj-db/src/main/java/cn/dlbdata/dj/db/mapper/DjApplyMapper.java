@@ -43,4 +43,22 @@ public interface DjApplyMapper extends Mapper<DjApply> {
     List<ScoreAuditDetailVo> getScoreAuditDetailByPtMemberId( @Param("yearTimeStart")Date yearTimeStart,
                                                               @Param("yearTimeEnd") Date yearTimeEnd,
                                                               @Param("partyMemberId") Long partyMemberId);
+
+	/**
+	 *查询党员是否有传入的一级分类的审核申请
+	 */
+	int countUnAuditByPtMemberIdAndType(@Param("partyMemberId") Long partyMemberId,@Param("typeId") Long typeId,
+										@Param("year") int year);
+
+	/**
+	 * 查询党员是否有传入状态和传入一级分类的审核申请
+	 * @param partyMemberId
+	 * @param status
+	 * @param typeId
+	 * @return
+	 */
+	int countByPtMemberIdStatus(@Param("partyMemberId") Long partyMemberId,
+								@Param("status") int status,
+								@Param("typeId") Long typeId,
+								@Param("year") int year);
 }

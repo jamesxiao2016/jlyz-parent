@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.db.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +25,6 @@ import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.AuditStatusEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
-import cn.dlbdata.dj.db.mapper.DjActiveMapper;
-import cn.dlbdata.dj.db.mapper.DjDisciplineMapper;
-import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
-import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
-import cn.dlbdata.dj.db.mapper.DjScoreMapper;
-import cn.dlbdata.dj.db.mapper.DjThoughtsMapper;
-import cn.dlbdata.dj.db.mapper.DjVanguardMapper;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjPicRecord;
 import cn.dlbdata.dj.db.pojo.DjScore;
@@ -69,6 +63,9 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 
 	@Autowired
 	private DjDisciplineMapper disciplineMapper;
+
+	@Autowired
+	private DjApplyMapper applyMapper;
 
 	@Override
 	public DjPartymember getInfoById(Long id) {
@@ -233,17 +230,21 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		// 获取支部全部党员
 		Page<PioneeringPartyMemberVo> page = PageHelper.startPage(pageNum, pageSize);
 		List<PioneeringPartyMemberVo> voList = partyMemberMapper.getPioneeringPartyMembers(deptId);
+		Calendar cale = Calendar.getInstance();
+		int year = cale.get(Calendar.YEAR);
 		for (PioneeringPartyMemberVo vo : voList) {
 
-			// 1.判断该党员没有type in(13，14，15) 的记录，则该党员为未审核，否则走2
-			int count1 = vanguardMapper.countUnAuditByPtMemberIdAndType(vo.getId());
-			if (count1 == 0) {
+			// 1.查询党员是否有先锋作用的审核申请,没有就说明该党员为未处理（去处理）（typeId =4），否则走2
+			int haveApply = applyMapper.countUnAuditByPtMemberIdAndType(vo.getId(),ActiveTypeEnum.ACTIVE_D.getActiveId(),year);
+			if (haveApply == 0) {
 				// 未审核
 				vo.setAuditStatus(AuditStatusEnum.UNDONE.getValue());
 			} else {
 				// 2.判断该党员有待审核的记录（status =0），则该党员为待审核，否则该党员为已审核
-				int count2 = vanguardMapper.countByPtMemberIdStatus(vo.getId(), AuditStatusEnum.WAITING.getValue());
-				if (count2 > 0) {
+				int haveWaitApply = applyMapper.countByPtMemberIdStatus(vo.getId(),
+																		AuditStatusEnum.WAITING.getValue(),
+																		ActiveTypeEnum.ACTIVE_D.getActiveId(),year);
+				if (haveWaitApply > 0) {
 					vo.setAuditStatus(AuditStatusEnum.WAITING.getValue());
 				} else {
 					vo.setAuditStatus(AuditStatusEnum.PASS.getValue());

@@ -96,4 +96,13 @@
         ap.record_id as recordId
          from dj_apply ap where user_id =#{partyMemberId}  and ap.create_time &gt;= #{yearTimeStart}  and ap.create_time &lt;= #{yearTimeEnd}
     </select>
+
+    <select id="countUnAuditByPtMemberIdAndType" resultType="int">
+    select count(0) from dj_apply where user_id =#{partyMemberId} and dj_type_id =#{typeId} and apply_year = #{year}
+  </select>
+
+    <select id="countByPtMemberIdStatus" resultType="int">
+    select count(0) from dj_apply where user_id =#{partyMemberId} and status=#{status} and dj_type_id =#{typeId}
+    and apply_year = #{year}
+  </select>
 </mapper>
