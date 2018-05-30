@@ -20,6 +20,8 @@ import com.github.pagehelper.PageHelper;
 
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
+import cn.dlbdata.dj.common.core.util.PageUtils;
+import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
@@ -82,11 +84,9 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	 * 党员生活通知列表
 	 */
 	@Override
-	public ResultVo<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
-
-		ResultVo<Map<String, Object>> result = new ResultVo<>();
+	public Paged<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
 		if (partyMemberLifeNotice == null) {
-			return result;
+			return null;
 		}
 		partyMemberLifeNotice.setEndTime(new Date());
 		// 报名的集合
@@ -95,23 +95,40 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		map.put("startTime", partyMemberLifeNotice.getStartTime());
 		map.put("endTime", partyMemberLifeNotice.getEndTime());
 		map.put("departmentId", partyMemberLifeNotice.getDepartmentId());
-		map.put("signUp", DlbConstant.BASEDATA_STATUS_VALID);
-		Page<Map<String, Object>> page = PageHelper.startPage(1, 1);
+		map.put("signUp", partyMemberLifeNotice.getSignUp());
+		Page<Map<String, Object>> page = PageHelper.startPage(partyMemberLifeNotice.getPageNum(), partyMemberLifeNotice.getPageSize());
 		List<Map<String, Object>> inList = activeMapper.getRunningActive(map);
-		// 未报名的集合
-		map.put("signUp", DlbConstant.BASEDATA_STATUS_INVALID);
-		Page<Map<String, Object>> page2 = PageHelper.startPage(1, 1);
-		List<Map<String, Object>> outList = activeMapper.getRunningActive(map);
-		Map<String, Object> mapThree = new HashMap<String, Object>();
-		mapThree.put("registered", page.getResult());
-		mapThree.put("noRegistered", page2.getResult());
+		return PageUtils.toPaged(page);
+	}
+	
+	
+	/**
+	 * 党员生活通知列表第一条
+	 */
+	@Override
+	public ResultVo<Map<String, Object>> getParticipateActiveOne(PartyMemberLifeNotice partyMemberLifeNotice) {
+		ResultVo<Map<String, Object>> result = new ResultVo<>();
+		if (partyMemberLifeNotice == null) {
+			return result;
+		}
+		partyMemberLifeNotice.setEndTime(new Date());
+		//请求参数map集合
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", partyMemberLifeNotice.getUserId());
+		map.put("startTime", partyMemberLifeNotice.getStartTime());
+		map.put("endTime", partyMemberLifeNotice.getEndTime());
+		map.put("departmentId", partyMemberLifeNotice.getDepartmentId());
+	    Map<String, Object> map1 = activeMapper.getParticipateActiveOne(map);
 		int count = getParticipateActiveCount(partyMemberLifeNotice);
-		mapThree.put("count", count);
-		result.setMsg(String.valueOf(count));
-		result.setData(mapThree);
+		Map<String, Object> map2 = new HashMap<>();
+		map2.put("count", count);
+		map2.put("djActive", map1);
+		result.setData(map2);
 		return result;
 	}
 
+	
+	
 	/*
 	 * (non-Javadoc) <p>Title: getParticipateActiveCount</p> 
 	 *	<p>Description: 党员生活通知总数</p>

@@ -37,10 +37,17 @@ public interface IActiveService {
 	public Integer getActiveNumByUserId(Long userId, Long activeType);
 
 	/**
-	 * 
+	 * 获取党员通知列表
 	 */
-	public ResultVo<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice PartyMemberLifeNotice);
-
+	public Paged<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice PartyMemberLifeNotice);
+	/**
+	 * 
+	 * <p>Title: getParticipateActiveOne</p> 
+	 * <p>Description: 获取党员生活通知第一条</p> 
+	 * @param PartyMemberLifeNotice
+	 * @return
+	 */
+	public ResultVo<Map<String, Object>> getParticipateActiveOne(PartyMemberLifeNotice PartyMemberLifeNotice);
 	/**
 	 * 党员生活通知总数
 	 * <p>

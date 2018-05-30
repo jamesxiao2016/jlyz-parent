@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.util.ImageUtil;
+import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjActive;
@@ -46,7 +47,33 @@ public class ActiveController extends BaseController {
 	private IActiveUserService activeUserService;
 
 	/**
-	 * 党员生活通知接口
+	 * 
+	 * <p>Title: getParticipateActive</p>
+	 * <p>Description:党员生活通知接口未报名</p>
+	 * @param partyMemberLifeNotice
+	 * @return
+	 */
+	@GetMapping(value = "/getParticipateActive")
+	@ResponseBody
+	public ResultVo<Paged<Map<String, Object>>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
+		ResultVo<Paged<Map<String, Object>>> result = new ResultVo<>();
+		UserVo data = getCurrentUserFromCache();
+		if(data == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("请重新登录");
+			return result;
+		}
+		partyMemberLifeNotice.setUserId(data.getUserId());
+		partyMemberLifeNotice.setDepartmentId(data.getDeptId());
+		Paged<Map<String, Object>> page = activeService.getParticipateActive(partyMemberLifeNotice);
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(page);
+		return result;
+	}
+	
+	
+	/**
+	 * 党员生活通知接口获取第一条
 	 * <p>
 	 * Title: getParticipateActive
 	 * </p>
@@ -57,9 +84,9 @@ public class ActiveController extends BaseController {
 	 * @param partyMemberLifeNotice
 	 * @return
 	 */
-	@GetMapping(value = "/getParticipateActive")
+	@GetMapping(value = "/getParticipateActiveOne")
 	@ResponseBody
-	public ResultVo<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
+	public ResultVo<Map<String, Object>> getParticipateActiveOne(PartyMemberLifeNotice partyMemberLifeNotice) {
 		ResultVo<Map<String, Object>> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
 		if(data == null) {
@@ -69,7 +96,7 @@ public class ActiveController extends BaseController {
 		}
 		partyMemberLifeNotice.setUserId(data.getUserId());
 		partyMemberLifeNotice.setDepartmentId(data.getDeptId());
-		result = activeService.getParticipateActive(partyMemberLifeNotice);
+		result = activeService.getParticipateActiveOne(partyMemberLifeNotice);
 		if (result.getData() == null || result.getData().isEmpty()) {
 			result.setCode(ResultCode.Forbidden.getCode());
 		} else {
@@ -77,6 +104,8 @@ public class ActiveController extends BaseController {
 		}
 		return result;
 	}
+	
+	
 
 	/**
 	 * 金领驿站活动报名
@@ -120,8 +149,8 @@ public class ActiveController extends BaseController {
 	 */
 	@GetMapping(value = "/getEnjoyActiveByUserId")
 	@ResponseBody
-	public ResultVo<List<DjActive>> getEnjoyActiveByUserId() {
-		ResultVo<List<DjActive>> result = new ResultVo<>();
+	public ResultVo<Paged<DjActive>> getEnjoyActiveByUserId(Integer pageNum, Integer pageSize) {
+		ResultVo<Paged<DjActive>> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
 		if (data == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
@@ -130,14 +159,9 @@ public class ActiveController extends BaseController {
 		}
 		DjActiveUser djActiveUser = new DjActiveUser();
 		djActiveUser.setStatus(1);
-		List<DjActive> list = activeUserService.getMyJoinActive(data.getUserId(), djActiveUser.getStatus());
-		if (list == null || list.size() == 0) {
-			result.setCode(ResultCode.Forbidden.getCode());
-			result.setMsg("数据为空");
-			return result;
-		}
+		Paged<DjActive> page = activeUserService.getMyJoinActive(data.getUserId(), djActiveUser.getStatus(), pageNum, pageSize);
 		result.setCode(ResultCode.OK.getCode());
-		result.setData(list);
+		result.setData(page);
 		return result;
 	}
 

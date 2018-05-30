@@ -8,6 +8,7 @@ package cn.dlbdata.dj.service;
 
 import java.util.List;
 
+import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActivePic;
@@ -46,7 +47,7 @@ public interface IActiveUserService {
 	 * <p>Description: 已参与党员生活列表</p> 
 	 * @return
 	 */
-	public List<DjActive> getMyJoinActive(Long userId, Integer status);
+	public Paged<DjActive> getMyJoinActive(Long userId, Integer status, Integer pageNum, Integer pageSize);
 	/**
 	 * 
 	 * <p>Title: queryActivePicByActiveId</p> 

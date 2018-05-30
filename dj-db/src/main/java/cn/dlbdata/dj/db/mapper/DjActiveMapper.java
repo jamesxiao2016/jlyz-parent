@@ -34,7 +34,14 @@ public interface DjActiveMapper extends Mapper<DjActive> {
 	 * @return
 	 */
 	public List<Map<String, Object>> getRunningActive(Map<String, Object> map);
-
+	/**
+	 * 
+	 * <p>Title: getParticipateActiveOne</p> 
+	 * <p>Description: 获取党员生活第一条</p> 
+	 * @param map
+	 * @return
+	 */
+	public Map<String, Object> getParticipateActiveOne(Map<String, Object> map);
 	/**
 	 * 
 	 * <p>

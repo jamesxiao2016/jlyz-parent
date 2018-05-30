@@ -19,6 +19,10 @@ public class PartyMemberLifeNotice {
 	 * 支部id
 	 */
 	private Long departmentId;
+	/**
+	 * 0：代表未报名 1：代表报名
+	 */
+	private Integer signUp;
 	
 	private Integer pageNum;
 	
@@ -58,6 +62,12 @@ public class PartyMemberLifeNotice {
 	}
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
+	}
+	public Integer getSignUp() {
+		return signUp;
+	}
+	public void setSignUp(Integer signUp) {
+		this.signUp = signUp;
 	}
 	
 

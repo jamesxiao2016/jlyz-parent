@@ -13,6 +13,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+import cn.dlbdata.dj.common.core.util.PageUtils;
+import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.DlbConstant;
@@ -130,17 +135,20 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 	 * @see cn.dlbdata.dj.service.IActiveUserService#getMyJoinActive()
 	 */
 	@Override
-	public List<DjActive> getMyJoinActive(Long userId, Integer status) {
+	public Paged<DjActive> getMyJoinActive(Long userId, Integer status, Integer pageNum, Integer pageSize) {
 		if (userId == null) {
 			return null;
 		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", userId);
 		map.put("status", status);
+		map.put("pageNum", pageNum);
+		map.put("pageSize", pageSize);
+		Page<DjActive> page = PageHelper.startPage(pageNum, pageSize);
 		List<DjActive> list = activeUserMapper.getMyJoinActive(map);
 		if (list == null || list.isEmpty()) {
 			logger.error("没有查询到活动信息.userId->" + userId + " status->" + status);
-			return list;
+			return null;
 		}
 		Example example = new Example(DjActivePic.class);
 		Long[] picIds = null;
@@ -156,7 +164,7 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 				djActive.setPicIds(picIds);
 			}
 		}
-		return list;
+		return PageUtils.toPaged(page);
 	}
 
 	/*
