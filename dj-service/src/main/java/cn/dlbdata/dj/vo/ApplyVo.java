@@ -29,10 +29,12 @@ public class ApplyVo implements Serializable {
 	private Long userId;
 	// 加分人姓名
 	private String userName;
-	//申请人所在部门
+	// 申请人所在部门
 	private Long djDeptId;
 	// 审批角色ID
 	private Long roleId;
+	// 申请年份
+	private Integer applyYear;
 
 	public Long getDjTypeId() {
 		return djTypeId;
@@ -136,6 +138,14 @@ public class ApplyVo implements Serializable {
 
 	public void setDjDeptId(Long djDeptId) {
 		this.djDeptId = djDeptId;
+	}
+
+	public Integer getApplyYear() {
+		return applyYear;
+	}
+
+	public void setApplyYear(Integer applyYear) {
+		this.applyYear = applyYear;
 	}
 
 }

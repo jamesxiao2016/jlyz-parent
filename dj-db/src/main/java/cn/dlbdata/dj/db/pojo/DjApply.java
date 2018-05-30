@@ -121,6 +121,12 @@ public class DjApply {
      */
     @Column(name = "approve_time")
     private Date approveTime;
+    
+    /**
+     * 申请年份
+     */
+    @Column(name = "apply_year")
+    private Integer applyYear;
 
     /**
      * 获取记录ID
@@ -480,5 +486,13 @@ public class DjApply {
 
 	public void setSubTypeName(String subTypeName) {
 		this.subTypeName = subTypeName;
+	}
+
+	public Integer getApplyYear() {
+		return applyYear;
+	}
+
+	public void setApplyYear(Integer applyYear) {
+		this.applyYear = applyYear;
 	}
 }

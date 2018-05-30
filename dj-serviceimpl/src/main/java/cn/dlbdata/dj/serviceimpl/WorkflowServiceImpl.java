@@ -124,7 +124,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		record.setUserId(vo.getUserId());
 		record.setUserName(vo.getUserName());
 		record.setDjRoleId(vo.getRoleId());
-		record.setDjRoleId(vo.getRoleId());
+		record.setApplyYear(vo.getApplyYear());
 		DjSubType subType = subTypeMapper.selectByPrimaryKey(vo.getDjSubTypeId());
 		if (subType != null) {
 			record.setScore(subType.getScore());
@@ -285,7 +285,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		}
 		// 处理分数，插入到积分明细表中
 		handScore(apply.getDjSubTypeId(), apply.getUserId(), apply.getApplyId(), apply.getApproverId(), score,
-				apply.getRecordId(), apply.getRemark());
+				apply.getRecordId(), apply.getRemark(), apply.getApplyYear());
 
 		// 插入审批记录表
 		DjApprove approve = new DjApprove();
@@ -314,7 +314,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	 * @param recordDesc
 	 */
 	private void handScore(Long subTypeId, Long userId, Long applyerId, Long approverId, Float applySocre,
-			Long recordId, String recordDesc) {
+			Long recordId, String recordDesc, Integer year) {
 		DjSubType subType = subTypeMapper.selectByPrimaryKey(subTypeId);
 		if (subType == null) {
 			return;
@@ -325,7 +325,9 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		}
 		// 写入积分记录表
 		// 根据类型判断最大分数
-		int year = Calendar.getInstance().get(Calendar.YEAR);
+		if (year == null) {
+			year = Calendar.getInstance().get(Calendar.YEAR);
+		}
 		Float subTypeMaxScore = subType.getMaxScore();
 		if (subTypeMaxScore == null) {
 			subTypeMaxScore = 0F;
@@ -419,6 +421,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		vo.setRemark("遵章守纪申请");
 		// vo.setScore(score);
 		vo.setTableName(DlbConstant.TABLE_NAME_DISCIPLINE);
+		vo.setApplyYear(Calendar.getInstance().get(Calendar.YEAR));
 		String rs = doApply(vo, user);
 		if (!CoreConst.SUCCESS.equals(rs)) {
 			logger.info("提交申请失败");
@@ -476,6 +479,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			vo.setDjDeptId(user.getDeptId());
 			vo.setUserId(param.getUserId());
 			vo.setUserName(param.getUserName());
+			vo.setApplyYear(Calendar.getInstance().get(Calendar.YEAR));
 			vo.setRemark("获得荣誉申请");
 
 			vo.setTableName(DlbConstant.TABLE_NAME_VANGUARD);
@@ -534,10 +538,10 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		}
 		// 保存图片
 		savePics(record.getId(), DlbConstant.TABLE_NAME_THOUGHTS, param.getPics());
-
+		int year = Calendar.getInstance().get(Calendar.YEAR);
 		// TODO 不需要审批，直接加分
 		handScore(param.getReportType(), param.getUserId(), user.getUserId(), user.getUserId(), subType.getScore(),
-				record.getId(), param.getContent());
+				record.getId(), param.getContent(), year);
 
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(record.getId());

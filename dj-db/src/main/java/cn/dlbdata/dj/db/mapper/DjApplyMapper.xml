@@ -5,11 +5,12 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="dj_type_id" jdbcType="BIGINT" property="djTypeId" />
     <result column="dj_sub_type_id" jdbcType="BIGINT" property="djSubTypeId" />
-    <result column="sub_type_name" jdbcType="VARCHAR" property="subTypeId" />
+    <result column="sub_type_name" jdbcType="VARCHAR" property="subTypeName" />
     <result column="apply_info" jdbcType="VARCHAR" property="applyInfo" />
     <result column="apply_id" jdbcType="BIGINT" property="applyId" />
     <result column="apply_name" jdbcType="VARCHAR" property="applyName" />
     <result column="apply_desc" jdbcType="VARCHAR" property="applyDesc" />
+    <result column="apply_year" jdbcType="INTEGER" property="applyYear" />
     <result column="approver_id" jdbcType="BIGINT" property="approverId" />
     <result column="approver_name" jdbcType="VARCHAR" property="approverName" />
     <result column="dj_dept_id" jdbcType="BIGINT" property="djDeptId" />
