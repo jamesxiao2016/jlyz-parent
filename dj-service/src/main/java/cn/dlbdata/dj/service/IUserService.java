@@ -32,7 +32,7 @@ public interface IUserService {
 	 *            用户ID
 	 * @return
 	 */
-	public UserVo getUserDetailById(Long id);
+	public UserVo getUserDetailById(Long id, Integer isShowScore);
 
 	/**
 	 * 根据ID获取用户信息

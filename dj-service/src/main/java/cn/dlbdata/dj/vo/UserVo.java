@@ -31,6 +31,8 @@ public class UserVo implements Serializable {
 	private String partyCommittee;
 	//当前登录角色
 	private Long roleId;
+	//总分
+	private Float totalScore;
 
 	public Long getUserId() {
 		return userId;
@@ -126,6 +128,14 @@ public class UserVo implements Serializable {
 
 	public void setRoleId(Long roleId) {
 		this.roleId = roleId;
+	}
+
+	public Float getTotalScore() {
+		return totalScore;
+	}
+
+	public void setTotalScore(Float totalScore) {
+		this.totalScore = totalScore;
 	}
 
 }

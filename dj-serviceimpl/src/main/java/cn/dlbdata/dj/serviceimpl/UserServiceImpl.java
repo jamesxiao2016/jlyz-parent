@@ -1,5 +1,6 @@
 package cn.dlbdata.dj.serviceimpl;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -141,13 +142,13 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		data.setAvatar(user.getAvatar());
 		data.setRoleId(user.getRoleId());
 		data.setUserName(user.getUserName());
-		
+
 		// TODO 角色权限判断，判断登录的角色是否匹配(后续处理）
-//		getUserDetailByUser(user);
-//		if (data == null) {
-//			logger.error("获取用户信息失败");
-//			return result;
-//		}
+		// getUserDetailByUser(user);
+		// if (data == null) {
+		// logger.error("获取用户信息失败");
+		// return result;
+		// }
 
 		long endQueryUserInfoTime = System.currentTimeMillis();
 		logger.info("查询用户详细信息->" + (endQueryUserInfoTime - endUserTime));
@@ -157,7 +158,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		long endTime = System.currentTimeMillis();
 		logger.info("create token time->" + (endTime - endQueryUserInfoTime));
 
-		//CacheManager.getInstance().put(user.getId() + "", data);
+		// CacheManager.getInstance().put(user.getId() + "", data);
 		logger.info("total time->" + (endTime - startTime));
 		// 返回结果
 		result.setCode(ResultCode.OK.getCode());
@@ -202,7 +203,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 	}
 
 	@Override
-	public UserVo getUserDetailById(Long id) {
+	public UserVo getUserDetailById(Long id, Integer isShowScore) {
 		if (id == null) {
 			return null;
 		}
@@ -211,7 +212,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		if (user == null) {
 			return null;
 		}
-		UserVo data = getUserDetailByUser(user);
+		UserVo data = getUserDetailByUser(user,isShowScore);
 		return data;
 	}
 
@@ -221,7 +222,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 	 * @param user
 	 * @return
 	 */
-	private UserVo getUserDetailByUser(DjUser user) {
+	private UserVo getUserDetailByUser(DjUser user, Integer isShowScore) {
 		if (user == null) {
 			return null;
 		}
@@ -252,6 +253,10 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			}
 			data.setPartyBranchName(name);
 			data.setDeptName(dept.getName());
+		}
+		if (isShowScore != null && isShowScore == 1) {
+			Float totalScore = getSumScoreByUserId(user.getId(), Calendar.getInstance().get(Calendar.YEAR));
+			data.setTotalScore(totalScore);
 		}
 		// 党委
 		data.setPartyCommittee(DlbConstant.PARTYCOMMITTEE_LJZ);
