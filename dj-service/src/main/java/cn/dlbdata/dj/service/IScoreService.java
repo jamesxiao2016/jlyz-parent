@@ -9,19 +9,46 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 
 import cn.dlbdata.dj.db.pojo.DjSubType;
+import cn.dlbdata.dj.db.pojo.DjType;
 
 /**
- * <p>Title: IScoreService</p>
+ * <p>
+ * Title: IScoreService
+ * </p>
+ * 
  * @author zhouxuan
- * <p>Description: </p>
- * @date 2018年5月24日  
+ *         <p>
+ * 		Description:
+ *         </p>
+ * @date 2018年5月24日
  */
 public interface IScoreService {
 	/**
 	 * 
-	 * <p>Title: getActiveTypeList</p> 
-	 * <p>Description: 获取活动类型列表</p> 
+	 * <p>
+	 * Title: getActiveTypeList
+	 * </p>
+	 * <p>
+	 * Description: 获取活动类型列表
+	 * </p>
+	 * 
 	 * @return
 	 */
 	public List<DjSubType> getActiveTypeList();
+
+	/**
+	 * 获取分类信息
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public DjType getTypeInfoById(Long id);
+
+	/**
+	 * 获取二级分类信息
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public DjSubType getSubTypeInfoById(Long id);
 }

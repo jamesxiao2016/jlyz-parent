@@ -12,32 +12,57 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.db.mapper.DjSubTypeMapper;
+import cn.dlbdata.dj.db.mapper.DjTypeMapper;
 import cn.dlbdata.dj.db.pojo.DjSubType;
+import cn.dlbdata.dj.db.pojo.DjType;
 import cn.dlbdata.dj.service.IScoreService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 
 /**
- * <p>Title: ScoreServiceImpl</p>
+ * <p>
+ * Title: ScoreServiceImpl
+ * </p>
+ * 
  * @author zhouxuan
- * <p>Description: </p>
- * @date 2018年5月24日  
+ *         <p>
+ * 		Description:
+ *         </p>
+ * @date 2018年5月24日
  */
 @Service
-public class ScoreServiceImpl  extends BaseServiceImpl implements IScoreService{
-	
+public class ScoreServiceImpl extends BaseServiceImpl implements IScoreService {
+	@Autowired
+	private DjTypeMapper typeMapper;
+
 	@Autowired
 	private DjSubTypeMapper subTypeMapper;
-	
-	
-	/* (non-Javadoc)
-	 * <p>Title: getActiveTypeList</p>
-	 * <p>Description: 活动类型列表</p> 
-	 * @return  
+
+	/*
+	 * (non-Javadoc) <p>Title: getActiveTypeList</p> <p>Description: 活动类型列表</p>
+	 * 
+	 * @return
+	 * 
 	 * @see cn.dlbdata.dj.service.IScoreService#getActiveTypeList()
 	 */
 	@Override
 	public List<DjSubType> getActiveTypeList() {
 		return subTypeMapper.getActiveTypeList();
+	}
+
+	@Override
+	public DjType getTypeInfoById(Long id) {
+		if (id == null) {
+			return null;
+		}
+		return typeMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public DjSubType getSubTypeInfoById(Long id) {
+		if (id == null) {
+			return null;
+		}
+		return subTypeMapper.selectByPrimaryKey(id);
 	}
 
 }

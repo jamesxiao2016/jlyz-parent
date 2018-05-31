@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjSubType;
+import cn.dlbdata.dj.db.pojo.DjType;
 import cn.dlbdata.dj.service.IScoreService;
 import cn.dlbdata.dj.web.base.BaseController;
 
@@ -64,4 +65,33 @@ public class ScoreController extends BaseController {
 		return result;
 	}
 
+	/**
+	 * 获取分类信息
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping(value = "/getTypeInfo")
+	@ResponseBody
+	public ResultVo<DjType> getTypeInfo(Long id) {
+		ResultVo<DjType> result = new ResultVo<>(ResultCode.OK.getCode());
+		DjType data = scoreService.getTypeInfoById(id);
+		result.setData(data);
+		return result;
+	}
+
+	/**
+	 * 获取二级分类信息
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping(value = "/getSubTypeInfo")
+	@ResponseBody
+	public ResultVo<DjSubType> getSubTypeInfo(Long id) {
+		ResultVo<DjSubType> result = new ResultVo<>(ResultCode.OK.getCode());
+		DjSubType data = scoreService.getSubTypeInfoById(id);
+		result.setData(data);
+		return result;
+	}
 }
