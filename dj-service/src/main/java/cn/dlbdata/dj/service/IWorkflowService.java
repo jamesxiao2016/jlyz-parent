@@ -1,5 +1,7 @@
 package cn.dlbdata.dj.service;
 
+import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
+import cn.dlbdata.dj.vo.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.dlbdata.dj.common.core.util.Paged;
@@ -7,12 +9,6 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
-import cn.dlbdata.dj.vo.ApplyVo;
-import cn.dlbdata.dj.vo.AuditVo;
-import cn.dlbdata.dj.vo.DisciplineVo;
-import cn.dlbdata.dj.vo.ThoughtsVo;
-import cn.dlbdata.dj.vo.UserVo;
-import cn.dlbdata.dj.vo.VanguardVo;
 
 public interface IWorkflowService {
 
@@ -40,12 +36,12 @@ public interface IWorkflowService {
 	/**
 	 * 先锋作用申请
 	 * 
-	 * @param params
+	 * @param param
 	 * @param user
 	 * @return
 	 */
 	@Transactional
-	public ResultVo<Long> doApplyVanguard(VanguardVo[] params, UserVo user);
+	public ResultVo<Long> doApplyVanguard(VanguardParamVo param, UserVo user);
 
 	/**
 	 * 思想汇报申请

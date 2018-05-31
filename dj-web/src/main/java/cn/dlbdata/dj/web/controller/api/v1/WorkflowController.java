@@ -1,5 +1,7 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
+import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
+import cn.dlbdata.dj.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +20,6 @@ import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
 import cn.dlbdata.dj.service.IStudyService;
 import cn.dlbdata.dj.service.IWorkflowService;
-import cn.dlbdata.dj.vo.AuditVo;
-import cn.dlbdata.dj.vo.DisciplineVo;
-import cn.dlbdata.dj.vo.StudyVo;
-import cn.dlbdata.dj.vo.ThoughtsVo;
-import cn.dlbdata.dj.vo.UserVo;
-import cn.dlbdata.dj.vo.VanguardVo;
 import cn.dlbdata.dj.web.base.BaseController;
 
 @Controller
@@ -78,12 +74,12 @@ public class WorkflowController extends BaseController {
 	/**
 	 * 先锋作用申请
 	 * 
-	 * @param vo
+	 * @param param
 	 * @return
 	 */
 	@PostMapping(value = "/applyVanguard")
 	@ResponseBody
-	public ResultVo<Long> applyVanguard(@RequestBody VanguardVo[] params) {
+	public ResultVo<Long> applyVanguard(@RequestBody VanguardParamVo param) {
 		ResultVo<Long> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
 		if (user == null) {
@@ -91,7 +87,7 @@ public class WorkflowController extends BaseController {
 			return result;
 		}
 
-		result = workflowService.doApplyVanguard(params, user);
+		result = workflowService.doApplyVanguard(param, user);
 		return result;
 	}
 

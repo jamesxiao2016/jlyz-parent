@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import cn.dlbdata.dj.constant.*;
+import cn.dlbdata.dj.db.pojo.*;
+import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
+import cn.dlbdata.dj.dto.vangard.VanguardVo;
+import cn.dlbdata.dj.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,32 +40,13 @@ import cn.dlbdata.dj.db.mapper.DjThoughtsMapper;
 import cn.dlbdata.dj.db.mapper.DjTypeMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.mapper.DjVanguardMapper;
-import cn.dlbdata.dj.db.pojo.DjActive;
-import cn.dlbdata.dj.db.pojo.DjApply;
-import cn.dlbdata.dj.db.pojo.DjApprove;
-import cn.dlbdata.dj.db.pojo.DjDept;
-import cn.dlbdata.dj.db.pojo.DjDiscipline;
-import cn.dlbdata.dj.db.pojo.DjPicRecord;
-import cn.dlbdata.dj.db.pojo.DjScore;
-import cn.dlbdata.dj.db.pojo.DjSection;
-import cn.dlbdata.dj.db.pojo.DjStudy;
-import cn.dlbdata.dj.db.pojo.DjSubType;
-import cn.dlbdata.dj.db.pojo.DjThoughts;
-import cn.dlbdata.dj.db.pojo.DjType;
-import cn.dlbdata.dj.db.pojo.DjUser;
-import cn.dlbdata.dj.db.pojo.DjVanguard;
 import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
 import cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo;
 import cn.dlbdata.dj.service.IWorkflowService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
-import cn.dlbdata.dj.vo.ApplyVo;
-import cn.dlbdata.dj.vo.AuditVo;
-import cn.dlbdata.dj.vo.DisciplineVo;
-import cn.dlbdata.dj.vo.ThoughtsVo;
-import cn.dlbdata.dj.vo.UserVo;
-import cn.dlbdata.dj.vo.VanguardVo;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowService {
@@ -453,66 +438,116 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		return result;
 	}
 
+	@Transactional
 	@Override
-	public ResultVo<Long> doApplyVanguard(VanguardVo[] params, UserVo user) {
+	public ResultVo<Long> doApplyVanguard(VanguardParamVo param, UserVo user) {
 		ResultVo<Long> result = new ResultVo<>();
-		if (params == null || user == null) {
+		if (param == null || user == null) {
 			result.setCode(ResultCode.ParameterError.getCode());
 			result.setMsg("参数错误");
 			return result;
 		}
-		DjVanguard record = null;
-		for (VanguardVo param : params) {
-			if (param.getId() != null) {
-				record = vanguardMapper.selectByPrimaryKey(param.getId());
-			}
-			boolean isSave = false;
-			if (record == null) {
-				isSave = true;
-				record = new DjVanguard();
-				record.setId(DigitUtil.generatorLongId());
-			}
-			record.setCreateTime(new Date());
-			record.setDjDeptId(param.getDeptId());
-			record.setDjUserId(param.getUserId());
-			record.setContent(param.getContent());
-			record.setCreateTime(new Date());
-			record.setScore(param.getScore());
-			record.setType(param.getVanguardType());
-			record.setStatus(DlbConstant.BASEDATA_STATUS_INVALID);
-			if (isSave) {
-				vanguardMapper.insertSelective(record);
-			} else {
-				vanguardMapper.updateByPrimaryKeySelective(record);
-			}
-			// 保存图片
-			savePics(record.getId(), DlbConstant.TABLE_NAME_VANGUARD, param.getPics());
+		Long partyMemberId = param.getUserId();
+		if (partyMemberId == null) {
+            result.setCode(ResultCode.ParameterError.getCode());
+            result.setMsg("参数错误");
+            return result;
+        }
+        DjPartymember partymember = partymemberMapper.selectByPrimaryKey(partyMemberId);
+		if (partymember == null) {
+            result.setCode(ResultCode.ParameterError.getCode());
+            result.setMsg("当前选择的党员不存在!");
+            return result;
+        }
+        DjDept dept = deptMapper.selectByPrimaryKey(partymember.getDeptId());
+		if (dept == null) {
+            result.setCode(ResultCode.ParameterError.getCode());
+            result.setMsg("当前选择的党员部门信息异常!");
+            return result;
+        }
+        //校验操作权限
+        if (!user.getUserId().equals(dept.getPrincipalId())) {
+            result.setCode(ResultCode.Forbidden.getCode());
+            result.setMsg("您无权做本次操作!");
+            return result;
+        }
+        VanguardVo honor = param.getHonor();//获得荣誉
+        if (honor != null) {
+            if (!honor.getVanguardType().equals(ActiveSubTypeEnum.ACTIVE_SUB_M.getActiveSubId())
+                    || "".equals(honor.getContent())
+                    ||honor.getPics() ==null || honor.getPics().length==0) {
+                result.setCode(ResultCode.ParameterError.getCode());
+                result.setMsg("获得荣誉参数异常!");
+                return result;
+            }
+            this.addVanguardAndApply(honor,user,partymember);
+        }
+        VanguardVo recognition = param.getRecognition();//先锋表彰
+        if (recognition != null) {
+            if (!recognition.getVanguardType().equals(ActiveSubTypeEnum.ACTIVE_SUB_N.getActiveSubId())
+                    || "".equals(recognition.getContent())
+                    ||recognition.getPics() ==null || recognition.getPics().length==0) {
+                result.setCode(ResultCode.ParameterError.getCode());
+                result.setMsg("先锋表彰参数异常!");
+                return result;
+            }
+            this.addVanguardAndApply(recognition,user,partymember);
+        }
+        VanguardVo vgd = param.getVgd();//先锋模范
+        if (vgd != null) {
+            if (!vgd.getVanguardType().equals(ActiveSubTypeEnum.ACTIVE_SUB_O.getActiveSubId())
+                    || "".equals(vgd.getContent())
+                    ||vgd.getPics() ==null || vgd.getPics().length==0) {
+                result.setCode(ResultCode.ParameterError.getCode());
+                result.setMsg("先锋模范参数异常!");
+                return result;
+            }
+            this.addVanguardAndApply(vgd,user,partymember);
+        }
 
-			// TODO 提交申请，写入到申请表中
-			ApplyVo vo = new ApplyVo();
-			vo.setContent(record.getContent());
-			vo.setDjSubTypeId(param.getVanguardType());
-			vo.setDjTypeId(ActiveTypeEnum.ACTIVE_D.getActiveId());
-			vo.setRoleId(RoleEnum.HEADER_OF_DISTRICT.getId());
-			vo.setRecordId(record.getId());
-			vo.setDjDeptId(user.getDeptId());
-			vo.setUserId(param.getUserId());
-			vo.setUserName(param.getUserName());
-			vo.setApplyYear(Calendar.getInstance().get(Calendar.YEAR));
-			vo.setRemark("获得荣誉申请");
-
-			vo.setTableName(DlbConstant.TABLE_NAME_VANGUARD);
-			String rs = doApply(vo, user);
-			if (!CoreConst.SUCCESS.equals(rs)) {
-				logger.info("提交申请失败");
-				result.setCode(ResultCode.Forbidden.getCode());
-				result.setMsg("提交申请失败");
-			}
-		}
 		result.setCode(ResultCode.OK.getCode());
-		result.setData(record.getId());
 		return result;
 	}
+
+	private void addVanguardAndApply(VanguardVo vo,UserVo user,DjPartymember partymember){
+        DjVanguard vanguard = new DjVanguard();
+        vanguard.setId(DigitUtil.generatorLongId());
+        vanguard.setCreateTime(new Date());
+        vanguard.setDjDeptId(partymember.getDeptId());
+        vanguard.setDjUserId(partymember.getId());
+        vanguard.setContent(vo.getContent());
+        vanguard.setCreateTime(new Date());
+        if (vo.getVanguardType().equals(ActiveSubTypeEnum.ACTIVE_SUB_M.getActiveSubId())
+                || vo.getVanguardType().equals(ActiveSubTypeEnum.ACTIVE_SUB_N.getActiveSubId())){
+            vanguard.setScore(5F);
+        } else {
+            vanguard.setScore(vo.getScore() == null ? 0:vo.getScore());
+        }
+        vanguard.setType(vo.getVanguardType());
+        vanguard.setStatus(DlbConstant.BASEDATA_STATUS_INVALID);
+        vanguardMapper.insertSelective(vanguard);
+        // 保存图片
+        savePics(vanguard.getId(), DlbConstant.TABLE_NAME_VANGUARD, vo.getPics());
+        ApplyVo applyVo = new ApplyVo();
+        applyVo.setContent(vanguard.getContent());
+        applyVo.setDjSubTypeId(vanguard.getType());
+        applyVo.setDjTypeId(ActiveTypeEnum.ACTIVE_D.getActiveId());
+        applyVo.setRoleId(RoleEnum.HEADER_OF_DISTRICT.getId());
+        applyVo.setRecordId(vanguard.getId());
+        applyVo.setDjDeptId(user.getDeptId());
+        applyVo.setUserId(partymember.getId());
+        applyVo.setUserName(partymember.getName());
+        applyVo.setApplyYear(Calendar.getInstance().get(Calendar.YEAR));
+        applyVo.setRemark("获得荣誉申请");
+        applyVo.setTableName(DlbConstant.TABLE_NAME_VANGUARD);
+        String rs = doApply(applyVo, user);
+        if (!CoreConst.SUCCESS.equals(rs)) {
+            ResultVo<Long> result = new ResultVo<>();
+            logger.info("提交申请失败");
+            result.setCode(ResultCode.Forbidden.getCode());
+            result.setMsg("提交申请失败");
+        }
+    }
 
 	@Override
 	public ResultVo<Long> doApplyThoughts(ThoughtsVo param, UserVo user) {

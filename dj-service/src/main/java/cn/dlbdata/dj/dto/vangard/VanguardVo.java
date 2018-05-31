@@ -1,4 +1,4 @@
-package cn.dlbdata.dj.vo;
+package cn.dlbdata.dj.dto.vangard;
 
 import java.io.Serializable;
 
@@ -13,13 +13,6 @@ public class VanguardVo implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -6241975440130813359L;
-	private Long id;
-	// 用户ID
-	private Long userId;
-	// 用户姓名
-	private String userName;
-	// 用户所在部门
-	private Long deptId;
 	// 类型（subTypeId)
 	private Long vanguardType;
 	// 分数
@@ -28,30 +21,6 @@ public class VanguardVo implements Serializable {
 	private String content;
 	// 图片ID数组
 	private String[] pics;
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public Long getDeptId() {
-		return deptId;
-	}
-
-	public void setDeptId(Long deptId) {
-		this.deptId = deptId;
-	}
 
 	public Long getVanguardType() {
 		return vanguardType;
@@ -75,14 +44,6 @@ public class VanguardVo implements Serializable {
 
 	public void setPics(String[] pics) {
 		this.pics = pics;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public Float getScore() {
