@@ -3,12 +3,13 @@ package cn.dlbdata.dj.db.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
-import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 public interface DjPartymemberMapper extends Mapper<DjPartymember> {
 
@@ -32,4 +33,12 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
      * @return
      */
     IdNameTotalScoreVo getTotalScoreById(long id);
+    /**
+     * 
+     * <p>Title: getSumScoreByIdCard</p> 
+     * <p>Description: 根据身份证号查询总积分</p> 
+     * @param idCard
+     * @return
+     */
+    public Float getSumScoreByIdCard(Map<String,Object> map);
 }

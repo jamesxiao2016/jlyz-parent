@@ -15,6 +15,8 @@ import com.github.pagehelper.PageHelper;
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.PageUtils;
 import cn.dlbdata.dj.common.core.util.Paged;
+import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
+import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.AuditStatusEnum;
@@ -313,5 +315,30 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 			}
 		}
 		return PageUtils.toPaged(page);
+	}
+
+	/* (non-Javadoc)
+	 * <p>Title: getSumScoreByIdCard</p>
+	 * <p>Description: 根据身份证查询总积分</p> 
+	 * @param idCard
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IPartyMemberService#getSumScoreByIdCard(java.lang.String)
+	 */
+	@Override
+	public ResultVo<Float> getSumScoreByIdCard(String idCard) {
+		ResultVo<Float> result = new ResultVo<>();
+		if(idCard == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("获取总积分失败");
+			return result;
+		}
+		Calendar cale = Calendar.getInstance();
+		int year = cale.get(Calendar.YEAR);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("idCard", idCard);
+		map.put("year", year);
+		Float score = partyMemberMapper.getSumScoreByIdCard(map);
+		result.setData(score);
+		return result;
 	}
 }

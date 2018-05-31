@@ -273,7 +273,12 @@ public class PartyMemberController extends BaseController {
 	@ResponseBody
 	public ResultVo<Float> getSumScoreByIdCard(@RequestParam("idCard") String idCard) {
 		ResultVo<Float> result = new ResultVo<>();
-
+		result = partyMemberService.getSumScoreByIdCard(idCard);
+		if(result.getData() == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("获取积分是失败");
+		}
+		result.setCode(ResultCode.OK.getCode());
 		return result;
 	}
 }

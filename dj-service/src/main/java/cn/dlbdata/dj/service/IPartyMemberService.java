@@ -3,6 +3,7 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 
 import cn.dlbdata.dj.common.core.util.Paged;
+import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
@@ -101,5 +102,12 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	Paged<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId, int pageIndex, int pageSize);
-
+	/**
+	 * 
+	 * <p>Title: getSumScoreByIdCard</p> 
+	 * <p>Description: 根据身份证查询党员总积分</p> 
+	 * @param idCard
+	 * @return
+	 */
+	public ResultVo<Float> getSumScoreByIdCard(String idCard);
 }
