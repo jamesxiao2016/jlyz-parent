@@ -88,6 +88,8 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		if (partyMemberLifeNotice == null) {
 			return null;
 		}
+		partyMemberLifeNotice.setPageNum(PageUtils.normalizePageIndex(partyMemberLifeNotice.getPageNum()));
+		partyMemberLifeNotice.setPageSize(PageUtils.normalizePageSize(partyMemberLifeNotice.getPageSize()));
 		partyMemberLifeNotice.setEndTime(new Date());
 		// 报名的集合
 		Map<String, Object> map = new HashMap<>();

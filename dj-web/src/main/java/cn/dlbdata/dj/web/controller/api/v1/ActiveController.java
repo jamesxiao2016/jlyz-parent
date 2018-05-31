@@ -49,7 +49,7 @@ public class ActiveController extends BaseController {
 	/**
 	 * 
 	 * <p>Title: getParticipateActive</p>
-	 * <p>Description:党员生活通知接口未报名</p>
+	 * <p>Description:党员生活通知接口</p>
 	 * @param partyMemberLifeNotice
 	 * @return
 	 */
