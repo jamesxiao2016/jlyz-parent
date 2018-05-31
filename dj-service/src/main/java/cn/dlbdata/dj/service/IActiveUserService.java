@@ -30,7 +30,7 @@ public interface IActiveUserService {
 	 * @param activeSignUpRequest
 	 * @return
 	 */
-	public ResultVo<String> insertActiveSignUp(ActiveSignUpRequest activeSignUpRequest,UserVo user);
+	public ResultVo<String> insertActiveSignUp(Long activeId,UserVo user);
 	
 	/**
 	 * 

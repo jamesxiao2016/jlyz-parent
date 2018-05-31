@@ -129,8 +129,7 @@ public class ActiveController extends BaseController {
 			result.setMsg("请重新登录");
 			return result;
 		}
-		activeSignUpRequest.setUserId(data.getUserId());
-		result = activeUserService.insertActiveSignUp(activeSignUpRequest,data);
+		result = activeUserService.insertActiveSignUp(activeSignUpRequest.getActiveId(),data);
 		return result;
 	}
 

@@ -67,14 +67,14 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 	 * @see cn.dlbdata.dj.service.IActiveUserService#insertActiveSignUp(cn.dlbdata.dj.db.resquest.ActiveSignUpRequest)
 	 */
 	@Override
-	public ResultVo<String> insertActiveSignUp(ActiveSignUpRequest activeSignUpRequest,UserVo user) {
+	public ResultVo<String> insertActiveSignUp(Long activeId,UserVo user) {
 		ResultVo<String> result = new ResultVo<>();
-		if (activeSignUpRequest == null || user == null) {
+		if (activeId == null || user == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("请求参数不能为空");
 			return result;
 		}
-		DjActive djActive = activeMapper.selectByPrimaryKey(activeSignUpRequest.getActiveId());
+		DjActive djActive = activeMapper.selectByPrimaryKey(activeId);
 		if ( djActive == null) {
 			result.setMsg("活动不存在！");
 			result.setCode(ResultCode.Forbidden.getCode());
@@ -86,7 +86,7 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
-		List<DjActiveUser> list = selectByExample(user.getUserId(), activeSignUpRequest.getActiveId());
+		List<DjActiveUser> list = selectByExample(user.getUserId(), activeId);
 		
 		if (list.size() > 0) {
 			logger.error("请勿重复报名");
@@ -95,8 +95,8 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 			return result;
 		}
 		DjActiveUser record = new DjActiveUser();
-		record.setDjActiveId(activeSignUpRequest.getActiveId());
-		record.setDjUserId(activeSignUpRequest.getUserId());
+		record.setDjActiveId(activeId);
+		record.setDjUserId(user.getUserId());
 		record.setDjDeptId(user.getDeptId());
 		record.setStatus(DlbConstant.BASEDATA_STATUS_INVALID);
 
