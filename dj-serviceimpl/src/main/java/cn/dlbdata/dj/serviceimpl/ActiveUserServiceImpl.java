@@ -139,6 +139,8 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 		if (userId == null) {
 			return null;
 		}
+		pageNum = PageUtils.normalizePageIndex(pageNum);
+		pageSize = PageUtils.normalizePageSize(pageSize);
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", userId);
 		map.put("status", status);

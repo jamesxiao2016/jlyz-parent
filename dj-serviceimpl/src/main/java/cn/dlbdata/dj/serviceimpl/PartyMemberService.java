@@ -114,8 +114,10 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 					record.setCreateUserId(userId);
 					int count = studyMapper.selectCount(record);
 					vo.setPendingNum(count);
-				} else {
+				} else if (vo.getId() == ActiveTypeEnum.ACTIVE_G.getActiveId()) {
 					vo.setPendingNum(0);
+				} else {
+					vo.setPendingNum(-1);
 				}
 			}
 		}
