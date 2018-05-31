@@ -40,6 +40,12 @@ public interface IActiveService {
 	 * 获取党员通知列表
 	 */
 	public Paged<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice PartyMemberLifeNotice);
+	
+	/**
+	 * 党支书获取活动列表
+	 */
+	public Paged<Map<String, Object>> getActiveListByDeptId(PartyMemberLifeNotice PartyMemberLifeNotice);
+	
 	/**
 	 * 
 	 * <p>Title: getParticipateActiveOne</p> 

@@ -62,6 +62,23 @@
 	        order by signUp , t.start_time DESC
      </select>
      
+     <select id="getActiveListByDeptId" parameterType="map" resultType="java.util.Map">
+	      SELECT
+	        t.id, t.name, t.start_time startTime, t.end_time endTime, t.address, t.create_user_id creatUserId,
+	       	t.content, t.status, t.dj_type_id djTypeId, t.dj_sub_type_id djSubTypeId
+	      FROM dj_active t
+	      LEFT JOIN dj_active_dept da on da.dj_active_id = t.id 
+	      <where>
+		      <if test="departmentId != null">
+		          AND da.dj_dept_id = #{deptId}
+		      </if>
+		       <if test="endTime != null">
+		          AND t.end_time &gt; #{endTime}
+		      </if>
+	      </where>
+	        order by t.start_time DESC
+     </select>
+     
      	
 	 <select id="getParticipateActiveOne" parameterType="map" resultType="java.util.Map">
 	      SELECT

@@ -86,7 +86,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	@Override
 	public Paged<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
 		if (partyMemberLifeNotice == null) {
-			return null;
+			return new Paged<>();
 		}
 		partyMemberLifeNotice.setPageNum(PageUtils.normalizePageIndex(partyMemberLifeNotice.getPageNum()));
 		partyMemberLifeNotice.setPageSize(PageUtils.normalizePageSize(partyMemberLifeNotice.getPageSize()));
@@ -99,7 +99,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		map.put("departmentId", partyMemberLifeNotice.getDepartmentId());
 		map.put("signUp", partyMemberLifeNotice.getSignUp());
 		Page<Map<String, Object>> page = PageHelper.startPage(partyMemberLifeNotice.getPageNum(), partyMemberLifeNotice.getPageSize());
-		List<Map<String, Object>> inList = activeMapper.getRunningActive(map);
+		activeMapper.getRunningActive(map);
 		return PageUtils.toPaged(page);
 	}
 	
@@ -483,5 +483,22 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		}
 
 		return result;
+	}
+
+	@Override
+	public Paged<Map<String, Object>> getActiveListByDeptId(PartyMemberLifeNotice partyMemberLifeNotice) {
+		if (partyMemberLifeNotice == null || partyMemberLifeNotice.getDepartmentId() == null) {
+			return new Paged<>();
+		}
+		partyMemberLifeNotice.setPageNum(PageUtils.normalizePageIndex(partyMemberLifeNotice.getPageNum()));
+		partyMemberLifeNotice.setPageSize(PageUtils.normalizePageSize(partyMemberLifeNotice.getPageSize()));
+		// 报名的集合
+		Map<String, Object> map = new HashMap<>();
+		map.put("startTime", partyMemberLifeNotice.getStartTime());
+		map.put("endTime", partyMemberLifeNotice.getEndTime());
+		map.put("deptId", partyMemberLifeNotice.getDepartmentId());
+		Page<Map<String, Object>> page = PageHelper.startPage(partyMemberLifeNotice.getPageNum(), partyMemberLifeNotice.getPageSize());
+		activeMapper.getActiveListByDeptId(map);
+		return PageUtils.toPaged(page);
 	}
 }

@@ -48,8 +48,13 @@ public class ActiveController extends BaseController {
 
 	/**
 	 * 
-	 * <p>Title: getParticipateActive</p>
-	 * <p>Description:党员生活通知接口</p>
+	 * <p>
+	 * Title: getParticipateActive
+	 * </p>
+	 * <p>
+	 * Description:党员生活通知接口
+	 * </p>
+	 * 
 	 * @param partyMemberLifeNotice
 	 * @return
 	 */
@@ -58,7 +63,7 @@ public class ActiveController extends BaseController {
 	public ResultVo<Paged<Map<String, Object>>> getParticipateActive(PartyMemberLifeNotice partyMemberLifeNotice) {
 		ResultVo<Paged<Map<String, Object>>> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
-		if(data == null) {
+		if (data == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("请重新登录");
 			return result;
@@ -70,8 +75,7 @@ public class ActiveController extends BaseController {
 		result.setData(page);
 		return result;
 	}
-	
-	
+
 	/**
 	 * 党员生活通知接口获取第一条
 	 * <p>
@@ -89,7 +93,7 @@ public class ActiveController extends BaseController {
 	public ResultVo<Map<String, Object>> getParticipateActiveOne(PartyMemberLifeNotice partyMemberLifeNotice) {
 		ResultVo<Map<String, Object>> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
-		if(data == null) {
+		if (data == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("请重新登录");
 			return result;
@@ -104,8 +108,6 @@ public class ActiveController extends BaseController {
 		}
 		return result;
 	}
-	
-	
 
 	/**
 	 * 金领驿站活动报名
@@ -124,12 +126,12 @@ public class ActiveController extends BaseController {
 	public ResultVo<String> participate(@RequestBody ActiveSignUpRequest activeSignUpRequest) {
 		ResultVo<String> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
-		if(data == null) {
+		if (data == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("请重新登录");
 			return result;
 		}
-		result = activeUserService.insertActiveSignUp(activeSignUpRequest.getActiveId(),data);
+		result = activeUserService.insertActiveSignUp(activeSignUpRequest.getActiveId(), data);
 		return result;
 	}
 
@@ -158,7 +160,8 @@ public class ActiveController extends BaseController {
 		}
 		DjActiveUser djActiveUser = new DjActiveUser();
 		djActiveUser.setStatus(1);
-		Paged<DjActive> page = activeUserService.getMyJoinActive(data.getUserId(), djActiveUser.getStatus(), pageNum, pageSize);
+		Paged<DjActive> page = activeUserService.getMyJoinActive(data.getUserId(), djActiveUser.getStatus(), pageNum,
+				pageSize);
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(page);
 		return result;
@@ -287,4 +290,28 @@ public class ActiveController extends BaseController {
 		return result;
 	}
 
+	@GetMapping(value = "/getActiveListByDeptId")
+	@ResponseBody
+	public ResultVo<Paged<Map<String, Object>>> getActiveListByDeptId(PartyMemberLifeNotice partyMemberLifeNotice) {
+		ResultVo<Paged<Map<String, Object>>> result = new ResultVo<>();
+
+		if (partyMemberLifeNotice == null) {
+			result.setCode(ResultCode.ParameterError.getCode());
+			result.setMsg("参数不完整");
+			return result;
+		}
+		UserVo data = getCurrentUserFromCache();
+		if (data == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("请重新登录");
+			return result;
+		}
+		if (partyMemberLifeNotice.getDepartmentId() == null) {
+			partyMemberLifeNotice.setDepartmentId(data.getDeptId());
+		}
+		Paged<Map<String, Object>> page = activeService.getParticipateActive(partyMemberLifeNotice);
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(page);
+		return result;
+	}
 }
