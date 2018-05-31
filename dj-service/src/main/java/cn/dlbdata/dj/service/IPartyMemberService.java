@@ -5,11 +5,11 @@ import java.util.List;
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
-import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
+import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import cn.dlbdata.dj.vo.PartyVo;
 
 /**
@@ -54,7 +54,7 @@ public interface IPartyMemberService {
 	 * @param year
 	 * @return
 	 */
-	public List<DjScore> getScoreListByUserId(Long userId, Integer year);
+	public List<ScoreVo> getScoreListByUserId(Long userId, Integer year);
 
 	/**
 	 * 获取每个项目的积分及总积分

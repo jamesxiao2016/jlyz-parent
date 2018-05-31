@@ -132,14 +132,22 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			return result;
 		}
 
-		// TODO 角色权限判断，判断登录的角色是否匹配(后续处理）
-
 		// 返回数据处理
-		UserVo data = getUserDetailByUser(user);
-		if (data == null) {
-			logger.error("获取用户信息失败");
-			return result;
-		}
+		UserVo data = new UserVo();
+		data.setDeptId(user.getDeptId());
+		data.setMemeberId(user.getDjPartymemberId());
+		data.setName(user.getName());
+		data.setUserId(user.getId());
+		data.setAvatar(user.getAvatar());
+		data.setRoleId(user.getRoleId());
+		data.setUserName(user.getUserName());
+		
+		// TODO 角色权限判断，判断登录的角色是否匹配(后续处理）
+//		getUserDetailByUser(user);
+//		if (data == null) {
+//			logger.error("获取用户信息失败");
+//			return result;
+//		}
 
 		long endQueryUserInfoTime = System.currentTimeMillis();
 		logger.info("查询用户详细信息->" + (endQueryUserInfoTime - endUserTime));
@@ -149,7 +157,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		long endTime = System.currentTimeMillis();
 		logger.info("create token time->" + (endTime - endQueryUserInfoTime));
 
-		CacheManager.getInstance().put(user.getId() + "", data);
+		//CacheManager.getInstance().put(user.getId() + "", data);
 		logger.info("total time->" + (endTime - startTime));
 		// 返回结果
 		result.setCode(ResultCode.OK.getCode());
@@ -247,6 +255,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		}
 		// 党委
 		data.setPartyCommittee(DlbConstant.PARTYCOMMITTEE_LJZ);
+		CacheManager.getInstance().put(user.getId() + "", data);
 		return data;
 	}
 

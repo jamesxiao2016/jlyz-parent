@@ -29,12 +29,12 @@ import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.mapper.DjThoughtsMapper;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
-import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
+import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.PartyVo;
@@ -92,7 +92,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	}
 
 	@Override
-	public List<DjScore> getScoreListByUserId(Long userId, Integer year) {
+	public List<ScoreVo> getScoreListByUserId(Long userId, Integer year) {
 		if (userId == null) {
 			return null;
 		}
