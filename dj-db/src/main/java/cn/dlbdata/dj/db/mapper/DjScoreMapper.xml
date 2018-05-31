@@ -59,10 +59,13 @@
 			AND d.dj_sub_type_id = #{djSubTypeId}
 		</if>
 	</select>
+<!-- 	<resultMap type="cn.dlbdata.dj.db.vo.score.ScoreVo" id="base">
 	
+	
+	</resultMap> -->
 	<select id="getScoreListByUserId" parameterType="Map"
 		resultType="cn.dlbdata.dj.db.vo.score.ScoreVo">
-		SELECT s.id,s.user_id,s.score,s.add_time,s.approver_name,t.name typeName,s.dj_type_id,s.record_id,s.recrod_desc from dj_score s 
+		SELECT s.id,s.user_id userId,s.score,s.add_time addTime,s.approver_name approverName,t.name typeName,s.dj_type_id djTypeId,s.record_id,s.recrod_desc recrodDesc from dj_score s 
 		left join dj_sub_type t on t.id = s.dj_sub_type_id
 		where s.add_year = #{year} and s.user_id = #{userId}
 		order by s.add_time desc
