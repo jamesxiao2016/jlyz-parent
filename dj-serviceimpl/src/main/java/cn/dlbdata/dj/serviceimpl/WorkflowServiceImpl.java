@@ -292,16 +292,17 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		apply.setApproverId(user.getUserId());
 		apply.setApproverName(user.getUserName());
 		applyMapper.updateByPrimaryKeySelective(apply);
-
-		Float score = apply.getScore();
-		if (score == null || score == 0) {
-			score = subType.getScore();
-		}
-		// 处理分数，插入到积分明细表中
-		handScore(apply.getDjSubTypeId(), apply.getUserId(), apply.getApplyId(),apply.getApplyName(),
-                apply.getApproverId(),apply.getApproverName(), score,
-				apply.getRecordId(), apply.getRemark(), apply.getApplyYear());
-
+		//审批通过才走加分的逻辑
+		if (apply.getStatus() == AuditStatusEnum.PASS.getValue()) {
+            Float score = apply.getScore();
+            if (score == null || score == 0) {
+                score = subType.getScore();
+            }
+            // 处理分数，插入到积分明细表中
+            handScore(apply.getDjSubTypeId(), apply.getUserId(), apply.getApplyId(),apply.getApplyName(),
+                    apply.getApproverId(),apply.getApproverName(), score,
+                    apply.getRecordId(), apply.getRemark(), apply.getApplyYear());
+        }
 		// 插入审批记录表
 		DjApprove approve = new DjApprove();
 		approve.setApproveResult(result);
