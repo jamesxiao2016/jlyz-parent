@@ -15,11 +15,11 @@ import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
-import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
+import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.vo.PartyVo;
@@ -108,8 +108,8 @@ public class PartyMemberController extends BaseController {
 	 */
 	@GetMapping("/getScoreListByUserId")
 	@ResponseBody
-	public ResultVo<List<DjScore>> getScoreListByUserId(Long userId, Integer year) {
-		ResultVo<List<DjScore>> result = new ResultVo<>(ResultCode.OK.getCode());
+	public ResultVo<List<ScoreVo>> getScoreListByUserId(Long userId, Integer year) {
+		ResultVo<List<ScoreVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		TokenVo vo = getTokenUserInfo();
 		if (vo == null) {
 			logger.error("用户未登录");
@@ -122,7 +122,7 @@ public class PartyMemberController extends BaseController {
 		if (year == null) {
 			year = Calendar.getInstance().get(Calendar.YEAR);
 		}
-		List<DjScore> data = partyMemberService.getScoreListByUserId(userId, year);
+		List<ScoreVo> data = partyMemberService.getScoreListByUserId(userId, year);
 		result.setData(data);
 		return result;
 	}

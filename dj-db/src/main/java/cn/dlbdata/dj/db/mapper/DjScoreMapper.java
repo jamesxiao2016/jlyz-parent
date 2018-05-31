@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
+import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface DjScoreMapper extends Mapper<DjScore> {
@@ -33,7 +34,7 @@ public interface DjScoreMapper extends Mapper<DjScore> {
      * @param year
      * @return
      */
-    List<DjScore> getScoreListByUserId(@Param("userId")Long  userId , @Param("year") Integer year);
+    List<ScoreVo> getScoreListByUserId(@Param("userId")Long  userId , @Param("year") Integer year);
     
     /**
      * 获取每个项目的积分及总积分

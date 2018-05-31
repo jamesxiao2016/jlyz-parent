@@ -20,8 +20,8 @@
 		<result column="recrod_desc" jdbcType="VARCHAR" property="recrodDesc" />
 		<result column="status" jdbcType="INTEGER" property="status" />
 		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-		<result column="user_name" jdbcType="BIGINT" property="userName" />
-		<result column="name" jdbcType="BIGINT" property="name" />
+		<result column="user_name" jdbcType="VARCHAR" property="userName" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="max_score" jdbcType="REAL" property="maxScore" />
 	</resultMap>
 
@@ -61,9 +61,8 @@
 	</select>
 	
 	<select id="getScoreListByUserId" parameterType="Map"
-		resultType="cn.dlbdata.dj.db.pojo.DjScore">
-		SELECT s.user_id,s.score,s.add_time,u.user_name,t.name,s.dj_type_id,s.record_id,s.recrod_desc from dj_score s 
-		left join dj_user u on u.id = s.approver_id 
+		resultType="cn.dlbdata.dj.db.vo.score.ScoreVo">
+		SELECT s.id,s.user_id,s.score,s.add_time,s.approver_name,t.name typeName,s.dj_type_id,s.record_id,s.recrod_desc from dj_score s 
 		left join dj_sub_type t on t.id = s.dj_sub_type_id
 		where s.add_year = #{year} and s.user_id = #{userId}
 		order by s.add_time desc
