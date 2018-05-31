@@ -6,6 +6,7 @@ import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
+import cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
@@ -102,6 +103,14 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	Paged<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId, int pageIndex, int pageSize);
+
+	/**
+	 * 遵章守纪详情
+	 * @param applyId 申请Id
+	 * @return
+	 */
+	ObserveLowDetailVo getObserveLowDetail(Long applyId);
+
 	/**
 	 * 
 	 * <p>Title: getSumScoreByIdCard</p> 

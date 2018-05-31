@@ -7,6 +7,7 @@ import java.util.Map;
 import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
+import cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -61,4 +62,12 @@ public interface DjApplyMapper extends Mapper<DjApply> {
 								@Param("status") int status,
 								@Param("typeId") Long typeId,
 								@Param("year") int year);
+
+	/**
+	 * 遵章守纪详情
+	 *
+	 * @param applyId 申请Id
+	 * @return
+	 */
+	ObserveLowDetailVo getObserveLowDetail(Long applyId);
 }

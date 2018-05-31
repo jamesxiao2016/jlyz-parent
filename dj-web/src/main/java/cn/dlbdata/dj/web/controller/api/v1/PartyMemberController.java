@@ -3,6 +3,7 @@ package cn.dlbdata.dj.web.controller.api.v1;
 import java.util.Calendar;
 import java.util.List;
 
+import cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -260,6 +261,20 @@ public class PartyMemberController extends BaseController {
 		Paged<ObserveLowPartyMemberVo> paged = partyMemberService.getObserveLowPartyMember(deptId, pageNum, pageSize);
 		ResultVo<Paged<ObserveLowPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		result.setData(paged);
+		return result;
+	}
+
+	/**
+	 * 遵章守纪详情
+	 * @param applyId 申请Id
+	 * @return
+	 */
+	@GetMapping("/getObserveLowDetail")
+	@ResponseBody
+	public ResultVo<ObserveLowDetailVo>getObserveLowDetail(@RequestParam("applyId") Long applyId) {
+		ResultVo<ObserveLowDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
+		ObserveLowDetailVo vo = partyMemberService.getObserveLowDetail(applyId);
+		result.setData(vo);
 		return result;
 	}
 

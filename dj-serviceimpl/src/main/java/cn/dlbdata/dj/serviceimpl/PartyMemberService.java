@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.db.mapper.*;
+import cn.dlbdata.dj.db.pojo.DjPicRecord;
+import cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +24,6 @@ import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.AuditStatusEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
-import cn.dlbdata.dj.db.mapper.DjActiveMapper;
-import cn.dlbdata.dj.db.mapper.DjApplyMapper;
-import cn.dlbdata.dj.db.mapper.DjDisciplineMapper;
-import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
-import cn.dlbdata.dj.db.mapper.DjScoreMapper;
-import cn.dlbdata.dj.db.mapper.DjStudyMapper;
-import cn.dlbdata.dj.db.mapper.DjThoughtsMapper;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
@@ -55,6 +51,8 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	private DjApplyMapper applyMapper;
 	@Autowired
 	private DjStudyMapper studyMapper;
+	@Autowired
+	private DjPicRecordMapper picRecordMapper;
 
 	@Override
 	public DjPartymember getInfoById(Long id) {
@@ -315,6 +313,22 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 			}
 		}
 		return PageUtils.toPaged(page);
+	}
+
+	/**
+	 * 遵章守纪详情
+	 *
+	 * @param applyId 申请Id
+	 * @return
+	 */
+	@Override
+	public ObserveLowDetailVo getObserveLowDetail(Long applyId) {
+		ObserveLowDetailVo vo = applyMapper.getObserveLowDetail(applyId);
+		if (vo.getDisId() != null) {
+			List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_DISCIPLINE,vo.getDisId());
+			vo.setPicIds(picIds);
+		}
+		return vo;
 	}
 
 	/* (non-Javadoc)
