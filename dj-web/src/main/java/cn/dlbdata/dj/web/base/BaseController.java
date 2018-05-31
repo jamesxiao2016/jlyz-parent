@@ -104,7 +104,7 @@ public class BaseController {
 		UserVo currUser = (UserVo) CacheManager.getInstance().get(userId);
 		// 如果缓存中获取失败，从数据库中查询
 		if (currUser == null) {
-			currUser = userService.getUserDetailById(DigitUtil.parseToLong(userId));
+			currUser = userService.getUserDetailById(DigitUtil.parseToLong(userId), 1);
 			CacheManager.getInstance().put(userId, currUser);
 		}
 		return currUser;
