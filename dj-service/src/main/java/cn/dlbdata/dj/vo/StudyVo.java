@@ -61,7 +61,7 @@ public class StudyVo implements Serializable {
     /**
      * 图片
      */
-    private String[] pics;
+    private String[] pics ;
 
 	public Long getId() {
 		return id;

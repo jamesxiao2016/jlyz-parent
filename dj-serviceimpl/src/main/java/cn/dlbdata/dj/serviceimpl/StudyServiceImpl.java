@@ -2,11 +2,13 @@ package cn.dlbdata.dj.serviceimpl;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import cn.dlbdata.dj.db.mapper.DjApplyMapper;
 import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
 import cn.dlbdata.dj.db.pojo.DjApply;
+import cn.dlbdata.dj.db.pojo.DjPicRecord;
 import cn.dlbdata.dj.vo.study.StudyDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,8 +87,18 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 			studyMapper.insertSelective(study);
 		} else {
 			studyMapper.updateByPrimaryKeySelective(study);
+			
+			//删除原来的图片
+			DjPicRecord record = new DjPicRecord();
+			record.setRecordId(study.getId());
+			record.setTableName(DlbConstant.TABLE_NAME_STUDY);
+			picRecordMapper.delete(record);
 		}
 
+		//保存图片
+		savePics(study.getId(), DlbConstant.TABLE_NAME_STUDY, studyVo.getPics());
+
+		// 当前提交分数
 		Float score = subType.getScore();
 
 		// TODO 提交申请，写入到申请表中
@@ -95,8 +107,6 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		vo.setDjSubTypeId(study.getDjSubTypeId());
 		vo.setDjTypeId(study.getDjTypeId());
 		vo.setRecordId(study.getId());
-		vo.setRemark("自主学习申请");
-		// vo.setScore(score);
 		vo.setTableName(DlbConstant.TABLE_NAME_STUDY);
 		vo.setUserId(user.getUserId());
 		vo.setUserName(user.getUserName());
@@ -107,13 +117,38 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		String rs = workflowService.doApply(vo, user);
 		if (!CoreConst.SUCCESS.equals(rs)) {
 			logger.info("提交申请失败");
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.BadRequest.getCode());
 			result.setMsg("提交申请失败");
 		}
 
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(study.getId());
 		return result;
+	}
+	
+	/**
+	 * 保存自主申报、先锋作用、遵章守纪、思想汇报图片
+	 * 
+	 * @param recordId
+	 * @param tableName
+	 * @param pics
+	 * @return
+	 */
+	private String savePics(Long recordId, String tableName, String[] pics) {
+		if (recordId == null || pics == null || pics.length == 0) {
+			return CoreConst.MSG_FAIL_PARAM;
+		}
+		for (String str : pics) {
+			DjPicRecord record = new DjPicRecord();
+			record.setCreateTime(new Date());
+			record.setDjPicId(DigitUtil.parseToLong(str));
+			record.setRecordId(recordId);
+			record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+			record.setTableName(tableName);
+			picRecordMapper.insertSelective(record);
+		}
+
+		return CoreConst.SUCCESS;
 	}
 
 	@Override
