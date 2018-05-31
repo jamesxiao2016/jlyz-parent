@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import cn.dlbdata.dj.common.core.exception.DlbException;
+import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
+import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.db.mapper.DjApplyMapper;
 import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
 import cn.dlbdata.dj.db.pojo.DjApply;
@@ -51,12 +54,27 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 	@Transactional
 	public ResultVo<Long> saveStudy(StudyVo studyVo, UserVo user) {
 		ResultVo<Long> result = new ResultVo<>();
-		if (studyVo == null || studyVo.getDjTypeId() == null || studyVo.getDjSubTypeId() == null) {
+		if (studyVo == null || studyVo.getDjSubTypeId() == null) {
 			result.setCode(ResultCode.ParameterError.getCode());
 			result.setMsg("参数错误");
 			return result;
 		}
+		if (!studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_B.getActiveSubId()) &&
+				!studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId()) &&
+				!studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_H.getActiveSubId())) {
+			result.setCode(ResultCode.ParameterError.getCode());
+			result.setMsg("参数错误");
+			return result;
+		}
+		Long typeId;
+		if (studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_B.getActiveSubId())) {
+			typeId = ActiveTypeEnum.ACTIVE_A.getActiveId();
 
+		} else if (studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId())) {
+			typeId = ActiveTypeEnum.ACTIVE_B.getActiveId();
+		} else {
+			typeId = ActiveTypeEnum.ACTIVE_F.getActiveId();
+		}
 		DjSubType subType = subTypeMapper.selectByPrimaryKey(studyVo.getDjSubTypeId());
 		if (subType == null) {
 			logger.error("subType is not found->" + studyVo.getDjSubTypeId());
@@ -77,7 +95,7 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		}
 		study.setStartTime(studyVo.getStartTime());
 		study.setEndTime(studyVo.getEndTime());
-		study.setDjTypeId(studyVo.getDjTypeId());
+		study.setDjTypeId(typeId);
 		study.setDjSubTypeId(studyVo.getDjSubTypeId());
 		study.setContent(studyVo.getContent());
 		study.setCreateUserId(user.getUserId());
@@ -105,7 +123,7 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		ApplyVo vo = new ApplyVo();
 		vo.setContent(study.getContent());
 		vo.setDjSubTypeId(study.getDjSubTypeId());
-		vo.setDjTypeId(study.getDjTypeId());
+		vo.setDjTypeId(typeId);
 		vo.setRecordId(study.getId());
 		vo.setTableName(DlbConstant.TABLE_NAME_STUDY);
 		vo.setUserId(user.getUserId());
