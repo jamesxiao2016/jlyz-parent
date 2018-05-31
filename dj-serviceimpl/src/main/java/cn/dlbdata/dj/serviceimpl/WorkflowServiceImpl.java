@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.constant.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,6 @@ import cn.dlbdata.dj.common.core.util.StringUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
-import cn.dlbdata.dj.constant.ActiveTypeEnum;
-import cn.dlbdata.dj.constant.DlbConstant;
-import cn.dlbdata.dj.constant.RoleEnum;
 import cn.dlbdata.dj.db.mapper.DjActiveMapper;
 import cn.dlbdata.dj.db.mapper.DjApplyMapper;
 import cn.dlbdata.dj.db.mapper.DjApproveMapper;
@@ -201,22 +198,38 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			resultVo.setMsg("参数不完整");
 			return resultVo;
 		}
+        DjApply apply = applyMapper.selectByPrimaryKey(auditVo.getId());
+        if (apply == null) {
+            logger.error("申请记录查询失败" + auditVo.getId());
+            resultVo.setCode(ResultCode.NotFound.getCode());
+            resultVo.setMsg("审核失败");
+            return resultVo;
+        }
+        if (apply.getStatus() == AuditStatusEnum.PASS.getValue()) {
+            resultVo.setCode(ResultCode.BadRequest.getCode());
+            resultVo.setMsg("请勿重复审核！");
+            return resultVo;
+        }
+        DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
+        //自主学习的申请必须本人的部门领导才可以审核
+        if (apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_B.getActiveSubId()) ||
+                apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId()) ||
+                apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_H.getActiveSubId())) {
+            if (!user.getUserId().equals(dept.getPrincipalId())) {
+                resultVo.setCode(ResultCode.Forbidden.getCode());
+                resultVo.setMsg("当前用户没有权限");
+                return resultVo;
+            }
+        }
+        //TODO 先锋作用和遵章守纪的审核权限还未做
+//		// 检查用户权限
+//		if (user.getRoleId() != RoleEnum.BRANCH_PARTY.getId()
+//				&& user.getRoleId() != RoleEnum.HEADER_OF_DISTRICT.getId()) {
+//			resultVo.setCode(ResultCode.Forbidden.getCode());
+//			resultVo.setMsg("当前用户没有权限");
+//			return resultVo;
+//		}
 
-		// 检查用户权限
-		if (user.getRoleId() != RoleEnum.BRANCH_PARTY.getId()
-				&& user.getRoleId() != RoleEnum.HEADER_OF_DISTRICT.getId()) {
-			resultVo.setCode(ResultCode.Forbidden.getCode());
-			resultVo.setMsg("当前用户没有权限");
-			return resultVo;
-		}
-
-		DjApply apply = applyMapper.selectByPrimaryKey(auditVo.getId());
-		if (apply == null) {
-			logger.error("申请记录查询失败" + auditVo.getId());
-			resultVo.setCode(ResultCode.NotFound.getCode());
-			resultVo.setMsg("审核失败");
-			return resultVo;
-		}
 		DjType type = typeMapper.selectByPrimaryKey(apply.getDjTypeId());
 		if (type == null) {
 			logger.error("类型记录查询失败" + apply.getDjTypeId());
@@ -276,6 +289,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		apply.setStatus(auditVo.getResult());
 		apply.setRemark(auditVo.getContent());
 		apply.setApproveTime(new Date());
+		apply.setApproverId(user.getUserId());
+		apply.setApproverName(user.getUserName());
 		applyMapper.updateByPrimaryKeySelective(apply);
 
 		Float score = apply.getScore();
@@ -283,7 +298,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			score = subType.getScore();
 		}
 		// 处理分数，插入到积分明细表中
-		handScore(apply.getDjSubTypeId(), apply.getUserId(), apply.getApplyId(), apply.getApproverId(), score,
+		handScore(apply.getDjSubTypeId(), apply.getUserId(), apply.getApplyId(),apply.getApplyName(),
+                apply.getApproverId(),apply.getApproverName(), score,
 				apply.getRecordId(), apply.getRemark(), apply.getApplyYear());
 
 		// 插入审批记录表
@@ -312,7 +328,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	 * @param recordId
 	 * @param recordDesc
 	 */
-	private void handScore(Long subTypeId, Long userId, Long applyerId, Long approverId, Float applySocre,
+	private void handScore(Long subTypeId, Long userId, Long applyerId,String applyerName,
+                           Long approverId,String approverName, Float applySocre,
 			Long recordId, String recordDesc, Integer year) {
 		DjSubType subType = subTypeMapper.selectByPrimaryKey(subTypeId);
 		if (subType == null) {
@@ -360,6 +377,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			record.setRecordId(recordId);
 			record.setRecrodDesc(recordDesc);
 			record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+			record.setApplyUserName(applyerName);
+			record.setApproverName(approverName);
 			Float score = applySocre;
 			// 公益服务,处理9分的问题
 			if (type.getId() == ActiveTypeEnum.ACTIVE_F.getActiveId()) {
@@ -539,8 +558,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		savePics(record.getId(), DlbConstant.TABLE_NAME_THOUGHTS, param.getPics());
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		// TODO 不需要审批，直接加分
-		handScore(param.getReportType(), param.getUserId(), user.getUserId(), user.getUserId(), subType.getScore(),
-				record.getId(), param.getContent(), year);
+		handScore(param.getReportType(), param.getUserId(), user.getUserId(),user.getUserName(), user.getUserId(),
+                user.getUserName(), subType.getScore(), record.getId(), param.getContent(), year);
 
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(record.getId());
