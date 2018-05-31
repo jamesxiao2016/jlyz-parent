@@ -1,6 +1,7 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
-import cn.dlbdata.dj.service.IStudyService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,8 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
+import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.service.IActiveService;
+import cn.dlbdata.dj.service.IStudyService;
+import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.study.StudyDetailVo;
 import cn.dlbdata.dj.web.base.BaseController;
 
@@ -65,4 +70,29 @@ public class StudyController extends BaseController {
 		result.setData(vo);
 		return result;
 	}
+	
+	
+	/**
+	 * 
+	 * <p>Title: getReviewScheduleList</p> 
+	 * <p>Description: 获取审核进度列表</p> 
+	 * @param subTypeId
+	 * @return
+	 */
+	@GetMapping("/getReviewScheduleList")
+	@ResponseBody
+	public ResultVo<List<DjStudy>> getReviewScheduleList(Long subTypeId){
+		ResultVo<List<DjStudy>> result = new ResultVo<>();
+		UserVo user = getCurrentUserFromCache();
+		List<DjStudy> list = studyService.getReviewScheduleList(subTypeId, user.getUserId());
+		if(list == null || list.size() == 0) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("获取审核进度列表失败！");
+			return result;
+		}
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(list);
+		return result;
+	}
+	
 }

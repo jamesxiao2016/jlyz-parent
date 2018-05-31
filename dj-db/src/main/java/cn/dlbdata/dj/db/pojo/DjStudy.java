@@ -93,7 +93,11 @@ public class DjStudy {
 
     @Column(name = "create_time")
     private Date createTime;
-
+    /**
+     * 活动图片集
+     */
+    @Transient
+    private Long[] picIds;
     /**
      * 获取记录ID
      *
@@ -377,4 +381,13 @@ public class DjStudy {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	public Long[] getPicIds() {
+		return picIds;
+	}
+
+	public void setPicIds(Long[] picIds) {
+		this.picIds = picIds;
+	}
+    
 }

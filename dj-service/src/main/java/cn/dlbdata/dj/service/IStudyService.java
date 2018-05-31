@@ -1,5 +1,7 @@
 package cn.dlbdata.dj.service;
 
+import java.util.List;
+
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.vo.StudyVo;
@@ -52,4 +54,12 @@ public interface IStudyService {
 	 * @return
 	 */
 	StudyDetailVo getStudyDetail(Long applyId);
+	/**
+	 * 
+	 * <p>Title: getReviewScheduleList</p> 
+	 * <p>Description: 获取审核进度列表</p> 
+	 * @param subTypeId
+	 * @return
+	 */
+	List<DjStudy> getReviewScheduleList(Long subTypeId, Long userId);
 }

@@ -5,14 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import cn.dlbdata.dj.common.core.exception.DlbException;
-import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
-import cn.dlbdata.dj.constant.ActiveTypeEnum;
-import cn.dlbdata.dj.db.mapper.DjApplyMapper;
-import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
-import cn.dlbdata.dj.db.pojo.DjApply;
-import cn.dlbdata.dj.db.pojo.DjPicRecord;
-import cn.dlbdata.dj.vo.study.StudyDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +13,17 @@ import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
+import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.constant.RoleEnum;
+import cn.dlbdata.dj.db.mapper.DjApplyMapper;
+import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.mapper.DjSubTypeMapper;
+import cn.dlbdata.dj.db.pojo.DjActivePic;
+import cn.dlbdata.dj.db.pojo.DjApply;
+import cn.dlbdata.dj.db.pojo.DjPicRecord;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.pojo.DjSubType;
 import cn.dlbdata.dj.service.IStudyService;
@@ -33,6 +32,8 @@ import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.ApplyVo;
 import cn.dlbdata.dj.vo.StudyVo;
 import cn.dlbdata.dj.vo.UserVo;
+import cn.dlbdata.dj.vo.study.StudyDetailVo;
+import tk.mybatis.mapper.entity.Example;
 
 @Service
 public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
@@ -214,6 +215,42 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 					djStudy.getId());
 		detailVo.setPicIds(picIds);
 		return detailVo;
+	}
+
+	/* (non-Javadoc)
+	 * <p>Title: getReviewScheduleList</p>
+	 * <p>Description: 获取审核进度列表</p> 
+	 * @param subTypeId
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IStudyService#getReviewScheduleList(java.lang.Long)
+	 */
+	@Override
+	public List<DjStudy> getReviewScheduleList(Long subTypeId, Long userId) {
+		if(subTypeId == null) {
+			return null;
+		}
+		Example example = new Example(DjStudy.class);
+		example.createCriteria().andEqualTo("djSubTypeId", subTypeId).andEqualTo("createUserId", userId);
+		List<DjStudy> list = studyMapper.selectByExample(example);
+		if( list.size() > 0 && list != null) {
+			
+			Long[] picIds = null;
+			for (DjStudy djStudy : list) {
+				Example example1 = new Example(DjPicRecord.class);
+				example1.createCriteria().andEqualTo("recordId", djStudy.getId());
+				List<DjPicRecord> picList = picRecordMapper.selectByExample(example1);
+				/* 将与该活动相关的图片的id加入数组中 */
+				if (picList != null && picList.size() > 0) {
+					picIds = new Long[picList.size()];
+					for (int i = 0, count = picList.size(); i < count; i++) {
+						picIds[i] = picList.get(i).getDjPicId();
+					}
+					djStudy.setPicIds(picIds);
+				}
+			}
+		}
+		
+		return list;
 	}
 
 }

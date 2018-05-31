@@ -152,9 +152,9 @@ public class ActiveUserServiceImpl extends BaseServiceImpl implements IActiveUse
 			logger.error("没有查询到活动信息.userId->" + userId + " status->" + status);
 			return null;
 		}
-		Example example = new Example(DjActivePic.class);
 		Long[] picIds = null;
 		for (DjActive djActive : list) {
+			Example example = new Example(DjActivePic.class);
 			example.createCriteria().andEqualTo("djActiveId", djActive.getId());
 			List<DjActivePic> picList = activePicMapper.selectByExample(example);
 			/* 将与该活动相关的图片的id加入数组中 */
