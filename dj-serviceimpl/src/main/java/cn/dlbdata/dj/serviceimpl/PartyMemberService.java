@@ -128,7 +128,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	public Paged<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId, int pageNum, int pageSize) {
 		if (subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId()
 				&& subTypeId != ActiveSubTypeEnum.ACTIVE_SUB_L.getActiveSubId()) {
-			return new Paged<ReportPartyMemberVo>();
+			return new Paged<>();
 		}
 		pageNum = PageUtils.normalizePageIndex(pageNum);
 		pageSize = PageUtils.normalizePageSize(pageSize);

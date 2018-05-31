@@ -204,7 +204,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 
 		// 检查用户权限
 		if (user.getRoleId() != RoleEnum.BRANCH_PARTY.getId()
-				|| user.getRoleId() != RoleEnum.HEADER_OF_DISTRICT.getId()) {
+				&& user.getRoleId() != RoleEnum.HEADER_OF_DISTRICT.getId()) {
 			resultVo.setCode(ResultCode.Forbidden.getCode());
 			resultVo.setMsg("当前用户没有权限");
 			return resultVo;

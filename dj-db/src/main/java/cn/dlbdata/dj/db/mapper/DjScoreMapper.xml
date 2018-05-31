@@ -10,7 +10,9 @@
 		<result column="user_id" jdbcType="BIGINT" property="userId" />
 		<result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
 		<result column="apply_user_id" jdbcType="BIGINT" property="applyUserId" />
+		<result column="apply_user_name" jdbcType="VARCHAR" property="applyUserId" />
 		<result column="approver_id" jdbcType="BIGINT" property="approverId" />
+		<result column="approver_name" jdbcType="VARCHAR" property="approverName" />
 		<result column="add_year" jdbcType="INTEGER" property="addYear" />
 		<result column="add_status" jdbcType="INTEGER" property="addStatus" />
 		<result column="score_desc" jdbcType="VARCHAR" property="scoreDesc" />

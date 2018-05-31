@@ -48,10 +48,23 @@ public class DjScore {
     private Long applyUserId;
 
     /**
+     * 申请人姓名
+     */
+    @Column(name="apply_user_name")
+    private String applyUserName;
+
+    /**
      * 审批人ID
      */
     @Column(name = "approver_id")
     private Long approverId;
+
+
+    /**
+     * 审批人姓名
+     */
+    @Column(name="approver_name")
+    private String approverName;
 
     /**
      * 加分年份
@@ -234,6 +247,14 @@ public class DjScore {
         this.applyUserId = applyUserId;
     }
 
+    public String getApplyUserName() {
+        return applyUserName;
+    }
+
+    public void setApplyUserName(String applyUserName) {
+        this.applyUserName = applyUserName;
+    }
+
     /**
      * 获取审批人ID
      *
@@ -250,6 +271,14 @@ public class DjScore {
      */
     public void setApproverId(Long approverId) {
         this.approverId = approverId;
+    }
+
+    public String getApproverName() {
+        return approverName;
+    }
+
+    public void setApproverName(String approverName) {
+        this.approverName = approverName;
     }
 
     /**
