@@ -178,20 +178,22 @@ public class PartyMemberController extends BaseController {
 
 	/**
 	 * 思想汇报详情
-	 * @param id 党员ID
-	 * @param subTypeId 活动二级分类ID
+	 * 
+	 * @param id
+	 *            党员ID
+	 * @param subTypeId
+	 *            活动二级分类ID
 	 * @return
 	 */
 	@GetMapping("/getReportDetail")
 	@ResponseBody
 	public ResultVo<ReportDetailVo> getReportDetail(@RequestParam("id") Long id,
-													@RequestParam("subTypeId") Long subTypeId) {
+			@RequestParam("subTypeId") Long subTypeId) {
 		ResultVo<ReportDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
-		ReportDetailVo detailVo = partyMemberService.getReportDetail(id,subTypeId);
+		ReportDetailVo detailVo = partyMemberService.getReportDetail(id, subTypeId);
 		result.setData(detailVo);
 		return result;
 	}
-
 
 	/**
 	 * 支书查询先锋评定党员列表
@@ -226,7 +228,7 @@ public class PartyMemberController extends BaseController {
 	 */
 	@GetMapping("/queryAllPartyMembersByDeptId")
 	@ResponseBody
-	public ResultVo<List<DjPartymember>> queryAllPartyMembersByDeptId() {
+	public ResultVo<List<DjPartymember>> queryAllPartyMembersByDeptId(Long deptId) {
 		ResultVo<List<DjPartymember>> result = new ResultVo<>();
 		TokenVo vo = getTokenUserInfo();
 		if (vo == null) {
@@ -234,7 +236,10 @@ public class PartyMemberController extends BaseController {
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
-		List<DjPartymember> list = partyMemberService.queryAllPartyMembersByDeptId(vo.getDeptId());
+		if (deptId == null) {
+			deptId = vo.getDeptId();
+		}
+		List<DjPartymember> list = partyMemberService.queryAllPartyMembersByDeptId(deptId);
 		if (list == null || list.size() == 0) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("该党支部没有信息");
@@ -269,12 +274,13 @@ public class PartyMemberController extends BaseController {
 	/**
 	 * 遵章守纪详情 片区负责人使用
 	 *
-	 * @param applyId 申请Id
+	 * @param applyId
+	 *            申请Id
 	 * @return
 	 */
 	@GetMapping("/getObserveLowDetailForSection")
 	@ResponseBody
-	public ResultVo<ObserveLowDetailVo>getObserveLowDetailForSection(@RequestParam("applyId") Long applyId) {
+	public ResultVo<ObserveLowDetailVo> getObserveLowDetailForSection(@RequestParam("applyId") Long applyId) {
 		ResultVo<ObserveLowDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
 		ObserveLowDetailVo vo = partyMemberService.getObserveLowDetailForSection(applyId);
 		result.setData(vo);
@@ -284,12 +290,13 @@ public class PartyMemberController extends BaseController {
 	/**
 	 * 遵章守纪详情 支部书记使用
 	 *
-	 * @param partyMemberId 党员Id
+	 * @param partyMemberId
+	 *            党员Id
 	 * @return
 	 */
 	@GetMapping("/getObserveLowDetailForDept")
 	@ResponseBody
-	public ResultVo<ObserveLowDetailVo>getObserveLowDetailForDept(@RequestParam("partyMemberId") Long partyMemberId) {
+	public ResultVo<ObserveLowDetailVo> getObserveLowDetailForDept(@RequestParam("partyMemberId") Long partyMemberId) {
 		ResultVo<ObserveLowDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
 		ObserveLowDetailVo vo = partyMemberService.getObserveLowDetailForDept(partyMemberId);
 		result.setData(vo);
@@ -307,7 +314,7 @@ public class PartyMemberController extends BaseController {
 	public ResultVo<Float> getSumScoreByIdCard(@RequestParam("idCard") String idCard) {
 		ResultVo<Float> result = new ResultVo<>();
 		result = partyMemberService.getSumScoreByIdCard(idCard);
-		if(result.getData() == null) {
+		if (result.getData() == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("获取积分是失败");
 		}
