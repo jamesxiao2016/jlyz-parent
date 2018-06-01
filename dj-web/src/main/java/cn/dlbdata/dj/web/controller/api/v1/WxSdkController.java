@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,12 +164,18 @@ public class WxSdkController extends BaseController {
 			String message = new String(jsonBytes, "UTF-8");
 			JSONObject demoJson = JSONObject.fromObject(message);
 			logger.info("JSON字符串：" + demoJson);
-			ticket = demoJson.getString("ticket");
+			if (demoJson != null) {
+				ticket = demoJson.getString("ticket");
+			}
+
+			if (StringUtils.isEmpty(ticket)) {
+				ticket = "";
+			}
+			LocalCache.TOKEN_CACHE.put("TICKET", ticket);
 			is.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("获取TICKET失败",e);
 		}
-		LocalCache.TOKEN_CACHE.put("TICKET", ticket);
 		return ticket;
 	}
 

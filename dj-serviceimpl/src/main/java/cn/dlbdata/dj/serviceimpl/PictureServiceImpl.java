@@ -86,7 +86,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 			record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 			record.setDjUserId(vo.getUserId());
 			int res = activePicMapper.insert(record);
-			if(res > 0) {
+			if (res > 0) {
 				result.setData(pictureId);
 				result.setMsg("上传图片成功！");
 				result.setCode(ResultCode.OK.getCode());
@@ -151,11 +151,17 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 			long date = System.currentTimeMillis();
 			calendar.setTimeInMillis(date);
 			int year = calendar.get(Calendar.YEAR);
-			int month = calendar.get(Calendar.MONTH + 1);
+			int month = calendar.get(Calendar.MONTH) + 1;
 			int day = calendar.get(Calendar.DAY_OF_MONTH);
 			picturePath = File.separator + userId + File.separator + year + File.separator + month + File.separator
-					+ day + File.separator + picId + fileExt;
-			filePath = rootPath + picturePath;
+					+ day + File.separator;
+			filePath = rootPath + picturePath + picId + fileExt;
+
+			//目录不存在，则创建目录
+			File dir = new File(rootPath + picturePath);
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
 
 			bis = new BufferedInputStream(conn.getInputStream());
 			fos = new FileOutputStream(new File(filePath));

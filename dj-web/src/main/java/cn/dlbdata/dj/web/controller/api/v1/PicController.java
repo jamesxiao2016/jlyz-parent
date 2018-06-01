@@ -41,9 +41,10 @@ public class PicController extends BaseController {
 	@GetMapping(value = "/upload")
 	@ResponseBody
 	public ResultVo<Long> upload(PicVo vo) {
+		logger.info("upload->" + JsonUtil.toJsonString(vo));
 		ResultVo<Long> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
-		if(user == null) {
+		if (user == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("请重新登录");
 			return result;
@@ -67,6 +68,7 @@ public class PicController extends BaseController {
 	 */
 	@GetMapping(value = "/showThumbnail")
 	public void showThumbnail(PicVo vo, HttpServletResponse response) {
+		logger.info("showThumbnail->" + JsonUtil.toJsonString(vo));
 		UserVo currentUser = getCurrentUserFromCache();
 		ResultVo<DjPic> result = new ResultVo<>();
 		if (vo == null) {
@@ -131,9 +133,10 @@ public class PicController extends BaseController {
 	@PostMapping(value = "/deleteActivePicById")
 	@ResponseBody
 	public ResultVo<Integer> deleteActivePicById(@RequestBody DjActivePicVo vo) {
+		logger.info("deleteActivePicById->" + JsonUtil.toJsonString(vo));
 		ResultVo<Integer> result = new ResultVo<>();
-		int count = pictureService.deleteActivePicById( vo.getDjActiveId(), vo.getDjPicId() );
-		if ( count <= 0) {
+		int count = pictureService.deleteActivePicById(vo.getDjActiveId(), vo.getDjPicId());
+		if (count <= 0) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("删除失败");
 		} else {
