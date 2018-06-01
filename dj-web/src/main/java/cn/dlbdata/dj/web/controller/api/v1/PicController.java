@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.util.ConfigUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
-import cn.dlbdata.dj.common.core.util.ImageUtil;
 import cn.dlbdata.dj.common.core.util.JsonUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
@@ -56,6 +55,7 @@ public class PicController extends BaseController {
 	private IPictureService pictureService;
 	@Autowired
 	private AccessService accessService;
+
 	/**
 	 * 上传图片
 	 * 
@@ -98,8 +98,7 @@ public class PicController extends BaseController {
 
 		return result;
 	}
-	
-	
+
 	/**
 	 * 获取媒体文件
 	 *
@@ -174,8 +173,6 @@ public class PicController extends BaseController {
 		logger.info("下载媒体文件成功，filePath=" + filePath);
 		return picturePath;
 	}
-	
-
 
 	/**
 	 * <p>
@@ -234,7 +231,6 @@ public class PicController extends BaseController {
 		return false;
 	}
 
-
 	/**
 	 * 显示缩略图
 	 * 
@@ -244,7 +240,6 @@ public class PicController extends BaseController {
 	@GetMapping(value = "/showThumbnail")
 	public void showThumbnail(PicVo vo, HttpServletResponse response) {
 		logger.info("showThumbnail->" + JsonUtil.toJsonString(vo));
-		UserVo currentUser = getCurrentUserFromCache();
 		ResultVo<DjPic> result = new ResultVo<>();
 		if (vo == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
@@ -258,7 +253,6 @@ public class PicController extends BaseController {
 			out.println(JsonUtil.toJsonString(result));
 			return;
 		}
-		vo.setUserId(currentUser.getUserId());
 		result = pictureService.selectThumbnailPath(vo.getPictureId());
 		InputStream is = null;
 		OutputStream os = null;
