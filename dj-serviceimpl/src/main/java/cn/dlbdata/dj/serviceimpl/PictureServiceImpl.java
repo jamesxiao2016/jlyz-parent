@@ -54,25 +54,13 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 	@Override
 	public ResultVo<Long> insert(PicVo vo) {
 		ResultVo<Long> result = new ResultVo<>();
-		String path;
-		Long picId = DigitUtil.generatorLongId();
-		try {
-			path = downloadMedia(picId, vo.getMediaId(), PICTURE_PATH, vo.getUserId());
-			logger.info("downloadMedia success");
-			thumbnailImage(PICTURE_PATH + path, 200, 200, PREVFIX, false);
-			logger.info("thumbnailImage success");
-		} catch (Exception e) {
-			logger.error("保存图片失败", e);
-			result.setMsg("保存图片失败");
-			result.setCode(ResultCode.Forbidden.getCode());
-			return result;
-		}
-
+	
+	
 		DjPic pic = new DjPic();
-		pic.setId(picId);
+		pic.setId(vo.getPictureId());
 		pic.setCreateTime(new Date());
-		pic.setPicUrl(path);
-		pic.setPicName(picId + "");
+		pic.setPicUrl(vo.getPath());
+		pic.setPicName(vo.getPictureId() + "");
 		pic.setStatus(1);
 		int count = picMapper.insert(pic);
 		if (count > 0) {
