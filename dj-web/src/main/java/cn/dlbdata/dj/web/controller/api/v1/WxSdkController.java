@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.DangjianException;
 import cn.dlbdata.dj.common.core.util.ConfigUtil;
-import cn.dlbdata.dj.common.util.HttpResult;
-import cn.dlbdata.dj.common.util.ResultUtil;
+import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
+import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.thirdparty.mp.sdk.model.access.AccessTokenResponse;
 import cn.dlbdata.dj.thirdparty.mp.sdk.model.access.GetUserInfo;
@@ -49,42 +49,45 @@ public class WxSdkController extends BaseController {
 
 	@RequestMapping(value = "/createMenu", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> createMenu(String json) {
-		ResultUtil result = new ResultUtil();
+	public ResultVo<Map<String, Object>> createMenu(String json) {
+		ResultVo<Map<String, Object>> result = new ResultVo<Map<String, Object>>();
 		try {
 			customMenuService.createMenu(json);
-			result.setSuccess(true);
+			result.setCode(ResultCode.OK.getCode());
 		} catch (DangjianException e) {
 			result.setMsg(e.getErrorMsg());
-			result.setSuccess(false);
+			result.setCode(ResultCode.BadRequest.getCode());
 		}
 
-		return result.getResult();
+		return result;
 	}
 
 	@RequestMapping(value = "/userInfo", method = RequestMethod.GET)
 	@ResponseBody
-	public HttpResult userInfo(String openid) {
+	public ResultVo<JSONObject> userInfo(String openid) {
+		ResultVo<JSONObject> result = new ResultVo<>();
 		GetUserInfo userInfo = new GetUserInfo();
 		userInfo.setLang("zh_CN");
 		userInfo.setOpenid(openid);
 
-		JSONObject json;
+		JSONObject json = null;
 		try {
 			json = userInfoService.userInfo(userInfo);
 		} catch (DangjianException e) {
 			logger.error("", e);
-
-			return HttpResult.failure("数据获取异常.");
+			result.setMsg("数据获取异常.");
+			result.setCode(ResultCode.BadRequest.getCode());
+			return result;
 		}
-
-		return HttpResult.success(json);
+		result.setData(json);
+		result.setCode(ResultCode.OK.getCode());
+		return result;
 	}
 
 	@RequestMapping(value = "/getToken", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getToken(HttpServletRequest httpRequest, String href) {
-
+	public ResultVo<GetaAccessTokenParam> getToken(HttpServletRequest httpRequest, String href) {
+		ResultVo<GetaAccessTokenParam> result = new ResultVo<GetaAccessTokenParam>();
 		String url = "http://" + httpRequest.getServerName() + httpRequest.getContextPath()
 				+ httpRequest.getServletPath();
 
@@ -96,10 +99,9 @@ public class WxSdkController extends BaseController {
 			url = href;
 		}
 
-		ResultUtil result = new ResultUtil();
 		GetaAccessTokenParam getaAccessTokenParam = new GetaAccessTokenParam();
-//		getaAccessTokenParam.setSecret("8d72463ffdf8a2232241985b442c1c93");
-//		getaAccessTokenParam.setAppid("wxef4c83c01085bb38");
+		// getaAccessTokenParam.setSecret("8d72463ffdf8a2232241985b442c1c93");
+		// getaAccessTokenParam.setAppid("wxef4c83c01085bb38");
 		getaAccessTokenParam.setAppid(ConfigUtil.get(DlbConstant.KEY_WX_APP_ID));
 		getaAccessTokenParam.setSecret(ConfigUtil.get(DlbConstant.KEY_WX_SECRET));
 		getaAccessTokenParam.setGrantType(GrantType.client_credential);
@@ -134,8 +136,8 @@ public class WxSdkController extends BaseController {
 		}
 
 		result.setData(getaAccessTokenParam);
-		result.setSuccess(true);
-		return result.getResult();
+		result.setCode(ResultCode.OK.getCode());
+		return result;
 	}
 
 	public String getTicket(String access_token) {

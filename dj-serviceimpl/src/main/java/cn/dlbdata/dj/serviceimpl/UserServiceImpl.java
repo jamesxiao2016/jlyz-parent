@@ -9,18 +9,19 @@ import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
-import cn.dlbdata.dj.common.core.util.cache.CacheManager;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.common.util.PingyinUtil;
 import cn.dlbdata.dj.common.util.StringUtil;
-import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.constant.RoleEnum;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
 import cn.dlbdata.dj.db.mapper.DjScoreMapper;
+import cn.dlbdata.dj.db.mapper.DjSectionMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.pojo.DjSection;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
@@ -34,6 +35,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 	private DjUserMapper userMapper;
 	@Autowired
 	private DjDeptMapper deptMapper;
+	@Autowired
+	private DjSectionMapper sectionMapper;
 	@Autowired
 	private DjPartymemberMapper partyMemberMapper;
 	@Autowired
@@ -203,7 +206,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 	}
 
 	@Override
-	public UserVo getUserDetailById(Long id, Integer isShowScore) {
+	public UserVo getUserDetailById(Long id, Integer isShowScore, Long roleId) {
 		if (id == null) {
 			return null;
 		}
@@ -212,7 +215,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		if (user == null) {
 			return null;
 		}
-		UserVo data = getUserDetailByUser(user,isShowScore);
+		UserVo data = getUserDetailByUser(user, isShowScore, roleId);
 		return data;
 	}
 
@@ -222,7 +225,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 	 * @param user
 	 * @return
 	 */
-	private UserVo getUserDetailByUser(DjUser user, Integer isShowScore) {
+	private UserVo getUserDetailByUser(DjUser user, Integer isShowScore, Long roleId) {
 		if (user == null) {
 			return null;
 		}
@@ -253,14 +256,28 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			}
 			data.setPartyBranchName(name);
 			data.setDeptName(dept.getName());
+			if (roleId != null && roleId > 1) {
+				// 党委
+				data.setPartyCommittee(dept.getAddress());
+				data.setHonor(dept.getHonor());
+				data.setPeopleNum(dept.getPeopleNum());
+				DjSection section = sectionMapper.selectByPrimaryKey(dept.getDjSectionId());
+				if (section != null) {
+					data.setSectionName(section.getName());
+				}
+
+				// 片区负责人，显示片区总人数
+				if (roleId.equals(RoleEnum.HEADER_OF_DISTRICT.getId())) {
+					Integer peopleNum = deptMapper.getSectionPeopleNum(dept.getDjSectionId());
+					data.setPeopleNum(peopleNum);
+				}
+			}
 		}
 		if (isShowScore != null && isShowScore == 1) {
 			Float totalScore = getSumScoreByUserId(user.getId(), Calendar.getInstance().get(Calendar.YEAR));
 			data.setTotalScore(totalScore);
 		}
-		// 党委
-		data.setPartyCommittee(DlbConstant.PARTYCOMMITTEE_LJZ);
-		CacheManager.getInstance().put(user.getId() + "", data);
+		// CacheManager.getInstance().put(user.getId() + "", data);
 		return data;
 	}
 

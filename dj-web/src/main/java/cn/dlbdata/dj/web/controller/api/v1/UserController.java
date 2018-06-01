@@ -27,7 +27,7 @@ public class UserController extends BaseController {
 	 */
 	@GetMapping("/getUserInfoById")
 	@ResponseBody
-	public ResultVo<UserVo> getUserInfoById(Long userId, Integer isShowScore) {
+	public ResultVo<UserVo> getUserInfoById(Long userId, Integer isShowScore, Long roleId) {
 		ResultVo<UserVo> result = new ResultVo<>(ResultCode.Forbidden.getCode());
 		TokenVo vo = getTokenUserInfo();
 		if (vo == null) {
@@ -38,7 +38,7 @@ public class UserController extends BaseController {
 		if (userId == null) {
 			userId = vo.getUserId();
 		}
-		UserVo data = userService.getUserDetailById(userId, isShowScore);
+		UserVo data = userService.getUserDetailById(userId, isShowScore, roleId);
 		if (data != null) {
 			result.setCode(ResultCode.OK.getCode());
 			result.setData(data);

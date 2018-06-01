@@ -43,7 +43,7 @@ public class DjDept {
     /**
      * 地址
      */
-    private Integer address;
+    private String address;
 
     /**
      * 电话
@@ -81,6 +81,11 @@ public class DjDept {
      */
     @Column(name = "principal_name")
     private String principalName;
+    
+    /**
+     * 党支部评级
+     */
+    private String honor;
 
     /**
      * 获取记录ID
@@ -195,7 +200,7 @@ public class DjDept {
      *
      * @return address - 地址
      */
-    public Integer getAddress() {
+    public String getAddress() {
         return address;
     }
 
@@ -204,7 +209,7 @@ public class DjDept {
      *
      * @param address 地址
      */
-    public void setAddress(Integer address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -318,5 +323,13 @@ public class DjDept {
 
 	public void setPrincipalName(String principalName) {
 		this.principalName = principalName;
+	}
+
+	public String getHonor() {
+		return honor;
+	}
+
+	public void setHonor(String honor) {
+		this.honor = honor;
 	}
 }

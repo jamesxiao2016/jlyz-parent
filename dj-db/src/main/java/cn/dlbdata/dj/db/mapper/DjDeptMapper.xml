@@ -11,7 +11,7 @@
     <result column="floor" jdbcType="VARCHAR" property="floor" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="people_num" jdbcType="INTEGER" property="peopleNum" />
-    <result column="address" jdbcType="INTEGER" property="address" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="parent_id" jdbcType="BIGINT" property="parentId" />
@@ -32,5 +32,9 @@
 
   <select id="getBranchDeptIdAndName" parameterType="java.lang.Long" resultType="cn.dlbdata.dj.db.vo.dept.DeptIdNameDto">
     select id as deptId,name as deptName  from dj_dept where dj_section_id= #{sectionId}
+  </select>
+  
+  <select id="getSectionPeopleNum" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    select sum(people_num)  from dj_dept where dj_section_id= #{sectionId}
   </select>
 </mapper>
