@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,11 +42,18 @@ public class PicController extends BaseController {
 	@ResponseBody
 	public ResultVo<Long> upload(PicVo vo) {
 		ResultVo<Long> result = new ResultVo<>();
+		UserVo user = getCurrentUserFromCache();
+		if(user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("请重新登录");
+			return result;
+		}
 		if (vo == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("参数不能为空");
 			return result;
 		}
+		vo.setUserId(user.getUserId());
 		result = pictureService.insert(vo);
 
 		return result;

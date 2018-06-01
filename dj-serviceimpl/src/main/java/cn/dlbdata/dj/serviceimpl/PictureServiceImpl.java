@@ -39,7 +39,7 @@ import tk.mybatis.mapper.entity.Example;
 @Service
 public class PictureServiceImpl extends BaseServiceImpl implements IPictureService {
 
-	private String PICTURE_PATH = ConfigUtil.get("pic.rootPath");
+	private String PICTURE_PATH = ConfigUtil.get("rootPath");
 	private final String PREVFIX = "thumbnail_";
 	// 拼接请求地址
 	private static String requestUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
@@ -78,9 +78,20 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 		int count = picMapper.insert(pic);
 		if (count > 0) {
 			long pictureId = pic.getId();
-			result.setData(pictureId);
-			result.setMsg("上传图片成功！");
-			result.setCode(ResultCode.OK.getCode());
+			DjActivePic record = new DjActivePic();
+			record.setId(DigitUtil.generatorLongId());
+			record.setDjActiveId(vo.getActiveId());
+			record.setCreateTime(new Date());
+			record.setDjPicId(pictureId);
+			record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+			record.setDjUserId(vo.getUserId());
+			int res = activePicMapper.insert(record);
+			if(res > 0) {
+				result.setData(pictureId);
+				result.setMsg("上传图片成功！");
+				result.setCode(ResultCode.OK.getCode());
+			}
+			result.setCode(ResultCode.Forbidden.getCode());
 		} else {
 			result.setCode(ResultCode.Forbidden.getCode());
 		}

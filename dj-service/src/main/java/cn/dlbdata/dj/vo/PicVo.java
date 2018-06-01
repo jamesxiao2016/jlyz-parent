@@ -18,6 +18,10 @@ public class PicVo implements Serializable {
 	 * 当前用户id
 	 */
 	private long userId;
+	/**
+	 * 活动id
+	 */
+	private Long activeId;
 
 	public String getMediaId() {
 		return mediaId;
@@ -41,6 +45,14 @@ public class PicVo implements Serializable {
 
 	public void setUserId(long userId) {
 		this.userId = userId;
+	}
+
+	public Long getActiveId() {
+		return activeId;
+	}
+
+	public void setActiveId(Long activeId) {
+		this.activeId = activeId;
 	}
 
 	
