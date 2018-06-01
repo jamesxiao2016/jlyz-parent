@@ -104,11 +104,26 @@
     and apply_year = #{year}
   </select>
     
-    <select id="getObserveLowDetail" resultType="cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo">
+    <select id="getObserveLowDetailByApplyId" resultType="cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo">
         select app.user_name as partyMemberName,dept.name as deptName,dis.reason,dis.reason_desc as reasonDesc,dis.id as disId from dj_apply app
         left join dj_discipline dis  on dis.id = app.record_id
         left join dj_dept dept on dept.id = app.dj_dept_id
         where app.id = #{id}
 
     </select>
+
+    <select id="getObserveLowDetailByPartyMemberId" resultType="cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo">
+        select app.user_name as partyMemberName,dept.name as deptName,dis.reason,dis.reason_desc as reasonDesc,dis.id as disId from dj_apply app
+        left join dj_discipline dis  on dis.id = app.record_id
+        left join dj_dept dept on dept.id = app.dj_dept_id
+        where app.create_time &gt;= #{yearTimeStart} and app.create_time &lt;= #{yearTimeEnd}
+        and app.user_id=#{partyMemberId} order by app.create_time desc LIMIT 1
+    </select>
+
+    <select id="getOneByUserIdOrderByCreateTimeDesc" resultType="java.lang.Integer">
+    select status from dj_apply where user_id = #{userId} and dj_sub_type_id =#{subTypeId}
+     and create_time &gt;= #{yearTimeStart} and create_time &lt;= #{yearTimeEnd}
+     order by create_time desc LIMIT 1
+  </select>
+
 </mapper>

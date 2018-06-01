@@ -64,10 +64,33 @@ public interface DjApplyMapper extends Mapper<DjApply> {
 								@Param("year") int year);
 
 	/**
-	 * 遵章守纪详情
+	 * 遵章守纪详情-->片区负责人使用
 	 *
 	 * @param applyId 申请Id
 	 * @return
 	 */
-	ObserveLowDetailVo getObserveLowDetail(Long applyId);
+	ObserveLowDetailVo getObserveLowDetailByApplyId(Long applyId);
+
+    /**
+     * 遵章守纪详情-->支部书记使用
+     *
+     * @param partyMemberId 党员Id
+     * @return
+     */
+    ObserveLowDetailVo getObserveLowDetailByPartyMemberId(@Param("partyMemberId") Long partyMemberId,
+                                                          @Param("yearTimeStart")Date yearTimeStart,
+                                                          @Param("yearTimeEnd") Date yearTimeEnd);
+
+    /**
+     *获取申请最近的一条记录的状态
+     *
+     * @param userId
+     * @param yearTimeStart
+     * @param yearTimeEnd
+     * @return 申请状态
+     */
+    Integer getOneByUserIdOrderByCreateTimeDesc(@Param("userId") Long userId,
+                                                @Param("yearTimeStart")Date yearTimeStart,
+                                                @Param("yearTimeEnd") Date yearTimeEnd,
+                                                @Param("subTypeId") Long subTypeId);
 }

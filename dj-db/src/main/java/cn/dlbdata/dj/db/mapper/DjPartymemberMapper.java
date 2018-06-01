@@ -25,6 +25,13 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
      */
     public List<DjPartymember> queryAllPartyMembersByDeptId(Map<String,Object> map);
 
+    /**
+     * 违章守纪评分党员列表
+     *
+     * @param deptId
+     *            支部Id
+     * @return
+     */
     List<ObserveLowPartyMemberVo> getObserveLowPartyMember(@Param("deptId") Long deptId,@Param("year") int year);
 
     /**

@@ -54,7 +54,7 @@
    </select>
 
   <select id="getObserveLowPartyMember" resultType="cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo">
-    SELECT pm.id,pm. NAME,(SELECT sum(score) FROM dj_score sc WHERE sc.dj_sub_type_id = 51
+    SELECT pm.id,pm. NAME,(SELECT sum(score) FROM dj_score sc WHERE sc.dj_sub_type_id in(51,52)
             AND sc.add_year = #{year} AND sc.user_id = pm.id) AS score
     FROM
         dj_partymember pm

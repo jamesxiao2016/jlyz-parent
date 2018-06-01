@@ -267,15 +267,31 @@ public class PartyMemberController extends BaseController {
 	}
 
 	/**
-	 * 遵章守纪详情
+	 * 遵章守纪详情 片区负责人使用
+	 *
 	 * @param applyId 申请Id
 	 * @return
 	 */
-	@GetMapping("/getObserveLowDetail")
+	@GetMapping("/getObserveLowDetailForSection")
 	@ResponseBody
-	public ResultVo<ObserveLowDetailVo>getObserveLowDetail(@RequestParam("applyId") Long applyId) {
+	public ResultVo<ObserveLowDetailVo>getObserveLowDetailForSection(@RequestParam("applyId") Long applyId) {
 		ResultVo<ObserveLowDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
-		ObserveLowDetailVo vo = partyMemberService.getObserveLowDetail(applyId);
+		ObserveLowDetailVo vo = partyMemberService.getObserveLowDetailForSection(applyId);
+		result.setData(vo);
+		return result;
+	}
+
+	/**
+	 * 遵章守纪详情 支部书记使用
+	 *
+	 * @param partyMemberId 党员Id
+	 * @return
+	 */
+	@GetMapping("/getObserveLowDetailForDept")
+	@ResponseBody
+	public ResultVo<ObserveLowDetailVo>getObserveLowDetailForDept(@RequestParam("partyMemberId") Long partyMemberId) {
+		ResultVo<ObserveLowDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
+		ObserveLowDetailVo vo = partyMemberService.getObserveLowDetailForDept(partyMemberId);
 		result.setData(vo);
 		return result;
 	}
