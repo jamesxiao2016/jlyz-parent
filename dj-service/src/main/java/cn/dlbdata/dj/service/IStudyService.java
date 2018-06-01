@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjStudy;
+import cn.dlbdata.dj.db.vo.study.ReviewScheduleListVo;
 import cn.dlbdata.dj.vo.StudyVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.study.StudyDetailVo;
@@ -61,5 +62,5 @@ public interface IStudyService {
 	 * @param subTypeId
 	 * @return
 	 */
-	List<DjStudy> getReviewScheduleList(Long subTypeId, Long userId);
+	List<ReviewScheduleListVo> getReviewScheduleList(Long subTypeId, Long userId);
 }

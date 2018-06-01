@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.db.pojo.DjStudy;
+import cn.dlbdata.dj.db.vo.study.ReviewScheduleListVo;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.service.IStudyService;
 import cn.dlbdata.dj.vo.UserVo;
@@ -81,10 +81,10 @@ public class StudyController extends BaseController {
 	 */
 	@GetMapping("/getReviewScheduleList")
 	@ResponseBody
-	public ResultVo<List<DjStudy>> getReviewScheduleList(Long subTypeId){
-		ResultVo<List<DjStudy>> result = new ResultVo<>();
+	public ResultVo<List<ReviewScheduleListVo>> getReviewScheduleList(Long subTypeId){
+		ResultVo<List<ReviewScheduleListVo>> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
-		List<DjStudy> list = studyService.getReviewScheduleList(subTypeId, user.getUserId());
+		List<ReviewScheduleListVo> list = studyService.getReviewScheduleList(subTypeId, user.getUserId());
 		if(list == null || list.size() == 0) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("获取审核进度列表失败！");

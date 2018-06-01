@@ -3,7 +3,9 @@ package cn.dlbdata.dj.serviceimpl;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.pojo.DjPicRecord;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.pojo.DjSubType;
+import cn.dlbdata.dj.db.vo.study.ReviewScheduleListVo;
 import cn.dlbdata.dj.service.IStudyService;
 import cn.dlbdata.dj.service.IWorkflowService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
@@ -225,17 +228,17 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 	 * @see cn.dlbdata.dj.service.IStudyService#getReviewScheduleList(java.lang.Long)
 	 */
 	@Override
-	public List<DjStudy> getReviewScheduleList(Long subTypeId, Long userId) {
-		if(subTypeId == null) {
+	public List<ReviewScheduleListVo> getReviewScheduleList(Long subTypeId, Long userId) {
+		if(subTypeId == null || userId == null) {
 			return null;
 		}
-		Example example = new Example(DjStudy.class);
-		example.createCriteria().andEqualTo("djSubTypeId", subTypeId).andEqualTo("createUserId", userId);
-		List<DjStudy> list = studyMapper.selectByExample(example);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("subTypeId", subTypeId);
+		map.put("userId", userId);
+		List<ReviewScheduleListVo> list = studyMapper.getReviewScheduleList(map);
 		if( list.size() > 0 && list != null) {
-			
 			Long[] picIds = null;
-			for (DjStudy djStudy : list) {
+			for (ReviewScheduleListVo djStudy : list) {
 				Example example1 = new Example(DjPicRecord.class);
 				example1.createCriteria().andEqualTo("recordId", djStudy.getId());
 				List<DjPicRecord> picList = picRecordMapper.selectByExample(example1);
