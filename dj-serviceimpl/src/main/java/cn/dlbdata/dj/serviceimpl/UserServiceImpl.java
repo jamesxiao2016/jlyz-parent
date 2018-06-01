@@ -256,9 +256,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			}
 			data.setPartyBranchName(name);
 			data.setDeptName(dept.getName());
+			// 党委
+			data.setPartyCommittee(dept.getAddress());
 			if (roleId != null && roleId > 1) {
-				// 党委
-				data.setPartyCommittee(dept.getAddress());
 				data.setHonor(dept.getHonor());
 				data.setPeopleNum(dept.getPeopleNum());
 				DjSection section = sectionMapper.selectByPrimaryKey(dept.getDjSectionId());
