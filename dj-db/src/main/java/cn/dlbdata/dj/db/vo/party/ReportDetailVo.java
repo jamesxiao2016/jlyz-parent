@@ -1,11 +1,12 @@
 package cn.dlbdata.dj.db.vo.party;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReportDetailVo {
     private String partyMemberName;//党员姓名
-    private String reportTime;//思想汇报时间
+    private Timestamp reportTime;//思想汇报时间
     private String typeName;//汇报类型
     private String content;//思想汇报主要内容
     private List<Long> picIds = new ArrayList<>();//思想汇报图片
@@ -19,11 +20,11 @@ public class ReportDetailVo {
         this.partyMemberName = partyMemberName;
     }
 
-    public String getReportTime() {
+    public Timestamp getReportTime() {
         return reportTime;
     }
 
-    public void setReportTime(String reportTime) {
+    public void setReportTime(Timestamp reportTime) {
         this.reportTime = reportTime;
     }
 
