@@ -77,20 +77,24 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 		int count = picMapper.insert(pic);
 		if (count > 0) {
 			long pictureId = pic.getId();
-			DjActivePic record = new DjActivePic();
-			record.setId(DigitUtil.generatorLongId());
-			record.setDjActiveId(vo.getActiveId());
-			record.setCreateTime(new Date());
-			record.setDjPicId(pictureId);
-			record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
-			record.setDjUserId(vo.getUserId());
-			int res = activePicMapper.insert(record);
-			if (res > 0) {
-				result.setData(pictureId);
-				result.setMsg("上传图片成功！");
-				result.setCode(ResultCode.OK.getCode());
+			result.setMsg("上传图片成功！");
+			result.setData(pictureId);
+			result.setCode(ResultCode.OK.getCode());
+			
+			if (vo.getActiveId() != null && vo.getActiveId() > 0) {
+				DjActivePic record = new DjActivePic();
+				record.setId(DigitUtil.generatorLongId());
+				record.setDjActiveId(vo.getActiveId());
+				record.setCreateTime(new Date());
+				record.setDjPicId(pictureId);
+				record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+				record.setDjUserId(vo.getUserId());
+				int res = activePicMapper.insert(record);
+				if (res > 0) {
+					result.setMsg("上传活动图片成功！");
+				}
 			}
-			result.setCode(ResultCode.Forbidden.getCode());
+
 		} else {
 			result.setCode(ResultCode.Forbidden.getCode());
 		}
