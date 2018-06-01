@@ -309,7 +309,7 @@ public class ActiveController extends BaseController {
 		if (partyMemberLifeNotice.getDepartmentId() == null) {
 			partyMemberLifeNotice.setDepartmentId(data.getDeptId());
 		}
-		Paged<Map<String, Object>> page = activeService.getParticipateActive(partyMemberLifeNotice);
+		Paged<Map<String, Object>> page = activeService.getActiveListByDeptId(partyMemberLifeNotice);
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(page);
 		return result;
