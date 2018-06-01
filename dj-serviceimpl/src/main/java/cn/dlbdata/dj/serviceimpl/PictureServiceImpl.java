@@ -157,7 +157,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 					+ day + File.separator;
 			filePath = rootPath + picturePath + picId + fileExt;
 
-			//目录不存在，则创建目录
+			// 目录不存在，则创建目录
 			File dir = new File(rootPath + picturePath);
 			if (!dir.exists()) {
 				dir.mkdirs();
@@ -179,7 +179,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 
 		}
 		logger.info("下载媒体文件成功，filePath=" + filePath);
-		return picturePath;
+		return filePath;
 	}
 
 	/**
@@ -255,13 +255,18 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 		String path = pic.getPicUrl();
 		logger.info("imgPath = " + path);
 		File imgFile = new File(PICTURE_PATH + path);
-		String thumbnailPath = imgFile + "_thumbnail.jpg";
-		if (!new File(thumbnailPath).exists()) {
-			thumbnailImage(PICTURE_PATH + thumbnailPath, 200, 200, PREVFIX, false);
+		try {
+			String thumbnailPath = imgFile.getCanonicalPath() + "_thumbnail.jpg";
+			if (!new File(thumbnailPath).exists()) {
+				thumbnailImage(imgFile.getCanonicalPath(), 200, 200, PREVFIX, false);
+			}
+			pic.setPicUrl(thumbnailPath);
+			result.setCode(ResultCode.OK.getCode());
+			result.setData(pic);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		pic.setPicUrl(thumbnailPath);
-		result.setCode(ResultCode.OK.getCode());
-		result.setData(pic);
 
 		return result;
 	}
