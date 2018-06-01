@@ -179,11 +179,8 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 
 		}
 		logger.info("下载媒体文件成功，filePath=" + filePath);
-<<<<<<< HEAD
-		return filePath;
-=======
+
 		return picPath;
->>>>>>> 30122daa327697be69ddadbae7deef1b65f7e00c
 	}
 
 	/**
