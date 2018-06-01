@@ -1,5 +1,7 @@
 package cn.dlbdata.dj.serviceimpl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -549,12 +551,38 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
         }
     }
 
+    @Transactional
 	@Override
 	public ResultVo<Long> doApplyThoughts(ThoughtsVo param, UserVo user) {
 		ResultVo<Long> result = new ResultVo<>();
-		if (param == null || user == null) {
+		if (param == null || user == null || param.getReportTime() == null) {
 			result.setCode(ResultCode.ParameterError.getCode());
 			result.setMsg("参数错误");
+			return result;
+		}
+		DjPartymember partymember = partymemberMapper.selectByPrimaryKey(param.getUserId());
+		if (partymember == null) {
+			result.setCode(ResultCode.ParameterError.getCode());
+			result.setMsg("当前选择的党员不存在!");
+			return result;
+		}
+		DjDept dept = deptMapper.selectByPrimaryKey(partymember.getDeptId());
+		if (dept == null) {
+			result.setCode(ResultCode.ParameterError.getCode());
+			result.setMsg("当前选择的党员部门信息异常!");
+			return result;
+		}
+		//校验操作权限
+		if (!user.getUserId().equals(dept.getPrincipalId())) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("您无权做本次操作!");
+			return result;
+		}
+		if (param.getReportType() == null
+				|| !param.getReportType().equals(ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId())
+				&& !param.getReportType().equals(ActiveSubTypeEnum.ACTIVE_SUB_L.getActiveSubId())) {
+			result.setCode(ResultCode.ParameterError.getCode());
+			result.setMsg("选择的汇报类型错误!");
 			return result;
 		}
 		// 获取二级分类信息
@@ -565,38 +593,62 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			result.setMsg("提交失败");
 			return result;
 		}
-
-		DjThoughts record = null;
-		if (param.getId() != null) {
-			record = thoughtsMapper.selectByPrimaryKey(param.getId());
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		Date reportTime = param.getReportTime();
+		DateFormat df = DateFormat.getDateInstance(DateFormat.YEAR_FIELD);
+		int parmYear = Integer.parseInt(df.format(reportTime).substring(0,4));
+		if (parmYear != year) {
+			result.setCode(ResultCode.ParameterError.getCode());
+			result.setMsg("请选择正确的汇报时间");
+			return result;
 		}
-		boolean isSave = false;
-		if (record == null) {
-			isSave = true;
-			record = new DjThoughts();
-			record.setId(DigitUtil.generatorLongId());
+		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
+		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
+		//不能重复思想汇报评分
+		int exists = thoughtsMapper.checkExists(partymember.getId(),param.getReportType(),yearTimeStart,yearTimeEnd);
+		if (exists > 0) {
+			result.setCode(ResultCode.BadRequest.getCode());
+			result.setMsg("该党员已评分，请勿重复评分!");
+			return result;
 		}
-
+		DjThoughts record = new DjThoughts();
+		record.setId(DigitUtil.generatorLongId());
 		record.setCreateTime(new Date());
-		record.setDjDeptId(param.getDeptId());
+		record.setDjDeptId(partymember.getDeptId());
 		record.setDjUserId(param.getUserId());
 		record.setThoughtsType(param.getReportType());
 		record.setThoughtsInfo(param.getContent());
 		record.setThoughtsTime(param.getReportTime());
-		record.setScore(5F);
+		record.setScore(subType.getScore());
 		record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
-		if (isSave) {
-			thoughtsMapper.insertSelective(record);
-		} else {
-			thoughtsMapper.updateByPrimaryKeySelective(record);
-		}
+
+		thoughtsMapper.insertSelective(record);
+
 		// 保存图片
 		savePics(record.getId(), DlbConstant.TABLE_NAME_THOUGHTS, param.getPics());
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		// TODO 不需要审批，直接加分
-		handScore(param.getReportType(), param.getUserId(), user.getUserId(),user.getUserName(), user.getUserId(),
-                user.getUserName(), subType.getScore(), record.getId(), param.getContent(), year);
+		DjScore score = new DjScore();
+		score.setId(DigitUtil.generatorLongId());
+		score.setDjTypeId(ActiveTypeEnum.ACTIVE_C.getActiveId());
+		score.setScore(subType.getScore());
+		score.setDjSubTypeId(param.getReportType());
+		score.setUserId(partymember.getId());
+		score.setAddTime(new Date());
+		score.setApplyUserId(user.getUserId());
+		score.setApplyUserName(user.getName());
+		score.setApproverId(user.getUserId());
+		score.setApproverName(user.getName());
+		score.setAddYear(year);
+		if (param.getReportType().equals( ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId())) {
+			score.setScoreDesc(ActiveSubTypeEnum.ACTIVE_SUB_K.getDesc());
+		} else {
+			score.setScoreDesc(ActiveSubTypeEnum.ACTIVE_SUB_L.getDesc());
+		}
 
+		score.setRecordId(record.getId());
+		score.setRecrodDesc(record.getThoughtsInfo());
+		score.setStatus(1);
+		score.setCreateTime(new Date());
+		scoreMapper.insert(score);
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(record.getId());
 		return result;

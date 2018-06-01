@@ -47,4 +47,11 @@
         </where>
         order by th.create_time desc
     </select>
+
+    <select id="checkExists" resultType="int">
+        select count(0) from dj_thoughts th where th.dj_user_id = #{partyMemberId}
+            and th.thoughts_type = #{type}
+            and th.thoughts_time &gt;= #{yearTimeStart}
+            and th.thoughts_time &lt;= #{yearTimeEnd}
+    </select>
 </mapper>
