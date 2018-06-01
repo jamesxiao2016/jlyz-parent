@@ -392,6 +392,14 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		}
 	}
 
+    /**
+     * 驿站生活违纪违规扣分申请
+     *
+     * @param param
+     * @param user
+     * @return
+     */
+    @Transactional
 	@Override
 	public ResultVo<Long> doApplyDiscipline(DisciplineVo param, UserVo user) {
 		ResultVo<Long> result = new ResultVo<>();
@@ -400,28 +408,44 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			result.setMsg("参数错误");
 			return result;
 		}
-		DjDiscipline record = null;
-		if (param.getId() != null) {
-			record = disciplineMapper.selectByPrimaryKey(param.getId());
-		}
-		boolean isSave = false;
-		if (record == null) {
-			isSave = true;
-			record = new DjDiscipline();
-			record.setId(DigitUtil.generatorLongId());
-		}
+        //校验党员信息
+        DjPartymember partymember = partymemberMapper.selectByPrimaryKey(param.getUserId());
+        if (partymember == null) {
+            result.setCode(ResultCode.ParameterError.getCode());
+            result.setMsg("当前选择的党员不存在!");
+            return result;
+        }
+        DjDept dept = deptMapper.selectByPrimaryKey(partymember.getDeptId());
+        if (dept == null) {
+            result.setCode(ResultCode.ParameterError.getCode());
+            result.setMsg("当前选择的党员部门信息异常!");
+            return result;
+        }
+        //校验操作权限
+        if (!user.getUserId().equals(dept.getPrincipalId())) {
+            result.setCode(ResultCode.Forbidden.getCode());
+            result.setMsg("您无权做本次操作!");
+            return result;
+        }
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int haveRecord = applyMapper.countByPartyMemberIdAndSubTypeIdAndYear(partymember.getId(),year,
+                ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId());
+        if (haveRecord > 0) {
+            result.setCode(ResultCode.BadRequest.getCode());
+            result.setMsg("请勿重复处理");
+            return result;
+        }
+		DjDiscipline record = new DjDiscipline();
+		record.setId(DigitUtil.generatorLongId());
 		record.setCreateTime(new Date());
-		record.setDjDeptId(param.getDeptId());
+		record.setDjDeptId(partymember.getDeptId());
 		record.setDjUserId(param.getUserId());
 		record.setReason(param.getReason());
 		record.setReasonDesc(param.getReasonDesc());
-		record.setScore(20F);
+		record.setScore(-20F);
 		record.setStatus(0);
-		if (isSave) {
-			disciplineMapper.insertSelective(record);
-		} else {
-			disciplineMapper.updateByPrimaryKeySelective(record);
-		}
+		disciplineMapper.insertSelective(record);
+
 
 		// 保存图片
 		savePics(record.getId(), DlbConstant.TABLE_NAME_DISCIPLINE, param.getPics());
@@ -429,15 +453,14 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		// 判断是否需要审批，需要审批，提交申请，写入到申请表中
 		ApplyVo vo = new ApplyVo();
 		vo.setContent(record.getReason());
-		vo.setDjSubTypeId(ActiveSubTypeEnum.ACTIVE_SUB_P.getActiveSubId());
+		vo.setDjSubTypeId(ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId());
 		vo.setDjTypeId(ActiveTypeEnum.ACTIVE_E.getActiveId());
 		vo.setRoleId(RoleEnum.HEADER_OF_DISTRICT.getId());
 		vo.setRecordId(record.getId());
 		vo.setDjDeptId(user.getDeptId());
-		vo.setUserId(param.getUserId());
-		vo.setUserName(param.getUserName());
-		vo.setRemark("遵章守纪申请");
-		// vo.setScore(score);
+		vo.setUserId(partymember.getId());
+		vo.setUserName(partymember.getName());
+		vo.setRemark("驿站生活违纪违规扣分申请");
 		vo.setTableName(DlbConstant.TABLE_NAME_DISCIPLINE);
 		vo.setApplyYear(Calendar.getInstance().get(Calendar.YEAR));
 		String rs = doApply(vo, user);

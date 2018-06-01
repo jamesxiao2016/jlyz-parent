@@ -13,13 +13,8 @@ public class DisciplineVo implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Long id;
-	// 用户ID
+	// 党员ID
 	private Long userId;
-	// 用户姓名
-	private String userName;
-	// 用户所在部门
-	private Long deptId;
 	// 扣分原因
 	private String reason;
 	// 原因描述
@@ -35,21 +30,6 @@ public class DisciplineVo implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public Long getDeptId() {
-		return deptId;
-	}
-
-	public void setDeptId(Long deptId) {
-		this.deptId = deptId;
-	}
 
 	public String getReason() {
 		return reason;
@@ -74,13 +54,4 @@ public class DisciplineVo implements Serializable {
 	public void setPics(String[] pics) {
 		this.pics = pics;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 }

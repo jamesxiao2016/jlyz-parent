@@ -93,4 +93,8 @@ public interface DjApplyMapper extends Mapper<DjApply> {
                                                 @Param("yearTimeStart")Date yearTimeStart,
                                                 @Param("yearTimeEnd") Date yearTimeEnd,
                                                 @Param("subTypeId") Long subTypeId);
+
+    int countByPartyMemberIdAndSubTypeIdAndYear(@Param("partyMemberId") Long partyMemberId,
+                                                @Param("year") int year,
+                                                @Param("subTypeId") Long subTypeId);
 }

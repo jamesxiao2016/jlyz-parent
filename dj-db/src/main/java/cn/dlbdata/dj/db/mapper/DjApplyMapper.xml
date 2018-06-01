@@ -126,4 +126,9 @@
      order by create_time desc LIMIT 1
   </select>
 
+    <select id="countByPartyMemberIdAndSubTypeIdAndYear" resultType="int">
+        select count(0) from dj_apply where user_id = #{partyMemberId} and apply_year = #{year}
+        and dj_sub_type_id = #{subTypeId}
+    </select>
+
 </mapper>
