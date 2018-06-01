@@ -6,10 +6,7 @@ import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
-import cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo;
-import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.*;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import cn.dlbdata.dj.vo.PartyVo;
 
@@ -73,6 +70,14 @@ public interface IPartyMemberService {
 	 * @return 思想汇报评分查询党员列表
 	 */
 	Paged<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId,int pageNum, int pageSize);
+
+	/**
+	 * 思想汇报详情
+	 * @param id 党员ID
+	 * @param subTypeId 活动二级分类ID
+	 * @return
+	 */
+	ReportDetailVo getReportDetail(Long id,Long subTypeId);
 
 
 //	/**

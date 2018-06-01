@@ -27,4 +27,24 @@
           and th.thoughts_time &lt;= #{yearTimeEnd}
         </if>
 	</select>
+    
+    <select id="getReportDetail" resultType="cn.dlbdata.dj.db.vo.party.ReportDetailVo">
+        select pm.name as partyMemberName, th.thoughts_time as reportTime,
+        case when  th.thoughts_type = 31 then '口头汇报' when th.thoughts_type = 32 then '书面汇报' else null  end  typeName,
+        th.thoughts_info as content,th.id
+        from  dj_thoughts th
+        LEFT JOIN dj_partymember pm on th.dj_user_id = pm.id
+
+        <where>
+            th.dj_user_id = #{id}
+            and th.thoughts_type = #{subTypeId}
+            <if test="yearTimeStart !=null">
+                and th.thoughts_time &gt;= #{yearTimeStart}
+            </if>
+            <if test="yearTimeEnd !=null">
+            and th.thoughts_time &lt;= #{yearTimeEnd}
+            </if>
+        </where>
+        order by th.create_time desc
+    </select>
 </mapper>

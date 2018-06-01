@@ -3,7 +3,7 @@ package cn.dlbdata.dj.web.controller.api.v1;
 import java.util.Calendar;
 import java.util.List;
 
-import cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo;
+import cn.dlbdata.dj.db.vo.party.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +17,6 @@ import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
-import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IUserService;
@@ -176,6 +173,22 @@ public class PartyMemberController extends BaseController {
 		Paged<ReportPartyMemberVo> voList = partyMemberService.getReportPartyMember(deptId, subTypeId, pageNum,
 				pageSize);
 		result.setData(voList);
+		return result;
+	}
+
+	/**
+	 * 思想汇报详情
+	 * @param id 党员ID
+	 * @param subTypeId 活动二级分类ID
+	 * @return
+	 */
+	@GetMapping("/getReportDetail")
+	@ResponseBody
+	public ResultVo<ReportDetailVo> getReportDetail(@RequestParam("id") Long id,
+													@RequestParam("subTypeId") Long subTypeId) {
+		ResultVo<ReportDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
+		ReportDetailVo detailVo = partyMemberService.getReportDetail(id,subTypeId);
+		result.setData(detailVo);
 		return result;
 	}
 

@@ -8,7 +8,7 @@ import java.util.Map;
 
 import cn.dlbdata.dj.db.mapper.*;
 import cn.dlbdata.dj.db.pojo.DjPicRecord;
-import cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo;
+import cn.dlbdata.dj.db.vo.party.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +27,6 @@ import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
-import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
@@ -152,6 +149,34 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 			}
 		}
 		return PageUtils.toPaged(page);
+	}
+
+	/**
+	 * 思想汇报详情
+	 *
+	 * @param id        党员ID
+	 * @param subTypeId 活动二级分类ID
+	 * @return
+	 */
+	@Override
+	public ReportDetailVo getReportDetail(Long id, Long subTypeId) {
+		if (!subTypeId.equals(ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId()) &&
+				!subTypeId.equals(ActiveSubTypeEnum.ACTIVE_SUB_L.getActiveSubId())) {
+			return new ReportDetailVo();
+		}
+		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
+		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
+		List<ReportDetailVo> vos = thoughtsMapper.getReportDetail(id,subTypeId,yearTimeStart,yearTimeEnd);
+
+		if (vos.size()>0) {
+			ReportDetailVo detailVo = vos.get(0);
+
+			List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_THOUGHTS,detailVo.getId());
+			detailVo.setPicIds(picIds);
+			return detailVo;
+		} else {
+			return new ReportDetailVo();
+		}
 	}
 
 	/**
