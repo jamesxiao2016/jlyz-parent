@@ -52,7 +52,7 @@ public class WorkflowController extends BaseController {
 	}
 
 	/**
-	 * 遵章守纪申请
+	 * 驿站生活违纪违规扣分申请
 	 * 
 	 * @param vo
 	 * @return

@@ -24,7 +24,7 @@ public interface IWorkflowService {
 	public String doApply(ApplyVo vo, UserVo user);
 
 	/**
-	 * 遵章守纪申请
+	 * 驿站生活违纪违规扣分申请
 	 * 
 	 * @param param
 	 * @param user
