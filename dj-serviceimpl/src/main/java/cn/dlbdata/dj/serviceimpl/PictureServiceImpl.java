@@ -151,7 +151,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 			long date = System.currentTimeMillis();
 			calendar.setTimeInMillis(date);
 			int year = calendar.get(Calendar.YEAR);
-			int month = calendar.get(Calendar.MONTH);
+			int month = calendar.get(Calendar.MONTH + 1);
 			int day = calendar.get(Calendar.DAY_OF_MONTH);
 			picturePath = File.separator + userId + File.separator + year + File.separator + month + File.separator
 					+ day + File.separator + picId + fileExt;
