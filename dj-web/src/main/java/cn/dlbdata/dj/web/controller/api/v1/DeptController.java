@@ -21,14 +21,20 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.service.IDeptService;
 import cn.dlbdata.dj.web.base.BaseController;
+import cn.dlbdata.dj.web.vo.TokenVo;
 
 import java.util.List;
 
 /**
- * <p>Title: DeptController</p>
+ * <p>
+ * Title: DeptController
+ * </p>
+ * 
  * @author zhouxuan
- * <p>Description: </p>
- * @date 2018年5月24日  
+ *         <p>
+ *         Description:
+ *         </p>
+ * @date 2018年5月24日
  */
 @Controller
 @RequestMapping("/api/v1/dept")
@@ -36,53 +42,66 @@ public class DeptController extends BaseController {
 	@Autowired
 	private IDeptService deptService;
 
-    @GetMapping(value="/queryById")
-    @ResponseBody
-    public ResultVo<DjDept> queryById(Long deptId){
-    	ResultVo<DjDept> result = new ResultVo<>();
-    	DjDept djDept = deptService.getDeptMessage(deptId);
-    	if(djDept == null)
-    	{
-    		result.setCode(ResultCode.Forbidden.getCode());
-    		result.setMsg("没有该支部的相关信息");
-    	}
-        result.setCode(ResultCode.OK.getCode());
-        result.setData(djDept);
-        return result;
-    }
+	@GetMapping(value = "/queryById")
+	@ResponseBody
+	public ResultVo<DjDept> queryById(Long deptId) {
+		ResultVo<DjDept> result = new ResultVo<>();
+		TokenVo vo = getTokenUserInfo();
+		if (vo == null) {
+			logger.error("用户未登录");
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		if (deptId == null) {
+			deptId = vo.getDeptId();
+		}
+		DjDept djDept = deptService.getDeptMessage(deptId);
+		if (djDept == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("没有该支部的相关信息");
+		}
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(djDept);
+		return result;
+	}
 
 	/**
 	 * 片区负责人获取支部信息列表
-	 * @param sectionId 片区Id
+	 * 
+	 * @param sectionId
+	 *            片区Id
 	 * @return
 	 */
 	@GetMapping("/getDeptListBySectionId")
 	@ResponseBody
-    public ResultVo<List<BranchDeptInfoVo>> getBranchDeptInfo(@RequestParam("sectionId") Long sectionId) {
+	public ResultVo<List<BranchDeptInfoVo>> getBranchDeptInfo(@RequestParam("sectionId") Long sectionId) {
 		ResultVo<List<BranchDeptInfoVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		List<BranchDeptInfoVo> voList = deptService.getBranchDeptInfo(sectionId);
 		result.setData(voList);
 		return result;
 	}
 
-
-    /**
-     * 获取片区信息（片区负责人登录时首页）
-     * @param userId id
-     * @return
-     */
+	/**
+	 * 获取片区信息（片区负责人登录时首页）
+	 * 
+	 * @param userId
+	 *            id
+	 * @return
+	 */
 	@GetMapping("/getSectionByUserId")
-    @ResponseBody
-    public ResultVo<SectionInfoVo>getSectionInfo(@RequestParam("userId") Long userId) {
-        ResultVo<SectionInfoVo> result = new ResultVo<>(ResultCode.OK.getCode());
-        SectionInfoVo vo = deptService.getSectionInfo(userId);
-        result.setData(vo);
-        return result;
-    }
+	@ResponseBody
+	public ResultVo<SectionInfoVo> getSectionInfo(@RequestParam("userId") Long userId) {
+		ResultVo<SectionInfoVo> result = new ResultVo<>(ResultCode.OK.getCode());
+		SectionInfoVo vo = deptService.getSectionInfo(userId);
+		result.setData(vo);
+		return result;
+	}
 
 	/**
 	 * 查询片区内的党支部Id和Name.
-	 * @param sectionId 片区Id
+	 * 
+	 * @param sectionId
+	 *            片区Id
 	 * @return
 	 */
 	@GetMapping("/branchIdNameInit")
