@@ -192,17 +192,6 @@ public class PartyMemberController extends BaseController {
 		return result;
 	}
 
-	// @PostMapping("/scoreCustom")
-	// @ResponseBody
-	// public ResultVo<String> scoreCustom(@RequestBody ReportAddScoreRequest request) {
-	// String token = getHeader("token");
-	//
-	// // 从缓存中获取当前用户的信息
-	// UserVo currUser = getCacheUserByToken(token);
-	// int year = Calendar.getInstance().get(Calendar.YEAR);
-	// partyMemberService.reportAddScore(request, year, currUser);
-	// return new ResultVo<String>(CoreConst.ResultCode.OK.getCode(), "加分成功!");
-	// }
 
 	/**
 	 * 支书查询先锋评定党员列表

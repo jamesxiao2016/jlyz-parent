@@ -204,11 +204,22 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
                 apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_H.getActiveSubId())) {
             if (!user.getUserId().equals(dept.getPrincipalId())) {
                 resultVo.setCode(ResultCode.Forbidden.getCode());
-                resultVo.setMsg("当前用户没有权限");
+                resultVo.setMsg("当前用户没有权限审核此数据");
                 return resultVo;
             }
         }
-        //TODO 先锋作用和遵章守纪的审核权限还未做
+        //先锋作用、驿站生活违规的只有片区负责人才有资格审核
+        DjSection section = sectionMapper.selectByPrimaryKey(dept.getDjSectionId());
+        if (apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_M.getActiveSubId()) ||
+                apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_N.getActiveSubId()) ||
+                apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_O.getActiveSubId()) ||
+				apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId())) {
+            if (!user.getUserId().equals(section.getPrincipalId())) {
+                resultVo.setCode(ResultCode.Forbidden.getCode());
+                resultVo.setMsg("当前用户没有权限审核此数据");
+                return resultVo;
+            }
+        }
 //		// 检查用户权限
 //		if (user.getRoleId() != RoleEnum.BRANCH_PARTY.getId()
 //				&& user.getRoleId() != RoleEnum.HEADER_OF_DISTRICT.getId()) {
@@ -367,6 +378,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 			record.setApplyUserName(applyerName);
 			record.setApproverName(approverName);
+			record.setScoreDesc(subType.getName());
 			Float score = applySocre;
 			// 公益服务,处理9分的问题
 			if (type.getId() == ActiveTypeEnum.ACTIVE_F.getActiveId()) {
@@ -637,6 +649,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		score.setApplyUserName(user.getName());
 		score.setApproverId(user.getUserId());
 		score.setApproverName(user.getName());
+		score.setAddStatus(1);
 		score.setAddYear(year);
 		if (param.getReportType().equals( ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId())) {
 			score.setScoreDesc(ActiveSubTypeEnum.ACTIVE_SUB_K.getDesc());

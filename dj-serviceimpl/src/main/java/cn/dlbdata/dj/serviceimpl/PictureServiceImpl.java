@@ -54,13 +54,12 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 	@Override
 	public ResultVo<Long> insert(PicVo vo) {
 		ResultVo<Long> result = new ResultVo<>();
-
 		String path;
 		Long picId = DigitUtil.generatorLongId();
 		try {
 			path = downloadMedia(picId, vo.getMediaId(), PICTURE_PATH, vo.getUserId());
 			logger.info("downloadMedia success");
-			thumbnailImage(path, 200, 200, PREVFIX, false);
+			thumbnailImage(PICTURE_PATH + path, 200, 200, PREVFIX, false);
 			logger.info("thumbnailImage success");
 		} catch (Exception e) {
 			logger.error("保存图片失败", e);
@@ -110,7 +109,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 
 		String filePath = null;
 		String picturePath = null;
-
+		String picPath = null;
 		GetaAccessTokenParam getaAccessTokenParam = new GetaAccessTokenParam();
 		// getaAccessTokenParam.setSecret("8d72463ffdf8a2232241985b442c1c93");
 		// getaAccessTokenParam.setAppid("wxef4c83c01085bb38");
@@ -155,6 +154,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 			int day = calendar.get(Calendar.DAY_OF_MONTH);
 			picturePath = File.separator + userId + File.separator + year + File.separator + month + File.separator
 					+ day + File.separator;
+			picPath = picturePath + picId + fileExt;
 			filePath = rootPath + picturePath + picId + fileExt;
 
 			// 目录不存在，则创建目录
@@ -179,7 +179,11 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 
 		}
 		logger.info("下载媒体文件成功，filePath=" + filePath);
+<<<<<<< HEAD
 		return filePath;
+=======
+		return picPath;
+>>>>>>> 30122daa327697be69ddadbae7deef1b65f7e00c
 	}
 
 	/**

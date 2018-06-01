@@ -80,13 +80,6 @@ public interface IPartyMemberService {
 	ReportDetailVo getReportDetail(Long id,Long subTypeId);
 
 
-//	/**
-//	 *思想汇报直接加分
-//	 * @param request 请求Data
-//	 */
-//	@Deprecated
-//	void reportAddScore(ReportAddScoreRequest request, int year, UserVo userVo);
-
 	/**
 	 * 先锋作用评分党员列表
 	 * @param deptId
