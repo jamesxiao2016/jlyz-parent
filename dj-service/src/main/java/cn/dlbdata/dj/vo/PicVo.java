@@ -22,6 +22,8 @@ public class PicVo implements Serializable {
 	 * 活动id
 	 */
 	private Long activeId;
+	
+	private String path;
 
 	public String getMediaId() {
 		return mediaId;
@@ -53,6 +55,14 @@ public class PicVo implements Serializable {
 
 	public void setActiveId(Long activeId) {
 		this.activeId = activeId;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	
