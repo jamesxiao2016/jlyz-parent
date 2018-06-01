@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.vo.party.AllPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
@@ -23,7 +24,7 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
      * @param deptId
      * @return
      */
-    public List<DjPartymember> queryAllPartyMembersByDeptId(Map<String,Object> map);
+    public List<AllPartyMemberVo> queryAllPartyMembersByDeptId(Map<String,Object> map);
 
     /**
      * 违章守纪评分党员列表

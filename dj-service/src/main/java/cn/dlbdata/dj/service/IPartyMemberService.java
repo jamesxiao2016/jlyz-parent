@@ -93,7 +93,7 @@ public interface IPartyMemberService {
 	 * @param deptId
 	 * @return
 	 */
-	public List<DjPartymember> queryAllPartyMembersByDeptId(Long deptId);
+	public List<AllPartyMemberVo> queryAllPartyMembersByDeptId(Long deptId);
 
 	/**
 	 * 违章守纪评分党员列表

@@ -227,7 +227,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	 * @see cn.dlbdata.dj.service.IPartyMemberService#queryAllPartyMembersByDeptId(java.lang.Long)
 	 */
 	@Override
-	public List<DjPartymember> queryAllPartyMembersByDeptId(Long deptId) {
+	public List<AllPartyMemberVo> queryAllPartyMembersByDeptId(Long deptId) {
 		if (deptId == null) {
 			return null;
 		}

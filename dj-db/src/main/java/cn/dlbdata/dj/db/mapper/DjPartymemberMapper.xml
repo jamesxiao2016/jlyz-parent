@@ -34,7 +34,7 @@
     order by post_id desc
   </select>
   
-  <resultMap id="BaseResultMapTwo" type="cn.dlbdata.dj.vo.PartyMemberVo">
+  <resultMap id="BaseResultMapTwo" type="cn.dlbdata.dj.db.vo.party.AllPartyMemberVo">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="sex_code" jdbcType="INTEGER" property="sexCode" />
@@ -43,7 +43,7 @@
     <result column="totalscore" jdbcType="FLOAT" property="totalScore" />
   </resultMap>
    <select id="queryAllPartyMembersByDeptId" parameterType="map" resultMap="BaseResultMapTwo">
-	    select p.id, p.name, p.sex_code, p.post_id,
+	    select p.id, p.name, p.age, p.sex_code, p.post_id,
 		(select sum(djs.score) from dj_score djs where djs.user_id = p.id and #{year} = (select year(now()) )) as totalscore 
 		from dj_partymember p
 	    left join dj_user pu on p.id = pu.id
