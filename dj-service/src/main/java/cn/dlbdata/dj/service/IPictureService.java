@@ -10,7 +10,14 @@ public interface IPictureService {
 	
 	public ResultVo<Long>  insert(PicVo vo);
 
-	public ResultVo<DjPic> selectThumbnailPath(long id);
+	public ResultVo<DjPic> selectThumbnailPath(Long id);
+	
+	/**
+	 * 获取图片路径
+	 * @param id
+	 * @return
+	 */
+	public ResultVo<DjPic> getPicInfoById(Long id);
 	/**
 	 * 
 	 * <p>Title: deleteActivePicById</p> 

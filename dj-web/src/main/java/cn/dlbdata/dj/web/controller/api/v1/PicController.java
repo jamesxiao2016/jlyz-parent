@@ -246,7 +246,61 @@ public class PicController extends BaseController {
 		return false;
 	}
 	
-	
+	/**
+	 * 显示原图
+	 * 
+	 * @param vo
+	 * @return
+	 */
+	@GetMapping(value = "/show")
+	public void show(PicVo vo, HttpServletResponse response) {
+		logger.info("showThumbnail->" + JsonUtil.toJsonString(vo));
+		ResultVo<DjPic> result = new ResultVo<>();
+		if (vo == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("参数不能为空！");
+			PrintWriter out = null;
+			try {
+				out = response.getWriter();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			out.println(JsonUtil.toJsonString(result));
+			return;
+		}
+		result = pictureService.getPicInfoById(vo.getPictureId());
+		InputStream is = null;
+		OutputStream os = null;
+		try {
+			try {
+				is = new FileInputStream(PICTURE_PATH + result.getData().getPicUrl());
+				response.setContentType("image/jpeg");
+				// 设置页面不缓存
+				response.setHeader("Pragma", "No-cache");
+				response.setHeader("Cache-Control", "no-cache");
+				response.setDateHeader("Expires", 0);
+				os = response.getOutputStream();// 取得响应输出流
+
+				int count;
+				byte[] buffer = new byte[1024 * 1024];
+				while ((count = is.read(buffer)) != -1) {
+					os.write(buffer, 0, count);
+					os.flush();
+				}
+			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
+			} finally {
+				if (is != null) {
+					is.close();
+				}
+				if (os != null) {
+					os.close();
+				}
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
 	
 	/**
 	 * 显示缩略图
