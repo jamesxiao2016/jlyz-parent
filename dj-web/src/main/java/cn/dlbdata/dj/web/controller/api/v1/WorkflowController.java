@@ -154,6 +154,9 @@ public class WorkflowController extends BaseController {
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
+		if (deptId == null) {
+			deptId = user.getDeptId();
+		}
 		Paged<DjApply> data = workflowService.getPendingList(user.getUserId(), deptId, typeId, null, pageNum, pageSize);
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(data);

@@ -31,7 +31,6 @@
   	select d.id,d.user_id,d.user_name,d.create_time,d.sub_type_name,d.status,t.name type_name from dj_apply d
 	left join dj_type t on t.id = d.dj_type_id
   	<where>
-  		d.approver_id = #{userId}
   		<if test="deptId != null">
   			and d.dj_dept_id = #{deptId}
   		</if>
