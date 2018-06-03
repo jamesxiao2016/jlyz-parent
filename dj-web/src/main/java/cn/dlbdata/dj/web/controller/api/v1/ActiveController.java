@@ -268,7 +268,14 @@ public class ActiveController extends BaseController {
 
 		return result;
 	}
-
+	/**
+	 * 
+	 * <p>Title: queryActiveById</p> 
+	 * <p>Description: 获取活动详情</p> 
+	 * @param activeId
+	 * @param roleId
+	 * @return
+	 */
 	@GetMapping(value = "/queryActiveById")
 	@ResponseBody
 	public ResultVo<Map<String, Object>> queryActiveById(Long activeId, Long roleId) {

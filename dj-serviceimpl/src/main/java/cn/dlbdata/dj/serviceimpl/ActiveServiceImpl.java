@@ -301,10 +301,11 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			if (inList.size() > 0) {
 				Example inUserExample = new Example(DjPartymember.class);
 				inUserExample.createCriteria().andIn("id", inList);
-				inUserExample.setOrderByClause("post_id");
+				inUserExample.setOrderByClause("party_post_code");
 				inUserList.addAll(partymemberMapper.selectByExample(inUserExample));
 			}
 			int inUserListCount = inUserList.size();
+			//参与人员集合
 			Map<String, List<DjPartymember>> inUserMap = new TreeMap<String, List<DjPartymember>>();
 
 			if (inUserList.size() > 0) {
@@ -332,11 +333,12 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			}
 			if (outList.size() > 0) {
 				Example outUserExample = new Example(DjPartymember.class);
-				outUserExample.createCriteria().andIn("id", inList);
-				outUserExample.setOrderByClause("post_id");
+				outUserExample.createCriteria().andIn("id", outList);
+				outUserExample.setOrderByClause("party_post_code");
 				outUserList.addAll(partymemberMapper.selectByExample(outUserExample));
 			}
 			int outUserListCount = outUserList.size();
+			//未参与人集合
 			Map<String, List<DjPartymember>> outUserMap = new TreeMap<String, List<DjPartymember>>();
 			if (outUserList.size() > 0) {
 				for (int i = 0; i < outUserList.size(); i++) {
@@ -361,49 +363,14 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 					}
 				}
 			}
-
+			//参与人员总人数
 			json.put("participateCount", inUserListCount);
+			//未参与人员总人数
 			json.put("notParticipateCount", outUserListCount);
-			for (Map.Entry<String, List<DjPartymember>> entry : inUserMap.entrySet()) {
-				List<DjPartymember> list = entry.getValue();
-				Collections.sort(list, new Comparator<DjPartymember>() {
-					@Override
-					public int compare(DjPartymember o1, DjPartymember o2) {
-						if (o1 != null && o1.getPostId() != null && o2 != null && o2.getPostId() != null) {
-							if (o1.getPostId() > o2.getPostId()) {
-								return -1;
-							} else if (o1.getPostId() == o2.getPostId()) {
-								return 0;
-							} else {
-								return 1;
-							}
-						}
-						return 0;
-					}
-				});
-			}
+			//参与人员集合
 			json.put("participate", inUserMap);
-			for (Map.Entry<String, List<DjPartymember>> entry : outUserMap.entrySet()) {
-				List<DjPartymember> list = entry.getValue();
-				if (list == null || list.isEmpty()) {
-					continue;
-				}
-				Collections.sort(list, new Comparator<DjPartymember>() {
-					@Override
-					public int compare(DjPartymember o1, DjPartymember o2) {
-						if (o1 != null && o1.getPostId() != null && o2 != null && o2.getPostId() != null) {
-							if (o1.getPostId() > o2.getPostId()) {
-								return -1;
-							} else if (o1.getPostId() == o2.getPostId()) {
-								return 0;
-							} else {
-								return 1;
-							}
-						}
-						return 0;
-					}
-				});
-			}
+			//未参与人员集合
+			json.put("notParticipate", outUserMap);
 			result.setData(json);
 		}
 		return result;
