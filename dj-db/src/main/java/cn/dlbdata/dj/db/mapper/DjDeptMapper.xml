@@ -37,4 +37,8 @@
   <select id="getSectionPeopleNum" parameterType="java.lang.Long" resultType="java.lang.Integer">
     select sum(people_num)  from dj_dept where dj_section_id= #{sectionId}
   </select>
+
+  <select id="getDeptIdsBySectionId" resultType="java.lang.Long">
+    select id from dj_dept where dj_section_id = #{sectionId}
+  </select>
 </mapper>

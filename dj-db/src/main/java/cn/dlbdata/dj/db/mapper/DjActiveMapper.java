@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.db.vo.ToDoVo;
 import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.db.pojo.DjActive;
@@ -63,5 +64,11 @@ public interface DjActiveMapper extends Mapper<DjActive> {
 	 * @return
 	 */
 	public int getParticipateActiveCount(Map<String, Object> map);
+
+	/**
+	 * 获取自己创建的未结束的活动
+	 * @return
+	 */
+	List<ToDoVo> getUnFinishedActive(Long userId);
 
 }

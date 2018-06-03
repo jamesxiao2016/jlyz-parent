@@ -130,4 +130,13 @@
         and dj_sub_type_id = #{subTypeId}
     </select>
 
+    <select id="countBySubTypeIdAndStatusAndDeptId" resultType="int">
+        select count(0) from dj_apply where dj_sub_type_id =#{subTypeId}
+         and status = #{status}
+        and  dj_dept_id in
+        <foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
 </mapper>
