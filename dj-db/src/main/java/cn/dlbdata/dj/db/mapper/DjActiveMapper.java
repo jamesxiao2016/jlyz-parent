@@ -66,9 +66,16 @@ public interface DjActiveMapper extends Mapper<DjActive> {
 	public int getParticipateActiveCount(Map<String, Object> map);
 
 	/**
-	 * 获取自己创建的未结束的活动
+	 * 获取自己创建的已开始/已结束的没有图片的活动
 	 * @return
 	 */
-	List<ToDoVo> getUnFinishedActive(Long userId);
+	List<ToDoVo> getNoPicActive(Long userId);
+
+	/**
+	 * 获取自己创建的未开始的活动
+	 * @param userId
+	 * @return
+	 */
+	List<ToDoVo> getUnStartedActive(Long userId);
 
 }

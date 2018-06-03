@@ -116,8 +116,15 @@
      </select>
 
 
-	<select id="getUnFinishedActive" resultType="cn.dlbdata.dj.db.vo.ToDoVo">
-    select id,name,dj_sub_type_id as subTypeId ,1 as tag from dj_active where create_user_id = #{userId}
-    and end_time &gt;= now()
+	<select id="getNoPicActive" resultType="cn.dlbdata.dj.db.vo.ToDoVo">
+    select ac.id,ac.name,ac.dj_sub_type_id as subTypeId ,1 as tag,2 as status from dj_active  ac where
+    not exists (select * from dj_pic_record  pr where pr.table_name ='dj_active' and pr.record_id = ac.id)
+    and create_user_id = #{userId}
+    and start_time &lt;= now()
   </select>
+
+	<select id="getUnStartedActive" resultType="cn.dlbdata.dj.db.vo.ToDoVo">
+	select id,name,dj_sub_type_id as subTypeId ,1 as tag,1 as status from dj_active where create_user_id = #{userId}
+    and start_time &gt;= now()
+	</select>
 </mapper>
