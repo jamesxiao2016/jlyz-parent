@@ -1,6 +1,7 @@
 package cn.dlbdata.dj.service;
 
 import cn.dlbdata.dj.db.vo.ToDoVo;
+import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
 import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
 import cn.dlbdata.dj.vo.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,24 +74,15 @@ public interface IWorkflowService {
 	public ResultVo<String> doAudit(AuditVo auditVo, UserVo user);
 
 	/**
-	 * 获取待办列表
-	 * 
-	 * @param userId
-	 *            用户ID
+	 * 支书查询待办列表
+	 *
 	 * @param deptId
-	 *            部门ID
-	 * @param typeId
-	 *            分类ID
-	 * @param roleId
-	 *            角色ID
-	 * @param pageNo
-	 *            页数
-	 * @param pageSize
-	 *            每页显示数量
+	 *            支部ID
+	 * @param subTypeId
+	 *            活动类型Id
 	 * @return
 	 */
-	public Paged<DjApply> getPendingList(Long userId, Long deptId, Long typeId, Long roleId, Integer pageNum,
-			Integer pageSize);
+	Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize);
 
 	/**
 	 * 查询积分审核列表

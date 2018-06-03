@@ -158,12 +158,6 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		return count;
 	}
 
-	// @Override
-	// public Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize) {
-	// Page<PendingPtMemberVo> page = PageHelper.startPage(pageNum, pageSize);
-	// studyMapper.getStudysByDeptIdAndSubTypeId(deptId, subTypeId);
-	// return PageUtils.toPaged(page);
-	// }
 
 	@Override
 	public ResultVo<Long> createActive(ActiveVo activeVo, UserVo user) {

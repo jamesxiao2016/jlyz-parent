@@ -1,6 +1,7 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
 import cn.dlbdata.dj.db.vo.ToDoVo;
+import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
 import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
 import cn.dlbdata.dj.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,17 +151,11 @@ public class WorkflowController extends BaseController {
 	 */
 	@GetMapping(value = "/getPendingList")
 	@ResponseBody
-	public ResultVo<Paged<DjApply>> getPendingList(Long typeId, Long deptId, Integer pageNum, Integer pageSize) {
-		ResultVo<Paged<DjApply>> result = new ResultVo<Paged<DjApply>>();
-		UserVo user = getCurrentUserFromCache();
-		if (user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
-			return result;
-		}
-		if (deptId == null) {
-			deptId = user.getDeptId();
-		}
-		Paged<DjApply> data = workflowService.getPendingList(user.getUserId(), deptId, typeId, null, pageNum, pageSize);
+	public ResultVo<Paged<PendingPtMemberVo>> getPendingList(Long subTypeId, Long deptId, Integer pageNum, Integer pageSize) {
+		ResultVo<Paged<PendingPtMemberVo>> result = new ResultVo<>();
+		pageNum = PageUtils.normalizePageIndex(pageNum);
+		pageSize = PageUtils.normalizePageSize(pageSize);
+		Paged<PendingPtMemberVo> data = workflowService.getPendingList(deptId,subTypeId, pageNum, pageSize);
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(data);
 		return result;
