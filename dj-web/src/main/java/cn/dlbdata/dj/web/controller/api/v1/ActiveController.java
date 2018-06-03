@@ -3,7 +3,6 @@ package cn.dlbdata.dj.web.controller.api.v1;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -271,7 +270,7 @@ public class ActiveController extends BaseController {
 
 	@GetMapping(value = "/queryActiveById")
 	@ResponseBody
-	public ResultVo<Map<String, Object>> queryActiveById(Long activeId) {
+	public ResultVo<Map<String, Object>> queryActiveById(Long activeId, Long roleId) {
 		ResultVo<Map<String, Object>> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
 		if (data == null) {
@@ -279,7 +278,7 @@ public class ActiveController extends BaseController {
 			result.setMsg("请先登录");
 			return result;
 		}
-		ResultVo<Map<String, Object>> res = activeService.queryActiveById(activeId, data.getUserId());
+		ResultVo<Map<String, Object>> res = activeService.queryActiveById(activeId, roleId);
 		if (res == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("没有相关的活动");
