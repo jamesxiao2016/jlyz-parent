@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import cn.dlbdata.dj.db.vo.ToDoVo;
 import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.db.pojo.DjActive;
+import cn.dlbdata.dj.db.vo.ToDoVo;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface DjActiveMapper extends Mapper<DjActive> {
@@ -70,5 +70,12 @@ public interface DjActiveMapper extends Mapper<DjActive> {
 	 * @return
 	 */
 	List<ToDoVo> getUnFinishedActive(Long userId);
-
+	/**
+	 * 
+	 * <p>Title: selectActiveIndexById</p> 
+	 * <p>Description: 根据活动id查询活动详情</p> 
+	 * @param activeId
+	 * @return
+	 */
+	public DjActive selectActiveIndexById(Long activeId);
 }

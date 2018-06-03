@@ -21,6 +21,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="dj_dept_id" jdbcType="BIGINT" property="djDeptId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="sub_active_type_name" jdbcType="VARCHAR" property="subActiveTypeName" />
   </resultMap>
 
 	<select id="getUserActiveCountByActiveTypeAndTime" parameterType="map" resultType="java.lang.Integer">
@@ -120,4 +121,18 @@
     select id,name,dj_sub_type_id as subTypeId ,1 as tag from dj_active where create_user_id = #{userId}
     and end_time &gt;= now()
   </select>
+  
+  <select id="selectActiveIndexById" parameterType="Long" resultMap="BaseResultMap">
+  	select
+  		t.id, t.name, t.dj_type_id, t.dj_sub_type_id, t.address, t.principal_name, t.start_time, t.end_time, t.content, t.create_time,
+  		dju.user_name, djs.name sub_active_type_name
+  		from dj_active t
+  		left join dj_user dju on dju.id = t.create_user_id 
+  		left join dj_sub_type djs on djs.id = t.dj_sub_type_id
+  		where t.id = #{activeId}
+  </select>
+
+  
+  
+  
 </mapper>

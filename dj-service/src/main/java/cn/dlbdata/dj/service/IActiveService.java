@@ -116,4 +116,5 @@ public interface IActiveService {
 	 */
 	public ResultVo<String> signIn(Long activeId, UserVo user);
 
+
 }

@@ -245,7 +245,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		if (roleId == null) {
 			roleId = RoleEnum.PARTY.getId();
 		}
-		DjActive active = activeMapper.selectByPrimaryKey(activeId);
+		DjActive active = activeMapper.selectActiveIndexById(activeId);
 		if (active == null) {
 			logger.error("参数错误");
 			result.setCode(ResultCode.Forbidden.getCode());
@@ -515,4 +515,5 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		}
 		return rlist;
 	}
+
 }
