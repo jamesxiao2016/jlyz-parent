@@ -7,6 +7,7 @@ import java.util.*;
 import cn.dlbdata.dj.constant.*;
 import cn.dlbdata.dj.db.pojo.*;
 import cn.dlbdata.dj.db.vo.ToDoVo;
+import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
 import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
 import cn.dlbdata.dj.dto.vangard.VanguardVo;
 import cn.dlbdata.dj.vo.*;
@@ -712,19 +713,19 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		return CoreConst.SUCCESS;
 	}
 
+	/**
+	 * 支书查询待办列表
+	 *
+	 * @param deptId
+	 *            支部ID
+	 * @param subTypeId
+	 *            活动类型Id
+	 * @return
+	 */
 	@Override
-	public Paged<DjApply> getPendingList(Long userId, Long deptId, Long typeId, Long roleId, Integer pageNum,
-			Integer pageSize) {
-		pageNum = PageUtils.normalizePageIndex(pageNum);
-		pageSize = PageUtils.normalizePageSize(pageSize);
-		Page<DjApply> page = PageHelper.startPage(pageNum, pageSize);
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("userId", userId);
-		paramMap.put("deptId", deptId);
-		paramMap.put("subTypeId", typeId);
-		paramMap.put("roleId", roleId);
-		applyMapper.getPendingList(paramMap);
-
+	public Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize) {
+		Page<PendingPtMemberVo> page = PageHelper.startPage(pageNum, pageSize);
+		applyMapper.getPendingList(deptId, subTypeId);
 		return PageUtils.toPaged(page);
 	}
 

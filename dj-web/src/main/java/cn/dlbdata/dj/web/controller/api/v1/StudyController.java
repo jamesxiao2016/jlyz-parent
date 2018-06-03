@@ -2,6 +2,7 @@ package cn.dlbdata.dj.web.controller.api.v1;
 
 import java.util.List;
 
+import cn.dlbdata.dj.service.IActiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,29 +30,9 @@ import cn.dlbdata.dj.web.base.BaseController;
 public class StudyController extends BaseController {
 	@Autowired
 	private IStudyService studyService;
+	@Autowired
+	private IActiveService activeService;
 
-//	/**
-//	 * 点击支书查询待办列表项进去的查询
-//	 *
-//	 * @param deptId
-//	 *            支部ID
-//	 * @param subTypeId
-//	 *            活动类型Id
-//	 * @return
-//	 */
-//	@GetMapping("/getPendingListByDeptId")
-//	@ResponseBody
-//	public ResultVo<Paged<PendingPtMemberVo>> getPendingList(@RequestParam("deptId") Long deptId,
-//			@RequestParam("subTypeId") Long subTypeId,
-//			@RequestParam(value = "pageNum", required = false) Integer pageNum,
-//			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
-//		pageNum = Paged.normalizePageIndex(pageNum);
-//		pageSize = Paged.normalizePageSize(pageSize);
-//		ResultVo<Paged<PendingPtMemberVo>> result = new ResultVo<>(CoreConst.ResultCode.OK.getCode());
-//		Paged<PendingPtMemberVo> voList = activeService.getPendingList(deptId, subTypeId,pageNum,pageSize);
-//		result.setData(voList);
-//		return result;
-//	}
 
 	/**
 	 * 获取自主学习详情

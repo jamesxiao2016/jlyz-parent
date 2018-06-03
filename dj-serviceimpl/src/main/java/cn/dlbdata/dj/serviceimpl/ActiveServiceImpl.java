@@ -175,6 +175,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		return count;
 	}
 
+
 	// @Override
 	// public Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId,
 	// int pageNum, int pageSize) {

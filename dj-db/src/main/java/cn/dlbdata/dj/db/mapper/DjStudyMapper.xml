@@ -23,10 +23,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 
-  <select id="getStudysByDeptIdAndSubTypeId" resultType="cn.dlbdata.dj.db.vo.study.PendingPtMemberVo">
-    select id as studyId,user_name as name,status,create_time as createTime from dj_study where dj_dept_id = #{deptId} and dj_sub_type_id = #{subTypeId}
-     order by has_audit asc
-  </select>
+
   
   <resultMap type="cn.dlbdata.dj.db.vo.study.ReviewScheduleListVo" id="BaseResultMapTwo">
   	 <id column="id" jdbcType="BIGINT" property="id" />

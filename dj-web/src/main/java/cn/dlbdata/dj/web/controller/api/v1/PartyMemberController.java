@@ -3,6 +3,8 @@ package cn.dlbdata.dj.web.controller.api.v1;
 import java.util.Calendar;
 import java.util.List;
 
+import cn.dlbdata.dj.db.vo.party.*;
+import cn.dlbdata.dj.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +17,6 @@ import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
-import cn.dlbdata.dj.db.vo.party.AllPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo;
-import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.ReportDetailVo;
-import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IUserService;
@@ -350,5 +346,26 @@ public class PartyMemberController extends BaseController {
 		}
 		result.setCode(ResultCode.OK.getCode());
 		return result;
+	}
+
+	/**
+	 * 获取党员年度活动信息
+	 * @return
+	 */
+	@GetMapping("/getAnnualActiveInfo")
+	@ResponseBody
+	public ResultVo<AnnualActiveInfo>getAnnualActiveInfo() {
+		UserVo user = getCurrentUserFromCache();
+		ResultVo<AnnualActiveInfo> resultVo = new ResultVo<>(ResultCode.OK.getCode());
+		if (user == null) {
+			logger.error("用户未登录");
+			resultVo.setCode(ResultCode.Forbidden.getCode());
+			resultVo.setMsg("用户未登录或用户已退出");
+			return resultVo;
+		}
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		AnnualActiveInfo activeInfo = partyMemberService.getAnnualActiveInfo(user,year);
+		resultVo.setData(activeInfo);
+		return resultVo;
 	}
 }

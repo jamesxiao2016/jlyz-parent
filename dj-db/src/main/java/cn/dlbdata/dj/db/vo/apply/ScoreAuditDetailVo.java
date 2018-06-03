@@ -6,6 +6,7 @@ import java.util.List;
 public class ScoreAuditDetailVo {
     private Long id;//申请记录Id
     private String subTypeName;//积分项名称
+    private Long subTypeId;
     private String content;//内容
     private Integer score;
     private List<Long> picIds = new ArrayList<>();//图片List
@@ -28,6 +29,14 @@ public class ScoreAuditDetailVo {
 
     public void setSubTypeName(String subTypeName) {
         this.subTypeName = subTypeName;
+    }
+
+    public Long getSubTypeId() {
+        return subTypeId;
+    }
+
+    public void setSubTypeId(Long subTypeId) {
+        this.subTypeId = subTypeId;
     }
 
     public String getContent() {

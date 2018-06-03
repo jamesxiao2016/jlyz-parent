@@ -66,16 +66,6 @@ public interface IActiveService {
 	 */
 	public int getParticipateActiveCount(PartyMemberLifeNotice partyMemberLifeNotice);
 
-//	/**
-//	 * 支书查询待办列表
-//	 *
-//	 * @param deptId
-//	 *            支部ID
-//	 * @param subTypeId
-//	 *            活动类型Id
-//	 * @return
-//	 */
-//	Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize);
 
 	/**
 	 * 创建活动

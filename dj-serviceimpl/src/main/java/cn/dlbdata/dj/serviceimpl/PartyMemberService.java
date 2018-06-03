@@ -9,6 +9,7 @@ import java.util.Map;
 import cn.dlbdata.dj.db.mapper.*;
 import cn.dlbdata.dj.db.pojo.DjPicRecord;
 import cn.dlbdata.dj.db.vo.party.*;
+import cn.dlbdata.dj.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -333,6 +334,30 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		map.put("year", year);
 		Float score = partyMemberMapper.getSumScoreByIdCard(map);
 		result.setData(score);
+		return result;
+	}
+
+	/**
+	 * 获取党员年度活动信息
+	 *
+	 * @param user
+	 * @return
+	 */
+	@Override
+	public AnnualActiveInfo getAnnualActiveInfo(UserVo user,Integer year) {
+		AnnualActiveInfo result = new AnnualActiveInfo();
+
+		Date startTime = DatetimeUtil.getYearFirst(year);
+		Date endTime = DatetimeUtil.getYearLast(year);
+		// 获取参与活动次数
+		int activeCount = activeMapper.getUserActiveCountByActiveTypeAndTime(user.getUserId(), null, startTime, endTime);
+		// 获取参与金领驿站活动次数
+		int jlyzCount = activeMapper.getUserActiveCountByActiveTypeAndTime(user.getUserId(),
+				ActiveSubTypeEnum.ACTIVE_SUB_E.getActiveSubId(), startTime, endTime);
+		Float totalScore = scoreMapper.getSumScoreByUserId(user.getUserId(),year);
+		result.setScore(totalScore);
+		result.setJlyzActiveNum(jlyzCount);
+		result.setActiveNum(activeCount);
 		return result;
 	}
 }

@@ -26,19 +26,7 @@
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="type_name" jdbcType="VARCHAR" property="typeName" />
   </resultMap>
-  
-  <select id="getPendingList" parameterType="map" resultMap="BaseResultMap">
-  	select d.id,d.user_id,d.user_name,d.create_time,d.sub_type_name,d.status,t.name type_name from dj_apply d
-	left join dj_type t on t.id = d.dj_type_id
-  	<where>
-  		<if test="deptId != null">
-  			and d.dj_dept_id = #{deptId}
-  		</if>
-  		<if test="typeId != null">
-  			and d.dj_sub_type_id = #{typeId}
-  		</if>
-  	</where>
-  </select>
+
     
     <select id="getScoreAuditList" resultType="cn.dlbdata.dj.db.vo.apply.ScoreApplyVo">
         select pm.id as partyMemberId,pm.name as partyMemberName,
@@ -89,9 +77,10 @@
     </select>
 
     <select id="getScoreAuditDetailByPtMemberId" resultType="cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo">
-        select ap.id,ap.sub_type_name as subTypeName,ap.apply_info as content,ap.score,ap.status,ap.remark as refuseReason,
+        select ap.id,ap.sub_type_name as subTypeName,ap.dj_sub_type_id as subTypeId,ap.apply_info as content,ap.score,ap.status,ap.remark as refuseReason,
         ap.record_id as recordId
          from dj_apply ap where user_id =#{partyMemberId}  and ap.create_time &gt;= #{yearTimeStart}  and ap.create_time &lt;= #{yearTimeEnd}
+         and ap.dj_type_id = 4
     </select>
 
     <select id="countUnAuditByPtMemberIdAndType" resultType="int">
@@ -149,5 +138,11 @@
             AND dj_sub_type_id = #{subTypeId}
         </if>
     </select>
+
+    <select id="getPendingList" resultType="cn.dlbdata.dj.db.vo.study.PendingPtMemberVo">
+    select id as applyId,user_name as name,status,create_time as createTime from dj_apply where dj_dept_id = #{deptId}
+    and dj_sub_type_id = #{subTypeId}
+     order by create_time desc
+  </select>
 
 </mapper>

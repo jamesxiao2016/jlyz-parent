@@ -8,17 +8,11 @@ import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
 import cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo;
+import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface DjApplyMapper extends Mapper<DjApply> {
-	/**
-	 * 获取待办列表
-	 * 
-	 * @param map
-	 * @return
-	 */
-	public List<DjApply> getPendingList(Map<String, Object> map);
 
 	/**
 	 *查询积分审核列表
@@ -106,4 +100,8 @@ public interface DjApplyMapper extends Mapper<DjApply> {
 							@Param("year") int year,
 							@Param("typeId") Long typeId,
 							@Param("subTypeId") Long subTypeId);
+
+
+    List<PendingPtMemberVo> getPendingList(@Param("deptId") Long deptId,
+														  @Param("subTypeId") Long subTypeId);
 }
