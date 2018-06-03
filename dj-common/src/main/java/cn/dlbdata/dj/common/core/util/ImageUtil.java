@@ -7,14 +7,22 @@
 package cn.dlbdata.dj.common.core.util;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
 
 /**
  * <p>Title: ImageUtil</p>
@@ -23,6 +31,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
  * @date 2018年5月28日  
  */
 public class ImageUtil {
+	private static final Logger logger = LoggerFactory.getLogger(ImageUtil.class);
 
 	public static BufferedImage genPic(String content) throws Exception {
 		// int qr_size = 400;
@@ -69,4 +78,71 @@ public class ImageUtil {
 		}
 		return resMatrix;
 	}
+	
+	
+
+	/**
+	 * <p>
+	 * Title: thumbnailImage
+	 * </p>
+	 * <p>
+	 * Description: 依据图片路径生成缩略图
+	 * </p>
+	 * 
+	 * @param imagePath
+	 *            原图片路径
+	 * @param w
+	 *            缩略图宽
+	 * @param h
+	 *            缩略图高
+	 * @param prevfix
+	 *            生成缩略图的前缀
+	 * @param force
+	 *            是否强制依照宽高生成缩略图(假设为false，则生成最佳比例缩略图)
+	 */
+	public static void thumbnailImage(String imagePath, int w, int h, String prevfix, boolean force) {
+		File imgFile = new File(imagePath);
+		if (imgFile.exists()) {
+			try {
+				String p = imgFile.getCanonicalPath();
+				File outFile = new File(p + "_thumbnail.jpg");
+				compressPic(imgFile, outFile, w, h);
+
+				logger.debug("缩略图在原路径下生成成功");
+			} catch (Exception e) {
+				logger.error("generate thumbnail image failed.", e);
+			}
+		} else {
+			logger.warn("the image is not exist.");
+		}
+	}
+
+	public static boolean compressPic(File inputFile, File outputFile, int w, int h) {
+		try {
+			Thumbnails.Builder<File> fileBuilder = Thumbnails.of(inputFile).scale(1.0).outputQuality(1.0);
+			BufferedImage src = fileBuilder.asBufferedImage();
+			int height = src.getHeight();
+			int width = src.getWidth();
+			int square = width;
+			if (width > height) {
+				square = height;
+			} else {
+				square = width;
+			}
+
+			Thumbnails.of(inputFile).size(w, h).sourceRegion(Positions.CENTER, square, square).toFile(outputFile);
+			return true;
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		}
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

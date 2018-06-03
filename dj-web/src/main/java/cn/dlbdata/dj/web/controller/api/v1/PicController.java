@@ -1,6 +1,5 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.util.ConfigUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
+import cn.dlbdata.dj.common.core.util.ImageUtil;
 import cn.dlbdata.dj.common.core.util.JsonUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
@@ -42,8 +42,6 @@ import cn.dlbdata.dj.vo.DjActivePicVo;
 import cn.dlbdata.dj.vo.PicVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
-import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.geometry.Positions;
 
 @Controller
 @RequestMapping("/api/v1/picture")
@@ -87,7 +85,7 @@ public class PicController extends BaseController {
 		try {
 			path = downloadMedia(picId, vo.getMediaId(), PICTURE_PATH, user.getUserId());
 			logger.info("downloadMedia success");
-			thumbnailImage(PICTURE_PATH + path, 200, 200, PREVFIX, false);
+			ImageUtil.thumbnailImage(PICTURE_PATH + path, 200, 200, PREVFIX, false);
 			logger.info("thumbnailImage success");
 		} catch (Exception e) {
 			logger.error("保存图片失败", e);
@@ -189,64 +187,6 @@ public class PicController extends BaseController {
 		return picPath;
 	}
 
-	/**
-	 * <p>
-	 * Title: thumbnailImage
-	 * </p>
-	 * <p>
-	 * Description: 依据图片路径生成缩略图
-	 * </p>
-	 * 
-	 * @param imagePath
-	 *            原图片路径
-	 * @param w
-	 *            缩略图宽
-	 * @param h
-	 *            缩略图高
-	 * @param prevfix
-	 *            生成缩略图的前缀
-	 * @param force
-	 *            是否强制依照宽高生成缩略图(假设为false，则生成最佳比例缩略图)
-	 */
-	private void thumbnailImage(String imagePath, int w, int h, String prevfix, boolean force) {
-		File imgFile = new File(imagePath);
-		if (imgFile.exists()) {
-			try {
-				String p = imgFile.getCanonicalPath();
-				File outFile = new File(p + "_thumbnail.jpg");
-				compressPic(imgFile, outFile, w, h);
-
-				logger.debug("缩略图在原路径下生成成功");
-			} catch (Exception e) {
-				logger.error("generate thumbnail image failed.", e);
-			}
-		} else {
-			logger.warn("the image is not exist.");
-		}
-	}
-
-	public boolean compressPic(File inputFile, File outputFile, int w, int h) {
-		try {
-			Thumbnails.Builder<File> fileBuilder = Thumbnails.of(inputFile).scale(1.0).outputQuality(1.0);
-			BufferedImage src = fileBuilder.asBufferedImage();
-			int height = src.getHeight();
-			int width = src.getWidth();
-			int square = width;
-			if (width > height) {
-				square = height;
-			} else {
-				square = width;
-			}
-
-			Thumbnails.of(inputFile).size(w, h).sourceRegion(Positions.CENTER, square, square).toFile(outputFile);
-			return true;
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-		}
-		return false;
-	}
-	
-	
 	
 	/**
 	 * 显示缩略图
