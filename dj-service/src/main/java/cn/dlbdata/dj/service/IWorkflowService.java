@@ -1,5 +1,6 @@
 package cn.dlbdata.dj.service;
 
+import cn.dlbdata.dj.db.vo.ToDoVo;
 import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
 import cn.dlbdata.dj.vo.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +10,8 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
+
+import java.util.List;
 
 public interface IWorkflowService {
 
@@ -103,4 +106,12 @@ public interface IWorkflowService {
      * @return
      */
     PioneeringApplyDetailVo getPioneeringApplyDetail(Long partyMemberId);
+
+	/**
+	 * 代办列表
+	 * @return
+	 */
+	List<ToDoVo> getTodoList(UserVo user);
+
+
 }

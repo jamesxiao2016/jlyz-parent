@@ -2,14 +2,11 @@ package cn.dlbdata.dj.serviceimpl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import cn.dlbdata.dj.constant.*;
 import cn.dlbdata.dj.db.pojo.*;
+import cn.dlbdata.dj.db.vo.ToDoVo;
 import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
 import cn.dlbdata.dj.dto.vangard.VanguardVo;
 import cn.dlbdata.dj.vo.*;
@@ -779,4 +776,112 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 
 		return pioneeringApplyDetailVo;
 	}
+
+    /**
+     * 代办列表
+     *
+     * @param user
+     * @return
+     */
+    @Override
+    public List<ToDoVo> getTodoList(UserVo user) {
+    	if (user==null) {
+    		return new ArrayList<>();
+		}
+    	if (!user.getRoleId().equals( RoleEnum.BRANCH_PARTY.getId()) &&
+				!user.getRoleId().equals( RoleEnum.HEADER_OF_DISTRICT.getId())) {
+    		return new ArrayList<>();
+		}
+    	//活动
+        List<ToDoVo> toDoVos = activeMapper.getUnFinishedActive(user.getUserId());
+        //代办
+		//当前登录人为党支书时
+		DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
+		if (dept == null) {
+			return toDoVos;
+		}
+		DjSection section = sectionMapper.selectByPrimaryKey(dept.getDjSectionId());
+		if (section == null) {
+			return toDoVos;
+		}
+		int tag =2;
+		if (user.getRoleId().equals( RoleEnum.BRANCH_PARTY.getId())) {
+			Long zzxxId = ActiveSubTypeEnum.ACTIVE_SUB_B.getActiveSubId();
+			int haveZzxx = applyMapper.countBySubTypeIdAndStatusAndDeptId(zzxxId,AuditStatusEnum.WAITING.getValue(),
+					dept.getId());
+			if (haveZzxx >0) {
+				ToDoVo vo = new ToDoVo();
+				vo.setSubTypeId(zzxxId);
+				vo.setTag(tag);
+				vo.setName("政治学习加分确认");
+				toDoVos.add(vo);
+			}
+			Long zzshId = ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId();
+			int haveZzsh = applyMapper.countBySubTypeIdAndStatusAndDeptId(zzshId,AuditStatusEnum.WAITING.getValue(),
+					dept.getId());
+			if (haveZzsh >0) {
+				ToDoVo vo = new ToDoVo();
+				vo.setSubTypeId(zzshId);
+				vo.setTag(tag);
+				vo.setName("组织生活加分确认");
+				toDoVos.add(vo);
+			}
+			Long gyfwId = ActiveSubTypeEnum.ACTIVE_SUB_H.getActiveSubId();
+			int haveGyfw= applyMapper.countBySubTypeIdAndStatusAndDeptId(gyfwId,AuditStatusEnum.WAITING.getValue(),
+					dept.getId());
+			if (haveGyfw >0) {
+				ToDoVo vo = new ToDoVo();
+				vo.setSubTypeId(gyfwId);
+				vo.setTag(tag);
+				vo.setName("公益服务加分确认");
+				toDoVos.add(vo);
+			}
+
+		} else {//当前登录人是片区负责人
+			//查询片区负责人的下属支部Id
+			List<Long> deptIdList = deptMapper.getDeptIdsBySectionId(section.getId());
+			if (deptIdList.size() == 0) {
+				return toDoVos;
+			}
+			Long [] array = deptIdList.toArray(new Long[0]);
+			Long disId = ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId();
+			int haveDis= applyMapper.countBySubTypeIdAndStatusAndDeptId(disId,AuditStatusEnum.WAITING.getValue(),array);
+			if (haveDis >0) {
+				ToDoVo vo = new ToDoVo();
+				vo.setSubTypeId(disId);
+				vo.setTag(tag);
+				vo.setName("驿站生活违纪违规扣分确认");
+				toDoVos.add(vo);
+			}
+			Long honorId = ActiveSubTypeEnum.ACTIVE_SUB_M.getActiveSubId();
+			int haveHonor = applyMapper.countBySubTypeIdAndStatusAndDeptId(honorId,AuditStatusEnum.WAITING.getValue(),array);
+			if (haveHonor >0) {
+				ToDoVo vo = new ToDoVo();
+				vo.setSubTypeId(honorId);
+				vo.setTag(tag);
+				vo.setName("获得荣誉加分确认");
+				toDoVos.add(vo);
+			}
+			Long recId = ActiveSubTypeEnum.ACTIVE_SUB_N.getActiveSubId();
+			int haveRec= applyMapper.countBySubTypeIdAndStatusAndDeptId(recId,AuditStatusEnum.WAITING.getValue(),array);
+			if (haveRec >0) {
+				ToDoVo vo = new ToDoVo();
+				vo.setSubTypeId(recId);
+				vo.setTag(tag);
+				vo.setName("先锋表彰加分确认");
+				toDoVos.add(vo);
+			}
+			Long vgdId = ActiveSubTypeEnum.ACTIVE_SUB_O.getActiveSubId();
+			int haveVgd= applyMapper.countBySubTypeIdAndStatusAndDeptId(vgdId,AuditStatusEnum.WAITING.getValue(),array);
+			if (haveVgd >0) {
+				ToDoVo vo = new ToDoVo();
+				vo.setSubTypeId(vgdId);
+				vo.setTag(tag);
+				vo.setName("先锋模范加分确认");
+				toDoVos.add(vo);
+			}
+
+		}
+        return toDoVos;
+    }
 }

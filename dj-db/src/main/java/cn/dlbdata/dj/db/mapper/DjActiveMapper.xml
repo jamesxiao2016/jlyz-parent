@@ -115,5 +115,9 @@
 	        order by signUp, t.start_time DESC
      </select>
 
- 
+
+	<select id="getUnFinishedActive" resultType="cn.dlbdata.dj.db.vo.ToDoVo">
+    select id,name,dj_sub_type_id as subTypeId ,1 as tag from dj_active where create_user_id = #{userId}
+    and end_time &gt;= now()
+  </select>
 </mapper>

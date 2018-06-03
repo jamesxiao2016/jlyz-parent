@@ -71,7 +71,7 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 	 * 获取缩略图的路径
 	 */
 	@Override
-	public ResultVo<DjPic> selectThumbnailPath(long id) {
+	public ResultVo<DjPic> selectThumbnailPath(Long id) {
 		ResultVo<DjPic> result = new ResultVo<>();
 		DjPic pic = picMapper.selectByPrimaryKey(id);
 		if (pic == null) {
@@ -95,6 +95,23 @@ public class PictureServiceImpl extends BaseServiceImpl implements IPictureServi
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		return result;
+	}
+
+	@Override
+	public ResultVo<DjPic> getPicInfoById(Long id) {
+		ResultVo<DjPic> result = new ResultVo<>();
+		DjPic pic = picMapper.selectByPrimaryKey(id);
+		if (pic == null) {
+			logger.info("picture is null" + id);
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("没有相关图片");
+			return result;
+		}
+
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(pic);
 
 		return result;
 	}

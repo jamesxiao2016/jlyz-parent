@@ -20,4 +20,11 @@ public interface DjDeptMapper extends Mapper<DjDept> {
 	 * @return
 	 */
 	Integer getSectionPeopleNum(Long sectionId);
+
+	/**
+	 * 通过片区Id查找下属的党支部Id
+	 * @param sectionId
+	 * @return
+	 */
+	List<Long> getDeptIdsBySectionId(long sectionId);
 }

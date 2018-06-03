@@ -31,7 +31,6 @@
   	select d.id,d.user_id,d.user_name,d.create_time,d.sub_type_name,d.status,t.name type_name from dj_apply d
 	left join dj_type t on t.id = d.dj_type_id
   	<where>
-  		d.approver_id = #{userId}
   		<if test="deptId != null">
   			and d.dj_dept_id = #{deptId}
   		</if>
@@ -129,6 +128,15 @@
     <select id="countByPartyMemberIdAndSubTypeIdAndYear" resultType="int">
         select count(0) from dj_apply where user_id = #{partyMemberId} and apply_year = #{year}
         and dj_sub_type_id = #{subTypeId}
+    </select>
+
+    <select id="countBySubTypeIdAndStatusAndDeptId" resultType="int">
+        select count(0) from dj_apply where dj_sub_type_id =#{subTypeId}
+         and status = #{status}
+        and  dj_dept_id in
+        <foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
 </mapper>

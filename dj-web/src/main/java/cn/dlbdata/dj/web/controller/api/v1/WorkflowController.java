@@ -1,5 +1,6 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
+import cn.dlbdata.dj.db.vo.ToDoVo;
 import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
 import cn.dlbdata.dj.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
 import cn.dlbdata.dj.service.IStudyService;
 import cn.dlbdata.dj.service.IWorkflowService;
 import cn.dlbdata.dj.web.base.BaseController;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/v1/flow")
@@ -154,6 +157,9 @@ public class WorkflowController extends BaseController {
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
+		if (deptId == null) {
+			deptId = user.getDeptId();
+		}
 		Paged<DjApply> data = workflowService.getPendingList(user.getUserId(), deptId, typeId, null, pageNum, pageSize);
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(data);
@@ -198,6 +204,24 @@ public class WorkflowController extends BaseController {
 		PioneeringApplyDetailVo vo = workflowService.getPioneeringApplyDetail(partyMemberId);
 		ResultVo<PioneeringApplyDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
 		result.setData(vo);
+		return result;
+	}
+
+	/**
+	 * 片区负责人/书记代办列表
+	 * @return
+	 */
+	@GetMapping("/todoList")
+	@ResponseBody
+	public ResultVo<List<ToDoVo>>getTodoList() {
+		ResultVo<List<ToDoVo>> result = new ResultVo<>();
+		UserVo user = getCurrentUserFromCache();
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		List<ToDoVo> toDoVos = workflowService.getTodoList(user);
+		result.setData(toDoVos);
 		return result;
 	}
 }

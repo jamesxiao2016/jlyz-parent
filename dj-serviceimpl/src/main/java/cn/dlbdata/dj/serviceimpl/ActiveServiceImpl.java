@@ -29,12 +29,14 @@ import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.constant.RoleEnum;
 import cn.dlbdata.dj.db.mapper.DjActiveDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveMapper;
+import cn.dlbdata.dj.db.mapper.DjActivePicMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveUserMapper;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActiveDept;
+import cn.dlbdata.dj.db.pojo.DjActivePic;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
@@ -60,6 +62,8 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	private DjPartymemberMapper partymemberMapper;
 	@Autowired
 	private DjActiveUserMapper activeUserMapper;
+	@Autowired
+	private DjActivePicMapper activePicMapper;
 
 	@Override
 	public DjActive getActiveInfoById(Long id) {
@@ -98,12 +102,12 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		map.put("endTime", partyMemberLifeNotice.getEndTime());
 		map.put("departmentId", partyMemberLifeNotice.getDepartmentId());
 		map.put("signUp", partyMemberLifeNotice.getSignUp());
-		Page<Map<String, Object>> page = PageHelper.startPage(partyMemberLifeNotice.getPageNum(), partyMemberLifeNotice.getPageSize());
+		Page<Map<String, Object>> page = PageHelper.startPage(partyMemberLifeNotice.getPageNum(),
+				partyMemberLifeNotice.getPageSize());
 		activeMapper.getRunningActive(map);
 		return PageUtils.toPaged(page);
 	}
-	
-	
+
 	/**
 	 * 党员生活通知列表第一条
 	 */
@@ -114,13 +118,13 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			return result;
 		}
 		partyMemberLifeNotice.setEndTime(new Date());
-		//请求参数map集合
+		// 请求参数map集合
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", partyMemberLifeNotice.getUserId());
 		map.put("startTime", partyMemberLifeNotice.getStartTime());
 		map.put("endTime", partyMemberLifeNotice.getEndTime());
 		map.put("departmentId", partyMemberLifeNotice.getDepartmentId());
-	    Map<String, Object> map1 = activeMapper.getParticipateActiveOne(map);
+		Map<String, Object> map1 = activeMapper.getParticipateActiveOne(map);
 		int count = getParticipateActiveCount(partyMemberLifeNotice);
 		Map<String, Object> map2 = new HashMap<>();
 		map2.put("count", count);
@@ -129,11 +133,9 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		return result;
 	}
 
-	
-	
 	/*
-	 * (non-Javadoc) <p>Title: getParticipateActiveCount</p> 
-	 *	<p>Description: 党员生活通知总数</p>
+	 * (non-Javadoc) <p>Title: getParticipateActiveCount</p> <p>Description: 党员生活通知总数</p>
+	 * 
 	 * @param PartyMemberLifeNotice
 	 *
 	 * @return
@@ -158,12 +160,12 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		return count;
 	}
 
-//	@Override
-//	public Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize) {
-//		Page<PendingPtMemberVo> page = PageHelper.startPage(pageNum, pageSize);
-//		studyMapper.getStudysByDeptIdAndSubTypeId(deptId, subTypeId);
-//		return PageUtils.toPaged(page);
-//	}
+	// @Override
+	// public Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize) {
+	// Page<PendingPtMemberVo> page = PageHelper.startPage(pageNum, pageSize);
+	// studyMapper.getStudysByDeptIdAndSubTypeId(deptId, subTypeId);
+	// return PageUtils.toPaged(page);
+	// }
 
 	@Override
 	public ResultVo<Long> createActive(ActiveVo activeVo, UserVo user) {
@@ -197,7 +199,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		}
 		activeMapper.insertSelective(active);
 
-		//保存活动参与部门表
+		// 保存活动参与部门表
 		if (activeVo.getDeptIds() != null) {
 			for (Long deptId : activeVo.getDeptIds()) {
 				DjActiveDept dept = new DjActiveDept();
@@ -224,8 +226,6 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 
 		return result;
 	}
-
-
 
 	/*
 	 * (non-Javadoc) <p>Title: queryActiveById</p> <p>Description: 获取活动详情</p>
@@ -497,8 +497,37 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		map.put("startTime", partyMemberLifeNotice.getStartTime());
 		map.put("endTime", partyMemberLifeNotice.getEndTime());
 		map.put("deptId", partyMemberLifeNotice.getDepartmentId());
-		Page<Map<String, Object>> page = PageHelper.startPage(partyMemberLifeNotice.getPageNum(), partyMemberLifeNotice.getPageSize());
-		activeMapper.getActiveListByDeptId(map);
+		Page<Map<String, Object>> page = PageHelper.startPage(partyMemberLifeNotice.getPageNum(),
+				partyMemberLifeNotice.getPageSize());
+		List<Map<String, Object>> list = activeMapper.getActiveListByDeptId(map);
+		if (list != null && list.size() > 0) {
+			for (Map<String, Object> data : list) {
+				Long activeId = (Long) data.get("id");
+				data.put("picIds", getActivePicList(activeId));
+			}
+		}
 		return PageUtils.toPaged(page);
+	}
+
+	/**
+	 * 获取活动图片ID列表
+	 * 
+	 * @param activeId
+	 * @return
+	 */
+	private List<Long> getActivePicList(Long activeId) {
+		List<Long> rlist = new ArrayList<>();
+		if (activeId == null) {
+			return rlist;
+		}
+		DjActivePic condition = new DjActivePic();
+		condition.setDjActiveId(activeId);
+		List<DjActivePic> list = activePicMapper.select(condition);
+		if (list != null && list.size() > 0) {
+			for (DjActivePic p : list) {
+				rlist.add(p.getDjPicId());
+			}
+		}
+		return rlist;
 	}
 }

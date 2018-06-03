@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hazelcast.mapreduce.impl.operation.RequestPartitionResult.ResultState;
+
 import cn.dlbdata.dj.common.core.util.PageUtils;
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
@@ -167,9 +169,19 @@ public class PartyMemberController extends BaseController {
 			@RequestParam("subTypeId") Long subTypeId,
 			@RequestParam(value = "pageNum", required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+		ResultVo<Paged<ReportPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
+		
+		TokenVo tokenVo = getTokenUserInfo();
+		if (tokenVo == null) {
+			result.setCode(ResultCode.BadRequest.getCode());
+			return result;
+		}
+		if (deptId == null) {
+			deptId = tokenVo.getDeptId();
+		}
+		
 		pageNum = PageUtils.normalizePageIndex(pageNum);
 		pageSize = PageUtils.normalizePageSize(pageSize);
-		ResultVo<Paged<ReportPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		Paged<ReportPartyMemberVo> voList = partyMemberService.getReportPartyMember(deptId, subTypeId, pageNum,
 				pageSize);
 		result.setData(voList);
@@ -178,20 +190,22 @@ public class PartyMemberController extends BaseController {
 
 	/**
 	 * 思想汇报详情
-	 * @param id 党员ID
-	 * @param subTypeId 活动二级分类ID
+	 * 
+	 * @param id
+	 *            党员ID
+	 * @param subTypeId
+	 *            活动二级分类ID
 	 * @return
 	 */
 	@GetMapping("/getReportDetail")
 	@ResponseBody
 	public ResultVo<ReportDetailVo> getReportDetail(@RequestParam("id") Long id,
-													@RequestParam("subTypeId") Long subTypeId) {
+			@RequestParam("subTypeId") Long subTypeId) {
 		ResultVo<ReportDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
-		ReportDetailVo detailVo = partyMemberService.getReportDetail(id,subTypeId);
+		ReportDetailVo detailVo = partyMemberService.getReportDetail(id, subTypeId);
 		result.setData(detailVo);
 		return result;
 	}
-
 
 	/**
 	 * 支书查询先锋评定党员列表
@@ -205,10 +219,19 @@ public class PartyMemberController extends BaseController {
 			@RequestParam(value = "deptId") Long deptId,
 			@RequestParam(value = "pageNum", required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+		ResultVo<Paged<PioneeringPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
+		TokenVo tokenVo = getTokenUserInfo();
+		if (tokenVo == null) {
+			result.setCode(ResultCode.BadRequest.getCode());
+			return result;
+		}
+		if (deptId == null) {
+			deptId = tokenVo.getDeptId();
+		}
 		pageNum = PageUtils.normalizePageIndex(pageNum);
 		pageSize = PageUtils.normalizePageSize(pageSize);
 		Paged<PioneeringPartyMemberVo> voList = partyMemberService.getPioneeringPartyMembers(deptId, pageNum, pageSize);
-		ResultVo<Paged<PioneeringPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
+		
 		result.setData(voList);
 		return result;
 	}
@@ -257,11 +280,21 @@ public class PartyMemberController extends BaseController {
 	public ResultVo<Paged<ObserveLowPartyMemberVo>> getObserveLowPartyMember(@RequestParam("deptId") Long deptId,
 			@RequestParam(value = "pageNum", required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
+		ResultVo<Paged<ObserveLowPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
+		TokenVo tokenVo = getTokenUserInfo();
+		if (tokenVo == null) {
+			result.setCode(ResultCode.BadRequest.getCode());
+			return result;
+		}
+		if (deptId == null) {
+			deptId = tokenVo.getDeptId();
+		}
+
 		pageNum = PageUtils.normalizePageIndex(pageNum);
 		pageSize = PageUtils.normalizePageSize(pageSize);
 
 		Paged<ObserveLowPartyMemberVo> paged = partyMemberService.getObserveLowPartyMember(deptId, pageNum, pageSize);
-		ResultVo<Paged<ObserveLowPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
+
 		result.setData(paged);
 		return result;
 	}
@@ -269,12 +302,13 @@ public class PartyMemberController extends BaseController {
 	/**
 	 * 遵章守纪详情 片区负责人使用
 	 *
-	 * @param applyId 申请Id
+	 * @param applyId
+	 *            申请Id
 	 * @return
 	 */
 	@GetMapping("/getObserveLowDetailForSection")
 	@ResponseBody
-	public ResultVo<ObserveLowDetailVo>getObserveLowDetailForSection(@RequestParam("applyId") Long applyId) {
+	public ResultVo<ObserveLowDetailVo> getObserveLowDetailForSection(@RequestParam("applyId") Long applyId) {
 		ResultVo<ObserveLowDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
 		ObserveLowDetailVo vo = partyMemberService.getObserveLowDetailForSection(applyId);
 		result.setData(vo);
@@ -284,12 +318,13 @@ public class PartyMemberController extends BaseController {
 	/**
 	 * 遵章守纪详情 支部书记使用
 	 *
-	 * @param partyMemberId 党员Id
+	 * @param partyMemberId
+	 *            党员Id
 	 * @return
 	 */
 	@GetMapping("/getObserveLowDetailForDept")
 	@ResponseBody
-	public ResultVo<ObserveLowDetailVo>getObserveLowDetailForDept(@RequestParam("partyMemberId") Long partyMemberId) {
+	public ResultVo<ObserveLowDetailVo> getObserveLowDetailForDept(@RequestParam("partyMemberId") Long partyMemberId) {
 		ResultVo<ObserveLowDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
 		ObserveLowDetailVo vo = partyMemberService.getObserveLowDetailForDept(partyMemberId);
 		result.setData(vo);
@@ -307,7 +342,7 @@ public class PartyMemberController extends BaseController {
 	public ResultVo<Float> getSumScoreByIdCard(@RequestParam("idCard") String idCard) {
 		ResultVo<Float> result = new ResultVo<>();
 		result = partyMemberService.getSumScoreByIdCard(idCard);
-		if(result.getData() == null) {
+		if (result.getData() == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("获取积分是失败");
 		}
