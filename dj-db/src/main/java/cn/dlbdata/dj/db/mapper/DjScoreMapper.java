@@ -45,13 +45,6 @@ public interface DjScoreMapper extends Mapper<DjScore> {
     List<ScoreTypeVo> getTypeScoreListByUserId(@Param("userId")Long  userId , @Param("year") Integer year);
 
 
-
-//    List<DjScore> getScoreIdsByTypeIdAndSubTypeIdAndYearAndPartyMemberId(@Param("typeId") Long typeId,
-//                                                               @Param("subTypeId") Long subTypeId,
-//                                                               @Param("year") int year,
-//                                                               @Param("partyMemberId") Long partyMemberId);
-    
-
 	/**
 	 * 获取用户的总积分
 	 * 

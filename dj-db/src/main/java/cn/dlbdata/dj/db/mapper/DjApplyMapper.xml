@@ -139,4 +139,15 @@
         </foreach>
     </select>
 
+    <select id="countScoreInProcess" parameterType="Map"
+            resultType="java.lang.Float">
+        select sum(score) from dj_apply where user_id=#{userId} and apply_year=#{year} and status =0
+        <if test="typeId != null">
+            and dj_type_id=#{typeId}
+        </if>
+        <if test="subTypeId != null">
+            AND dj_sub_type_id = #{subTypeId}
+        </if>
+    </select>
+
 </mapper>

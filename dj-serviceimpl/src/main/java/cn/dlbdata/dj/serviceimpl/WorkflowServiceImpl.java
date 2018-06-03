@@ -884,4 +884,57 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		}
         return toDoVos;
     }
+
+	/**
+	 * 获取自主活动流程中的积分
+	 *
+	 * @param user
+	 * @return
+	 */
+	@Override
+	public Float sumScoreInProcess(UserVo user) {
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		//公益服务
+		Float gyfwNow = scoreMapper.getSumScoreByUserIdAndType(user.getUserId(),year,
+				ActiveTypeEnum.ACTIVE_F.getActiveId(),null);
+		gyfwNow = gyfwNow == null?0L:gyfwNow;
+		Float gyfwInprocess = 0F;
+		if (gyfwNow <10F) {
+			gyfwInprocess = applyMapper.countScoreInProcess(user.getUserId(),year,ActiveTypeEnum.ACTIVE_F.getActiveId(),
+					null);
+			gyfwInprocess = gyfwInprocess == null?0L:gyfwInprocess;
+			if ((10F - gyfwNow) < gyfwInprocess) {
+				gyfwInprocess = 10F -gyfwNow;
+			}
+		}
+		//组织生活
+		Float zzshNow = scoreMapper.getSumScoreByUserIdAndType(user.getUserId(),year,
+				ActiveTypeEnum.ACTIVE_B.getActiveId(),ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId());
+		zzshNow = zzshNow == null?0L:zzshNow;
+		Float zzshInProcess = 0F;
+		if (zzshNow < 10F) {
+			zzshInProcess = applyMapper.countScoreInProcess(user.getUserId(), year,
+					ActiveTypeEnum.ACTIVE_B.getActiveId(), ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId());
+			zzshInProcess = zzshInProcess == null?0L:zzshInProcess;
+			if ((10F - zzshNow) < zzshInProcess) {
+				zzshInProcess = 10F - zzshNow;
+			}
+		}
+		//政治学习
+		Float zzxxNow = scoreMapper.getSumScoreByUserIdAndType(user.getUserId(),year,
+				ActiveTypeEnum.ACTIVE_A.getActiveId(),ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId());
+		zzxxNow = zzxxNow == null?0L:zzxxNow;
+		Float zzxxInProcess = 0F;
+		if (zzxxNow < 5F) {
+			zzxxInProcess = applyMapper.countScoreInProcess(user.getUserId(),year,
+					ActiveTypeEnum.ACTIVE_A.getActiveId(),ActiveSubTypeEnum.ACTIVE_SUB_B.getActiveSubId());
+			zzxxInProcess = zzxxInProcess == null?0L:zzxxInProcess;
+			if ((5F - zzxxNow) <zzxxInProcess) {
+				zzxxInProcess = 5F - zzxxNow;
+			}
+		}
+
+		Float sumInProcess = gyfwInprocess + zzshInProcess + zzxxInProcess;
+		return sumInProcess;
+	}
 }

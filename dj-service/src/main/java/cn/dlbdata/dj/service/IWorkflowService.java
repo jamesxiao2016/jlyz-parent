@@ -113,5 +113,10 @@ public interface IWorkflowService {
 	 */
 	List<ToDoVo> getTodoList(UserVo user);
 
+	/**
+	 * 获取自主活动流程中的积分
+	 * @return
+	 */
+	Float sumScoreInProcess(UserVo userVo);
 
 }

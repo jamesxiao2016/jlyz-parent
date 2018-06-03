@@ -101,4 +101,9 @@ public interface DjApplyMapper extends Mapper<DjApply> {
     int countBySubTypeIdAndStatusAndDeptId(@Param("subTypeId") Long subTypeId,
                                   @Param("status") Integer status,
 								  @Param("deptIds") Long... deptIds);
+
+    Float countScoreInProcess(@Param("userId") Long userId,
+							@Param("year") int year,
+							@Param("typeId") Long typeId,
+							@Param("subTypeId") Long subTypeId);
 }
