@@ -77,9 +77,10 @@
     </select>
 
     <select id="getScoreAuditDetailByPtMemberId" resultType="cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo">
-        select ap.id,ap.sub_type_name as subTypeName,ap.apply_info as content,ap.score,ap.status,ap.remark as refuseReason,
+        select ap.id,ap.sub_type_name as subTypeName,ap.dj_sub_type_id as subTypeId,ap.apply_info as content,ap.score,ap.status,ap.remark as refuseReason,
         ap.record_id as recordId
          from dj_apply ap where user_id =#{partyMemberId}  and ap.create_time &gt;= #{yearTimeStart}  and ap.create_time &lt;= #{yearTimeEnd}
+         and dj_sub_type_id in (41,42,43)
     </select>
 
     <select id="countUnAuditByPtMemberIdAndType" resultType="int">
