@@ -6,6 +6,7 @@ import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
+import cn.dlbdata.dj.vo.UserVo;
 
 /**
  * 部门处理相关的业务逻辑
@@ -38,10 +39,9 @@ public interface IDeptService {
 
 	/**
 	 * 片区负责人获取支部信息列表
-	 * @param sectionId
 	 * @return
 	 */
-	List<BranchDeptInfoVo>getBranchDeptInfo(Long sectionId);
+	List<BranchDeptInfoVo>getBranchDeptInfo(UserVo user);
 
 	/**
 	 * 获取片区信息（片区负责人登录时首页）

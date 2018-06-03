@@ -1,7 +1,6 @@
 package cn.dlbdata.dj.vo.study;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 public class StudyDetailVo {

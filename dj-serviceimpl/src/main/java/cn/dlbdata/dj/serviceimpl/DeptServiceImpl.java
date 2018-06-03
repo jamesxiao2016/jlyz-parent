@@ -1,5 +1,6 @@
 package cn.dlbdata.dj.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.dlbdata.dj.constant.DlbConstant;
@@ -8,6 +9,7 @@ import cn.dlbdata.dj.db.pojo.DjSection;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
+import cn.dlbdata.dj.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,12 +62,14 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	/**
 	 * 片区负责人获取支部信息列表
 	 *
-	 * @param sectionId
 	 * @return
 	 */
 	@Override
-	public List<BranchDeptInfoVo> getBranchDeptInfo(Long sectionId) {
-		List<BranchDeptInfoVo> voList = deptMapper.getBranchDeptInfoBySectionId(sectionId);
+	public List<BranchDeptInfoVo> getBranchDeptInfo(UserVo user) {
+		if (user.getSectionId() == null) {
+			return new ArrayList<>();
+		}
+		List<BranchDeptInfoVo> voList = deptMapper.getBranchDeptInfoBySectionId(user.getSectionId());
 		return voList;
 	}
 

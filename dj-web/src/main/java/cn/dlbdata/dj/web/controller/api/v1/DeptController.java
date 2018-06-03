@@ -9,6 +9,7 @@ package cn.dlbdata.dj.web.controller.api.v1;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
+import cn.dlbdata.dj.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,9 +75,14 @@ public class DeptController extends BaseController {
 	 */
 	@GetMapping("/getDeptListBySectionId")
 	@ResponseBody
-	public ResultVo<List<BranchDeptInfoVo>> getBranchDeptInfo(@RequestParam("sectionId") Long sectionId) {
+	public ResultVo<List<BranchDeptInfoVo>> getBranchDeptInfo() {
 		ResultVo<List<BranchDeptInfoVo>> result = new ResultVo<>(ResultCode.OK.getCode());
-		List<BranchDeptInfoVo> voList = deptService.getBranchDeptInfo(sectionId);
+		UserVo user = getCurrentUserFromCache();
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		List<BranchDeptInfoVo> voList = deptService.getBranchDeptInfo(user);
 		result.setData(voList);
 		return result;
 	}
