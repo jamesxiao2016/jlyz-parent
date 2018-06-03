@@ -261,6 +261,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			if (roleId != null && roleId > 1) {
 				data.setHonor(dept.getHonor());
 				data.setPeopleNum(dept.getPeopleNum());
+				data.setSectionId(dept.getDjSectionId());
 				DjSection section = sectionMapper.selectByPrimaryKey(dept.getDjSectionId());
 				if (section != null) {
 					data.setSectionName(section.getName());
@@ -268,6 +269,11 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
 				// 片区负责人，显示片区总人数
 				if (roleId.equals(RoleEnum.HEADER_OF_DISTRICT.getId())) {
+					
+					DjDept deptCondition = new DjDept();
+					deptCondition.setDjSectionId(dept.getDjSectionId());
+					Integer deptNum = deptMapper.selectCount(deptCondition);
+					data.setDeptNum(deptNum);
 					Integer peopleNum = deptMapper.getSectionPeopleNum(dept.getDjSectionId());
 					data.setPeopleNum(peopleNum);
 				}

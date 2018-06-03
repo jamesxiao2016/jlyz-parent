@@ -11,6 +11,7 @@ public class StudyDetailVo {
     private String content;//主要内容
     private List<Long> picIds;//图片IdList
     private Integer status;
+    private String auditorName;
 
     public String getName() {
         return name;
@@ -58,5 +59,13 @@ public class StudyDetailVo {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getAuditorName() {
+        return auditorName;
+    }
+
+    public void setAuditorName(String auditorName) {
+        this.auditorName = auditorName;
     }
 }

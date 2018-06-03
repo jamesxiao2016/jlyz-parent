@@ -214,6 +214,7 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		detailVo.setStartTime(djStudy.getStartTime() == null?null:new Timestamp(djStudy.getStartTime().getTime()));
 		detailVo.setEndTime(djStudy.getEndTime() == null?null:new Timestamp(djStudy.getEndTime().getTime()));
 		detailVo.setContent(djStudy.getContent());
+		detailVo.setAuditorName(djApply.getApproverName());
 		List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_STUDY,
 					djStudy.getId());
 		detailVo.setPicIds(picIds);

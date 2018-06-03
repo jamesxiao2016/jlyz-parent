@@ -25,18 +25,22 @@ public class UserVo implements Serializable {
 	private Long deptId;
 	// 部门名称
 	private String deptName;
+	// 片区ID
+	private Long sectionId;
+	// 片区名称
+	private String sectionName;
 	// 党支部评级
 	private String honor;
 	// 党支书姓名
 	private String partyBranchName;
-	// 所属片区
-	private String sectionName;
 	// 所属党委
 	private String partyCommittee;
 	// 当前登录角色
 	private Long roleId;
 	// 总分
 	private Float totalScore;
+	//党支部数量
+	private Integer deptNum;
 	//党员人数
 	private Integer peopleNum;
 
@@ -166,6 +170,22 @@ public class UserVo implements Serializable {
 
 	public void setPeopleNum(Integer peopleNum) {
 		this.peopleNum = peopleNum;
+	}
+
+	public Long getSectionId() {
+		return sectionId;
+	}
+
+	public void setSectionId(Long sectionId) {
+		this.sectionId = sectionId;
+	}
+
+	public Integer getDeptNum() {
+		return deptNum;
+	}
+
+	public void setDeptNum(Integer deptNum) {
+		this.deptNum = deptNum;
 	}
 
 }

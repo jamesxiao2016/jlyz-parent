@@ -5,6 +5,7 @@ package cn.dlbdata.dj.db.vo;
  */
 public class ToDoVo {
     private Integer tag;//用来标记是活动还是代办
+    private Integer status;//活动的状态 1:未开始 2：已开始/已结束未上传图片的
     private String id;//活动Id
     private String name;//活动或代办名称
     private Long subTypeId;//二级分类Id
@@ -15,6 +16,14 @@ public class ToDoVo {
 
     public void setTag(Integer tag) {
         this.tag = tag;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getId() {

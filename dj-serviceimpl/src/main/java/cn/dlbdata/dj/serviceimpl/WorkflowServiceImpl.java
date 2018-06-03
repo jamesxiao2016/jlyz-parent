@@ -793,7 +793,11 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
     		return new ArrayList<>();
 		}
     	//活动
-        List<ToDoVo> toDoVos = activeMapper.getUnFinishedActive(user.getUserId());
+		//1.即将开始的活动
+		List<ToDoVo> toDoVos = activeMapper.getUnStartedActive(user.getUserId());
+    	//2.已开始/已结束未上传图片的活动
+        List<ToDoVo> startedNoPic = activeMapper.getNoPicActive(user.getUserId());
+        toDoVos.addAll(startedNoPic);
         //代办
 		//当前登录人为党支书时
 		DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
@@ -813,7 +817,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 				ToDoVo vo = new ToDoVo();
 				vo.setSubTypeId(zzxxId);
 				vo.setTag(tag);
-				vo.setName("政治学习加分确认");
+				vo.setName("政治学习积分加分确认");
 				toDoVos.add(vo);
 			}
 			Long zzshId = ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId();
@@ -823,7 +827,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 				ToDoVo vo = new ToDoVo();
 				vo.setSubTypeId(zzshId);
 				vo.setTag(tag);
-				vo.setName("组织生活加分确认");
+				vo.setName("组织生活积分加分确认");
 				toDoVos.add(vo);
 			}
 			Long gyfwId = ActiveSubTypeEnum.ACTIVE_SUB_H.getActiveSubId();
@@ -833,7 +837,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 				ToDoVo vo = new ToDoVo();
 				vo.setSubTypeId(gyfwId);
 				vo.setTag(tag);
-				vo.setName("公益服务加分确认");
+				vo.setName("公益服务积分加分确认");
 				toDoVos.add(vo);
 			}
 
@@ -850,7 +854,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 				ToDoVo vo = new ToDoVo();
 				vo.setSubTypeId(disId);
 				vo.setTag(tag);
-				vo.setName("驿站生活违纪违规扣分确认");
+				vo.setName("驿站生活违纪违规积分扣分确认");
 				toDoVos.add(vo);
 			}
 			Long honorId = ActiveSubTypeEnum.ACTIVE_SUB_M.getActiveSubId();
@@ -859,7 +863,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 				ToDoVo vo = new ToDoVo();
 				vo.setSubTypeId(honorId);
 				vo.setTag(tag);
-				vo.setName("获得荣誉加分确认");
+				vo.setName("获得荣誉积分加分确认");
 				toDoVos.add(vo);
 			}
 			Long recId = ActiveSubTypeEnum.ACTIVE_SUB_N.getActiveSubId();
@@ -868,7 +872,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 				ToDoVo vo = new ToDoVo();
 				vo.setSubTypeId(recId);
 				vo.setTag(tag);
-				vo.setName("先锋表彰加分确认");
+				vo.setName("先锋表彰积分加分确认");
 				toDoVos.add(vo);
 			}
 			Long vgdId = ActiveSubTypeEnum.ACTIVE_SUB_O.getActiveSubId();
@@ -877,7 +881,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 				ToDoVo vo = new ToDoVo();
 				vo.setSubTypeId(vgdId);
 				vo.setTag(tag);
-				vo.setName("先锋模范加分确认");
+				vo.setName("先锋模范积分加分确认");
 				toDoVos.add(vo);
 			}
 
