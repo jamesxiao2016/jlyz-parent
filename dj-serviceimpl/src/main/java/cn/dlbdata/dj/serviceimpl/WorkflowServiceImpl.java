@@ -324,7 +324,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	 * @param recordId
 	 * @param recordDesc
 	 */
-	private void handScore(Long subTypeId, Long userId, Long applyerId,String applyerName,
+	public void handScore(Long subTypeId, Long userId, Long applyerId,String applyerName,
                            Long approverId,String approverName, Float applySocre,
 			Long recordId, String recordDesc, Integer year) {
 		DjSubType subType = subTypeMapper.selectByPrimaryKey(subTypeId);

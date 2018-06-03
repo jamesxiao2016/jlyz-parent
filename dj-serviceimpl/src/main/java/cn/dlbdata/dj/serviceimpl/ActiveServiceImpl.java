@@ -2,6 +2,7 @@ package cn.dlbdata.dj.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
+import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.constant.RoleEnum;
 import cn.dlbdata.dj.db.mapper.DjActiveDeptMapper;
@@ -31,13 +33,20 @@ import cn.dlbdata.dj.db.mapper.DjActivePicMapper;
 import cn.dlbdata.dj.db.mapper.DjActiveUserMapper;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
+import cn.dlbdata.dj.db.mapper.DjScoreMapper;
+import cn.dlbdata.dj.db.mapper.DjSubTypeMapper;
+import cn.dlbdata.dj.db.mapper.DjTypeMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.db.pojo.DjActiveDept;
 import cn.dlbdata.dj.db.pojo.DjActivePic;
 import cn.dlbdata.dj.db.pojo.DjActiveUser;
+import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.pojo.DjScore;
+import cn.dlbdata.dj.db.pojo.DjSubType;
+import cn.dlbdata.dj.db.pojo.DjType;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.service.IActiveService;
@@ -62,6 +71,12 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	private DjActiveUserMapper activeUserMapper;
 	@Autowired
 	private DjActivePicMapper activePicMapper;
+	@Autowired
+	private DjSubTypeMapper subTypeMapper;
+	@Autowired
+	private DjScoreMapper scoreMapper;
+	@Autowired
+	private DjTypeMapper typeMapper;
 
 	@Override
 	public DjActive getActiveInfoById(Long id) {
@@ -132,13 +147,15 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	}
 
 	/*
-	 * (non-Javadoc) <p>Title: getParticipateActiveCount</p> <p>Description: 党员生活通知总数</p>
+	 * (non-Javadoc) <p>Title: getParticipateActiveCount</p> <p>Description:
+	 * 党员生活通知总数</p>
 	 * 
 	 * @param PartyMemberLifeNotice
 	 *
 	 * @return
 	 *
-	 * @see cn.dlbdata.dj.service.IActiveService#getParticipateActiveCount(cn.dlbdata.dj.
+	 * @see
+	 * cn.dlbdata.dj.service.IActiveService#getParticipateActiveCount(cn.dlbdata.dj.
 	 * db.resquest.PartyMemberLifeNotice)
 	 */
 	@Override
@@ -159,7 +176,8 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	}
 
 	// @Override
-	// public Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId, int pageNum, int pageSize) {
+	// public Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId,
+	// int pageNum, int pageSize) {
 	// Page<PendingPtMemberVo> page = PageHelper.startPage(pageNum, pageSize);
 	// studyMapper.getStudysByDeptIdAndSubTypeId(deptId, subTypeId);
 	// return PageUtils.toPaged(page);
@@ -303,7 +321,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 				inUserList.addAll(partymemberMapper.selectByExample(inUserExample));
 			}
 			int inUserListCount = inUserList.size();
-			//参与人员集合
+			// 参与人员集合
 			Map<String, List<DjPartymember>> inUserMap = new TreeMap<String, List<DjPartymember>>();
 
 			if (inUserList.size() > 0) {
@@ -336,7 +354,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 				outUserList.addAll(partymemberMapper.selectByExample(outUserExample));
 			}
 			int outUserListCount = outUserList.size();
-			//未参与人集合
+			// 未参与人集合
 			Map<String, List<DjPartymember>> outUserMap = new TreeMap<String, List<DjPartymember>>();
 			if (outUserList.size() > 0) {
 				for (int i = 0; i < outUserList.size(); i++) {
@@ -361,13 +379,13 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 					}
 				}
 			}
-			//参与人员总人数
+			// 参与人员总人数
 			json.put("participateCount", inUserListCount);
-			//未参与人员总人数
+			// 未参与人员总人数
 			json.put("notParticipateCount", outUserListCount);
-			//参与人员集合
+			// 参与人员集合
 			json.put("participate", inUserMap);
-			//未参与人员集合
+			// 未参与人员集合
 			json.put("notParticipate", outUserMap);
 			result.setData(json);
 		}
@@ -415,13 +433,86 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		// 更新签到信息
 		activeUser.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		activeUser.setSignTime(new Date());
+		int count = activeUserMapper.updateByPrimaryKeySelective(activeUser);
+		if (count > 0) {
+			DjApply apply = new DjApply();
+			Long subTypeId = active.getDjSubTypeId();
+			DjSubType subType = subTypeMapper.selectByPrimaryKey(subTypeId);
+			DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
+			handScore(subTypeId, user.getUserId(), user.getUserId(), user.getUserName(), dept.getPrincipalId(),
+					dept.getPrincipalName(), subType.getScore(), apply.getRecordId(), apply.getRemark(),
+					apply.getApplyYear());
+		} else {
 
-		activeUserMapper.updateByPrimaryKeySelective(activeUser);
-
+		}
 		result.setCode(ResultCode.OK.getCode());
 		result.setMsg("签到成功，积分已发放");
 
 		return result;
+	}
+
+	public void handScore(Long subTypeId, Long userId, Long applyerId, String applyerName, Long approverId,
+			String approverName, Float applySocre, Long recordId, String recordDesc, Integer year) {
+		DjSubType subType = subTypeMapper.selectByPrimaryKey(subTypeId);
+		if (subType == null) {
+			return;
+		}
+		DjType type = typeMapper.selectByPrimaryKey(subType.getDjTypeId());
+		if (type == null) {
+			return;
+		}
+		// 写入积分记录表
+		// 根据类型判断最大分数
+		if (year == null) {
+			year = Calendar.getInstance().get(Calendar.YEAR);
+		}
+		Float subTypeMaxScore = subType.getMaxScore();
+		if (subTypeMaxScore == null) {
+			subTypeMaxScore = 0F;
+		}
+		Float typeMaxScore = type.getMaxScore();
+		if (typeMaxScore == null) {
+			typeMaxScore = type.getScore();
+			if (typeMaxScore == null)
+				typeMaxScore = 0F;
+		}
+		Float userSubTypeScore = scoreMapper.getSumScoreByUserIdAndType(userId, year, null, subTypeId);
+		if (userSubTypeScore == null) {
+			userSubTypeScore = 0F;
+		}
+		Float userTypeScore = scoreMapper.getSumScoreByUserIdAndType(userId, year, subType.getDjTypeId(), null);
+		if (userTypeScore == null) {
+			userTypeScore = 0F;
+		}
+		// 积分没有积满，则往积分表中插入记录
+		if (userSubTypeScore < subTypeMaxScore && userTypeScore < typeMaxScore) {
+			DjScore record = new DjScore();
+			record.setAddStatus(DlbConstant.BASEDATA_STATUS_VALID);
+			record.setAddTime(new Date());
+			record.setAddYear(year);
+			record.setUserId(userId);
+			record.setApplyUserId(userId);
+			record.setApproverId(approverId);
+			record.setCreateTime(new Date());
+			record.setDjSubTypeId(subTypeId);
+			record.setDjTypeId(type.getId());
+			record.setRecordId(recordId);
+			record.setRecrodDesc(recordDesc);
+			record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+			record.setApplyUserName(applyerName);
+			record.setApproverName(approverName);
+			record.setScoreDesc(subType.getName());
+			Float score = applySocre;
+			// 公益服务,处理9分的问题
+			if (type.getId() == ActiveTypeEnum.ACTIVE_F.getActiveId()) {
+				if ((userTypeScore + applySocre) > typeMaxScore) {
+					score = typeMaxScore - userTypeScore;
+				}
+			}
+
+			record.setScore(score);
+			scoreMapper.insertSelective(record);
+		}
 	}
 
 	@Override
