@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.dlbdata.dj.common.core.util.ConfigUtil;
 import cn.dlbdata.dj.common.core.util.ImageUtil;
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
@@ -40,7 +41,7 @@ import cn.dlbdata.dj.web.base.BaseController;
 @Controller
 @RequestMapping("/api/v1/active")
 public class ActiveController extends BaseController {
-
+	private String QR_CODE = ConfigUtil.get("orCodeRootPath");
 	@Autowired
 	private IActiveService activeService;
 	@Autowired
@@ -181,7 +182,7 @@ public class ActiveController extends BaseController {
 	 */
 	@GetMapping(value = "/showQrCode")
 	public void showQrCode(Long activeId, HttpServletResponse response) {
-		String content = "http://dj.dlbdata.cn/#/active/activeSign/" + activeId;
+		String content = QR_CODE + "#/activeSign/" + activeId;
 		OutputStream out = null;
 		BufferedImage image;
 		try {
