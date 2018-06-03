@@ -35,7 +35,7 @@
   			and d.dj_dept_id = #{deptId}
   		</if>
   		<if test="typeId != null">
-  			and d.dj_sub_type_id = #{subTypeId}
+  			and d.dj_sub_type_id = #{typeId}
   		</if>
   	</where>
   </select>
