@@ -13,7 +13,6 @@ import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.vo.study.ReviewScheduleListVo;
-import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.service.IStudyService;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.study.StudyDetailVo;
@@ -30,8 +29,6 @@ import cn.dlbdata.dj.web.base.BaseController;
 public class StudyController extends BaseController {
 	@Autowired
 	private IStudyService studyService;
-	@Autowired
-	private IActiveService activeService;
 
 //	/**
 //	 * 点击支书查询待办列表项进去的查询

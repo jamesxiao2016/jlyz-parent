@@ -237,17 +237,15 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	 * @see cn.dlbdata.dj.service.IActiveService#queryActiveById(java.lang.Long)
 	 */
 	@Override
-	public ResultVo<Map<String, Object>> queryActiveById(Long activeId, Long userId) {
+	public ResultVo<Map<String, Object>> queryActiveById(Long activeId, Long roleId) {
 		ResultVo<Map<String, Object>> result = new ResultVo<>();
 		if (activeId == null) {
 			logger.error("参数错误");
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
-		if (userId == null) {
-			logger.error("参数错误");
-			result.setCode(ResultCode.Forbidden.getCode());
-			return result;
+		if (roleId == null) {
+			roleId = RoleEnum.PARTY.getId();
 		}
 		DjActive active = activeMapper.selectByPrimaryKey(activeId);
 		if (active == null) {
@@ -257,19 +255,33 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			return result;
 		}
 		JSONObject json = JSON.parseObject(JSON.toJSONString(active));
-		DjUser createUser = userMapper.selectByPrimaryKey(userId);
-		if (createUser == null) {
-			logger.error("没有用户信息");
-			result.setCode(ResultCode.Forbidden.getCode());
-			result.setMsg("没有用户信息");
-			return result;
-			// json.put("activeCreatePeopleName", createUser.getName());
-		}
-		if (createUser.getRoleId() == RoleEnum.PARTY.getId()) {
+
+		if (roleId == RoleEnum.PARTY.getId()) {
 			result.setCode(ResultCode.OK.getCode());
 			result.setData(json);
 			return result;
 		}
+
+		/**
+		 * 获取参与活动的部门列表
+		 */
+		Map<Long, String> deptNameMap = new HashMap<>();
+		DjActiveDept deptCondition = new DjActiveDept();
+		List<DjActiveDept> deptList = activeDeptMapper.select(deptCondition);
+		if (deptList != null) {
+			for (DjActiveDept d : deptList) {
+				DjDept dept = deptMapper.selectByPrimaryKey(d.getDjDeptId());
+				if (dept != null) {
+					deptNameMap.put(d.getDjDeptId(), dept.getName());
+				} else {
+					deptNameMap.put(d.getDjDeptId(), "");
+				}
+			}
+		}
+
+		/**
+		 * 查询参与人员列表
+		 */
 		Example example = new Example(DjActiveUser.class);
 		example.createCriteria().andEqualTo("djActiveId", activeId);
 		List<DjActiveUser> participateList = activeUserMapper.selectByExample(example);
@@ -298,11 +310,13 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			if (inUserList.size() > 0) {
 				for (int i = 0; i < inUserList.size(); i++) {
 					DjPartymember p = inUserList.get(i);
+					if (p == null) {
+						continue;
+					}
+					p.setDeptName(deptNameMap.get(p.getDeptId()));
 					List<DjPartymember> list = null;
 					if (i == 0) {
 						list = new ArrayList<DjPartymember>();
-						DjDept dept = deptMapper.selectByPrimaryKey(p.getDeptId());
-						p.setDeptName(dept.getName());
 						list.add(p);
 						inUserMap.put(p.getDeptName(), list);
 					} else {
@@ -327,6 +341,10 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			if (outUserList.size() > 0) {
 				for (int i = 0; i < outUserList.size(); i++) {
 					DjPartymember p = outUserList.get(i);
+					if (p == null) {
+						continue;
+					}
+					p.setDeptName(deptNameMap.get(p.getDeptId()));
 					List<DjPartymember> list = null;
 					if (i == 0) {
 						list = new ArrayList<DjPartymember>();

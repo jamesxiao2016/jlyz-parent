@@ -5,11 +5,9 @@ import java.util.Map;
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjActive;
-import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
 import cn.dlbdata.dj.dto.PartyMemberLifeNotice;
 import cn.dlbdata.dj.vo.ActiveVo;
 import cn.dlbdata.dj.vo.UserVo;
-import cn.dlbdata.dj.vo.study.StudyDetailVo;
 
 /**
  * 活动相关的业务逻辑
@@ -98,7 +96,7 @@ public interface IActiveService {
 	 * @param activeId
 	 * @return
 	 */
-	ResultVo<Map<String, Object>> queryActiveById(Long activeId, Long userId);
+	ResultVo<Map<String, Object>> queryActiveById(Long activeId, Long roleId);
 
 	/**
 	 * 活动报名
