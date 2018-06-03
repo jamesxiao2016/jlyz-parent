@@ -30,6 +30,7 @@ import cn.dlbdata.dj.service.IActiveUserService;
 import cn.dlbdata.dj.vo.ActiveVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
+import cn.dlbdata.dj.web.vo.SignVo;
 
 /**
  * 处理活动相关的controller
@@ -237,14 +238,14 @@ public class ActiveController extends BaseController {
 	 */
 	@PostMapping(value = "/signIn")
 	@ResponseBody
-	public ResultVo<String> signIn(Long activeId) {
+	public ResultVo<String> signIn(@RequestBody SignVo vo) {
 		ResultVo<String> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
-		if (user == null) {
+		if (vo == null || user == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
-		result = activeService.signIn(activeId, user);
+		result = activeService.signIn(vo.getActiveId(), user);
 
 		return result;
 	}
@@ -257,14 +258,14 @@ public class ActiveController extends BaseController {
 	 */
 	@PostMapping(value = "/signUp")
 	@ResponseBody
-	public ResultVo<String> signUp(Long activeId) {
+	public ResultVo<String> signUp(@RequestBody SignVo vo) {
 		ResultVo<String> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
-		if (user == null) {
+		if (vo == null || user == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
-		result = activeService.signUp(activeId, user);
+		result = activeService.signUp(vo.getActiveId(), user);
 
 		return result;
 	}

@@ -414,6 +414,8 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		ResultVo<String> result = new ResultVo<>();
 		if (activeId == null || user == null) {
 			result.setCode(ResultCode.ParameterError.getCode());
+			logger.error("参数错误");
+			result.setMsg("签到失败");
 			return result;
 		}
 
@@ -432,7 +434,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		List<DjActiveUser> list = activeUserMapper.select(activeUser);
 		if (list == null || list.isEmpty()) {
 			result.setCode(ResultCode.NotFound.getCode());
-			result.setMsg("活动未报名，签到失败。");
+			result.setMsg("活动未报名，请先报名");
 			return result;
 		}
 
@@ -441,7 +443,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		Integer status = activeUser.getStatus();
 		if (DlbConstant.BASEDATA_STATUS_VALID == status) {
 			result.setCode(ResultCode.NotFound.getCode());
-			result.setMsg("已签到，请勿重复签到。");
+			result.setMsg("已签到，请勿重复签到");
 			return result;
 		}
 
@@ -452,7 +454,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		activeUserMapper.updateByPrimaryKeySelective(activeUser);
 
 		result.setCode(ResultCode.OK.getCode());
-		result.setMsg("签到成功");
+		result.setMsg("签到成功，积分已发放");
 
 		return result;
 	}
