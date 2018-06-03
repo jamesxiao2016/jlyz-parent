@@ -208,7 +208,7 @@ public class WorkflowController extends BaseController {
 	 */
 	@GetMapping("/todoList")
 	@ResponseBody
-	public ResultVo<List<ToDoVo>>getTodoList() {
+	public ResultVo<List<ToDoVo>> getTodoList() {
 		ResultVo<List<ToDoVo>> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
 		if (user == null) {
