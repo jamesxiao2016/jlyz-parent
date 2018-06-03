@@ -9,6 +9,7 @@ import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.party.*;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import cn.dlbdata.dj.vo.PartyVo;
+import cn.dlbdata.dj.vo.UserVo;
 
 /**
  * 党员相关的业务逻辑
@@ -126,4 +127,10 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	public ResultVo<Float> getSumScoreByIdCard(String idCard);
+
+	/**
+	 * 获取党员年度活动信息
+	 * @return
+	 */
+	AnnualActiveInfo getAnnualActiveInfo(UserVo user,Integer year);
 }
