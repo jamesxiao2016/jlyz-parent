@@ -224,4 +224,22 @@ public class WorkflowController extends BaseController {
 		result.setData(toDoVos);
 		return result;
 	}
+
+	/**
+	 * 获取自主活动流程中的积分
+	 * @return
+	 */
+	@GetMapping("/sumScoreInProcess")
+	@ResponseBody
+	public ResultVo<Float> sumScoreInProcess() {
+		UserVo user = getCurrentUserFromCache();
+		ResultVo<Float> result = new ResultVo<>();
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		Float score = workflowService.sumScoreInProcess(user);
+		result.setData(score);
+		return result;
+	}
 }
