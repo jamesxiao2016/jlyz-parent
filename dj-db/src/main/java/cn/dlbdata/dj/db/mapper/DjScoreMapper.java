@@ -60,5 +60,7 @@ public interface DjScoreMapper extends Mapper<DjScore> {
 	 */
 	public Float getSumScoreByUserIdAndType(@Param("userId") Long userId, @Param("year") Integer year,
 			@Param("djTypeId") Long djTypeId, @Param("djSubTypeId") Long djSubTypeId);
+
+	boolean existBaseScore(@Param("userId") Long userId,@Param("year") int year);
     
 }
