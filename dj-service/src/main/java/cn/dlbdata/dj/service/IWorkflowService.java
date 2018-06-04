@@ -4,11 +4,9 @@ import cn.dlbdata.dj.db.vo.ToDoVo;
 import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
 import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
 import cn.dlbdata.dj.vo.*;
-import org.springframework.transaction.annotation.Transactional;
 
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
 
@@ -24,7 +22,6 @@ public interface IWorkflowService {
 	 *            当前登录用户
 	 * @return
 	 */
-	@Transactional
 	public String doApply(ApplyVo vo, UserVo user);
 
 	/**
@@ -34,7 +31,7 @@ public interface IWorkflowService {
 	 * @param user
 	 * @return
 	 */
-	@Transactional
+
 	public ResultVo<Long> doApplyDiscipline(DisciplineVo param, UserVo user);
 
 	/**
@@ -44,7 +41,6 @@ public interface IWorkflowService {
 	 * @param user
 	 * @return
 	 */
-	@Transactional
 	public ResultVo<Long> doApplyVanguard(VanguardParamVo param, UserVo user);
 
 	/**
@@ -54,7 +50,6 @@ public interface IWorkflowService {
 	 * @param user
 	 * @return
 	 */
-	@Transactional
 	public ResultVo<Long> doApplyThoughts(ThoughtsVo param, UserVo user);
 
 	/**
@@ -70,7 +65,6 @@ public interface IWorkflowService {
 	 *            当前登录用户
 	 * @return
 	 */
-	@Transactional
 	public ResultVo<String> doAudit(AuditVo auditVo, UserVo user);
 
 	/**
@@ -110,5 +104,14 @@ public interface IWorkflowService {
 	 * @return
 	 */
 	Float sumScoreInProcess(UserVo userVo);
+
+	/**
+	 *新增基础分接口.
+	 * @param userId 党员Id
+	 * @return
+	 */
+	ResultVo addBaseScore(Long userId,int year);
+
+
 
 }

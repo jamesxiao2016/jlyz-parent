@@ -24,6 +24,7 @@ import cn.dlbdata.dj.service.IStudyService;
 import cn.dlbdata.dj.service.IWorkflowService;
 import cn.dlbdata.dj.web.base.BaseController;
 
+import java.util.Calendar;
 import java.util.List;
 
 @Controller
@@ -236,5 +237,19 @@ public class WorkflowController extends BaseController {
 		Float score = workflowService.sumScoreInProcess(user);
 		result.setData(score);
 		return result;
+	}
+
+
+	/**
+	 *新增基础分接口.
+	 * @param userId 党员Id
+	 * @return
+	 */
+	@PostMapping("/addBaseScore")
+	@ResponseBody
+	public ResultVo addBaseScore(@RequestParam("userId") Long userId) {
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		ResultVo resultVo = workflowService.addBaseScore(userId,year);
+		return resultVo;
 	}
 }
