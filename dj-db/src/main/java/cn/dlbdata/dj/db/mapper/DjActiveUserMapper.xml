@@ -54,14 +54,10 @@
     <trim suffixOverrides=",">
       <foreach collection ="users" item="user" index="index" separator =",">
         <trim prefix="(" suffix=")" suffixOverrides=",">
-          <if test="activeId != null">
             #{activeId,jdbcType=BIGINT},
-          </if>
-          <if test="user != null">
             #{user.id,jdbcType=BIGINT},
             #{user.deptId,jdbcType=BIGINT},
-          </if>
-          0
+         	 0
         </trim>
       </foreach>
     </trim>
