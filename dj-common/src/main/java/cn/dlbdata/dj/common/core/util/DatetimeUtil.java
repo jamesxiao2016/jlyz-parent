@@ -119,6 +119,40 @@ public class DatetimeUtil {
 		return result;
 	}
 
+	public static Date getDateByStr(String dateStr) {
+		if (StringUtils.isEmpty(dateStr)) {
+			return null;
+		}
+		String pattern = "yyyy-MM-dd HH:mm";
+		Date result = null;
+		SimpleDateFormat SHORT_SDF = new SimpleDateFormat(pattern);
+		try {
+			result = SHORT_SDF.parse(dateStr);
+		} catch (Exception e) {
+			logger.error("日期转换失败" + dateStr, e);
+		}
+
+		return result;
+	}
+
+	public static Date getDateByStr(String dateStr, String pattern) {
+		if (StringUtils.isEmpty(dateStr)) {
+			return null;
+		}
+		if (StringUtils.isEmpty(pattern)) {
+			pattern = "yyyy-MM-dd";
+		}
+		Date result = null;
+		SimpleDateFormat SHORT_SDF = new SimpleDateFormat(pattern);
+		try {
+			result = SHORT_SDF.parse(dateStr);
+		} catch (Exception e) {
+			logger.error("日期转换失败" + dateStr, e);
+		}
+
+		return result;
+	}
+
 	public static int getWorkingDay(Date begin, Date end) {
 		int result = 0;
 		if (begin == null || end == null) {

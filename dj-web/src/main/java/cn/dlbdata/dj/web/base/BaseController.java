@@ -107,7 +107,8 @@ public class BaseController {
 		// 如果缓存中获取失败，从数据库中查询
 		if (currUser == null) {
 			currUser = userService.getUserDetailById(DigitUtil.parseToLong(userId), 1, DigitUtil.parseToLong(roleId));
-			CacheManager.getInstance().put(userId, currUser);
+			if (currUser != null)
+				CacheManager.getInstance().put(userId, currUser);
 		}
 		return currUser;
 	}

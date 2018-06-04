@@ -53,7 +53,7 @@ public class DeptController extends BaseController {
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
-		if (deptId == null) {
+		if (deptId == null || deptId == 0) {
 			deptId = vo.getDeptId();
 		}
 		DjDept djDept = deptService.getDeptMessage(deptId);

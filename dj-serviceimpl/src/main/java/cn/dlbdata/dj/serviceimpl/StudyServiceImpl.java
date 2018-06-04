@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
@@ -97,8 +98,8 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 			study = new DjStudy();
 			study.setId(DigitUtil.generatorLongId());
 		}
-		study.setStartTime(studyVo.getStartTime());
-		study.setEndTime(studyVo.getEndTime());
+		study.setStartTime(DatetimeUtil.getDateByStr(studyVo.getStartTime()));
+		study.setEndTime(DatetimeUtil.getDateByStr(studyVo.getEndTime()));
 		study.setDjTypeId(typeId);
 		study.setDjSubTypeId(studyVo.getDjSubTypeId());
 		study.setContent(studyVo.getContent());
