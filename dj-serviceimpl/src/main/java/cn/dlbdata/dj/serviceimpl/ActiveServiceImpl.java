@@ -199,13 +199,13 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		active.setContent(activeVo.getContent());
 		active.setCreateTime(new Date());
 		active.setCreateUserId(user.getUserId());
-		active.setEndTime(activeVo.getEndActiveTime());
+		active.setEndTime(DatetimeUtil.getDateByStr(activeVo.getEndActiveTime()));
 		active.setHasAudit(1);
 		active.setId(DigitUtil.generatorLongId());
 		active.setName(activeVo.getActiveName());
 		active.setDjPicId(activeVo.getPicId());
 		active.setPrincipalName(activeVo.getPrincipalName());
-		active.setStartTime(activeVo.getStartActiveTime());
+		active.setStartTime(DatetimeUtil.getDateByStr(activeVo.getStartActiveTime()));
 		active.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		active.setDjSubTypeId(activeVo.getSubTypeId());
 		active.setDjTypeId(activeVo.getTypeId());
@@ -273,7 +273,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		}
 		JSONObject json = JSON.parseObject(JSON.toJSONString(active));
 		//获取活动图集
-		Long[] picIds = null;
+		Long[] picIds = new Long[0];
 		Example picExample = new Example(DjActivePic.class);
 		picExample.createCriteria().andEqualTo("djActiveId", active.getId());
 		List<DjActivePic> picList = activePicMapper.selectByExample(picExample);
@@ -285,7 +285,6 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			}
 			active.setPicIds(picIds);
 		}
-		
 		json.put("picIds", picIds);
 		if (roleId == RoleEnum.PARTY.getId()) {
 			result.setCode(ResultCode.OK.getCode());

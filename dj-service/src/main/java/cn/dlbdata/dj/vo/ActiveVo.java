@@ -59,11 +59,11 @@ public class ActiveVo implements Serializable {
 	/**
 	 * 活动开始时间
 	 */
-	private Date startActiveTime;
+	private String startActiveTime;
 	/**
 	 * 活动结束时间
 	 */
-	private Date endActiveTime;
+	private String endActiveTime;
 	/**
 	 * 活动内容
 	 */
@@ -205,19 +205,19 @@ public class ActiveVo implements Serializable {
 		this.hasAudit = hasAudit;
 	}
 
-	public Date getStartActiveTime() {
+	public String getStartActiveTime() {
 		return startActiveTime;
 	}
 
-	public void setStartActiveTime(Date startActiveTime) {
+	public void setStartActiveTime(String startActiveTime) {
 		this.startActiveTime = startActiveTime;
 	}
 
-	public Date getEndActiveTime() {
+	public String getEndActiveTime() {
 		return endActiveTime;
 	}
 
-	public void setEndActiveTime(Date endActiveTime) {
+	public void setEndActiveTime(String endActiveTime) {
 		this.endActiveTime = endActiveTime;
 	}
 
