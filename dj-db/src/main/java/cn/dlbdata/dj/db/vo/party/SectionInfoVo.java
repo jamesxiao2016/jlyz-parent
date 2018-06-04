@@ -5,6 +5,7 @@ public class SectionInfoVo {
     private String partyCommittee;
     private int branchSum;
     private int peopleSum;
+    private String leaderName;
 
     public String getName() {
         return name;
@@ -36,5 +37,13 @@ public class SectionInfoVo {
 
     public void setPartyCommittee(String partyCommittee) {
         this.partyCommittee = partyCommittee;
+    }
+
+    public String getLeaderName() {
+        return leaderName;
+    }
+
+    public void setLeaderName(String leaderName) {
+        this.leaderName = leaderName;
     }
 }

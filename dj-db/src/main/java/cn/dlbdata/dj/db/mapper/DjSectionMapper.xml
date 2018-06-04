@@ -22,7 +22,7 @@
   
   <select id="getSectionInfo" parameterType="java.lang.Long"
      resultType="cn.dlbdata.dj.db.vo.party.SectionInfoVo">
-    select sec.name ,(select count(0) from dj_dept  dept where dept.dj_section_id = sec.id) as branchSum,sec.people_num as peopleSum
+    select sec.name ,(select count(0) from dj_dept  dept where dept.dj_section_id = sec.id) as branchSum,sec.people_num as peopleSum,sec.principal_name as leaderName
     from dj_section sec where sec.id=#{sectionId}
   </select>
 </mapper>
