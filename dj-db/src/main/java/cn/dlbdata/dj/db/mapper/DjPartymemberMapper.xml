@@ -26,12 +26,12 @@
   
   <select id="getPioneeringPartyMembers" parameterType="java.lang.Long" resultType="cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo">
     select name,id,dept_id as deptId from dj_partymember  where dept_id = #{deptId}
-    order by post_id desc
+    order by party_post_code asc
   </select>
 
   <select id="getReportPartyMembers" parameterType="java.lang.Long" resultType="cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo">
     select name,id,dept_id as deptId,-1 as status from dj_partymember  where dept_id = #{deptId}
-    order by post_id desc
+    order by party_post_code asc
   </select>
   
   <resultMap id="BaseResultMapTwo" type="cn.dlbdata.dj.db.vo.party.AllPartyMemberVo">
