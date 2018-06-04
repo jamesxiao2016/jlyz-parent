@@ -61,7 +61,7 @@ public class JwtTokenUtil {
 	 * @param ttlMillis
 	 * @return
 	 */
-	public static String createToken(String uid, String uname, String cid, long ttlMillis) {
+	public static String createToken(String uid, String uname, String cid, String utype, long ttlMillis) {
 		try {
 			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256; // 指定签名的时候使用的签名算法，也就是header那部分，jjwt已经将这部分内容封装好了。
 			long nowMillis = System.currentTimeMillis();// 生成JWT的时间
@@ -70,6 +70,7 @@ public class JwtTokenUtil {
 			claims.put(KEY_UID, uid);
 			claims.put(KEY_UNAME, uname);
 			claims.put(KEY_CID, cid);
+			claims.put(KEY_UTYPE, utype);
 
 			// 下面就是在为payload添加各种标准声明和私有声明了
 			JwtBuilder builder = Jwts.builder() // 这里其实就是new一个JwtBuilder，设置jwt的body
@@ -158,7 +159,7 @@ public class JwtTokenUtil {
 		long TTLMillis = 10000L;
 		String cid = "c001";
 		try {
-			String token = createToken(userId, name, cid, TTLMillis);
+			String token = createToken(userId, name, cid, "1",TTLMillis);
 			System.out.println(token);
 			Claims claims = parseJWT(token);
 			System.out.println(claims.get(KEY_UID));

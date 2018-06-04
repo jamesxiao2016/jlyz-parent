@@ -168,7 +168,7 @@ public class PartyMemberController extends BaseController {
 			@RequestParam(value = "pageNum", required = false) Integer pageNum,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize) {
 		ResultVo<Paged<ReportPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
-		
+
 		TokenVo tokenVo = getTokenUserInfo();
 		if (tokenVo == null) {
 			result.setCode(ResultCode.BadRequest.getCode());
@@ -177,7 +177,7 @@ public class PartyMemberController extends BaseController {
 		if (deptId == null) {
 			deptId = tokenVo.getDeptId();
 		}
-		
+
 		pageNum = PageUtils.normalizePageIndex(pageNum);
 		pageSize = PageUtils.normalizePageSize(pageSize);
 		Paged<ReportPartyMemberVo> voList = partyMemberService.getReportPartyMember(deptId, subTypeId, pageNum,
@@ -229,7 +229,7 @@ public class PartyMemberController extends BaseController {
 		pageNum = PageUtils.normalizePageIndex(pageNum);
 		pageSize = PageUtils.normalizePageSize(pageSize);
 		Paged<PioneeringPartyMemberVo> voList = partyMemberService.getPioneeringPartyMembers(deptId, pageNum, pageSize);
-		
+
 		result.setData(voList);
 		return result;
 	}
@@ -247,7 +247,7 @@ public class PartyMemberController extends BaseController {
 	 */
 	@GetMapping("/queryAllPartyMembersByDeptId")
 	@ResponseBody
-	public ResultVo<List<AllPartyMemberVo>> queryAllPartyMembersByDeptId() {
+	public ResultVo<List<AllPartyMemberVo>> queryAllPartyMembersByDeptId(Long deptId) {
 		ResultVo<List<AllPartyMemberVo>> result = new ResultVo<>();
 		TokenVo vo = getTokenUserInfo();
 		if (vo == null) {
@@ -255,7 +255,10 @@ public class PartyMemberController extends BaseController {
 			result.setCode(ResultCode.Forbidden.getCode());
 			return result;
 		}
-		List<AllPartyMemberVo> list = partyMemberService.queryAllPartyMembersByDeptId(vo.getDeptId());
+		if (deptId == null || deptId == 0) {
+			deptId = vo.getDeptId();
+		}
+		List<AllPartyMemberVo> list = partyMemberService.queryAllPartyMembersByDeptId(deptId);
 		if (list == null || list.size() == 0) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("该党支部没有信息");
@@ -350,11 +353,12 @@ public class PartyMemberController extends BaseController {
 
 	/**
 	 * 获取党员年度活动信息
+	 * 
 	 * @return
 	 */
 	@GetMapping("/getAnnualActiveInfo")
 	@ResponseBody
-	public ResultVo<AnnualActiveInfo>getAnnualActiveInfo() {
+	public ResultVo<AnnualActiveInfo> getAnnualActiveInfo() {
 		UserVo user = getCurrentUserFromCache();
 		ResultVo<AnnualActiveInfo> resultVo = new ResultVo<>(ResultCode.OK.getCode());
 		if (user == null) {
@@ -364,7 +368,7 @@ public class PartyMemberController extends BaseController {
 			return resultVo;
 		}
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-		AnnualActiveInfo activeInfo = partyMemberService.getAnnualActiveInfo(user,year);
+		AnnualActiveInfo activeInfo = partyMemberService.getAnnualActiveInfo(user, year);
 		resultVo.setData(activeInfo);
 		return resultVo;
 	}

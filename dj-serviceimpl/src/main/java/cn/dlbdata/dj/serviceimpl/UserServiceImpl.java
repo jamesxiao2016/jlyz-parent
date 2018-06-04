@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
+import cn.dlbdata.dj.common.core.util.cache.CacheManager;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.common.util.PingyinUtil;
@@ -137,31 +138,32 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		}
 
 		// 返回数据处理
-		UserVo data = new UserVo();
-		data.setDeptId(user.getDeptId());
-		data.setMemeberId(user.getDjPartymemberId());
-		data.setName(user.getName());
-		data.setUserId(user.getId());
-		data.setAvatar(user.getAvatar());
-		data.setRoleId(user.getRoleId());
-		data.setUserName(user.getUserName());
+		// UserVo data = new UserVo();
+		// data.setDeptId(user.getDeptId());
+		// data.setMemeberId(user.getDjPartymemberId());
+		// data.setName(user.getName());
+		// data.setUserId(user.getId());
+		// data.setAvatar(user.getAvatar());
+		// data.setRoleId(user.getRoleId());
+		// data.setUserName(user.getUserName());
 
 		// TODO 角色权限判断，判断登录的角色是否匹配(后续处理）
-		// getUserDetailByUser(user);
-		// if (data == null) {
-		// logger.error("获取用户信息失败");
-		// return result;
-		// }
+		UserVo data = getUserDetailByUser(user, 1, 1L);
+		if (data == null) {
+			logger.error("获取用户信息失败");
+			return result;
+		}
 
 		long endQueryUserInfoTime = System.currentTimeMillis();
 		logger.info("查询用户详细信息->" + (endQueryUserInfoTime - endUserTime));
 		// 生成token
-		String token = JwtTokenUtil.createToken(user.getId() + "", user.getName(), user.getDeptId() + "", 0);
+		String token = JwtTokenUtil.createToken(user.getId() + "", user.getName(), user.getDeptId() + "",
+				user.getRoleId() + "", 0);
 		data.setToken(token);
 		long endTime = System.currentTimeMillis();
 		logger.info("create token time->" + (endTime - endQueryUserInfoTime));
 
-		// CacheManager.getInstance().put(user.getId() + "", data);
+		CacheManager.getInstance().put(user.getId() + "", data);
 		logger.info("total time->" + (endTime - startTime));
 		// 返回结果
 		result.setCode(ResultCode.OK.getCode());
@@ -247,6 +249,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		}
 		DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
 		if (dept != null) {
+			data.setSectionId(dept.getDjSectionId());
 			String name = dept.getPrincipalName();
 			if (StringUtils.isEmpty(name)) {
 				DjUser principal = userMapper.selectByPrimaryKey(dept.getPrincipalId());
@@ -261,7 +264,6 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			if (roleId != null && roleId > 1) {
 				data.setHonor(dept.getHonor());
 				data.setPeopleNum(dept.getPeopleNum());
-				data.setSectionId(dept.getDjSectionId());
 				DjSection section = sectionMapper.selectByPrimaryKey(dept.getDjSectionId());
 				if (section != null) {
 					data.setSectionName(section.getName());
@@ -269,7 +271,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
 				// 片区负责人，显示片区总人数
 				if (roleId.equals(RoleEnum.HEADER_OF_DISTRICT.getId())) {
-					
+
 					DjDept deptCondition = new DjDept();
 					deptCondition.setDjSectionId(dept.getDjSectionId());
 					Integer deptNum = deptMapper.selectCount(deptCondition);

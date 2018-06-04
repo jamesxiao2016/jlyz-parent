@@ -159,7 +159,7 @@ public class PicController extends BaseController {
 			picturePath = File.separator + userId + File.separator + year + File.separator + month + File.separator
 					+ day + File.separator;
 			picPath = picturePath + picId + fileExt;
-			filePath = rootPath + picturePath + picId + fileExt;
+			filePath = rootPath + picPath;
 
 			// 目录不存在，则创建目录
 			File dir = new File(rootPath + picturePath);
