@@ -511,8 +511,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
         VanguardVo honor = param.getHonor();//获得荣誉
         if (honor != null) {
             if (!honor.getVanguardType().equals(ActiveSubTypeEnum.ACTIVE_SUB_M.getActiveSubId())
-                    || "".equals(honor.getContent())
-                    ||honor.getPics() ==null || honor.getPics().length==0) {
+                    || "".equals(honor.getContent())) {
                 result.setCode(ResultCode.ParameterError.getCode());
                 result.setMsg("获得荣誉参数异常!");
                 return result;
@@ -522,8 +521,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
         VanguardVo recognition = param.getRecognition();//先锋表彰
         if (recognition != null) {
             if (!recognition.getVanguardType().equals(ActiveSubTypeEnum.ACTIVE_SUB_N.getActiveSubId())
-                    || "".equals(recognition.getContent())
-                    ||recognition.getPics() ==null || recognition.getPics().length==0) {
+                    || "".equals(recognition.getContent())) {
                 result.setCode(ResultCode.ParameterError.getCode());
                 result.setMsg("先锋表彰参数异常!");
                 return result;
@@ -533,8 +531,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
         VanguardVo vgd = param.getVgd();//先锋模范
         if (vgd != null) {
             if (!vgd.getVanguardType().equals(ActiveSubTypeEnum.ACTIVE_SUB_O.getActiveSubId())
-                    || "".equals(vgd.getContent())
-                    ||vgd.getPics() ==null || vgd.getPics().length==0) {
+                    || "".equals(vgd.getContent())) {
                 result.setCode(ResultCode.ParameterError.getCode());
                 result.setMsg("先锋模范参数异常!");
                 return result;
