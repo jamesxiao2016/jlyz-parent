@@ -21,8 +21,8 @@ public class DjLogLogin {
     /**
      * 账号
      */
-    @Column(name = "user_")
-    private Long user;
+    @Column(name = "user_account")
+    private Long userAccount;
 
     /**
      * 姓名
@@ -100,18 +100,18 @@ public class DjLogLogin {
      *
      * @return user_ - 账号
      */
-    public Long getUser() {
-        return user;
-    }
+    public Long getUserAccount() {
+		return userAccount;
+	}
 
     /**
      * 设置账号
      *
      * @param user 账号
      */
-    public void setUser(Long user) {
-        this.user = user;
-    }
+	public void setUserAccount(Long userAccount) {
+		this.userAccount = userAccount;
+	}
 
     /**
      * 获取姓名
@@ -122,7 +122,7 @@ public class DjLogLogin {
         return userName;
     }
 
-    /**
+	/**
      * 设置姓名
      *
      * @param userName 姓名

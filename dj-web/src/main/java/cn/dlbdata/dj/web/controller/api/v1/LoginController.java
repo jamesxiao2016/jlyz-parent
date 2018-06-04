@@ -45,6 +45,9 @@ public class LoginController extends BaseController {
 		long start = System.currentTimeMillis();
 		vo.setPwd(StringUtil.getMD5Digest32(vo.getPwd()));
 		ResultVo<UserVo> result = userService.login(vo);
+//		if(result.getData() == null) {
+//			
+//		}
 		logger.info("登录耗时->" + (System.currentTimeMillis() - start));
 		return result;
 	}
@@ -63,6 +66,7 @@ public class LoginController extends BaseController {
 			result.setCode(ResultCode.OK.getCode());
 			result.setData(data);
 		}
+		
 		return result;
 	}
 

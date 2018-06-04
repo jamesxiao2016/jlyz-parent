@@ -7,7 +7,7 @@
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="dj_user_id" jdbcType="BIGINT" property="djUserId" />
-    <result column="user_" jdbcType="BIGINT" property="user" />
+    <result column="user_account" jdbcType="BIGINT" property="userAccount" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />

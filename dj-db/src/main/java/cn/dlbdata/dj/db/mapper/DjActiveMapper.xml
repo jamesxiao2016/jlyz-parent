@@ -65,7 +65,7 @@
      
      <select id="getActiveListByDeptId" parameterType="map" resultType="java.util.Map">
 	      SELECT
-	        t.id, t.name, t.start_time startTime, t.end_time endTime, t.address, t.create_user_id creatUserId, t.principal_name principalName,
+	        distinct (t.id), t.name, t.start_time startTime, t.end_time endTime, t.address, t.create_user_id creatUserId, t.principal_name principalName,
 	       	t.content, t.status, t.dj_type_id djTypeId, t.dj_sub_type_id djSubTypeId
 	      FROM dj_active t
 	      LEFT JOIN dj_active_dept da on da.dj_active_id = t.id 

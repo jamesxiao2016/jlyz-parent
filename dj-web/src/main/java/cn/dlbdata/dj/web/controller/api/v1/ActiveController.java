@@ -297,7 +297,13 @@ public class ActiveController extends BaseController {
 		result.setData(res.getData());
 		return result;
 	}
-
+	/**
+	 * 
+	 * <p>Title: getActiveListByDeptId</p> 
+	 * <p>Description: 活动列表</p> 
+	 * @param partyMemberLifeNotice
+	 * @return
+	 */
 	@GetMapping(value = "/getActiveListByDeptId")
 	@ResponseBody
 	public ResultVo<Paged<Map<String, Object>>> getActiveListByDeptId(PartyMemberLifeNotice partyMemberLifeNotice) {
