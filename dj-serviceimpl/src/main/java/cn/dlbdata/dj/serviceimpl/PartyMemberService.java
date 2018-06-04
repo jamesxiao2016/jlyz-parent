@@ -134,8 +134,15 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
 		Page<ReportPartyMemberVo> page = PageHelper.startPage(pageNum, pageSize);
 		List<ReportPartyMemberVo> voList = partyMemberMapper.getReportPartyMembers(deptId);
+		String timeStr;
+		if (subTypeId == ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId()) {
+			timeStr = Calendar.getInstance().get(Calendar.YEAR)+"年 上半年";
+		} else {
+			timeStr = Calendar.getInstance().get(Calendar.YEAR)+"年 下半年";
+		}
 		for (ReportPartyMemberVo vo : voList) {
 			vo.setSubTypeId(subTypeId);
+			vo.setTime(timeStr);
 		}
 		if (!voList.isEmpty()) {
 			// 查询有积分记录的用户ID

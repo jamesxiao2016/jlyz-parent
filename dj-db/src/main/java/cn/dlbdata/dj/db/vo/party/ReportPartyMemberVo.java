@@ -7,6 +7,7 @@ public class ReportPartyMemberVo {
     private Long subTypeId;//子活动ID
     private int status;
     private Long deptId;//党员部门ID
+    private String time;
 
     public String getName() {
         return name;
@@ -46,5 +47,13 @@ public class ReportPartyMemberVo {
 
     public void setDeptId(Long deptId) {
         this.deptId = deptId;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
