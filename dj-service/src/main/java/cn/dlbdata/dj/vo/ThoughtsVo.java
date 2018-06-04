@@ -20,7 +20,7 @@ public class ThoughtsVo implements Serializable {
 	// 汇报类型
 	private Long reportType;
 	// 汇报时间
-	private Date reportTime;
+	private String reportTime;
 	// 汇报内容
 	private String content;
 	// 图片ID数组
@@ -43,11 +43,11 @@ public class ThoughtsVo implements Serializable {
 		this.reportType = reportType;
 	}
 
-	public Date getReportTime() {
+	public String getReportTime() {
 		return reportTime;
 	}
 
-	public void setReportTime(Date reportTime) {
+	public void setReportTime(String reportTime) {
 		this.reportTime = reportTime;
 	}
 

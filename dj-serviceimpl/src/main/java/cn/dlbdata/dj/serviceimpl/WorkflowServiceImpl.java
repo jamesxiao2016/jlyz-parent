@@ -220,13 +220,6 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
                 return resultVo;
             }
         }
-//		// 检查用户权限
-//		if (user.getRoleId() != RoleEnum.BRANCH_PARTY.getId()
-//				&& user.getRoleId() != RoleEnum.HEADER_OF_DISTRICT.getId()) {
-//			resultVo.setCode(ResultCode.Forbidden.getCode());
-//			resultVo.setMsg("当前用户没有权限");
-//			return resultVo;
-//		}
 
 		DjType type = typeMapper.selectByPrimaryKey(apply.getDjTypeId());
 		if (type == null) {
@@ -626,7 +619,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			return result;
 		}
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-		Date reportTime = param.getReportTime();
+		Date reportTime = DatetimeUtil.getDateByStr(param.getReportTime());
 		DateFormat df = DateFormat.getDateInstance(DateFormat.YEAR_FIELD);
 		int parmYear = Integer.parseInt(df.format(reportTime).substring(0,4));
 		if (parmYear != year) {
@@ -650,7 +643,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		record.setDjUserId(param.getUserId());
 		record.setThoughtsType(param.getReportType());
 		record.setThoughtsInfo(param.getContent());
-		record.setThoughtsTime(param.getReportTime());
+		record.setThoughtsTime(DatetimeUtil.getDateByStr(param.getReportTime()));
 		record.setScore(subType.getScore());
 		record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 
@@ -976,7 +969,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		score.setApplyUserId(null);
 		score.setApplyUserName("admin");
 		score.setApproverId(null);
-		score.setApplyUserName("admin");
+		score.setApproverName("admin");
 		score.setAddYear(year);
 		score.setAddStatus(1);
 		score.setScoreDesc("遵纪守法基础积分");
