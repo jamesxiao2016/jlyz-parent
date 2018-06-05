@@ -28,7 +28,7 @@ $(function() {
 			}
 		}],
 		series: [{
-				name: '设备',
+				name: '微信',
 				type: 'line',
 				data: [11, 11, 15, 13, 12, 13, 10],
 				smooth: true,
@@ -76,13 +76,13 @@ $(function() {
 	var barChart = echarts.init(document.getElementById("echarts-bar-chart"));
 	var baroption = {
 		title: {
-			text: '设备和APP'
+			text: '微信和APP'
 		},
 		tooltip: {
 			trigger: 'axis'
 		},
 		legend: {
-			data: ['设备', 'APP']
+			data: ['微信', 'APP']
 		},
 		grid: {
 			x: 30,
@@ -98,7 +98,7 @@ $(function() {
 			type: 'value'
 		}],
 		series: [{
-				name: '设备',
+				name: '微信',
 				type: 'bar',
 				data: [2, 5, 7, 23, 25, 76, 135, 162, 32, 20, 6, 3],
 				markPoint: {

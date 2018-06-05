@@ -269,10 +269,16 @@ public class ActiveController extends BaseController {
 
 		return result;
 	}
+
 	/**
 	 * 
-	 * <p>Title: queryActiveById</p> 
-	 * <p>Description: 获取活动详情</p> 
+	 * <p>
+	 * Title: queryActiveById
+	 * </p>
+	 * <p>
+	 * Description: 获取活动详情
+	 * </p>
+	 * 
 	 * @param activeId
 	 * @param roleId
 	 * @return
@@ -297,10 +303,16 @@ public class ActiveController extends BaseController {
 		result.setData(res.getData());
 		return result;
 	}
+
 	/**
 	 * 
-	 * <p>Title: getActiveListByDeptId</p> 
-	 * <p>Description: 活动列表</p> 
+	 * <p>
+	 * Title: getActiveListByDeptId
+	 * </p>
+	 * <p>
+	 * Description: 活动列表
+	 * </p>
+	 * 
 	 * @param partyMemberLifeNotice
 	 * @return
 	 */
@@ -326,6 +338,26 @@ public class ActiveController extends BaseController {
 		Paged<Map<String, Object>> page = activeService.getActiveListByDeptId(partyMemberLifeNotice);
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(page);
+		return result;
+	}
+
+	/**
+	 * 活动报名
+	 * 
+	 * @param activeId
+	 * @return
+	 */
+	@PostMapping(value = "/cancelActive")
+	@ResponseBody
+	public ResultVo<String> cancelActiveById(@RequestBody SignVo vo) {
+		ResultVo<String> result = new ResultVo<>();
+		UserVo user = getCurrentUserFromCache();
+		if (vo == null || user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		result = activeService.cancelActiveById(vo.getActiveId(), user);
+
 		return result;
 	}
 }
