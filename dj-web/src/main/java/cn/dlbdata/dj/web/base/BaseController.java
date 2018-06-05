@@ -102,14 +102,14 @@ public class BaseController {
 			return null;
 		}
 		String userId = tokenMap.get(JwtTokenUtil.KEY_UID);
-		String roleId = tokenMap.get(JwtTokenUtil.KEY_UTYPE);
 		UserVo currUser = (UserVo) CacheManager.getInstance().get(userId);
 		// 如果缓存中获取失败，从数据库中查询
-		if (currUser == null) {
-			currUser = userService.getUserDetailById(DigitUtil.parseToLong(userId), 1, DigitUtil.parseToLong(roleId));
-			if (currUser != null)
-				CacheManager.getInstance().put(userId, currUser);
-		}
+//		if (currUser == null) {
+//		String roleId = tokenMap.get(JwtTokenUtil.KEY_UTYPE);
+//			currUser = userService.getUserDetailById(DigitUtil.parseToLong(userId), 1, DigitUtil.parseToLong(roleId));
+//			if (currUser != null)
+//				CacheManager.getInstance().put(userId, currUser);
+//		}
 		return currUser;
 	}
 

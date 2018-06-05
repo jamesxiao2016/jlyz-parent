@@ -71,7 +71,7 @@ public class PicController extends BaseController {
 		ResultVo<Long> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
 		if (user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			result.setMsg("请重新登录");
 			return result;
 		}

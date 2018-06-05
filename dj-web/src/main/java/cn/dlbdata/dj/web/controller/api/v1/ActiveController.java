@@ -65,7 +65,7 @@ public class ActiveController extends BaseController {
 		ResultVo<Paged<Map<String, Object>>> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
 		if (data == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			result.setMsg("请重新登录");
 			return result;
 		}
@@ -95,7 +95,7 @@ public class ActiveController extends BaseController {
 		ResultVo<Map<String, Object>> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
 		if (data == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			result.setMsg("请重新登录");
 			return result;
 		}
@@ -128,7 +128,7 @@ public class ActiveController extends BaseController {
 		ResultVo<String> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
 		if (data == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			result.setMsg("请重新登录");
 			return result;
 		}
@@ -155,7 +155,7 @@ public class ActiveController extends BaseController {
 		ResultVo<Paged<DjActive>> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
 		if (data == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			result.setMsg("请先登录");
 			return result;
 		}
@@ -222,7 +222,7 @@ public class ActiveController extends BaseController {
 
 		UserVo user = getCurrentUserFromCache();
 		if (user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		result = activeService.createActive(vo, user);
@@ -242,7 +242,7 @@ public class ActiveController extends BaseController {
 		ResultVo<String> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
 		if (vo == null || user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		result = activeService.signIn(vo.getActiveId(), user);
@@ -262,7 +262,7 @@ public class ActiveController extends BaseController {
 		ResultVo<String> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
 		if (vo == null || user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		result = activeService.signUp(vo.getActiveId(), user);
@@ -289,7 +289,7 @@ public class ActiveController extends BaseController {
 		ResultVo<Map<String, Object>> result = new ResultVo<>();
 		UserVo data = getCurrentUserFromCache();
 		if (data == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			result.setMsg("请先登录");
 			return result;
 		}
@@ -328,7 +328,7 @@ public class ActiveController extends BaseController {
 		}
 		UserVo data = getCurrentUserFromCache();
 		if (data == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			result.setMsg("请重新登录");
 			return result;
 		}
@@ -353,7 +353,7 @@ public class ActiveController extends BaseController {
 		ResultVo<String> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
 		if (vo == null || user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		result = activeService.cancelActiveById(vo.getActiveId(), user);

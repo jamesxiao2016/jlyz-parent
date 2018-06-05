@@ -51,7 +51,7 @@ public class PartyController extends BaseController {
 		TokenVo tokenVo = getTokenUserInfo();
 		if (tokenVo == null) {
 			logger.error("用户未登录");
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			result.setMsg("用户未报名或登录已过期");
 			return result;
 		}
@@ -80,7 +80,7 @@ public class PartyController extends BaseController {
 		TokenVo vo = getTokenUserInfo();
 		if (vo == null) {
 			logger.error("用户未登录");
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		if (userId == null) {
@@ -111,7 +111,7 @@ public class PartyController extends BaseController {
 		TokenVo vo = getTokenUserInfo();
 		if (vo == null) {
 			logger.error("用户未登录");
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		if (userId == null) {
@@ -139,7 +139,7 @@ public class PartyController extends BaseController {
 		TokenVo vo = getTokenUserInfo();
 		if (vo == null) {
 			logger.error("用户未登录");
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		if (userId == null) {
@@ -171,7 +171,7 @@ public class PartyController extends BaseController {
 
 		TokenVo tokenVo = getTokenUserInfo();
 		if (tokenVo == null) {
-			result.setCode(ResultCode.BadRequest.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		if (deptId == null) {
@@ -220,7 +220,7 @@ public class PartyController extends BaseController {
 		ResultVo<Paged<PioneeringPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		TokenVo tokenVo = getTokenUserInfo();
 		if (tokenVo == null) {
-			result.setCode(ResultCode.BadRequest.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		if (deptId == null) {
@@ -252,7 +252,7 @@ public class PartyController extends BaseController {
 		TokenVo vo = getTokenUserInfo();
 		if (vo == null) {
 			logger.error("用户未登录");
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		if (deptId == null || deptId == 0) {
@@ -284,7 +284,7 @@ public class PartyController extends BaseController {
 		ResultVo<Paged<ObserveLowPartyMemberVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		TokenVo tokenVo = getTokenUserInfo();
 		if (tokenVo == null) {
-			result.setCode(ResultCode.BadRequest.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		if (deptId == null) {
@@ -363,7 +363,7 @@ public class PartyController extends BaseController {
 		ResultVo<AnnualActiveInfo> resultVo = new ResultVo<>(ResultCode.OK.getCode());
 		if (user == null) {
 			logger.error("用户未登录");
-			resultVo.setCode(ResultCode.Forbidden.getCode());
+			resultVo.setCode(ResultCode.NOT_LOGIN.getCode());
 			resultVo.setMsg("用户未登录或用户已退出");
 			return resultVo;
 		}

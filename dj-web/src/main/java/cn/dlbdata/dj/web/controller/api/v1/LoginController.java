@@ -38,6 +38,7 @@ public class LoginController extends BaseController {
 	private IUserService userService;
 	@Autowired
 	private ILogLoginService LogLoginService;
+
 	/**
 	 * 用户登录
 	 * 
@@ -51,7 +52,7 @@ public class LoginController extends BaseController {
 		vo.setPwd(StringUtil.getMD5Digest32(vo.getPwd()));
 		ResultVo<UserVo> result = userService.login(vo);
 		DjLogLogin djLogLogin = new DjLogLogin();
-		if(result.getData() != null) {
+		if (result.getData() != null) {
 			djLogLogin.setDjUserId(result.getData().getUserId());
 			djLogLogin.setErrorMsg(result.getMsg());
 			djLogLogin.setUserName(result.getData().getUserName());
@@ -59,7 +60,7 @@ public class LoginController extends BaseController {
 			djLogLogin.setUserAccount(result.getData().getName());
 			djLogLogin.setCreateTime(new Date());
 			djLogLogin.setStatus(result.getCode());
-		}else {
+		} else {
 			djLogLogin.setErrorMsg(result.getMsg());
 			djLogLogin.setUserAccount(vo.getName());
 			djLogLogin.setCreateTime(new Date());
@@ -83,8 +84,10 @@ public class LoginController extends BaseController {
 		if (data != null) {
 			result.setCode(ResultCode.OK.getCode());
 			result.setData(data);
+		} else {
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 		}
-		
+
 		return result;
 	}
 

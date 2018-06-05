@@ -50,7 +50,7 @@ public class DeptController extends BaseController {
 		TokenVo vo = getTokenUserInfo();
 		if (vo == null) {
 			logger.error("用户未登录");
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		if (deptId == null || deptId == 0) {

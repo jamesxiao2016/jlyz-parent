@@ -41,18 +41,16 @@ public class CoreConst {
 	 *
 	 */
 	public static enum ResultCode {
-		OK(200, "OK"), // 成功统一返回
-		BadRequest(400, "Bad Request"), // 默认返回此错误码
-		Unauthorized(401, "Unauthorized"), // 请求要求身份验证，未登录返回此错误码
-		ParameterError(402, "Parameter Error"), // 参数错误统一返回此错误码
-		Forbidden(403, "Forbidden"), // 资源不能访问
-		NotFound(404, "Not Found"), // 资源不存在
-		MethodNotAllowed(405, "Method Not Allowed"), // 方法不允许访问
-		NotAcceptable(406, "Not Acceptable"), //
-		ProxyAuthenticationRequired(407, "Proxy Authentication Required"), //
-		RequestTimeout(408, "Request Timeout"), //
-		InternalServerError(500, "500 Internal Server Error"), //
-		ServiceUnavailable(503, "Service Unavailable");
+		OK(1000, "OK"), // 成功统一返回
+		NOT_LOGIN(1010, "Not Login"), // 未登录
+		BadRequest(1020, "Bad Request"), // 默认返回此错误码
+		Unauthorized(1021, "Unauthorized"), // 非法请求要求身份验证
+		ParameterError(1022, "Parameter Error"), // 参数错误统一返回此错误码
+		Forbidden(1023, "Forbidden"), // 资源不能访问
+		NotFound(1024, "Not Found"), // 资源不存在
+		MethodNotAllowed(1025, "Method Not Allowed"), // 方法不允许访问
+		InternalServerError(1026, "500 Internal Server Error"), //
+		ServiceUnavailable(1027, "Service Unavailable");
 		
 		ResultCode(int code, String desc) {
 			this.code = code;
