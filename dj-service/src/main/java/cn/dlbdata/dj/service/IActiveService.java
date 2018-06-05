@@ -38,20 +38,26 @@ public interface IActiveService {
 	 * 获取党员通知列表
 	 */
 	public Paged<Map<String, Object>> getParticipateActive(PartyMemberLifeNotice PartyMemberLifeNotice);
-	
+
 	/**
 	 * 党支书获取活动列表
 	 */
 	public Paged<Map<String, Object>> getActiveListByDeptId(PartyMemberLifeNotice PartyMemberLifeNotice);
-	
+
 	/**
 	 * 
-	 * <p>Title: getParticipateActiveOne</p> 
-	 * <p>Description: 获取党员生活通知第一条</p> 
+	 * <p>
+	 * Title: getParticipateActiveOne
+	 * </p>
+	 * <p>
+	 * Description: 获取党员生活通知第一条
+	 * </p>
+	 * 
 	 * @param PartyMemberLifeNotice
 	 * @return
 	 */
 	public ResultVo<Map<String, Object>> getParticipateActiveOne(PartyMemberLifeNotice PartyMemberLifeNotice);
+
 	/**
 	 * 党员生活通知总数
 	 * <p>
@@ -66,7 +72,6 @@ public interface IActiveService {
 	 */
 	public int getParticipateActiveCount(PartyMemberLifeNotice partyMemberLifeNotice);
 
-
 	/**
 	 * 创建活动
 	 * 
@@ -78,11 +83,15 @@ public interface IActiveService {
 	 */
 	public ResultVo<Long> createActive(ActiveVo vo, UserVo user);
 
-
 	/**
 	 * 
-	 * <p>Title: queryActiveById</p> 
-	 * <p>Description: 获取活动详情</p> 
+	 * <p>
+	 * Title: queryActiveById
+	 * </p>
+	 * <p>
+	 * Description: 获取活动详情
+	 * </p>
+	 * 
 	 * @param activeId
 	 * @return
 	 */
@@ -98,6 +107,15 @@ public interface IActiveService {
 	public ResultVo<String> signUp(Long activeId, UserVo user);
 
 	/**
+	 * 取消活动
+	 * 
+	 * @param activeId
+	 * @param user
+	 * @return
+	 */
+	public ResultVo<String> cancelActiveById(Long activeId, UserVo user);
+
+	/**
 	 * 活动签到
 	 * 
 	 * @param activeId
@@ -105,6 +123,5 @@ public interface IActiveService {
 	 * @return
 	 */
 	public ResultVo<String> signIn(Long activeId, UserVo user);
-
 
 }

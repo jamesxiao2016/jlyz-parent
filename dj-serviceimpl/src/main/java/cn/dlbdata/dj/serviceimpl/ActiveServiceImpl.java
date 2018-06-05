@@ -16,7 +16,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.hazelcast.mapreduce.impl.operation.RequestPartitionResult.ResultState;
 
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
@@ -619,6 +618,48 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			}
 		}
 		return rlist;
+	}
+
+	@Override
+	public ResultVo<String> cancelActiveById(Long activeId, UserVo user) {
+		ResultVo<String> result = new ResultVo<>(ResultCode.BadRequest.getCode());
+		if (activeId == null || user == null || user.getUserId() == null) {
+			result.setCode(ResultCode.ParameterError.getCode());
+			result.setMsg("参数不完整");
+			return result;
+		}
+
+		// 查询活动信息
+		DjActive active = activeMapper.selectByPrimaryKey(activeId);
+		if (active == null) {
+			result.setMsg("获取活动信息失败");
+			return result;
+		}
+
+		/**
+		 * 检查是否可以删除
+		 */
+		// 1、检查活动时间
+		if (active.getStartTime().before(new Date())) {
+			result.setMsg("活动已开始，不能删除");
+			return result;
+		}
+
+		// 2、检查当前用户和创建人是否匹配
+		if (!user.getUserId().equals(active.getCreateUserId())) {
+			logger.error("创建人不匹配->" + user.getUserId() + ":" + active.getCreateUserId());
+			result.setMsg("当前活动不能删除");
+			return result;
+		}
+
+		active.setStatus(DlbConstant.BASEDATA_STATUS_DEL);
+
+		int count = activeMapper.updateByPrimaryKeySelective(active);
+		if (count > 0) {
+			result.setCode(ResultCode.OK.getCode());
+			result.setData(activeId + "");
+		}
+		return result;
 	}
 
 }
