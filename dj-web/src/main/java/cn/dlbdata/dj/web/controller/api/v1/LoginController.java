@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
 import cn.dlbdata.dj.common.core.util.cache.CacheManager;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
+import cn.dlbdata.dj.common.core.util.security.MD5Util;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.common.util.StringUtil;
 import cn.dlbdata.dj.db.pojo.DjLogLogin;
@@ -107,6 +108,7 @@ public class LoginController extends BaseController {
 		if (tokenMap != null) {
 			CacheManager.getInstance().remove(tokenMap.get(JwtTokenUtil.KEY_UID));
 		}
+		JwtTokenUtil.USER_TICKET_CACHE.invalidate(MD5Util.encode(token));
 		return result;
 	}
 

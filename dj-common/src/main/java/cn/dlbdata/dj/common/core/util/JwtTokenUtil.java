@@ -3,6 +3,7 @@ package cn.dlbdata.dj.common.core.util;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -11,7 +12,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 import cn.dlbdata.dj.common.core.util.security.Base64;
+import cn.dlbdata.dj.common.core.util.security.MD5Util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -19,6 +24,16 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JwtTokenUtil {
 	static Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
+
+	public final static Cache<String, String> USER_TICKET_CACHE = CacheBuilder.newBuilder()
+			// 设置cache的初始大小为10，要合理设置该值
+			.initialCapacity(10)
+			// 设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作
+			.concurrencyLevel(5)
+			// 设置cache中的数据在写入之后的存活时间为10秒
+			.expireAfterWrite(7, TimeUnit.DAYS)
+			// 构建cache实例
+			.build();
 	/**
 	 * KEY-用户ID
 	 */
@@ -103,6 +118,7 @@ public class JwtTokenUtil {
 			logger.error("token is null");
 			return result;
 		}
+
 		Claims claims = null;
 		try {
 			claims = parseJWT(token);
@@ -159,7 +175,7 @@ public class JwtTokenUtil {
 		long TTLMillis = 10000L;
 		String cid = "c001";
 		try {
-			String token = createToken(userId, name, cid, "1",TTLMillis);
+			String token = createToken(userId, name, cid, "1", TTLMillis);
 			System.out.println(token);
 			Claims claims = parseJWT(token);
 			System.out.println(claims.get(KEY_UID));

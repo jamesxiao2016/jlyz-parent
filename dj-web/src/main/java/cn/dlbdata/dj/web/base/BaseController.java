@@ -19,6 +19,7 @@ import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.JsonUtil;
 import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
 import cn.dlbdata.dj.common.core.util.cache.CacheManager;
+import cn.dlbdata.dj.common.core.util.security.MD5Util;
 import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.vo.TokenVo;
@@ -61,7 +62,7 @@ public class BaseController {
 		// 从header中获取token
 		String token = getHeader("token");
 		Map<String, String> tokenMap = JwtTokenUtil.getTokenInfo(token);
-		if (tokenMap == null) {
+		if (tokenMap == null || tokenMap.isEmpty()) {
 			return null;
 		}
 		TokenVo vo = new TokenVo();
@@ -98,18 +99,26 @@ public class BaseController {
 			return null;
 		}
 		Map<String, String> tokenMap = JwtTokenUtil.getTokenInfo(token);
-		if (tokenMap == null) {
+		if (tokenMap == null || tokenMap.isEmpty()) {
+			return null;
+		}
+
+
+		String tokenMd5 = MD5Util.encode(token);
+		// 检查token是否有效
+		String tokenCache = JwtTokenUtil.USER_TICKET_CACHE.getIfPresent(tokenMd5);
+		if (!token.equals(tokenCache)) {
 			return null;
 		}
 		String userId = tokenMap.get(JwtTokenUtil.KEY_UID);
 		UserVo currUser = (UserVo) CacheManager.getInstance().get(userId);
 		// 如果缓存中获取失败，从数据库中查询
-//		if (currUser == null) {
-//		String roleId = tokenMap.get(JwtTokenUtil.KEY_UTYPE);
-//			currUser = userService.getUserDetailById(DigitUtil.parseToLong(userId), 1, DigitUtil.parseToLong(roleId));
-//			if (currUser != null)
-//				CacheManager.getInstance().put(userId, currUser);
-//		}
+		// if (currUser == null) {
+		// String roleId = tokenMap.get(JwtTokenUtil.KEY_UTYPE);
+		// currUser = userService.getUserDetailById(DigitUtil.parseToLong(userId), 1, DigitUtil.parseToLong(roleId));
+		// if (currUser != null)
+		// CacheManager.getInstance().put(userId, currUser);
+		// }
 		return currUser;
 	}
 

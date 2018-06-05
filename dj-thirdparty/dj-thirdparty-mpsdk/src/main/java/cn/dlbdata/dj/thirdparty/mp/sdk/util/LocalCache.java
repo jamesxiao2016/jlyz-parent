@@ -24,5 +24,4 @@ public class LocalCache {
 			.expireAfterWrite(60, TimeUnit.MINUTES)
 			// 构建cache实例
 			.build();
-
 }
