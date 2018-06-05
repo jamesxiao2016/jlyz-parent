@@ -261,24 +261,25 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			data.setDeptName(dept.getName());
 			// 党委
 			data.setPartyCommittee(dept.getAddress());
-			if (roleId != null && roleId > 1) {
+			
+			//党支书角色
+			if (roleId.equals(RoleEnum.BRANCH_PARTY.getId())) {
 				data.setHonor(dept.getHonor());
 				data.setPeopleNum(dept.getPeopleNum());
 				DjSection section = sectionMapper.selectByPrimaryKey(dept.getDjSectionId());
 				if (section != null) {
 					data.setSectionName(section.getName());
 				}
+			}
 
-				// 片区负责人，显示片区总人数
-				if (roleId.equals(RoleEnum.HEADER_OF_DISTRICT.getId())) {
-
-					DjDept deptCondition = new DjDept();
-					deptCondition.setDjSectionId(dept.getDjSectionId());
-					Integer deptNum = deptMapper.selectCount(deptCondition);
-					data.setDeptNum(deptNum);
-					Integer peopleNum = deptMapper.getSectionPeopleNum(dept.getDjSectionId());
-					data.setPeopleNum(peopleNum);
-				}
+			// 片区负责人，显示片区总人数
+			if (roleId.equals(RoleEnum.HEADER_OF_DISTRICT.getId())) {
+				DjDept deptCondition = new DjDept();
+				deptCondition.setDjSectionId(dept.getDjSectionId());
+				Integer deptNum = deptMapper.selectCount(deptCondition);
+				data.setDeptNum(deptNum);
+				Integer peopleNum = deptMapper.getSectionPeopleNum(dept.getDjSectionId());
+				data.setCommitteeNum(peopleNum);
 			}
 		}
 		if (isShowScore != null && isShowScore == 1) {

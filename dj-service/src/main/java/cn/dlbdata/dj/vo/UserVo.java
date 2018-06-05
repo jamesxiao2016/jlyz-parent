@@ -39,10 +39,12 @@ public class UserVo implements Serializable {
 	private Long roleId;
 	// 总分
 	private Float totalScore;
-	//党支部数量
+	// 党支部数量
 	private Integer deptNum;
-	//党员人数
+	// 党员人数
 	private Integer peopleNum;
+	// 党委党员人数
+	private Integer committeeNum;
 
 	public Long getUserId() {
 		return userId;
@@ -186,6 +188,14 @@ public class UserVo implements Serializable {
 
 	public void setDeptNum(Integer deptNum) {
 		this.deptNum = deptNum;
+	}
+
+	public Integer getCommitteeNum() {
+		return committeeNum;
+	}
+
+	public void setCommitteeNum(Integer committeeNum) {
+		this.committeeNum = committeeNum;
 	}
 
 }
