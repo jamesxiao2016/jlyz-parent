@@ -32,7 +32,7 @@ import cn.dlbdata.dj.web.vo.TokenVo;
  */
 @Controller
 @RequestMapping("/api/v1/party")
-public class PartyMemberController extends BaseController {
+public class PartyController extends BaseController {
 	@Autowired
 	private IPartyMemberService partyMemberService;
 	@Autowired

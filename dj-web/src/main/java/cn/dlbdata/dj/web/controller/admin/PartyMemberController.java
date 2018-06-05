@@ -12,7 +12,7 @@ import cn.dlbdata.dj.web.base.BaseController;
  *
  */
 @Controller
-@RequestMapping("/admin/party")
+@RequestMapping("/admin/partymember")
 public class PartyMemberController extends BaseController {
 	/**
 	 * 查询列表
