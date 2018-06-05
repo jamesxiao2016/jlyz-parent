@@ -59,7 +59,7 @@
 	      <if test="signUp == 0 ">
 	          AND (select count(*) from dj_active_user where dj_active_user.dj_user_id = #{userId} and dj_active_user.dj_active_id = t.id) = 0
 	      </if>
-	      	
+	      	AND t.status = 1
 	        order by signUp , t.start_time DESC
      </select>
      
@@ -76,6 +76,7 @@
 		       <if test="endTime != null">
 		          AND t.end_time &gt; #{endTime}
 		      </if>
+		      	  AND t.status = 1
 	      </where>
 	        order by t.start_time DESC
      </select>
@@ -95,6 +96,7 @@
 	       <if test="endTime != null">
 	          AND t.end_time &gt; #{endTime}
 	      </if>
+	      	  AND t.status = 1
 	        order by signUp , t.start_time DESC
 	        limit 1
      </select>
@@ -113,6 +115,7 @@
 	       <if test="endTime != null">
 	          AND t.end_time &gt; #{endTime}
 	      </if>
+	      	  AND t.status = 1
 	        order by signUp, t.start_time DESC
      </select>
 
