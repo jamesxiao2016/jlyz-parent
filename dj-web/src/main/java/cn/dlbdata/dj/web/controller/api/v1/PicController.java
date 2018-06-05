@@ -51,7 +51,8 @@ public class PicController extends BaseController {
 	private final String PREVFIX = "thumbnail_";
 	// 拼接请求地址
 	private static String REQUEST_URL = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
-
+	// 重试次数
+	private static int RETRY_NUM = 3;
 	@Autowired
 	private AccessService accessService;
 	@Autowired
@@ -88,6 +89,7 @@ public class PicController extends BaseController {
 			ImageUtil.thumbnailImage(PICTURE_PATH + path, 200, 200, PREVFIX, false);
 			logger.info("thumbnailImage success");
 		} catch (Exception e) {
+			getAccessToken();
 			logger.error("保存图片失败", e);
 			result.setMsg("保存图片失败");
 			result.setCode(ResultCode.Forbidden.getCode());
@@ -102,6 +104,8 @@ public class PicController extends BaseController {
 		return result;
 	}
 
+	int retryCount = 0;
+
 	/**
 	 * 获取媒体文件
 	 *
@@ -110,33 +114,33 @@ public class PicController extends BaseController {
 	 * @param savePath
 	 *            文件在本地服务器上的存储路径
 	 */
-	public String downloadMedia(Long picId, String mediaId, String rootPath, long userId) {
-
+	public String downloadMedia(Long picId, String mediaId, String rootPath, Long userId) {
+		if(picId == null) {
+			picId = DigitUtil.generatorLongId();
+		}
+		if(mediaId == null || mediaId == "") {
+			logger.error("mediaId为空");
+			return "";
+		}
+		if(userId == null) {
+			logger.error("没有用户id");
+			return "";
+		}
 		String filePath = null;
 		String picturePath = null;
 		String picPath = null;
-		GetaAccessTokenParam getaAccessTokenParam = new GetaAccessTokenParam();
-		// getaAccessTokenParam.setSecret("8d72463ffdf8a2232241985b442c1c93");
-		// getaAccessTokenParam.setAppid("wxef4c83c01085bb38");
-		getaAccessTokenParam.setAppid(ConfigUtil.get(DlbConstant.KEY_WX_APP_ID));
-		getaAccessTokenParam.setSecret(ConfigUtil.get(DlbConstant.KEY_WX_SECRET));
-		getaAccessTokenParam.setGrantType(GrantType.client_credential);
+
 		String token = LocalCache.TICKET_CACHE.getIfPresent(DlbConstant.KEY_ACCESS_TOKEN);
 		if (StringUtils.isEmpty(token)) {
-			try {
-				AccessTokenResponse accessTokenResponse = accessService.getAccessToken(getaAccessTokenParam);
-				token = accessTokenResponse.getAccessToken();
-				LocalCache.TICKET_CACHE.put(DlbConstant.KEY_ACCESS_TOKEN, token);
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
+			token = getAccessToken();
 		}
 		// 如果token为空
 		if (StringUtils.isEmpty(token)) {
 			logger.error("token获取为空");
 			return "";
 		}
-		String requestUrl = REQUEST_URL.replace(DlbConstant.KEY_ACCESS_TOKEN, token).replace(DlbConstant.KEY_MEDIA_ID, mediaId);
+		String requestUrl = REQUEST_URL.replace(DlbConstant.KEY_ACCESS_TOKEN, token).replace(DlbConstant.KEY_MEDIA_ID,
+				mediaId);
 		HttpURLConnection conn = null;
 		BufferedInputStream bis = null;
 		FileOutputStream fos = null;
@@ -144,9 +148,7 @@ public class PicController extends BaseController {
 			URL url = new URL(requestUrl);
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setDoInput(true);
-			conn.setDoOutput(true);
 			conn.setRequestMethod("GET");
-			conn.connect();
 			// 根据内容类型获取扩展名
 			String fileExt = CommonUtil.getFileExt(conn.getHeaderField("Content-Type"));
 			// 错误的代码 凑活一下！！！！
@@ -177,18 +179,64 @@ public class PicController extends BaseController {
 			int size = 0;
 			while ((size = bis.read(buf)) != -1)
 				fos.write(buf, 0, size);
+		} catch (Exception e) {
+			token = getAccessToken();
+
+			if (StringUtils.isNotEmpty(token)) {
+				if (retryCount <= 3) {
+					downloadMedia(picId, mediaId, rootPath, userId);
+					retryCount++;
+				}
+			}
 		} finally {
 			if (fos != null)
-				fos.close();
+				try {
+					fos.close();
+				} catch (IOException e) {
+					// 忽略此异常
+				}
 			if (bis != null)
-				bis.close();
+				try {
+					bis.close();
+				} catch (IOException e) {
+					// 忽略此异常
+				}
 			if (conn != null)
 				conn.disconnect();
-
 		}
 		logger.info("下载媒体文件成功，filePath=" + filePath);
 
 		return picPath;
+	}
+
+	/**
+	 * 获取access_token
+	 * <p>
+	 * Title: getAccessToken
+	 * </p>
+	 * <p>
+	 * Description:
+	 * </p>
+	 * 
+	 * @return
+	 */
+	private String getAccessToken() {
+		String token = "";
+		GetaAccessTokenParam getaAccessTokenParam = new GetaAccessTokenParam();
+		// getaAccessTokenParam.setSecret("8d72463ffdf8a2232241985b442c1c93");
+		// getaAccessTokenParam.setAppid("wxef4c83c01085bb38");
+		getaAccessTokenParam.setAppid(ConfigUtil.get(DlbConstant.KEY_WX_APP_ID));
+		getaAccessTokenParam.setSecret(ConfigUtil.get(DlbConstant.KEY_WX_SECRET));
+		getaAccessTokenParam.setGrantType(GrantType.client_credential);
+		try {
+			AccessTokenResponse accessTokenResponse = accessService.getAccessToken(getaAccessTokenParam);
+			token = accessTokenResponse.getAccessToken();
+			LocalCache.TICKET_CACHE.put(DlbConstant.KEY_ACCESS_TOKEN, token);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return token;
 	}
 
 	/**
