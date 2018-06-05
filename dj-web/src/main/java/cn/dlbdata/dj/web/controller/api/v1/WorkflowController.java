@@ -48,7 +48,7 @@ public class WorkflowController extends BaseController {
 		ResultVo<Long> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
 		if (user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		result = studyService.saveStudy(studyVo, user);
@@ -68,7 +68,7 @@ public class WorkflowController extends BaseController {
 		ResultVo<Long> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
 		if (user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 
@@ -88,7 +88,7 @@ public class WorkflowController extends BaseController {
 		ResultVo<Long> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
 		if (user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 
@@ -108,7 +108,7 @@ public class WorkflowController extends BaseController {
 		ResultVo<Long> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
 		if (user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 
@@ -129,7 +129,7 @@ public class WorkflowController extends BaseController {
 		ResultVo<String> resultVo = new ResultVo<>(ResultCode.ParameterError.getCode());
 		if (user == null) {
 			logger.error("用户未登录");
-			resultVo.setCode(ResultCode.Forbidden.getCode());
+			resultVo.setCode(ResultCode.NOT_LOGIN.getCode());
 			resultVo.setMsg("用户未登录或用户已退出");
 			return resultVo;
 		}
@@ -213,7 +213,7 @@ public class WorkflowController extends BaseController {
 		ResultVo<List<ToDoVo>> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
 		if (user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		List<ToDoVo> toDoVos = workflowService.getTodoList(user);
@@ -231,7 +231,7 @@ public class WorkflowController extends BaseController {
 		UserVo user = getCurrentUserFromCache();
 		ResultVo<Float> result = new ResultVo<>();
 		if (user == null) {
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		Float score = workflowService.sumScoreInProcess(user);

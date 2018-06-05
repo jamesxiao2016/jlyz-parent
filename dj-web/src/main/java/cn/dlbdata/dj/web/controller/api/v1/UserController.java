@@ -37,7 +37,7 @@ public class UserController extends BaseController {
 		TokenVo vo = getTokenUserInfo();
 		if (vo == null) {
 			logger.error("用户未登录");
-			result.setCode(ResultCode.Forbidden.getCode());
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
 			return result;
 		}
 		if (userId == null) {
@@ -60,7 +60,7 @@ public class UserController extends BaseController {
 			djLogLogin.setUserName(vo.getUserName());
 			djLogLogin.setDjDeptId(vo.getDeptId());
 			djLogLogin.setCreateTime(new Date());
-			djLogLogin.setStatus(ResultCode.Forbidden.getCode());
+			djLogLogin.setStatus(ResultCode.NOT_LOGIN.getCode());
 		}
 		LogLoginService.insertLoginLogger(djLogLogin);
 		return result;
