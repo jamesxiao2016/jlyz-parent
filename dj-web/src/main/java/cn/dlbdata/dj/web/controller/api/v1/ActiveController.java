@@ -41,7 +41,7 @@ import cn.dlbdata.dj.web.vo.SignVo;
 @Controller
 @RequestMapping("/api/v1/active")
 public class ActiveController extends BaseController {
-	private String QR_CODE_URL_PATH = ConfigUtil.get("qrCodeRootPath");
+	private String QR_CODE_ROOT_URL = ConfigUtil.get("qrCodeRootPath");
 	@Autowired
 	private IActiveService activeService;
 	@Autowired
@@ -182,7 +182,7 @@ public class ActiveController extends BaseController {
 	 */
 	@GetMapping(value = "/showQrCode")
 	public void showQrCode(Long activeId, HttpServletResponse response) {
-		String content = QR_CODE_URL_PATH + "#/activeSign?id=" + activeId;
+		String content = QR_CODE_ROOT_URL + "#/activeSign?id=" + activeId;
 		OutputStream out = null;
 		BufferedImage image;
 		try {

@@ -10,6 +10,24 @@ import cn.dlbdata.dj.web.base.BaseController;
 public class ViewController extends BaseController {
 
 	/**
+	 * 登录页面
+	 * @return
+	 */
+	@RequestMapping("/admin/login.html")
+	public String login() {
+		return "login.html";
+	}
+
+	/**
+	 * 修改密码页面
+	 * @return
+	 */
+	@RequestMapping("/admin/modifyPwd.html")
+	public String modifyPwd() {
+		return "modifyPwd.html";
+	}
+	
+	/**
 	 * 首页
 	 * @return
 	 */
@@ -26,4 +44,6 @@ public class ViewController extends BaseController {
 	public String main() {
 		return "main.html";
 	}
+	
+	
 }
