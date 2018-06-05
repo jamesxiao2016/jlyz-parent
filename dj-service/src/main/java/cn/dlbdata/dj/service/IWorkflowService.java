@@ -107,10 +107,9 @@ public interface IWorkflowService {
 
 	/**
 	 *新增基础分接口.
-	 * @param userId 党员Id
 	 * @return
 	 */
-	ResultVo addBaseScore(Long userId,int year);
+	ResultVo addBaseScore(int year);
 
 
 

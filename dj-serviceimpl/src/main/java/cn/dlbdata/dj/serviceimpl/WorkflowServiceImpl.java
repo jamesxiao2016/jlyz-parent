@@ -938,43 +938,38 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	/**
 	 * 新增基础分接口.
 	 *
-	 * @param userId 党员Id
 	 * @param year
 	 * @return
 	 */
 	@Transactional
 	@Override
-	public ResultVo addBaseScore(Long userId, int year) {
+	public ResultVo addBaseScore( int year) {
 		ResultVo resultVo = new ResultVo();
-		DjUser user = userMapper.selectByPrimaryKey(userId);
-		if (user ==null ){
-			resultVo.setCode(ResultCode.BadRequest.getCode());
-			resultVo.setMsg("该用户不存在");
-			return resultVo;
-		}
-		boolean exists = scoreMapper.existBaseScore(userId,year);
+		List<DjPartymember> partymembers = partymemberMapper.selectAll();
 
-		if (exists) {
-			resultVo.setCode(ResultCode.BadRequest.getCode());
-			resultVo.setMsg("该用户已存在基础分，请勿重新添加!");
-			return resultVo;
-		}
-		DjScore score = new DjScore();
-		score.setId(DigitUtil.generatorLongId());
-		score.setDjTypeId(ActiveTypeEnum.ACTIVE_E.getActiveId());
-		score.setDjSubTypeId(ActiveSubTypeEnum.ACTIVE_SUB_P.getActiveSubId());
-		score.setScore(20F);
-		score.setUserId(userId);
-		score.setAddTime(new Date());
-		score.setApplyUserId(null);
-		score.setApplyUserName("admin");
-		score.setApproverId(null);
-		score.setApproverName("admin");
-		score.setAddYear(year);
-		score.setAddStatus(1);
-		score.setScoreDesc("遵纪守法基础积分");
-		score.setCreateTime(new Date());
-		scoreMapper.insert(score);
+		for (DjPartymember partymember:partymembers) {
+            boolean exists = scoreMapper.existBaseScore(partymember.getId(),year);
+            if (exists) {
+                continue;
+            }
+            DjScore score = new DjScore();
+            score.setId(DigitUtil.generatorLongId());
+            score.setDjTypeId(ActiveTypeEnum.ACTIVE_E.getActiveId());
+            score.setDjSubTypeId(ActiveSubTypeEnum.ACTIVE_SUB_P.getActiveSubId());
+            score.setScore(20F);
+            score.setUserId(partymember.getId());
+            score.setAddTime(new Date());
+            score.setApplyUserId(null);
+            score.setApplyUserName("admin");
+            score.setApproverId(null);
+            score.setApproverName("admin");
+            score.setAddYear(year);
+            score.setAddStatus(1);
+            score.setScoreDesc("遵纪守法基础积分");
+            score.setCreateTime(new Date());
+            scoreMapper.insert(score);
+        }
+
 
 		resultVo.setCode(ResultCode.OK.getCode());
 		resultVo.setMsg("加分成功!");

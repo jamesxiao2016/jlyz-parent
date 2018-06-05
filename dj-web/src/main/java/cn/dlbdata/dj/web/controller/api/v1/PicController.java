@@ -50,7 +50,7 @@ public class PicController extends BaseController {
 	private String PICTURE_PATH = ConfigUtil.get("rootPath");
 	private final String PREVFIX = "thumbnail_";
 	// 拼接请求地址
-	private static String requestUrl = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
+	private static String REQUEST_URL = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
 
 	@Autowired
 	private AccessService accessService;
@@ -136,7 +136,7 @@ public class PicController extends BaseController {
 			logger.error("token获取为空");
 			return "";
 		}
-		requestUrl = requestUrl.replace(DlbConstant.KEY_ACCESS_TOKEN, token).replace(DlbConstant.KEY_MEDIA_ID, mediaId);
+		String requestUrl = REQUEST_URL.replace(DlbConstant.KEY_ACCESS_TOKEN, token).replace(DlbConstant.KEY_MEDIA_ID, mediaId);
 		HttpURLConnection conn = null;
 		BufferedInputStream bis = null;
 		FileOutputStream fos = null;

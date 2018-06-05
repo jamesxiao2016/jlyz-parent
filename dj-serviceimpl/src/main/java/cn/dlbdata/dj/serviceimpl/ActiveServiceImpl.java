@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.hazelcast.mapreduce.impl.operation.RequestPartitionResult.ResultState;
 
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
@@ -147,15 +148,13 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 	}
 
 	/*
-	 * (non-Javadoc) <p>Title: getParticipateActiveCount</p> <p>Description:
-	 * 党员生活通知总数</p>
+	 * (non-Javadoc) <p>Title: getParticipateActiveCount</p> <p>Description: 党员生活通知总数</p>
 	 * 
 	 * @param PartyMemberLifeNotice
 	 *
 	 * @return
 	 *
-	 * @see
-	 * cn.dlbdata.dj.service.IActiveService#getParticipateActiveCount(cn.dlbdata.dj.
+	 * @see cn.dlbdata.dj.service.IActiveService#getParticipateActiveCount(cn.dlbdata.dj.
 	 * db.resquest.PartyMemberLifeNotice)
 	 */
 	@Override
@@ -174,7 +173,6 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		int count = activeMapper.getParticipateActiveCount(map);
 		return count;
 	}
-
 
 	// @Override
 	// public Paged<PendingPtMemberVo> getPendingList(Long deptId, Long subTypeId,
@@ -209,6 +207,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		active.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		active.setDjSubTypeId(activeVo.getSubTypeId());
 		active.setDjTypeId(activeVo.getTypeId());
+		active.setUserName(user.getUserName());
 		if (user.getRoleId() != null && user.getRoleId() == RoleEnum.BRANCH_PARTY.getId()) {
 			active.setDjDeptId(user.getDeptId());
 		} else {
@@ -240,7 +239,8 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 				}
 			}
 		}
-
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(active.getId());
 		return result;
 	}
 
@@ -272,7 +272,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			return result;
 		}
 		JSONObject json = JSON.parseObject(JSON.toJSONString(active));
-		//获取活动图集
+		// 获取活动图集
 		Long[] picIds = new Long[0];
 		Example picExample = new Example(DjActivePic.class);
 		picExample.createCriteria().andEqualTo("djActiveId", active.getId());
