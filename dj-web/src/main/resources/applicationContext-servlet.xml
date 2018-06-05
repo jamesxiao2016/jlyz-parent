@@ -148,4 +148,5 @@
 			<bean class="cn.dlbdata.dj.web.interceptor.MyHandlerInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
+	<aop:aspectj-autoproxy expose-proxy="true"/>
 </beans>

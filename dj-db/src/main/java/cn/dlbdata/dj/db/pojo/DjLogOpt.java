@@ -27,8 +27,8 @@ public class DjLogOpt {
     /**
      * 操作位置
      */
-    @Column(name = "opt_location")
-    private String optLocation;
+    @Column(name = "opt_id")
+    private Integer optId;
 
     /**
      * 操作说明
@@ -110,22 +110,12 @@ public class DjLogOpt {
         this.djResourceId = djResourceId;
     }
 
-    /**
-     * 获取操作位置
-     *
-     * @return opt_location - 操作位置
-     */
-    public String getOptLocation() {
-        return optLocation;
+    public Integer getOptId() {
+        return optId;
     }
 
-    /**
-     * 设置操作位置
-     *
-     * @param optLocation 操作位置
-     */
-    public void setOptLocation(String optLocation) {
-        this.optLocation = optLocation;
+    public void setOptId(Integer optId) {
+        this.optId = optId;
     }
 
     /**

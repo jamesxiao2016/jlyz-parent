@@ -342,7 +342,7 @@ public class ActiveController extends BaseController {
 	}
 
 	/**
-	 * 活动报名
+	 * 取消活动
 	 * 
 	 * @param activeId
 	 * @return

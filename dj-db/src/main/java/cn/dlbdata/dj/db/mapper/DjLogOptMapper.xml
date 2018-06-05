@@ -8,7 +8,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="dj_user_id" jdbcType="BIGINT" property="djUserId" />
     <result column="dj_resource_id" jdbcType="BIGINT" property="djResourceId" />
-    <result column="opt_location" jdbcType="VARCHAR" property="optLocation" />
+    <result column="opt_id" jdbcType="BIGINT" property="optId" />
     <result column="opt_desc" jdbcType="VARCHAR" property="optDesc" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="error_msg" jdbcType="VARCHAR" property="errorMsg" />
