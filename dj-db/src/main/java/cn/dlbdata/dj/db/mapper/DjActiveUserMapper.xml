@@ -46,7 +46,7 @@
   	left join dj_user du on du.id = dtu.dj_user_id
   	left join dj_type dt on dt.id = t.dj_type_id
   	left join dj_sub_type dst on dst.id = t.dj_sub_type_id
-  	where dtu.status = #{status} and dtu.dj_user_id = #{userId}
+  	where dtu.status = #{status} and dtu.dj_user_id = #{userId} and t.status = 1
   </select>
   
   <insert id="insertList" parameterType="Map">
