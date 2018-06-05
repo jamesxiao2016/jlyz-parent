@@ -136,9 +136,9 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		List<ReportPartyMemberVo> voList = partyMemberMapper.getReportPartyMembers(deptId);
 		String timeStr;
 		if (subTypeId == ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId()) {
-			timeStr = Calendar.getInstance().get(Calendar.YEAR)+"年 上半年";
+			timeStr = "上半年";
 		} else {
-			timeStr = Calendar.getInstance().get(Calendar.YEAR)+"年 下半年";
+			timeStr = "下半年";
 		}
 		for (ReportPartyMemberVo vo : voList) {
 			vo.setSubTypeId(subTypeId);
