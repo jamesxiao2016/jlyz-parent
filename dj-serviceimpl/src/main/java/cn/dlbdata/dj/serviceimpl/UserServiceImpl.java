@@ -137,16 +137,6 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			return result;
 		}
 
-		// 返回数据处理
-		// UserVo data = new UserVo();
-		// data.setDeptId(user.getDeptId());
-		// data.setMemeberId(user.getDjPartymemberId());
-		// data.setName(user.getName());
-		// data.setUserId(user.getId());
-		// data.setAvatar(user.getAvatar());
-		// data.setRoleId(user.getRoleId());
-		// data.setUserName(user.getUserName());
-
 		// TODO 角色权限判断，判断登录的角色是否匹配(后续处理）
 		UserVo data = getUserDetailByUser(user, 1, user.getRoleId());
 		if (data == null) {

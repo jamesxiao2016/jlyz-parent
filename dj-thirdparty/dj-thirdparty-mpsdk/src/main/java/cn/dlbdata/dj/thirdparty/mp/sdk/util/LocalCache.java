@@ -12,7 +12,7 @@ public class LocalCache {
 			// 设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作
 			.concurrencyLevel(5)
 			// 设置cache中的数据在写入之后的存活时间为10秒
-			.expireAfterWrite(7000, TimeUnit.SECONDS)
+			.expireAfterWrite(3600, TimeUnit.SECONDS)
 			// 构建cache实例
 			.build();
 	public final static Cache<String, String> TICKET_CACHE = CacheBuilder.newBuilder()
@@ -21,7 +21,7 @@ public class LocalCache {
 			// 设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作
 			.concurrencyLevel(5)
 			// 设置cache中的数据在写入之后的存活时间为10秒
-			.expireAfterWrite(90, TimeUnit.MINUTES)
+			.expireAfterWrite(60, TimeUnit.MINUTES)
 			// 构建cache实例
 			.build();
 

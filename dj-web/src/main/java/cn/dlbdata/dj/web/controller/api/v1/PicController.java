@@ -123,7 +123,7 @@ public class PicController extends BaseController {
 	 * @param savePath
 	 *            文件在本地服务器上的存储路径
 	 */
-	public String downloadMedia(Long picId, String mediaId, String rootPath, Long userId) {
+	public synchronized String downloadMedia(Long picId, String mediaId, String rootPath, Long userId) {
 		if (picId == null) {
 			picId = DigitUtil.generatorLongId();
 		}
@@ -135,10 +135,7 @@ public class PicController extends BaseController {
 			logger.error("没有用户id");
 			return "";
 		}
-		String filePath = null;
-		String picturePath = null;
-		String picPath = null;
-
+		retryCount = 0;
 		String token = LocalCache.TICKET_CACHE.getIfPresent(DlbConstant.KEY_ACCESS_TOKEN);
 		if (StringUtils.isEmpty(token)) {
 			token = getAccessToken();
@@ -148,6 +145,24 @@ public class PicController extends BaseController {
 			logger.error("token获取为空");
 			return "";
 		}
+
+		String picPath = requestInputStream(token, picId, mediaId, rootPath, userId);
+
+		return picPath;
+	}
+
+	/**
+	 * 请求微信接口下载文件
+	 * 
+	 * @param picId
+	 * @param mediaId
+	 * @param rootPath
+	 * @param userId
+	 * @return
+	 */
+	private String requestInputStream(String token, Long picId, String mediaId, String rootPath, Long userId) {
+		String filePath = null;
+
 		String requestUrl = REQUEST_URL.replace(DlbConstant.KEY_ACCESS_TOKEN, token).replace(DlbConstant.KEY_MEDIA_ID,
 				mediaId);
 		HttpURLConnection conn = null;
@@ -164,36 +179,40 @@ public class PicController extends BaseController {
 			if (fileExt.isEmpty()) {
 				fileExt = ".jpg";
 			}
-			// 将mediaId作为文件名
-			Calendar calendar = Calendar.getInstance();
-			long date = System.currentTimeMillis();
-			calendar.setTimeInMillis(date);
-			int year = calendar.get(Calendar.YEAR);
-			int month = calendar.get(Calendar.MONTH) + 1;
-			int day = calendar.get(Calendar.DAY_OF_MONTH);
-			picturePath = File.separator + userId + File.separator + year + File.separator + month + File.separator
-					+ day + File.separator;
-			picPath = picturePath + picId + fileExt;
+
+			// 处理下载目录路径
+			String picPath = getPictureDir(rootPath, userId, picId, fileExt);
 			filePath = rootPath + picPath;
 
-			// 目录不存在，则创建目录
-			File dir = new File(rootPath + picturePath);
-			if (!dir.exists()) {
-				dir.mkdirs();
+			int responseCode = conn.getResponseCode();
+			logger.info("responseCode->" + responseCode);
+			// 请求成功
+			if (responseCode == 200) {
+				bis = new BufferedInputStream(conn.getInputStream());
+				logger.info("InputStream-Count->" + bis.available());
+				fos = new FileOutputStream(new File(filePath));
+				byte[] buf = new byte[4096];
+				int size = 0;
+				while ((size = bis.read(buf)) != -1) {
+					fos.write(buf, 0, size);
+				}
+				logger.info("下载媒体文件成功，filePath=" + filePath);
+				return picPath;
+			} else {// 请求失败，重新处理
+				//
+				token = getAccessToken();
+				if (StringUtils.isNotEmpty(token)) {
+					if (retryCount <= RETRY_NUM) {
+						requestInputStream(token, picId, mediaId, rootPath, userId);
+						retryCount++;
+					}
+				}
 			}
-
-			bis = new BufferedInputStream(conn.getInputStream());
-			fos = new FileOutputStream(new File(filePath));
-			byte[] buf = new byte[8096];
-			int size = 0;
-			while ((size = bis.read(buf)) != -1)
-				fos.write(buf, 0, size);
 		} catch (Exception e) {
 			token = getAccessToken();
-
 			if (StringUtils.isNotEmpty(token)) {
-				if (retryCount <= 3) {
-					downloadMedia(picId, mediaId, rootPath, userId);
+				if (retryCount <= RETRY_NUM) {
+					requestInputStream(token, picId, mediaId, rootPath, userId);
 					retryCount++;
 				}
 			}
@@ -213,9 +232,8 @@ public class PicController extends BaseController {
 			if (conn != null)
 				conn.disconnect();
 		}
-		logger.info("下载媒体文件成功，filePath=" + filePath);
 
-		return picPath;
+		return "";
 	}
 
 	/**
@@ -242,10 +260,40 @@ public class PicController extends BaseController {
 			token = accessTokenResponse.getAccessToken();
 			LocalCache.TICKET_CACHE.put(DlbConstant.KEY_ACCESS_TOKEN, token);
 		} catch (Exception e) {
-			// TODO: handle exception
+			logger.error("获取AccessToken失败", e);
 		}
 
 		return token;
+	}
+
+	/**
+	 * 获取下载目录的路径，目录不存在，则创建；目录按用户ID/年/月/日进行存放
+	 * 
+	 * @param rootPath
+	 * @param userId
+	 * @param picId
+	 * @param fileExt
+	 * @return
+	 */
+	private String getPictureDir(String rootPath, Long userId, Long picId, String fileExt) {
+		// 将mediaId作为文件名
+		Calendar calendar = Calendar.getInstance();
+		long date = System.currentTimeMillis();
+		calendar.setTimeInMillis(date);
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH) + 1;
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		String picturePath = File.separator + userId + File.separator + year + File.separator + month + File.separator
+				+ day + File.separator;
+
+		String picPath = picturePath + picId + fileExt;
+		// 目录不存在，则创建目录
+		File dir = new File(rootPath + picturePath);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+
+		return picPath;
 	}
 
 	/**
@@ -274,34 +322,39 @@ public class PicController extends BaseController {
 		InputStream is = null;
 		OutputStream os = null;
 		try {
-			try {
-				is = new FileInputStream(PICTURE_PATH + result.getData().getPicUrl());
-				response.setContentType("image/jpeg");
-				// 设置页面不缓存
-				response.setHeader("Pragma", "No-cache");
-				response.setHeader("Cache-Control", "no-cache");
-				response.setDateHeader("Expires", 0);
-				os = response.getOutputStream();// 取得响应输出流
+			is = new FileInputStream(PICTURE_PATH + result.getData().getPicUrl());
+			response.setContentType("image/jpeg");
+			// 设置页面不缓存
+			response.setHeader("Pragma", "No-cache");
+			response.setHeader("Cache-Control", "no-cache");
+			response.setDateHeader("Expires", 0);
+			os = response.getOutputStream();// 取得响应输出流
 
-				int count;
-				byte[] buffer = new byte[1024 * 1024];
-				while ((count = is.read(buffer)) != -1) {
-					os.write(buffer, 0, count);
-					os.flush();
-				}
-			} catch (Exception e) {
-				logger.error(e.getMessage(), e);
-			} finally {
-				if (is != null) {
-					is.close();
-				}
-				if (os != null) {
-					os.close();
-				}
+			int count;
+			byte[] buffer = new byte[1024 * 1024];
+			while ((count = is.read(buffer)) != -1) {
+				os.write(buffer, 0, count);
+				os.flush();
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					// 忽略此异常
+				}
+			}
+			if (os != null) {
+				try {
+					os.close();
+				} catch (IOException e) {
+					// 忽略此异常
+				}
+			}
 		}
+
 	}
 
 	/**
@@ -330,34 +383,39 @@ public class PicController extends BaseController {
 		InputStream is = null;
 		OutputStream os = null;
 		try {
-			try {
-				is = new FileInputStream(result.getData().getPicUrl());
-				response.setContentType("image/jpeg");
-				// 设置页面不缓存
-				response.setHeader("Pragma", "No-cache");
-				response.setHeader("Cache-Control", "no-cache");
-				response.setDateHeader("Expires", 0);
-				os = response.getOutputStream();// 取得响应输出流
+			is = new FileInputStream(result.getData().getPicUrl());
+			response.setContentType("image/jpeg");
+			// 设置页面不缓存
+			response.setHeader("Pragma", "No-cache");
+			response.setHeader("Cache-Control", "no-cache");
+			response.setDateHeader("Expires", 0);
+			os = response.getOutputStream();// 取得响应输出流
 
-				int count;
-				byte[] buffer = new byte[1024 * 1024];
-				while ((count = is.read(buffer)) != -1) {
-					os.write(buffer, 0, count);
-					os.flush();
-				}
-			} catch (Exception e) {
-				logger.error(e.getMessage(), e);
-			} finally {
-				if (is != null) {
-					is.close();
-				}
-				if (os != null) {
-					os.close();
-				}
+			int count;
+			byte[] buffer = new byte[1024 * 1024];
+			while ((count = is.read(buffer)) != -1) {
+				os.write(buffer, 0, count);
+				os.flush();
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					// 忽略此异常
+				}
+			}
+			if (os != null) {
+				try {
+					os.close();
+				} catch (IOException e) {
+					// 忽略此异常
+				}
+			}
 		}
+
 	}
 
 	/**
