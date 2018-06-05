@@ -285,9 +285,9 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 			active.setPicIds(picIds);
 		}
 		json.put("picIds", picIds);
+		result.setData(json);
 		if (roleId == RoleEnum.PARTY.getId()) {
 			result.setCode(ResultCode.OK.getCode());
-			result.setData(json);
 			return result;
 		}
 

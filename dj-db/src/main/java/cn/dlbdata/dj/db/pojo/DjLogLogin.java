@@ -22,7 +22,7 @@ public class DjLogLogin {
      * 账号
      */
     @Column(name = "user_account")
-    private Long userAccount;
+    private String userAccount;
 
     /**
      * 姓名
@@ -95,25 +95,16 @@ public class DjLogLogin {
         this.djUserId = djUserId;
     }
 
-    /**
-     * 获取账号
-     *
-     * @return user_ - 账号
-     */
-    public Long getUserAccount() {
+   
+    public String getUserAccount() {
 		return userAccount;
 	}
 
-    /**
-     * 设置账号
-     *
-     * @param user 账号
-     */
-	public void setUserAccount(Long userAccount) {
+	public void setUserAccount(String userAccount) {
 		this.userAccount = userAccount;
 	}
 
-    /**
+	/**
      * 获取姓名
      *
      * @return user_name - 姓名

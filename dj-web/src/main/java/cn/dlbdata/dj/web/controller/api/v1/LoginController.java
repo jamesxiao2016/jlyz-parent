@@ -1,5 +1,6 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,13 +50,23 @@ public class LoginController extends BaseController {
 		long start = System.currentTimeMillis();
 		vo.setPwd(StringUtil.getMD5Digest32(vo.getPwd()));
 		ResultVo<UserVo> result = userService.login(vo);
-//		if(result.getData() == null) {
-//			DjLogLogin djLogLogin = new DjLogLogin();
-//			djLogLogin.setDjUserId(djUserId);
-//			djLogLogin.setErrorMsg(logger);
-//			LogLoginService.insertLoginLogger(djLogLogin);
-//		}
-//		logger.info("登录耗时->" + (System.currentTimeMillis() - start));
+		DjLogLogin djLogLogin = new DjLogLogin();
+		if(result.getData() != null) {
+			djLogLogin.setDjUserId(result.getData().getUserId());
+			djLogLogin.setErrorMsg(result.getMsg());
+			djLogLogin.setUserName(result.getData().getUserName());
+			djLogLogin.setDjDeptId(result.getData().getDeptId());
+			djLogLogin.setUserAccount(result.getData().getName());
+			djLogLogin.setCreateTime(new Date());
+			djLogLogin.setStatus(result.getCode());
+		}else {
+			djLogLogin.setErrorMsg(result.getMsg());
+			djLogLogin.setUserAccount(vo.getName());
+			djLogLogin.setCreateTime(new Date());
+			djLogLogin.setStatus(result.getCode());
+		}
+		LogLoginService.insertLoginLogger(djLogLogin);
+		logger.info("登录耗时->" + (System.currentTimeMillis() - start));
 		return result;
 	}
 

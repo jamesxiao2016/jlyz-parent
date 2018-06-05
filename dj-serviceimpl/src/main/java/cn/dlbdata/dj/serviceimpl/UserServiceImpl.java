@@ -167,6 +167,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		logger.info("total time->" + (endTime - startTime));
 		// 返回结果
 		result.setCode(ResultCode.OK.getCode());
+		result.setMsg("登录成功");
 		result.setData(data);
 		return result;
 	}
@@ -231,7 +232,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		if (user == null) {
 			return null;
 		}
-
+		if(roleId == null) {
+			roleId = user.getRoleId();
+		}
 		UserVo data = new UserVo();
 		data.setDeptId(user.getDeptId());
 		data.setMemeberId(user.getDjPartymemberId());
@@ -263,7 +266,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			data.setPartyCommittee(dept.getAddress());
 			
 			//党支书角色
-			if (roleId.equals(RoleEnum.BRANCH_PARTY.getId())) {
+			if (RoleEnum.BRANCH_PARTY.getId().equals(roleId)) {
 				data.setHonor(dept.getHonor());
 				data.setPeopleNum(dept.getPeopleNum());
 				DjSection section = sectionMapper.selectByPrimaryKey(dept.getDjSectionId());
@@ -273,7 +276,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			}
 
 			// 片区负责人，显示片区总人数
-			if (roleId.equals(RoleEnum.HEADER_OF_DISTRICT.getId())) {
+			if (RoleEnum.HEADER_OF_DISTRICT.getId().equals(roleId)) {
 				DjDept deptCondition = new DjDept();
 				deptCondition.setDjSectionId(dept.getDjSectionId());
 				Integer deptNum = deptMapper.selectCount(deptCondition);
