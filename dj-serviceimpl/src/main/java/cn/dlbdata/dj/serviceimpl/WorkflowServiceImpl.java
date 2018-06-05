@@ -960,9 +960,9 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
             score.setUserId(partymember.getId());
             score.setAddTime(new Date());
             score.setApplyUserId(null);
-            score.setApplyUserName("admin");
+            score.setApplyUserName("系统自动");
             score.setApproverId(null);
-            score.setApproverName("admin");
+            score.setApproverName("系统自动");
             score.setAddYear(year);
             score.setAddStatus(1);
             score.setScoreDesc("遵纪守法基础积分");
