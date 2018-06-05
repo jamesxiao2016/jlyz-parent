@@ -15,7 +15,10 @@ import cn.dlbdata.dj.common.core.util.cache.CacheManager;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.common.util.StringUtil;
+import cn.dlbdata.dj.db.pojo.DjLogLogin;
+import cn.dlbdata.dj.service.ILogLoginService;
 import cn.dlbdata.dj.service.IUserService;
+import cn.dlbdata.dj.serviceimpl.LogLoginServiceImpl;
 import cn.dlbdata.dj.vo.LoginVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
@@ -32,7 +35,8 @@ public class LoginController extends BaseController {
 
 	@Autowired
 	private IUserService userService;
-
+	@Autowired
+	private ILogLoginService LogLoginService;
 	/**
 	 * 用户登录
 	 * 
@@ -46,9 +50,12 @@ public class LoginController extends BaseController {
 		vo.setPwd(StringUtil.getMD5Digest32(vo.getPwd()));
 		ResultVo<UserVo> result = userService.login(vo);
 //		if(result.getData() == null) {
-//			
+//			DjLogLogin djLogLogin = new DjLogLogin();
+//			djLogLogin.setDjUserId(djUserId);
+//			djLogLogin.setErrorMsg(logger);
+//			LogLoginService.insertLoginLogger(djLogLogin);
 //		}
-		logger.info("登录耗时->" + (System.currentTimeMillis() - start));
+//		logger.info("登录耗时->" + (System.currentTimeMillis() - start));
 		return result;
 	}
 

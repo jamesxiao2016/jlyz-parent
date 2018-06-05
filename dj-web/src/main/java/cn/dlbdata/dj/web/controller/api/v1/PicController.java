@@ -81,7 +81,7 @@ public class PicController extends BaseController {
 		}
 		String path;
 		Long picId = DigitUtil.generatorLongId();
-	
+
 		try {
 			path = downloadMedia(picId, vo.getMediaId(), PICTURE_PATH, user.getUserId());
 			logger.info("downloadMedia success");
@@ -102,7 +102,6 @@ public class PicController extends BaseController {
 		return result;
 	}
 
-	
 	/**
 	 * 获取媒体文件
 	 *
@@ -111,7 +110,7 @@ public class PicController extends BaseController {
 	 * @param savePath
 	 *            文件在本地服务器上的存储路径
 	 */
-	public String downloadMedia(Long picId, String mediaId, String rootPath, long userId) throws Exception {
+	public String downloadMedia(Long picId, String mediaId, String rootPath, long userId) {
 
 		String filePath = null;
 		String picturePath = null;
@@ -124,9 +123,13 @@ public class PicController extends BaseController {
 		getaAccessTokenParam.setGrantType(GrantType.client_credential);
 		String token = LocalCache.TICKET_CACHE.getIfPresent(DlbConstant.KEY_ACCESS_TOKEN);
 		if (StringUtils.isEmpty(token)) {
-			AccessTokenResponse accessTokenResponse = accessService.getAccessToken(getaAccessTokenParam);
-			token = accessTokenResponse.getAccessToken();
-			LocalCache.TICKET_CACHE.put(DlbConstant.KEY_ACCESS_TOKEN, token);
+			try {
+				AccessTokenResponse accessTokenResponse = accessService.getAccessToken(getaAccessTokenParam);
+				token = accessTokenResponse.getAccessToken();
+				LocalCache.TICKET_CACHE.put(DlbConstant.KEY_ACCESS_TOKEN, token);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 		}
 		// 如果token为空
 		if (StringUtils.isEmpty(token)) {
@@ -141,8 +144,9 @@ public class PicController extends BaseController {
 			URL url = new URL(requestUrl);
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setDoInput(true);
+			conn.setDoOutput(true);
 			conn.setRequestMethod("GET");
-
+			conn.connect();
 			// 根据内容类型获取扩展名
 			String fileExt = CommonUtil.getFileExt(conn.getHeaderField("Content-Type"));
 			// 错误的代码 凑活一下！！！！
@@ -243,7 +247,6 @@ public class PicController extends BaseController {
 		}
 	}
 
-	
 	/**
 	 * 显示缩略图
 	 * 
