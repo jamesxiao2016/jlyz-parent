@@ -242,14 +242,13 @@ public class WorkflowController extends BaseController {
 
 	/**
 	 *新增基础分接口.
-	 * @param userId 党员Id
 	 * @return
 	 */
 	@PostMapping("/addBaseScore")
 	@ResponseBody
-	public ResultVo addBaseScore(@RequestParam("userId") Long userId) {
+	public ResultVo addBaseScore() {
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-		ResultVo resultVo = workflowService.addBaseScore(userId,year);
+		ResultVo resultVo = workflowService.addBaseScore(year);
 		return resultVo;
 	}
 }
