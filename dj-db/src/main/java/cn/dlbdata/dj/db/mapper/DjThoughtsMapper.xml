@@ -14,6 +14,8 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="thoughts_type" jdbcType="BIGINT" property="thoughtsType" />
+    <result column="approver_id" jdbcType="BIGINT" property="approverId" />
+    <result column="approver_name" jdbcType="TIMESTAMP" property="approverName" />
   </resultMap>
 
   <select id="getByDeptIdAndTypeIdAndSubTypeIdAndYear"
@@ -31,7 +33,7 @@
     <select id="getReportDetail" resultType="cn.dlbdata.dj.db.vo.party.ReportDetailVo">
         select pm.name as partyMemberName, th.thoughts_time as reportTime,
         case when  th.thoughts_type = 31 then '口头汇报' when th.thoughts_type = 32 then '书面汇报' else null  end  typeName,
-        th.thoughts_info as content,th.id
+        th.thoughts_info as content,th.id,th.approver_name as approver
         from  dj_thoughts th
         LEFT JOIN dj_partymember pm on th.dj_user_id = pm.id
 
