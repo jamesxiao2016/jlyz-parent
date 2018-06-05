@@ -90,10 +90,19 @@ public class PicController extends BaseController {
 			logger.info("thumbnailImage success");
 		} catch (Exception e) {
 			getAccessToken();
-			logger.error("保存图片失败", e);
-			result.setMsg("保存图片失败");
-			result.setCode(ResultCode.Forbidden.getCode());
-			return result;
+
+			try {
+				// 失败后重新调用一次
+				path = downloadMedia(picId, vo.getMediaId(), PICTURE_PATH, user.getUserId());
+				logger.info("downloadMedia success");
+				ImageUtil.thumbnailImage(PICTURE_PATH + path, 200, 200, PREVFIX, false);
+				logger.info("thumbnailImage success");
+			} catch (Exception ee) {
+				logger.error("保存图片失败", e);
+				result.setMsg("保存图片失败");
+				result.setCode(ResultCode.Forbidden.getCode());
+				return result;
+			}
 		}
 
 		vo.setUserId(user.getUserId());
@@ -115,14 +124,14 @@ public class PicController extends BaseController {
 	 *            文件在本地服务器上的存储路径
 	 */
 	public String downloadMedia(Long picId, String mediaId, String rootPath, Long userId) {
-		if(picId == null) {
+		if (picId == null) {
 			picId = DigitUtil.generatorLongId();
 		}
-		if(mediaId == null || mediaId == "") {
+		if (mediaId == null || mediaId == "") {
 			logger.error("mediaId为空");
 			return "";
 		}
-		if(userId == null) {
+		if (userId == null) {
 			logger.error("没有用户id");
 			return "";
 		}
