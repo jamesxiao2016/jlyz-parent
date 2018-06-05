@@ -646,6 +646,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		record.setThoughtsTime(DatetimeUtil.getDateByStr(param.getReportTime()));
 		record.setScore(subType.getScore());
 		record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+		record.setApproverId(user.getUserId());
+		record.setApproverName(user.getUserName());
 
 		thoughtsMapper.insertSelective(record);
 
@@ -659,9 +661,9 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		score.setUserId(partymember.getId());
 		score.setAddTime(new Date());
 		score.setApplyUserId(user.getUserId());
-		score.setApplyUserName(user.getName());
+		score.setApplyUserName(user.getUserName());
 		score.setApproverId(user.getUserId());
-		score.setApproverName(user.getName());
+		score.setApproverName(user.getUserName());
 		score.setAddStatus(1);
 		score.setAddYear(year);
 		if (param.getReportType().equals( ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId())) {

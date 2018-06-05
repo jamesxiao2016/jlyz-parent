@@ -11,6 +11,7 @@ public class ReportDetailVo {
     private String content;//思想汇报主要内容
     private List<Long> picIds = new ArrayList<>();//思想汇报图片
     private Long id;//思想汇报Id
+    private String approver;
 
     public String getPartyMemberName() {
         return partyMemberName;
@@ -58,5 +59,13 @@ public class ReportDetailVo {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getApprover() {
+        return approver;
+    }
+
+    public void setApprover(String approver) {
+        this.approver = approver;
     }
 }

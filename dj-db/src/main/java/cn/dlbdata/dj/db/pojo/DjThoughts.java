@@ -55,6 +55,18 @@ public class DjThoughts {
     private Long thoughtsType;
 
     /**
+     * 评分人Id
+     */
+    @Column(name = "approver_id")
+    private Long approverId;
+
+    /**
+     * 评分人姓名
+     */
+    @Column(name = "approver_name")
+    private String approverName;
+
+    /**
      * 获取记录ID
      *
      * @return id - 记录ID
@@ -210,5 +222,21 @@ public class DjThoughts {
      */
     public void setThoughtsType(Long thoughtsType) {
         this.thoughtsType = thoughtsType;
+    }
+
+    public Long getApproverId() {
+        return approverId;
+    }
+
+    public void setApproverId(Long approverId) {
+        this.approverId = approverId;
+    }
+
+    public String getApproverName() {
+        return approverName;
+    }
+
+    public void setApproverName(String approverName) {
+        this.approverName = approverName;
     }
 }

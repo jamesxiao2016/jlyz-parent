@@ -148,7 +148,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		// data.setUserName(user.getUserName());
 
 		// TODO 角色权限判断，判断登录的角色是否匹配(后续处理）
-		UserVo data = getUserDetailByUser(user, 1, 1L);
+		UserVo data = getUserDetailByUser(user, 1, user.getRoleId());
 		if (data == null) {
 			logger.error("获取用户信息失败");
 			return result;
