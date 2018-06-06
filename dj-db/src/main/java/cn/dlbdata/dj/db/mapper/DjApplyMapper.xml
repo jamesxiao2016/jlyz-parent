@@ -59,7 +59,7 @@
                         and ap.dj_type_id =4
                     </if>)
                     AND exists (
-                    SELECT * FROM dj_apply ap WHERE ap. status in(1,-2) and ap.user_id = pm.id
+                    SELECT * FROM dj_apply ap WHERE ap. status in(1,2) and ap.user_id = pm.id
                     <if test="yearTimeStart !=null">
                         and ap.create_time &gt;= #{yearTimeStart}
                     </if>

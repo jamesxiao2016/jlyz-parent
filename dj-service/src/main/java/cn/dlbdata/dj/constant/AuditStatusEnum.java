@@ -7,7 +7,7 @@ public enum  AuditStatusEnum {
     UNDONE(-1,"未审核"),
     WAITING(0,"待审核"),
     PASS(1,"已审核"),
-    REJECT(-2,"已驳回");
+    REJECT(2,"已驳回");
 
 
      AuditStatusEnum(int value, String desc) {
