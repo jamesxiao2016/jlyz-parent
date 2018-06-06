@@ -3,6 +3,7 @@ package cn.dlbdata.dj.web.controller.api.v1;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -108,7 +109,9 @@ public class LoginController extends BaseController {
 		if (tokenMap != null) {
 			CacheManager.getInstance().remove(tokenMap.get(JwtTokenUtil.KEY_UID));
 		}
-		JwtTokenUtil.USER_TICKET_CACHE.invalidate(MD5Util.encode(token));
+		if (StringUtils.isNotEmpty(token)) {
+			JwtTokenUtil.USER_TICKET_CACHE.invalidate(MD5Util.encode(token));
+		}
 		return result;
 	}
 

@@ -16,7 +16,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
 import cn.dlbdata.dj.common.core.util.security.Base64;
-import cn.dlbdata.dj.common.core.util.security.MD5Util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;

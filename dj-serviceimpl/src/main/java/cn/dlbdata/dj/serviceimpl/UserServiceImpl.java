@@ -11,6 +11,7 @@ import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
 import cn.dlbdata.dj.common.core.util.cache.CacheManager;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
+import cn.dlbdata.dj.common.core.util.security.MD5Util;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.common.util.PingyinUtil;
 import cn.dlbdata.dj.common.util.StringUtil;
@@ -150,6 +151,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		String token = JwtTokenUtil.createToken(user.getId() + "", user.getName(), user.getDeptId() + "",
 				user.getRoleId() + "", 0);
 		data.setToken(token);
+		JwtTokenUtil.USER_TICKET_CACHE.put(MD5Util.encode(token), token);
 		long endTime = System.currentTimeMillis();
 		logger.info("create token time->" + (endTime - endQueryUserInfoTime));
 
