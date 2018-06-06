@@ -5,6 +5,7 @@ public class ScoreApplyVo {
     private String leaderName;//支部书记姓名
     private Float totalScore;//总分数
     private Long partyMemberId;//党员ID
+    private Long typeId;//一级分类Id
 
     public String getPartyMemberName() {
         return partyMemberName;
@@ -36,5 +37,13 @@ public class ScoreApplyVo {
 
     public void setPartyMemberId(Long partyMemberId) {
         this.partyMemberId = partyMemberId;
+    }
+
+    public Long getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Long typeId) {
+        this.typeId = typeId;
     }
 }
