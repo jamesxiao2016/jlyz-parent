@@ -196,13 +196,13 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		active.setContent(activeVo.getContent());
 		active.setCreateTime(new Date());
 		active.setCreateUserId(user.getUserId());
-		active.setEndTime(DatetimeUtil.getDateByStr(activeVo.getEndTime()));
+		active.setEndTime(DatetimeUtil.getDateByStr(activeVo.getEndActiveTime()));
 		active.setHasAudit(1);
 		active.setId(DigitUtil.generatorLongId());
 		active.setName(activeVo.getActiveName());
 		active.setDjPicId(activeVo.getPicId());
 		active.setPrincipalName(activeVo.getPrincipalName());
-		active.setStartTime(DatetimeUtil.getDateByStr(activeVo.getStartTime()));
+		active.setStartTime(DatetimeUtil.getDateByStr(activeVo.getStartActiveTime()));
 		active.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		active.setDjSubTypeId(activeVo.getSubTypeId());
 		active.setDjTypeId(activeVo.getTypeId());
@@ -425,7 +425,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		DjActive active = activeMapper.selectByPrimaryKey(activeId);
 		if (active == null) {
 			result.setCode(ResultCode.NotFound.getCode());
-			result.setMsg("获取不存在或已取消");
+			result.setMsg("活动不存在或已取消");
 			return result;
 		}
 
