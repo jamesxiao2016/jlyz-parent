@@ -6,6 +6,8 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.party.AllPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo;
 import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
@@ -49,4 +51,13 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
      * @return
      */
     public Float getSumScoreByIdCard(Map<String,Object> map);
+    /**
+     * 
+     * <p>Title: selectPartymemberByDeptId</p> 
+     * <p>Description: 提供给外部使用的部门党员信息</p> 
+     * @param deptId
+     * @return
+     */
+    public List<DjPartyMemberVo> selectPartymemberByDeptId(@Param("deptId")Integer deptId);
+	public List<ScoreTypeVo> getRadarChartByUserId(Long userId, Integer year);
 }

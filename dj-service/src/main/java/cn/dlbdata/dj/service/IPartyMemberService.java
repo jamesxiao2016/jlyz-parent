@@ -1,10 +1,14 @@
 package cn.dlbdata.dj.service;
 
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.party.*;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
@@ -133,4 +137,13 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	AnnualActiveInfo getAnnualActiveInfo(UserVo user,Integer year);
+	/**
+	 * 
+	 * <p>Title: selectPartymemberByDeptId</p> 
+	 * <p>Description: 提供给外部使用的部门党员信息</p> 
+	 * @param deptId
+	 * @return
+	 */
+	public List<DjPartyMemberVo> selectPartymemberByDeptId(@Param("deptId")Integer deptId);
+	public List<ScoreTypeVo> getRadarChartByUserId(Long userId, Integer year);
 }

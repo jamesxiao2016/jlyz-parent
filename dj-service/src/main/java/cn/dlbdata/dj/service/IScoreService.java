@@ -8,8 +8,11 @@ package cn.dlbdata.dj.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import cn.dlbdata.dj.db.pojo.DjSubType;
 import cn.dlbdata.dj.db.pojo.DjType;
+import cn.dlbdata.dj.db.vo.ScoreActiveVo;
 
 /**
  * <p>
@@ -51,4 +54,6 @@ public interface IScoreService {
 	 * @return
 	 */
 	public DjSubType getSubTypeInfoById(Long id);
+	
+	public List<ScoreActiveVo> getScoreAndActiveList(@Param("userId") Integer userId);
 }

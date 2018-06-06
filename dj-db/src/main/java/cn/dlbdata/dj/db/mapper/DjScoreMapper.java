@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.db.pojo.DjScore;
+import cn.dlbdata.dj.db.vo.ScoreActiveVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import tk.mybatis.mapper.common.Mapper;
@@ -62,5 +63,8 @@ public interface DjScoreMapper extends Mapper<DjScore> {
 			@Param("djTypeId") Long djTypeId, @Param("djSubTypeId") Long djSubTypeId);
 
 	boolean existBaseScore(@Param("userId") Long userId,@Param("year") int year);
-    
+	
+	public List<ScoreTypeVo> getRadarChartByUserId(@Param("userId")Long userId, @Param("year") Integer year);
+	
+	public List<ScoreActiveVo> getScoreAndActiveList(@Param("userId") Integer userId);
 }

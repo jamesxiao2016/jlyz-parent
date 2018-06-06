@@ -70,7 +70,7 @@
 	      LEFT JOIN dj_active_dept da on da.dj_active_id = t.id 
 	      <where>
 	      	  t.status = 1
-		      <if test="departmentId != null">
+		      <if test="deptId != null">
 		          AND da.dj_dept_id = #{deptId}
 		      </if>
 		       <if test="endTime != null">

@@ -27,6 +27,7 @@ import cn.dlbdata.dj.constant.AuditStatusEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjStudy;
+import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import cn.dlbdata.dj.service.IPartyMemberService;
@@ -366,5 +367,53 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		result.setJlyzActiveNum(jlyzCount);
 		result.setActiveNum(activeCount);
 		return result;
+	}
+
+	/* (non-Javadoc)
+	 * <p>Title: selectPartymemberByDeptId</p>
+	 * <p>Description: 提供给外部使用的部门党员信息</p> 
+	 * @param departmentid
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IPartyMemberService#selectPartymemberByDeptId(java.lang.Integer)
+	 */
+	@Override
+	public List<DjPartyMemberVo> selectPartymemberByDeptId(Integer deptId) {
+		// TODO Auto-generated method stub
+		return partyMemberMapper.selectPartymemberByDeptId(deptId);
+	}
+
+	/* (non-Javadoc)
+	 * <p>Title: getRadarChartByUserId</p>
+	 * <p>Description: </p> 
+	 * @param userId
+	 * @param year
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IPartyMemberService#getRadarChartByUserId(java.lang.Long, java.lang.Integer)
+	 */
+	@Override
+	public List<ScoreTypeVo> getRadarChartByUserId(Long userId, Integer year) {
+		if (userId == null) {
+			return null;
+		}
+		List<ScoreTypeVo> list = scoreMapper.getRadarChartByUserId(userId, year);
+		if (list != null) {
+			for (ScoreTypeVo vo : list) {
+				if (vo.getId() == ActiveTypeEnum.ACTIVE_A.getActiveId()
+						|| vo.getId() == ActiveTypeEnum.ACTIVE_B.getActiveId()
+						|| vo.getId() == ActiveTypeEnum.ACTIVE_F.getActiveId()) {
+					DjStudy record = new DjStudy();
+					record.setDjTypeId(vo.getId());
+					record.setStatus(DlbConstant.BASEDATA_STATUS_INVALID);
+					record.setCreateUserId(userId);
+					int count = studyMapper.selectCount(record);
+					vo.setPendingNum(count);
+				} else if (vo.getId() == ActiveTypeEnum.ACTIVE_G.getActiveId()) {
+					vo.setPendingNum(0);
+				} else {
+					vo.setPendingNum(-1);
+				}
+			}
+		}
+		return list;
 	}
 }

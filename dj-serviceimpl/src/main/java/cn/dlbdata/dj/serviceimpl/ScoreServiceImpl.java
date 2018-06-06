@@ -11,10 +11,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.dlbdata.dj.constant.ActiveTypeEnum;
+import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.mapper.DjSubTypeMapper;
 import cn.dlbdata.dj.db.mapper.DjTypeMapper;
+import cn.dlbdata.dj.db.pojo.DjScore;
+import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.pojo.DjSubType;
 import cn.dlbdata.dj.db.pojo.DjType;
+import cn.dlbdata.dj.db.vo.ScoreActiveVo;
+import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.service.IScoreService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 
@@ -36,6 +43,9 @@ public class ScoreServiceImpl extends BaseServiceImpl implements IScoreService {
 
 	@Autowired
 	private DjSubTypeMapper subTypeMapper;
+	
+	@Autowired
+	private DjScoreMapper scoreMapper;
 
 	/*
 	 * (non-Javadoc) <p>Title: getActiveTypeList</p> <p>Description: 活动类型列表</p>
@@ -64,5 +74,19 @@ public class ScoreServiceImpl extends BaseServiceImpl implements IScoreService {
 		}
 		return subTypeMapper.selectByPrimaryKey(id);
 	}
+
+	/* (non-Javadoc)
+	 * <p>Title: getScoreAndActiveList</p>
+	 * <p>Description: </p> 
+	 * @param userId
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IScoreService#getScoreAndActiveList(java.lang.Integer)
+	 */
+	@Override
+	public List<ScoreActiveVo> getScoreAndActiveList(Integer userId) {
+		
+		return scoreMapper.getScoreAndActiveList(userId);
+	}
+
 
 }
