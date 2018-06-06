@@ -752,13 +752,12 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	 */
 	@Override
 	public PioneeringApplyDetailVo getPioneeringApplyDetail(Long partyMemberId) {
-		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
-		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
+	    int year = Calendar.getInstance().get(Calendar.YEAR);
 		IdNameTotalScoreVo idNameTotalScoreVo = partymemberMapper.getTotalScoreById(partyMemberId);
 		PioneeringApplyDetailVo pioneeringApplyDetailVo = new PioneeringApplyDetailVo();
 		pioneeringApplyDetailVo.setPartyMemberName(idNameTotalScoreVo.getName());
 		pioneeringApplyDetailVo.setTotalScore(idNameTotalScoreVo.getTotalScore());
-		List<ScoreAuditDetailVo> voList = applyMapper.getScoreAuditDetailByPtMemberId(yearTimeStart, yearTimeEnd,
+		List<ScoreAuditDetailVo> voList = applyMapper.getScoreAuditDetailByPtMemberId(year,
 				partyMemberId);
 		for (ScoreAuditDetailVo vo : voList) {
 			if (vo.getRecordId() != null) {

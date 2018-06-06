@@ -65,6 +65,12 @@ public class BaseController {
 		if (tokenMap == null || tokenMap.isEmpty()) {
 			return null;
 		}
+		String tokenMd5 = MD5Util.encode(token);
+		// 检查token是否有效
+		String tokenCache = JwtTokenUtil.USER_TICKET_CACHE.getIfPresent(tokenMd5);
+		if (!token.equals(tokenCache)) {
+			return null;
+		}
 		TokenVo vo = new TokenVo();
 		vo.setUserId(DigitUtil.parseToLong(tokenMap.get(JwtTokenUtil.KEY_UID)));
 		vo.setUserName(tokenMap.get(JwtTokenUtil.KEY_UNAME));
@@ -102,7 +108,6 @@ public class BaseController {
 		if (tokenMap == null || tokenMap.isEmpty()) {
 			return null;
 		}
-
 
 		String tokenMd5 = MD5Util.encode(token);
 		// 检查token是否有效

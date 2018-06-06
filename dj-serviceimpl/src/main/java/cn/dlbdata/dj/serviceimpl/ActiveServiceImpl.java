@@ -196,23 +196,29 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		active.setContent(activeVo.getContent());
 		active.setCreateTime(new Date());
 		active.setCreateUserId(user.getUserId());
-		active.setEndTime(DatetimeUtil.getDateByStr(activeVo.getEndActiveTime()));
+		active.setEndTime(DatetimeUtil.getDateByStr(activeVo.getEndTime()));
 		active.setHasAudit(1);
 		active.setId(DigitUtil.generatorLongId());
 		active.setName(activeVo.getActiveName());
 		active.setDjPicId(activeVo.getPicId());
 		active.setPrincipalName(activeVo.getPrincipalName());
-		active.setStartTime(DatetimeUtil.getDateByStr(activeVo.getStartActiveTime()));
+		active.setStartTime(DatetimeUtil.getDateByStr(activeVo.getStartTime()));
 		active.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		active.setDjSubTypeId(activeVo.getSubTypeId());
 		active.setDjTypeId(activeVo.getTypeId());
 		active.setUserName(user.getUserName());
-		if (user.getRoleId() != null && user.getRoleId() == RoleEnum.BRANCH_PARTY.getId()) {
+		if (RoleEnum.BRANCH_PARTY.getId().equals(user.getRoleId())) {
 			active.setDjDeptId(user.getDeptId());
 		} else {
 			active.setDjDeptId(0L);
 		}
 		activeMapper.insertSelective(active);
+
+		//如果没有传，则默认为本部门
+		if (activeVo.getDeptIds() == null) {
+			Long[] deptIds = new Long[] { user.getDeptId() };
+			activeVo.setDeptIds(deptIds);
+		}
 
 		// 保存活动参与部门表
 		if (activeVo.getDeptIds() != null) {

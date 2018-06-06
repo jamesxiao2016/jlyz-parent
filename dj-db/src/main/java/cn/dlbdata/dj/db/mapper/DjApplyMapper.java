@@ -35,8 +35,7 @@ public interface DjApplyMapper extends Mapper<DjApply> {
      * @param partyMemberId 党员Id
      * @return
      */
-    List<ScoreAuditDetailVo> getScoreAuditDetailByPtMemberId( @Param("yearTimeStart")Date yearTimeStart,
-                                                              @Param("yearTimeEnd") Date yearTimeEnd,
+    List<ScoreAuditDetailVo> getScoreAuditDetailByPtMemberId( @Param("year") int year,
                                                               @Param("partyMemberId") Long partyMemberId);
 
 	/**
