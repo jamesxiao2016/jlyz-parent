@@ -2,6 +2,7 @@ package cn.dlbdata.dj.web.controller.api.v1;
 
 import cn.dlbdata.dj.db.vo.ToDoVo;
 import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
+import cn.dlbdata.dj.dto.study.StudyResubmitDto;
 import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
 import cn.dlbdata.dj.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,24 @@ public class WorkflowController extends BaseController {
 
 		return result;
 	}
+
+    /**
+     * 自主活动重新提交
+     * @param resubmitDto
+     * @return
+     */
+	@PostMapping("/studyResubmit")
+    @ResponseBody
+    public ResultVo studyResubmit(@RequestBody StudyResubmitDto resubmitDto) {
+        ResultVo result = new ResultVo<>();
+        UserVo user = getCurrentUserFromCache();
+        if (user == null) {
+            result.setCode(ResultCode.NOT_LOGIN.getCode());
+            return result;
+        }
+        result = studyService.studyResubmit(resubmitDto, user);
+        return result;
+    }
 
 	/**
 	 * 驿站生活违纪违规扣分申请

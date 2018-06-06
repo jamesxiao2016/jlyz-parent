@@ -8,6 +8,7 @@ import cn.dlbdata.dj.constant.OperationsEnum;
 import cn.dlbdata.dj.db.mapper.DjLogOptMapper;
 import cn.dlbdata.dj.db.pojo.DjLogOpt;
 import cn.dlbdata.dj.dto.ActiveSignUpRequest;
+import cn.dlbdata.dj.dto.study.StudyResubmitDto;
 import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
 import cn.dlbdata.dj.vo.*;
 import cn.dlbdata.dj.web.vo.SignVo;
@@ -207,6 +208,20 @@ public class LogInterceptor {
     public  void auditInterceptor(AuditVo req, Object rvt) {
         Gson gson = new Gson();
         addLog(gson.toJson(req),rvt,OperationsEnum.AUDIT);
+    }
+
+    /**
+     *自主活动重新提交
+     */
+    @Pointcut(value = "execution(* cn.dlbdata.dj.web.controller.api.v1.WorkflowController.studyResubmit(cn.dlbdata.dj.dto.study.StudyResubmitDto))" +
+            " && args(req)")
+    private void studyResubmit(StudyResubmitDto req) {
+    }
+
+    @AfterReturning(pointcut ="studyResubmit(req)",returning = "rvt")
+    public  void studyResubmitInterceptor(StudyResubmitDto req, Object rvt) {
+        Gson gson = new Gson();
+        addLog(gson.toJson(req),rvt,OperationsEnum.STUDY_RESUBMIT);
     }
 
 }
