@@ -62,6 +62,11 @@ public class StudyController extends BaseController {
 	public ResultVo<List<ReviewScheduleListVo>> getReviewScheduleList(Long subTypeId){
 		ResultVo<List<ReviewScheduleListVo>> result = new ResultVo<>();
 		UserVo user = getCurrentUserFromCache();
+		if(user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("请重新登陆！");
+			return result;
+		}
 		List<ReviewScheduleListVo> list = studyService.getReviewScheduleList(subTypeId, user.getUserId());
 		if(list == null || list.size() == 0) {
 			result.setCode(ResultCode.Forbidden.getCode());
