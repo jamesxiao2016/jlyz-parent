@@ -79,7 +79,7 @@ public class ActiveVo implements Serializable {
 	/**
 	 * 活动状态
 	 */
-	private Integer ActiveStatus;
+	private Integer activeStatus;
 	/**
 	 * 创建活动时间
 	 */
@@ -245,12 +245,13 @@ public class ActiveVo implements Serializable {
 		this.picId = picId;
 	}
 
+
 	public Integer getActiveStatus() {
-		return ActiveStatus;
+		return activeStatus;
 	}
 
 	public void setActiveStatus(Integer activeStatus) {
-		ActiveStatus = activeStatus;
+		this.activeStatus = activeStatus;
 	}
 
 	public Date getCreateActiveTime() {
