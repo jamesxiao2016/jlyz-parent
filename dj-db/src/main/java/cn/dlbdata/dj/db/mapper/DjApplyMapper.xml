@@ -39,11 +39,8 @@
                 <when test="status==0">
                     <!-- 传入的状态为待处理 则党员存在未处理的申请-->
                     exists (select * from dj_apply ap where ap.status =0 and ap.user_id = pm.id
-                    <if test="yearTimeStart !=null">
-                        and ap.create_time &gt;= #{yearTimeStart}
-                    </if>
-                    <if test="yearTimeEnd !=null">
-                        and ap.create_time &lt;= #{yearTimeEnd}
+                    <if test="year !=null">
+                        and ap.apply_year = #{year}
                     </if>
                     and ap.dj_type_id =4
                     )
@@ -51,13 +48,10 @@
                 <otherwise>
                     <!-- 传入的状态为已审核 则党员不存在未处理的申请，且存在已处理的申请(所有的申请都已审核)-->
                     not exists (SELECT * FROM dj_apply ap WHERE ap. status = 0 AND ap.user_id = pm.id
-                    <if test="yearTimeStart !=null">
-                        and ap.create_time &gt;= #{yearTimeStart}
+                    <if test="year !=null">
+                        and ap.apply_year = #{year}
                     </if>
-                    <if test="yearTimeEnd !=null">
-                        and ap.create_time &lt;= #{yearTimeEnd}
-                        and ap.dj_type_id =4
-                    </if>)
+                    and ap.dj_type_id =4)
                     AND exists (
                     SELECT * FROM dj_apply ap WHERE ap. status in(1,2) and ap.user_id = pm.id
                     <if test="yearTimeStart !=null">
@@ -143,7 +137,7 @@
     <select id="getPendingList" resultType="cn.dlbdata.dj.db.vo.study.PendingPtMemberVo">
     select id as applyId,user_name as name,status,create_time as createTime from dj_apply where dj_dept_id = #{deptId}
     and dj_sub_type_id = #{subTypeId}
-     order by create_time desc
+     order by status asc,create_time desc
   </select>
 
 </mapper>

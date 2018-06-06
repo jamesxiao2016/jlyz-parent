@@ -16,17 +16,12 @@ public interface DjApplyMapper extends Mapper<DjApply> {
 
 	/**
 	 *查询积分审核列表
-	 * @param approverId 审批人Id
 	 * @param status 审批状态
-	 * @param yearTimeStart 今年开始的时间
-	 * @param yearTimeEnd 今年结束的时间
 	 * @param deptId 支部ID
 	 * @return
 	 */
-	List<ScoreApplyVo> getScoreAuditList(
-										 @Param("status") int status,
-										 @Param("yearTimeStart")Date yearTimeStart,
-										 @Param("yearTimeEnd") Date yearTimeEnd,
+	List<ScoreApplyVo> getScoreAuditList(@Param("status") int status,
+										 @Param("year") int year,
 										 @Param("deptId") Long deptId);
 
     /**

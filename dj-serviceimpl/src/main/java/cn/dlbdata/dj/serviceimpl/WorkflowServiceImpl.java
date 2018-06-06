@@ -736,10 +736,9 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	public Paged<ScoreApplyVo> getScoreAuditList(UserVo user, Integer status, int pageNum, int pageSize, Long deptId) {
 		pageNum = PageUtils.normalizePageIndex(pageNum);
 		pageSize = PageUtils.normalizePageSize(pageSize);
-		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
-		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
+		int year = Calendar.getInstance().get(Calendar.YEAR);
 		Page<ScoreApplyVo> page = PageHelper.startPage(pageNum, pageSize);
-		applyMapper.getScoreAuditList(status, yearTimeStart, yearTimeEnd, deptId);
+		applyMapper.getScoreAuditList(status,year,deptId);
 		return PageUtils.toPaged(page);
 	}
 
