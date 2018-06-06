@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import cn.dlbdata.dj.common.core.exception.BusinessException;
 import cn.dlbdata.dj.constant.*;
 import cn.dlbdata.dj.db.pojo.*;
 import cn.dlbdata.dj.db.vo.ToDoVo;
@@ -290,9 +291,40 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
                 score = subType.getScore();
             }
             // 处理分数，插入到积分明细表中
-            handScore(apply.getDjSubTypeId(), apply.getUserId(), apply.getApplyId(),apply.getApplyName(),
-                    apply.getApproverId(),apply.getApproverName(), score,
-                    apply.getRecordId(), apply.getRemark(), apply.getApplyYear());
+            if (apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId())) {
+                boolean exists = scoreMapper.existScore(apply.getUserId(),apply.getApplyYear(),
+                        ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId());
+                if (!exists) {
+                    DjScore record = new DjScore();
+                    record.setAddStatus(DlbConstant.BASEDATA_STATUS_VALID);
+                    record.setAddTime(new Date());
+                    record.setAddYear(apply.getApplyYear());
+                    record.setUserId(apply.getUserId());
+                    record.setApplyUserId(apply.getApplyId());
+                    record.setApplyUserName(apply.getApplyName());
+                    record.setApproverId(user.getUserId());
+                    record.setApproverName(user.getUserName());
+                    record.setCreateTime(new Date());
+                    record.setDjSubTypeId(subType.getId());
+                    record.setDjTypeId(type.getId());
+                    record.setRecordId(apply.getRecordId());
+                    record.setRecrodDesc(apply.getRemark());
+                    record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+                    record.setScoreDesc(subType.getName());
+                    record.setScore(score);
+                    scoreMapper.insertSelective(record);
+                } else {
+                    resultVo.setCode(ResultCode.Forbidden.getCode());
+                    resultVo.setMsg("请勿重复驿站生活违纪扣分");
+                    return resultVo;
+                }
+
+            } else {
+
+                handScore(apply.getDjSubTypeId(), apply.getUserId(), apply.getApplyId(),apply.getApplyName(),
+                        apply.getApproverId(),apply.getApproverName(), score,
+                        apply.getRecordId(), apply.getRemark(), apply.getApplyYear());
+            }
         }
 		// 插入审批记录表
 		DjApprove approve = new DjApprove();
@@ -948,7 +980,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		List<DjPartymember> partymembers = partymemberMapper.selectAll();
 
 		for (DjPartymember partymember:partymembers) {
-            boolean exists = scoreMapper.existBaseScore(partymember.getId(),year);
+            boolean exists = scoreMapper.existScore(partymember.getId(),year,ActiveSubTypeEnum.ACTIVE_SUB_P.getActiveSubId());
             if (exists) {
                 continue;
             }
