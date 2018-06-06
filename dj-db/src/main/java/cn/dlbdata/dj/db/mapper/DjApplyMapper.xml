@@ -77,9 +77,10 @@
     </select>
 
     <select id="getScoreAuditDetailByPtMemberId" resultType="cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo">
-        select ap.id,ap.sub_type_name as subTypeName,ap.dj_sub_type_id as subTypeId,ap.apply_info as content,ap.score,ap.status,ap.remark as refuseReason,
+        select ap.id,ap.sub_type_name as subTypeName,ap.dj_sub_type_id as subTypeId,ap.apply_info as content,
+        (select sum(sc.score) from dj_score sc where sc.user_id = ap.user_id and sc.add_year= #{year}) as score,ap.status,ap.remark as refuseReason,
         ap.record_id as recordId
-         from dj_apply ap where user_id =#{partyMemberId}  and ap.create_time &gt;= #{yearTimeStart}  and ap.create_time &lt;= #{yearTimeEnd}
+         from dj_apply ap where user_id =#{partyMemberId}  and ap.apply_year = #{year}
          and ap.dj_type_id = 4
     </select>
 
