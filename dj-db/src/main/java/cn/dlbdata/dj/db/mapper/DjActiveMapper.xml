@@ -26,7 +26,7 @@
 
 	<select id="getUserActiveCountByActiveTypeAndTime" parameterType="map" resultType="java.lang.Integer">
 		select count(*) from dj_active d
-		WHERE d.id in (
+		WHERE d.status = 1 and d.id in (
 		SELECT dj_active_id FROM
 		dj_active_user dau WHERE dj_user_id =
 		#{userId} AND dau.status = 1

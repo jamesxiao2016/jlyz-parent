@@ -32,12 +32,14 @@ public class LogInterceptor {
             ResultVo result = (ResultVo) object;
             DjLogOpt opt = new DjLogOpt();
             opt.setId(DigitUtil.generatorLongId());
-            opt.setDjUserId(user.getUserId());
+            if(user != null) {
+                opt.setDjUserId(user.getUserId());
+                opt.setDjDeptId(user.getDeptId());
+            }
             opt.setOptId(enums.getType());
             opt.setOptDesc(json);
             opt.setStatus(result.getCode());
             opt.setErrorMsg(result.getMsg());
-            opt.setDjDeptId(user.getDeptId());
             opt.setCreateTime(new Date());
             logOptMapper.insert(opt);
         }
