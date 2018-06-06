@@ -11,7 +11,8 @@ public enum  OperationsEnum {
     ONE_VOTE_VETO(8,"驿站生活违纪违规扣分申请"),
     VANGUARD_APPLY(9,"先锋作用申请"),
     THOUGHTS_GRADE(10,"思想汇报评分"),
-    AUDIT(11,"审批");
+    AUDIT(11,"审批"),
+    STUDY_RESUBMIT(12,"自主活动重新提交");
 
     OperationsEnum(Integer type, String desc) {
         this.type = type;

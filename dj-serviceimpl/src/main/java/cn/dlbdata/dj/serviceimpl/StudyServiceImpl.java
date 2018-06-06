@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.constant.*;
+import cn.dlbdata.dj.dto.study.StudyResubmitDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +18,6 @@ import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
-import cn.dlbdata.dj.constant.ActiveTypeEnum;
-import cn.dlbdata.dj.constant.DlbConstant;
-import cn.dlbdata.dj.constant.RoleEnum;
 import cn.dlbdata.dj.db.mapper.DjApplyMapper;
 import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
@@ -148,7 +146,59 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		result.setData(study.getId());
 		return result;
 	}
-	
+
+	/**
+	 * 自主活动重新提交
+	 *
+	 * @param resubmitDto
+	 * @param user
+	 * @return
+	 */
+	@Transactional
+	@Override
+	public ResultVo studyResubmit(StudyResubmitDto resubmitDto, UserVo user) {
+		ResultVo<Long> result = new ResultVo<>();
+		DjApply djApply = applyMapper.selectByPrimaryKey(resubmitDto.getApplyId());
+		if (djApply == null) {
+			result.setCode(ResultCode.NotFound.getCode());
+			result.setMsg("该申请不存在");
+			return result;
+		}
+		if (!djApply.getUserId().equals(user.getUserId())) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("只有申请人才能重新提交");
+			return result;
+		}
+		if (!djApply.getStatus().equals(AuditStatusEnum.REJECT.getValue())) {
+			result.setCode(ResultCode.ParameterError.getCode());
+			result.setMsg("只有已驳回的申请才能重新提交");
+		}
+		DjStudy djStudy = studyMapper.selectByPrimaryKey(djApply.getRecordId());
+		if (djStudy == null) {
+			result.setCode(ResultCode.NotFound.getCode());
+			result.setMsg("该申请不存在");
+			return result;
+		}
+		djApply.setApplyInfo(resubmitDto.getContent());
+		djApply.setStatus(AuditStatusEnum.WAITING.getValue());
+		applyMapper.updateByPrimaryKey(djApply);
+		djStudy.setStatus(AuditStatusEnum.WAITING.getValue());
+		djStudy.setStartTime(DatetimeUtil.getDateByStr(resubmitDto.getStartTime()));
+		djStudy.setEndTime(DatetimeUtil.getDateByStr(resubmitDto.getEndTime()));
+		djStudy.setContent(resubmitDto.getContent());
+		studyMapper.updateByPrimaryKey(djStudy);
+		//删除原来的图片
+		DjPicRecord record = new DjPicRecord();
+		record.setRecordId(djStudy.getId());
+		record.setTableName(DlbConstant.TABLE_NAME_STUDY);
+		picRecordMapper.delete(record);
+		//保存图片
+		savePics(djStudy.getId(), DlbConstant.TABLE_NAME_STUDY, resubmitDto.getPics());
+		result.setCode(ResultCode.OK.getCode());
+		result.setMsg("重新提交成功!");
+		return result;
+	}
+
 	/**
 	 * 保存自主申报、先锋作用、遵章守纪、思想汇报图片
 	 * 

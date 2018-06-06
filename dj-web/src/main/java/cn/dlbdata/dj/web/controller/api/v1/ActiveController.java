@@ -182,7 +182,7 @@ public class ActiveController extends BaseController {
 	 */
 	@GetMapping(value = "/showQrCode")
 	public void showQrCode(Long activeId, HttpServletResponse response) {
-		String content = QR_CODE_ROOT_URL + "#/activeSign?id=" + activeId;
+		String content = QR_CODE_ROOT_URL + "#/activeSign/" + activeId;
 		OutputStream out = null;
 		BufferedImage image;
 		try {

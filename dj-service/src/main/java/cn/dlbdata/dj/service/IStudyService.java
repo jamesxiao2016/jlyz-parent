@@ -5,6 +5,7 @@ import java.util.List;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.vo.study.ReviewScheduleListVo;
+import cn.dlbdata.dj.dto.study.StudyResubmitDto;
 import cn.dlbdata.dj.vo.StudyVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.vo.study.StudyDetailVo;
@@ -29,6 +30,13 @@ public interface IStudyService {
 	 * @return
 	 */
 	public ResultVo<Long> saveStudy(StudyVo studyVo, UserVo user);
+
+	/**
+	 * 自主活动重新提交
+	 * @param resubmitDto
+	 * @return
+	 */
+	ResultVo studyResubmit(StudyResubmitDto resubmitDto,UserVo user);
 
 	/**
 	 * 根据ID获取自主学习详细信息
