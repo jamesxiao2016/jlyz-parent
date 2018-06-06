@@ -71,7 +71,7 @@
 	      <where>
 	      	  t.status = 1
 		      <if test="departmentId != null">
-		          AND da.dj_dept_id = #{deptId}
+		          AND da.dj_dept_id = #{departmentId}
 		      </if>
 		       <if test="endTime != null">
 		          AND t.end_time &gt; #{endTime}
