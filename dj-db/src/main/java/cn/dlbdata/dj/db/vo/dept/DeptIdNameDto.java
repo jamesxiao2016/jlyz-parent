@@ -1,22 +1,18 @@
 package cn.dlbdata.dj.db.vo.dept;
 
 public class DeptIdNameDto {
-    private Long deptId;
-    private String deptName;
-
-    public Long getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
-    }
-
-    public String getDeptName() {
-        return deptName;
-    }
-
-    public void setDeptName(String deptName) {
-        this.deptName = deptName;
-    }
+    private Long value;
+    private String name;
+	public Long getValue() {
+		return value;
+	}
+	public void setValue(Long value) {
+		this.value = value;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 }

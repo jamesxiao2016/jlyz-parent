@@ -31,7 +31,7 @@
   </select>
 
   <select id="getBranchDeptIdAndName" parameterType="java.lang.Long" resultType="cn.dlbdata.dj.db.vo.dept.DeptIdNameDto">
-    select id as deptId,name as deptName  from dj_dept where dj_section_id= #{sectionId}
+    select id as value,name as name from dj_dept where dj_section_id= #{sectionId}
   </select>
   
   <select id="getSectionPeopleNum" parameterType="java.lang.Long" resultType="java.lang.Integer">
