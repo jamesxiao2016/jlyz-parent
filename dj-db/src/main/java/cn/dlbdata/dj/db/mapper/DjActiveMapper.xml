@@ -32,7 +32,7 @@
 		#{userId} AND dau.status = 1
 		)
 		<if test="activeType != null">
-			AND d.dj_type_id = #{activeType}
+			AND d.dj_sub_type_id = #{activeType}
 		</if>
 		AND (start_time BETWEEN #{startTime} and #{endTime}
 		OR end_time BETWEEN #{startTime} and #{endTime} )
