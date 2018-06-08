@@ -62,9 +62,18 @@ public interface DjScoreMapper extends Mapper<DjScore> {
 	public Float getSumScoreByUserIdAndType(@Param("userId") Long userId, @Param("year") Integer year,
 			@Param("djTypeId") Long djTypeId, @Param("djSubTypeId") Long djSubTypeId);
 
-	boolean existBaseScore(@Param("userId") Long userId,@Param("year") int year);
-	
-	public List<ScoreTypeVo> getRadarChartByUserId(@Param("userId")Long userId, @Param("year") Integer year);
-	
-	public List<ScoreActiveVo> getScoreAndActiveList(@Param("userId") Integer userId);
+
+    public List<ScoreTypeVo> getRadarChartByUserId(@Param("userId")Long userId, @Param("year") Integer year);
+
+    public List<ScoreActiveVo> getScoreAndActiveList(@Param("userId") Integer userId);
+
+    /**
+     * 是否有某项二级分类的积分
+     * @param userId
+     * @param year
+     * @param subTypeId
+     * @return
+     */
+    boolean existScore(@Param("userId") Long userId,@Param("year") int year,@Param("subTypeId") Long subTypeId);
+
 }

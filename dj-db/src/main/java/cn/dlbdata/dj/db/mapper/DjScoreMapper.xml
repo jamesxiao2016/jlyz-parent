@@ -75,8 +75,8 @@
 		GROUP BY s.dj_type_id),0) total from dj_type t 
 	</select>
 
-	<select id="existBaseScore" resultType="boolean">
-		select count(id) from dj_score where dj_sub_type_id = 51 and user_id = #{userId} and add_year = #{year}
+	<select id="existScore" resultType="boolean">
+		select count(id) from dj_score where dj_sub_type_id =#{subTypeId} and user_id = #{userId} and add_year = #{year}
 	</select>
 	
 	<select id="getRadarChartByUserId" parameterType="Map"
