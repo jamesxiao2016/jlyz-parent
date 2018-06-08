@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>添加产品</title>
+		<link href="../../static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+		<link href="../../static/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+		<link href="../../static/css/animate.css" rel="stylesheet">
+		<link href="../../static/css/style.css?v=4.1.0" rel="stylesheet">
+		<link href="../../static/css/plugins/select2/select2.min.css" rel="stylesheet">
+		<link href="../../static/css/plugins/ztree/bootstrapStyle/bootstrapStyle.css" rel="stylesheet">
+		<link href="../../static/css/plugins/iCheck/custom.css" rel="stylesheet">
+		<style>
+			.single-line {
+				background-color: #FFFFFF;
+				background-image: none;
+				border: 1px solid #e5e6e7;
+				border-radius: 1px;
+				color: inherit;
+				display: block;
+				padding: 6px 12px;
+				-webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+				transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+				width: 80%;
+				font-size: 14px;
+			}
+		</style>
+	</head>
+
+	<body class="gray-bg">
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="row">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5 id="title">添加菜单</h5>
+						<div class="ibox-tools">
+						</div>
+					</div>
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="productForm" method="post" action="../../v1/product/saveApp">
+							<input id="id" name="id" type="hidden" />
+							<div class="form-group">
+								<label class="col-sm-3 control-label">上级菜单：</label>
+								<div class="col-sm-8">
+									<input id="parentId" name="parentId" type="hidden" />
+									<input id="parentName" name="parentName" class="single-line col-lg-10" type="text" required="" readonly="readonly" />
+
+									<button type="button" id="menuBtn" class="btn btn-primary" style="margin-left: 10px;" onclick="showMenu()">选择</button>
+								</div>
+							</div>							
+							<div class="form-group">
+								<label class="col-sm-3 control-label">菜单名称：</label>
+								<div class="col-sm-8">
+									<input id="menuName" name="menuName" class="form-control" type="text" required="" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">菜单类型</label>
+								<div class="col-sm-9">
+									<div class="checkbox-inline checkbox i-checks">
+										<label style="padding-left: 0px !important;"><input type="radio" id="menuType0" name="menuType" value="0" checked="" > 菜单</label>
+									</div>
+									<div class="checkbox-inline checkbox i-checks">
+										<label style="padding-left: 0px !important;"><input type="radio" id="menuType1" name="menuType" value="1"> 权限</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group menuType" id="menuTypeDiv0">
+								<label class="col-sm-3 control-label">链接URL</label>
+								<div class="col-sm-9">
+									<input class="form-control" id="menuUrl" name="menuUrl" type="text" />
+								</div>
+							</div>
+							<div class="form-group menuType" id="menuTypeDiv1" style="display: none;">
+								<label class="col-sm-3 control-label">权限标识</label>
+								<div class="col-sm-9">
+									<input class="form-control" id="permissionFlag" name="permissionFlag" type="text" min="0" value="0" required="required" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">菜单图标：</label>
+								<div class="col-sm-8">
+									<input id="menuIcon" name="menuIcon" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">排序：</label>
+								<div class="col-sm-8">
+									<input id="sortIndex" name="sortIndex" class="form-control" type="number" required="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">说明：</label>
+								<div class="col-sm-8">
+									<textarea id="remark" name="remark" class="form-control"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button id="btnSubmit" class="btn btn-primary" type="button">提交</button>
+									<button id="btnBack" class="btn btn-primary" type="button" style="margin-left: 10px;">返回</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="menuContent" class="menuContent" style="display:none; position: absolute;">
+			<ul id="treeDemo" class="ztree" style="margin-top:0; width:160px;"></ul>
+		</div>
+		<!-- 全局js -->
+		<script src="../../static/js/jquery.min.js?v=2.1.4"></script>
+		<script src="../../static/js/bootstrap.min.js?v=3.3.6"></script>
+		<script src="../../static/js/content.js?v=1.0.0"></script>
+		<script src="../../static/js/plugins/validate/jquery.validate.min.js"></script>
+		<script src="../../static/js/plugins/validate/messages_zh.min.js"></script>
+		<script src="../../static/js/plugins/layer/layer.min.js"></script>
+		<script src="../../static/js/plugins/iCheck/icheck.min.js"></script>
+		<script src="../../static/js/plugins/ztree/jquery.ztree.all.js"></script>
+		<script src="../../static/js/plugins/select2/select2.full.min.js"></script>
+		<script src="../../static/js/plugins/select2/i18n/zh.js"></script>
+		<script src="../../static/js/plugins/dlb/core.js"></script>
+		<script src="../../static/js/plugins/dlb/common.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/system/menu_add.js"></script>
+
+	</body>
+
+</html>

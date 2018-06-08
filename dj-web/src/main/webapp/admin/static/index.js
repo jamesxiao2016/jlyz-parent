@@ -35,12 +35,6 @@ function checkLogin() {
 								$("#mainframe").data("uid", data.data.id);
 								$("#mainframe")
 										.data("cid", data.data.companyId);
-								var supportUrl = "https://www.meiglink.com/support/login.php?username="
-										+ data.data.loginName
-										+ "&password="
-										+ data.data.pwd
-										+ "&secure_session=on&secure_center=on";
-								$("#supportSys").attr("src", supportUrl);
 							}
 						}
 					})

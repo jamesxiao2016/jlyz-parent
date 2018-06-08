@@ -7,8 +7,17 @@ import cn.dlbdata.dj.web.base.BaseController;
 
 @Controller
 @RequestMapping("/")
-public class ViewController extends BaseController {
+public class AdminViewController extends BaseController {
 
+	/**
+	 * 登录页面
+	 * @return
+	 */
+	@RequestMapping("/")
+	public String welcome () {
+		return index();
+	}
+	
 	/**
 	 * 登录页面
 	 * @return

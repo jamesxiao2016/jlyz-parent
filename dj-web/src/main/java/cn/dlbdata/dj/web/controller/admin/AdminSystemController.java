@@ -13,7 +13,7 @@ import cn.dlbdata.dj.web.base.BaseController;
  */
 @Controller
 @RequestMapping("/admin/system")
-public class SystemController extends BaseController {
+public class AdminSystemController extends BaseController {
 	/**
 	 * 角色查询列表
 	 * 

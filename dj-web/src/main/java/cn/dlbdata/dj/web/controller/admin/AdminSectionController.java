@@ -6,14 +6,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import cn.dlbdata.dj.web.base.BaseController;
 
 /**
- * 党员管理Controller
+ * 处理后台管理员登录的登录
  * 
  * @author xiaowei
  *
  */
 @Controller
-@RequestMapping("/admin/partymember")
-public class PartyMemberController extends BaseController {
+@RequestMapping("/admin/section")
+public class AdminSectionController extends BaseController {
+
 	/**
 	 * 查询列表
 	 * 

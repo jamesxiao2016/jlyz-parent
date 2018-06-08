@@ -1,5 +1,7 @@
 <html>
 <body>
-<h2>Hello World! jlyz</h2>
+<script type="text/javascript">
+location.href = "admin/index.html";
+</script>
 </body>
 </html>

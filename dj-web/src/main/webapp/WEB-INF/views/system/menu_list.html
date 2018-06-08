@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>APP列表</title>
+		<link href="../../static/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../../static/css/font-awesome.css" rel="stylesheet">
+		<link href="../../static/css/plugins/treegrid/jquery.treegrid.css" rel="stylesheet">
+		<link href="../../static/css/animate.css" rel="stylesheet">
+		<link href="../../static/css/style.css" rel="stylesheet">
+		<link href="../../static/css/plugins/iCheck/custom.css" rel="stylesheet">
+		<link href="../../static/js/plugins/My97DatePicker/skin/WdatePicker.css" rel="stylesheet">
+	</head>
+
+	<body class="white-bg">
+		<div class="wrapper wrapper-content animated fadeInRight" style="padding: 0 !important;">
+			<div class="row col-sm-12">
+				<div class="ibox ">
+					<div class="ibox-title">
+						<h5>菜单列表</h5>
+					</div>
+					<!--<div class="ibox-content">
+						<form class="form-horizontal">
+							<div class="form-group col-lg-2">
+								<input type="text" id="name" name="name" placeholder="菜单名称" class="form-control">
+							</div>
+							<div class="form-group col-lg-3" style="padding-top: 7px;">
+								<button id="btnQuery" class="btn btn-sm btn-primary pull-left m-t-n-xs" type="button">查  询</button>
+								<button id="btnAdd" class="btn btn-sm btn-primary pull-left m-t-n-xs" type="button" style="margin-left: 10px;">添加</button>
+							</div>
+						</form>
+					</div>-->
+					<div class="ibox-content">
+						<table class="table tree">
+							<thead>
+								<th>菜单名称</th>
+								<th>链接URL</th>
+								<th>排序</th>
+								<th>操作</th>
+							</thead>
+							<tbody id="tdata">
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../static/js/jquery.min.js"></script>
+		<script src="../../static/js/bootstrap.min.js"></script>
+		<script src="../../static/js/plugins/peity/jquery.peity.min.js"></script>
+		<script src="../../static/js/plugins/jqgrid/i18n/grid.locale-zh.js"></script>
+		<script src="../../static/js/plugins/jqgrid/jquery.jqGrid.min.js"></script>
+		<script src="../../static/js/plugins/My97DatePicker/lang/zh.js"></script>
+		<script src="../../static/js/plugins/My97DatePicker/WdatePicker.js"></script>
+		<script src="../../static/js/plugins/layer/layer.min.js"></script>
+		<script src="../../static/js/plugins/treegrid/jquery.treegrid.js"></script>
+		<script src="../../static/js/plugins/treegrid/jquery.treegrid.bootstrap3.js"></script>
+		<script src="../../static/js/content.js"></script>
+		<script src="../../static/js/plugins/iCheck/icheck.min.js"></script>
+		<script src="../../static/js/plugins/dlb/core.js"></script>
+		<script src="../../static/js/plugins/dlb/common.js"></script>
+		<script src="../../static/js/plugins/dlb/myJqGrid.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/system/menu_list.js"></script>
+	</body>
+	<div id="addForm" class="col-xs-12" style="margin-bottom: 5px; padding-top: 15px; display: none;">
+		<form id="formEditor" class="form-horizontal" data-table="pf_app_menu">
+			<input id="id" name="id" type="hidden" />
+			<input id="parentId" name="parentId" type="hidden" value="0" />
+			<div id="pDiv" class="form-group">
+				<label class="col-sm-3 control-label">上级菜单</label>
+				<div class="col-sm-9">
+					<input class="form-control" id="parent_name" type="text" readonly="readonly" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">菜单名称</label>
+				<div class="col-sm-9">
+					<input class="form-control" id="menuName" name="menuName" type="text" required="required" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">菜单类型</label>
+				<div class="col-sm-9">
+					<div class="checkbox-inline checkbox i-checks">
+						<label style="padding-left: 0px !important;"><input type="radio" id="menuType0" name="menuType" value="0" checked="" onchange="alert(0)"> 菜单</label>
+					</div>
+					<div class="checkbox-inline checkbox i-checks">
+						<label style="padding-left: 0px !important;"><input type="radio" id="menuType1" name="menuType" value="1" onchange="alert(1)"> 权限</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group menuType" id="menuTypeDiv0">
+				<label class="col-sm-3 control-label">链接URL</label>
+				<div class="col-sm-9">
+					<input class="form-control" id="menuUrl" name="menuUrl" type="text" />
+				</div>
+			</div>
+			<div class="form-group menuType" id="menuTypeDiv1" style="display: none;">
+				<label class="col-sm-3 control-label">权限标识</label>
+				<div class="col-sm-9">
+					<input class="form-control" id="permissionFlag" name="permissionFlag" type="text" min="0" value="0" required="required" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">菜单图标</label>
+				<div class="col-sm-9">
+					<input id="menuIcon" name="menuIcon" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">排序</label>
+				<div class="col-sm-9">
+					<input class="form-control" id="sortIndex" name="sortIndex" type="number" min="0" value="1" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">说明</label>
+				<div class="col-sm-9">
+					<textarea id="remark" name="remark" class="form-control"></textarea>
+				</div>
+			</div>
+			<div class="form-group col-sm-12 text-center" style="margin-bottom: 0px;">
+				<label class="col-xs-3"> </label>
+				<label class="col-xs-2">
+					<button id="btnSave" type="button" class="btn btn-primary">保存</button>
+				</label>
+				<label class="col-xs-5">
+					<button id="btnBack" type="button" class="btn btn-primary" onclick="closeDialog()">关闭</button>
+				</label>
+			</div>
+		</form>
+	</div>
+
+</html>

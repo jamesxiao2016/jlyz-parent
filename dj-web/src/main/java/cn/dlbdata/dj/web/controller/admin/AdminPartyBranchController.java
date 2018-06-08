@@ -13,7 +13,7 @@ import cn.dlbdata.dj.web.base.BaseController;
  */
 @Controller
 @RequestMapping("/admin/branch")
-public class PartyBranchController extends BaseController {
+public class AdminPartyBranchController extends BaseController {
 	/**
 	 * 查询列表
 	 * 
