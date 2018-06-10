@@ -19,24 +19,15 @@
 			<div class="row col-sm-12">
 				<div class="ibox ">
 					<div class="ibox-title">
-						<h5>角色列表</h5>
+						<h5>片区列表</h5>
 					</div>
 					<div class="ibox-content">
 						<form class="form-horizontal">
-							<div class="form-group col-lg-2 col-md-2 col-sm-2">
-								<input type="text" id="name" placeholder="角色名称" class="form-control">
+							<div class="form-group col-lg-4 col-md-4 col-sm-4">
+								<input type="text" id="name" placeholder="片区名称" class="form-control">
 							</div>
-							<div class="form-group col-lg-5 col-md-5 col-sm-5">
-								<label class="col-sm-4 control-label" style="padding-top: 10px !important;">创建时间：</label>
-								<div class="col-sm-8">
-									<div class="input-daterange input-group" id="datepicker">
-										<input type="text" class="form-control" id="start" name="start" placeholder="开始日期" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'end\',{d:-1});}'})">
-										<span class="input-group-addon">至</span>
-										<input type="text" class="form-control" id="end" name="end" placeholder="结束日期" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'start\',{d:1});}'})">
-									</div>
-								</div>
-							</div>
-							<div class="form-group col-lg-3 col-md-3 col-sm-3" style="padding-top: 7px;">
+							
+							<div class="form-group col-lg-4 col-md-4 col-sm-4" style="padding-top: 7px;margin-left: 0px">
 								<button id="btnQuery" class="btn btn-sm btn-primary pull-left m-t-n-xs" type="button">查  询</button>
 								<button id="btnAdd" class="btn btn-sm btn-primary pull-left m-t-n-xs" type="button" style="margin-left: 10px;">添加</button>
 							</div>
@@ -64,11 +55,11 @@
 		<script src="../../static/js/plugins/layer/layer.min.js"></script>
 		<script src="../../static/js/plugins/ztree/jquery.ztree.all.js"></script>
 		<script src="../../static/js/content.js"></script>
-		<script src="../../static/js/plugins/dlb/core.js"></script>
-		<script src="../../static/js/plugins/dlb/common.js"></script>
-		<script src="../../static/js/plugins/dlb/MyJqGrid.js"></script>
+		<script src="../../static/js/plugins/component/core.js"></script>
+		<script src="../../static/js/plugins/component/common.js"></script>
+		<script src="../../static/js/plugins/component/myJqGrid.js"></script>
 		<script src="../js/common.js"></script>
-		<script src="../js/branch/section_list.js"></script>
+		<script src="../js/section/section_list.js"></script>
 	</body>
 
 </html>

@@ -1,6 +1,6 @@
 var grid_selector = "#grid-table";
 var pager_selector = "#grid-pager";
-var sId = "com.meig.link.db.mapper.MgQueryMapper.queryRole";
+var sId = "cn.dlbdata.dj.db.mapper.DjQueryMapper.querySectionList";
 $(function() {
 	init();
 	initEvent();
@@ -10,7 +10,7 @@ function initEvent() {
 	$("#btnQuery").click(query);
 
 	$("#btnAdd").click(function() {
-		location.href = "role_add.html";
+		location.href = "section_add.html";
 	});
 }
 
@@ -34,7 +34,7 @@ function init() {
 		"orderBy" : 't.create_time desc'
 	};
 	jQuery(grid_selector).jqGrid({
-		url : '../../compCtl/queryJqData',
+		url : '../../api/v1/component/query',
 		datatype : "json",
 		rownumbers : true,
 		colModel : [ {
@@ -43,14 +43,13 @@ function init() {
 			index : 'id',
 			hidden : true
 		}, {
-			label : '角色名称',
-			name : 'roleName',
-			index : 'role_name',
+			label : '片区名称',
+			name : 'name',
+			index : 'name',
 		}, {
-			label : '说明',
-			name : 'remark',
-			index : 'remark',
-			align : "center",
+			label : '负责人',
+			name : 'principalName',
+			index : 'principal_name',
 		}, {
 			label : '创建时间',
 			name : 'createTime',
@@ -108,12 +107,8 @@ function init() {
 function actionFormatter(cellvalue, options, rowObject) {
 	var btnEdit = "<a href='role_add.html?id=" + rowObject.id + "'>编辑</a>";
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
-	var btnConfig = "<a href='javascript:configRecord(" + rowObject.id
-			+ ")'>权限配置</a>";
-	if (rowObject.id <= 10) {
-		return btnEdit + "&nbsp;" + btnConfig;
-	}
-	return btnEdit + "&nbsp;" + btnDel + "&nbsp;" + btnConfig;
+
+	return btnEdit + "&nbsp;" + btnDel;
 }
 
 function delRecord(id) {

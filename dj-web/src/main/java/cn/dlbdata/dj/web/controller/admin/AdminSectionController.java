@@ -22,7 +22,7 @@ public class AdminSectionController extends BaseController {
 	 */
 	@RequestMapping("/list.html")
 	public String list() {
-		return "list.html";
+		return "section/list.html";
 	}
 
 	/**
@@ -32,7 +32,7 @@ public class AdminSectionController extends BaseController {
 	 */
 	@RequestMapping("/detail.html")
 	public String detail() {
-		return "detail.html";
+		return "section/detail.html";
 	}
 
 	/**
@@ -42,6 +42,6 @@ public class AdminSectionController extends BaseController {
 	 */
 	@RequestMapping("/add.html")
 	public String add() {
-		return "add.html";
+		return "section/add.html";
 	}
 }

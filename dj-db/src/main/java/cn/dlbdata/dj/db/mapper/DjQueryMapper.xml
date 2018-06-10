@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dlbdata.dj.db.mapper.DjQueryMapper">
+  <resultMap id="BaseResultMap" type="cn.dlbdata.dj.db.pojo.DjQuery">
+    <id column="id" jdbcType="INTEGER" property="id" />
+  </resultMap>
+  
+  <resultMap id="SectionResultMap" type="cn.dlbdata.dj.db.pojo.DjSection">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="people_num" jdbcType="INTEGER" property="peopleNum" />
+    <result column="address" jdbcType="INTEGER" property="address" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="principal_id" jdbcType="BIGINT" property="principalId" />
+    <result column="principal_name" jdbcType="VARCHAR" property="principalName" />
+  </resultMap>
+  
+  <select id="querySectionList" resultMap="SectionResultMap">
+    select id,name,people_num,address,status,create_time,principal_id,principal_name from dj_section
+    <where>
+    		status = 1
+    		<if test="name != null">
+    			and name like #{name}
+    		</if>
+    </where>
+  </select>
+  
+</mapper>
