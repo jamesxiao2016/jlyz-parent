@@ -1,7 +1,7 @@
 var id = "";
 $(function() {
 	id = $.getUrlParam("id");
-	getProdInfo(id);
+	//getProdInfo(id);
 	initEvent();
 	initValidate();
 });

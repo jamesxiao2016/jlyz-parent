@@ -10,7 +10,7 @@ function initEvent() {
 	$("#btnQuery").click(query);
 
 	$("#btnAdd").click(function() {
-		location.href = "section_add.html";
+		location.href = "add.html";
 	});
 }
 
@@ -105,7 +105,7 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='role_add.html?id=" + rowObject.id + "'>编辑</a>";
+	var btnEdit = "<a href='../section/add.html?id=" + rowObject.id + "'>编辑</a>";
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 
 	return btnEdit + "&nbsp;" + btnDel;
@@ -116,7 +116,7 @@ function delRecord(id) {
 		btn : [ '确定', '取消' ]
 	// 按钮
 	}, function() {
-		$.ajaxPost("../../v1/system/deleteRoleById", {
+		$.ajaxPost("../../api/v1/section/deleteSectionById", {
 			id : id
 		}, function(data) {
 			if (data.result == 200) {
@@ -126,61 +126,5 @@ function delRecord(id) {
 				layer.msg("删除失败");
 			}
 		})
-	});
-}
-
-function configRecord(id) {
-	var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-	// 加载已经配置的菜单
-	$.ajaxPost("../../v1/system/getRoleMenuList", {
-		roleId : id
-	}, function(data) {
-		var map = new Map();
-		if (data && data.data) {
-			$.each(data.data, function(idx, item) {
-				map.set(item, item);
-			});
-
-			var node = treeObj.getNodes();
-			var nodes = treeObj.transformToArray(node);
-			for (var i = 0, l = nodes.length; i < l; i++) {
-				var isExist = map.get(nodes[i].id);
-				if (isExist != null && isExist != undefined) {
-					treeObj.checkNode(nodes[i], true, false);
-				}
-			}
-		}
-	});
-
-	// 打开窗口
-	layer.open({
-		type : 1,
-		title : "配置菜单",
-		skin : 'layui-layer-rim', // 加上边框
-		area : [ '350px', '450px' ], // 宽高
-		content : $("#treeDiv"),
-		btn : [ '确定', '关闭' ],
-		yes : function(index, layero) {
-			var nodeIds = getCheckedNodes();
-			$.ajaxPost("../../v1/system/saveRoleMenuList", {
-				roleId : id,
-				menus : nodeIds
-			}, function(data) {
-				if (data.result == 200) {
-					layer.msg("保存成功");
-					treeObj.checkAllNodes();
-					layer.close(index);
-				} else {
-					if (data.reason) {
-						layer.msg(data.reason);
-					} else {
-						layer.msg("保存失败");
-					}
-				}
-			});
-		},
-		btn2 : function(index, layero) {
-			layer.close(index);
-		}
 	});
 }
