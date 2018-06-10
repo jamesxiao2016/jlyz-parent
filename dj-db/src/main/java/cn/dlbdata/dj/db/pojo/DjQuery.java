@@ -2,7 +2,7 @@ package cn.dlbdata.dj.db.pojo;
 
 import javax.persistence.*;
 
-@Table(name = "dj_query")
+//@Table(name = "dj_query")
 public class DjQuery {
     @Id
     private Integer id;

@@ -21,27 +21,33 @@
 						</div>
 					</div>
 					<div class="ibox-content">
-						<form class="form-horizontal m-t" id="productForm" method="post" action="../../v1/product/saveApp">
+						<form class="form-horizontal m-t" id="productForm" method="post" action="../section/save">
 							<input id="id" name="id" type="hidden"/>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">片区名称：</label>
 								<div class="col-sm-8">
-									<input id="roleName" name="roleName" class="form-control" type="text" required=""/>
+									<input id="name" name="name" class="form-control" type="text" required=""/>
 									<!--<span class="help-block m-b-none" id="nametip"><i class="fa fa-info-circle"></i> 给应用起个名字吧</span>-->
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">负责人：</label>
 								<div class="col-sm-8">
-									<input id="roleName" name="roleName" class="form-control" type="text" required=""/>
+									<input id="principalName" name="principalName" class="form-control" type="text" required=""/>
 								</div>
 							</div>
 							<div class="form-group">
+								<label class="col-sm-3 control-label">党员人数：</label>
+								<div class="col-sm-8">
+									<input id="peopleNum" name="peopleNum" class="form-control" type="number" required=""/>
+								</div>
+							</div>
+							<!-- <div class="form-group">
 								<label class="col-sm-3 control-label">说明：</label>
 								<div class="col-sm-8">
 									<textarea id="remark" name="remark" class="form-control" ></textarea>
 								</div>
-							</div>
+							</div> -->
 							<div class="form-group">
 								<div class="col-sm-8 col-sm-offset-3">
 									<button id="btnSubmit" class="btn btn-primary" type="button">提交</button>

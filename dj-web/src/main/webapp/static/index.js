@@ -1,5 +1,5 @@
 $(function() {
-	checkLogin();
+	//checkLogin();
 
 	initEvent();
 });

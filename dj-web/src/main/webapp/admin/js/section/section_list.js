@@ -116,10 +116,10 @@ function delRecord(id) {
 		btn : [ '确定', '取消' ]
 	// 按钮
 	}, function() {
-		$.ajaxPost("../../api/v1/section/deleteSectionById", {
+		$.ajaxPost("../../admin/section/deleteById", {
 			id : id
 		}, function(data) {
-			if (data.result == 200) {
+			if (data.code == 1000) {
 				layer.msg("删除成功");
 				query();
 			} else {

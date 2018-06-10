@@ -62,7 +62,7 @@ $.submitForm = function(options) {
 			// contentType : "application/json",
 			dataType : "json",
 			success : function(data) {
-				if (data.result == "1") {
+				if (data.code == "1000") {
 					if (options.close == true) {
 						layer.closeAll('page');
 					}
@@ -107,7 +107,7 @@ $.submitForm2 = function(options) {
 			// contentType : "application/json",
 			dataType : "json",
 			success : function(data) {
-				if (data.result == "1") {
+				if (data.code == "1000") {
 					if (options.close == true) {
 						layer.closeAll('page');
 					}
@@ -297,7 +297,7 @@ $.ajaxPost = function(url, param, callback, completeCallback, errorCallback) {
 		}
 	}
 	if (!token) {
-		top.location.href = getLoginUrl();
+		//top.location.href = getLoginUrl();
 	}
 	return $.ajax({
 		type : "POST",
@@ -309,8 +309,8 @@ $.ajaxPost = function(url, param, callback, completeCallback, errorCallback) {
 			reqObj.setRequestHeader('token', token);
 		},
 		success : function(data) {
-			if (data.result == 403) {
-				top.location.href = getLoginUrl();
+			if (data.code == 1010) {
+				top.location.href = "login.html";
 			} else {
 				if (callback) {
 					callback(data);
@@ -321,7 +321,7 @@ $.ajaxPost = function(url, param, callback, completeCallback, errorCallback) {
 			layer.closeAll('loading');
 			if (textStatus == 'parsererror') {
 				console.log("url:" + url)
-				top.location.href = getLoginUrl();
+				top.location.href = "login.html";
 			}
 			if (errorCallback && jQuery.isFunction(errorCallback)) {
 				errorCallback(XMLHttpRequest, textStatus);
@@ -336,14 +336,4 @@ $.ajaxPost = function(url, param, callback, completeCallback, errorCallback) {
 			}
 		}
 	});
-}
-
-function getLoginUrl() {
-	var locationHref = window.location.href;
-	if (locationHref.indexOf("/user/") != -1) {
-		return "../login.html";
-	} else if (locationHref.indexOf("/view/") != -1) {
-		return "../../login.html";
-	}
-	return "login.html";
 }

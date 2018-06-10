@@ -55,8 +55,8 @@ function submitForm() {
 	}
 	var formData = $("#productForm").formSerialize();
 	console.log(formData);
-	$.ajaxPost("../../v1/system/saveRole", formData, function(data) {
-		if (data.result == 200) {
+	$.ajaxPost("../section/save", formData, function(data) {
+		if (data.code == 1000) {
 			history.go(-1);
 		} else {
 			if (data.reason) {

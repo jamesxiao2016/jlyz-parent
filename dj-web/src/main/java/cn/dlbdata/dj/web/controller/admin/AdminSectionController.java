@@ -1,8 +1,14 @@
 package cn.dlbdata.dj.web.controller.admin;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
+import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.db.pojo.DjSection;
+import cn.dlbdata.dj.service.ISectionService;
 import cn.dlbdata.dj.web.base.BaseController;
 
 /**
@@ -14,6 +20,9 @@ import cn.dlbdata.dj.web.base.BaseController;
 @Controller
 @RequestMapping("/admin/section")
 public class AdminSectionController extends BaseController {
+
+	@Autowired
+	private ISectionService sectionService;
 
 	/**
 	 * 查询列表
@@ -43,5 +52,27 @@ public class AdminSectionController extends BaseController {
 	@RequestMapping("/add.html")
 	public String add() {
 		return "section/add.html";
+	}
+
+	@RequestMapping("/save")
+	@ResponseBody
+	public ResultVo<Long> saveOrUpdate(DjSection section) {
+		ResultVo<Long> result = new ResultVo<>();
+		Long data = sectionService.saveOrUpdate(section);
+		if (data != null) {
+			result.setCode(ResultCode.OK.getCode());
+		}
+		return result;
+	}
+
+	@RequestMapping("/deleteById")
+	@ResponseBody
+	public ResultVo<Long> deleteById(Long id) {
+		ResultVo<Long> result = new ResultVo<>();
+		Long data = sectionService.deleteById(id);
+		if (data != null) {
+			result.setCode(ResultCode.OK.getCode());
+		}
+		return result;
 	}
 }
