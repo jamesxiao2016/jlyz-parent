@@ -277,10 +277,10 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 				data.setCommitteeNum(peopleNum);
 			}
 		}
-		if (isShowScore != null && isShowScore == 1) {
+		//if (isShowScore != null && isShowScore == 1) {
 			Float totalScore = getSumScoreByUserId(user.getId(), Calendar.getInstance().get(Calendar.YEAR));
 			data.setTotalScore(totalScore);
-		}
+		//}
 		// CacheManager.getInstance().put(user.getId() + "", data);
 		return data;
 	}

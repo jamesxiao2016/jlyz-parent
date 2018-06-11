@@ -12,7 +12,7 @@ public class JqGridBean<T> extends MsgVo<T> implements Serializable {
 	 */
 	private static final long serialVersionUID = 3109733900928271634L;
 	private int page;// 当前页
-	private int records;// 记录总数
+	private long records;// 记录总数
 	private int total;// 总页数
 	private List<T> rows;// 显示数据
 
@@ -50,11 +50,11 @@ public class JqGridBean<T> extends MsgVo<T> implements Serializable {
 		this.page = page;
 	}
 
-	public int getRecords() {
+	public long getRecords() {
 		return records;
 	}
 
-	public void setRecords(int records) {
+	public void setRecords(long records) {
 		this.records = records;
 	}
 }
