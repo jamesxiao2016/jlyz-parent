@@ -26,4 +26,31 @@
     </where>
   </select>
   
+  <!-- 查询活动列表 -->
+  <resultMap id="ActiveResultMap" type="cn.dlbdata.dj.db.vo.active.AdminActiveVo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="activeName" />
+    <result column="sub_type_name" jdbcType="VARCHAR" property="activeTypeName" />
+    <result column="user_name" jdbcType="VARCHAR" property="createUser" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="principal_name" jdbcType="VARCHAR" property="principalName" />
+  </resultMap>
+  <select id="queryActiveList" resultMap="ActiveResultMap">
+  	select t.id, t.name, t.status, t.start_time, t.end_time, t.principal_name, t.user_name, dst.name sub_type_name
+  	from dj_active t 
+  	left join dj_sub_type dst on dst.id = t.dj_sub_type_id
+    <where>
+         1 = 1
+   		<if test="name != null and name != ''">
+   			and t.name like #{name}
+   		</if>
+   		<if test="status != null">
+   			and t.status = #{status}
+   		</if>
+   		
+    </where>
+  </select>
+  
 </mapper>

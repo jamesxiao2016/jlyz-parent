@@ -123,5 +123,12 @@ public interface IActiveService {
 	 * @return
 	 */
 	public ResultVo<String> signIn(Long activeId, UserVo user);
-
+	/**
+	 * 
+	 * <p>Title: deleteById</p> 
+	 * <p>Description: 物理删除活动</p> 
+	 * @param id
+	 * @return
+	 */
+	public Long deleteById(Long id);
 }
