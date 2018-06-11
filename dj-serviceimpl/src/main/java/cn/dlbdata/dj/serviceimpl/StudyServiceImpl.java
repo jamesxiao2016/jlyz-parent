@@ -308,4 +308,26 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		return list;
 	}
 
+	/* (non-Javadoc)
+	 * <p>Title: deleteById</p>
+	 * <p>Description: 删除自主学习</p> 
+	 * @param id
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IStudyService#deleteById(java.lang.Long)
+	 */
+	@Override
+	public Long deleteById(Long id) {
+		if (id == null) {
+			logger.error("id is null");
+			return null;
+		}
+		int count = studyMapper.deleteByPrimaryKey(id);
+		if(count > 0) {
+			Example example = new Example(DjApply.class);
+			example.createCriteria().andEqualTo("recordId", id);
+			applyMapper.deleteByExample(example);
+		}
+			return id;
+	}
+
 }

@@ -71,4 +71,12 @@ public interface IStudyService {
 	 * @return
 	 */
 	List<ReviewScheduleListVo> getReviewScheduleList(Long subTypeId, Long userId);
+	/**
+	 * 
+	 * <p>Title: deleteById</p> 
+	 * <p>Description: 删除自主学习</p> 
+	 * @param id
+	 * @return
+	 */
+	public Long deleteById(Long id);
 }

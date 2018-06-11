@@ -53,4 +53,25 @@
     </where>
   </select>
   
+  <!-- 查询自主学习列表 -->
+  <resultMap id="StudyResultMap" type="cn.dlbdata.dj.db.vo.study.AdminStudyVo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="sub_type_name" jdbcType="VARCHAR" property="typeName" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="dept_name" jdbcType="INTEGER" property="deptName" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+ <select id="queryStudyList" resultMap="StudyResultMap">
+ 	select s.id, s.create_time, s.start_time, s.end_time, s.user_name, djs.name sub_type_name, de.name dept_name
+ 	from dj_study s
+ 	left join dj_sub_type djs on djs.id = s.dj_sub_type_id
+ 	left join dj_dept de on de.id = s.dj_dept_id
+ 	<where>
+         1 = 1
+   	</where>	
+ </select> 
+ 	
+  
 </mapper>
