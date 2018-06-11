@@ -56,7 +56,7 @@ function dateFormatter(cellvalue, options, rowObject) {
 		return "";
 	}
 	var date = new Date(cellvalue);
-	date = date.setHours(date.getHours() + timezone);
+	date = date.setHours(date.getHours());
 	return new Date(date).Format("yyyy-MM-dd");
 }
 
@@ -65,7 +65,7 @@ function datetimeFormatter(cellvalue, options, rowObject) {
 		return "";
 	}
 	var date = new Date(cellvalue);
-	date = date.setHours(date.getHours() + timezone);
+	date = date.setHours(date.getHours());
 	return new Date(date).Format("yyyy-MM-dd hh:mm:ss");
 }
 
