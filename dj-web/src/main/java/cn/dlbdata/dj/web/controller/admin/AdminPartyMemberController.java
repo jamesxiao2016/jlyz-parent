@@ -15,13 +15,23 @@ import cn.dlbdata.dj.web.base.BaseController;
 @RequestMapping("/admin/partymember")
 public class AdminPartyMemberController extends BaseController {
 	/**
-	 * 查询列表
+	 * 查询列表党员列表
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/list.html")
+	@RequestMapping("partymember_list.html")
 	public String list() {
-		return "list.html";
+		return "partymember/partymember_list.html";
+	}
+
+	/**
+	 * 查询积分列表
+	 *
+	 * @return
+	 */
+	@RequestMapping("scorehistory_list.html")
+	public String scorehistoryList() {
+		return "partymember/scorehistory_list.html";
 	}
 
 	/**

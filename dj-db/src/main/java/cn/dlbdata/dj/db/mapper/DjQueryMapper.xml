@@ -25,7 +25,7 @@
     		</if>
     </where>
   </select>
-  
+
   <!-- 查询活动列表 -->
   <resultMap id="ActiveResultMap" type="cn.dlbdata.dj.db.vo.active.AdminActiveVo">
     <id column="id" jdbcType="BIGINT" property="id" />
@@ -39,7 +39,7 @@
   </resultMap>
   <select id="queryActiveList" resultMap="ActiveResultMap">
   	select t.id, t.name, t.status, t.start_time, t.end_time, t.principal_name, t.user_name, dst.name sub_type_name
-  	from dj_active t 
+  	from dj_active t
   	left join dj_sub_type dst on dst.id = t.dj_sub_type_id
     <where>
          1 = 1
@@ -49,10 +49,10 @@
    		<if test="status != null">
    			and t.status = #{status}
    		</if>
-   		
+
     </where>
   </select>
-  
+
   <!-- 查询自主学习列表 -->
   <resultMap id="StudyResultMap" type="cn.dlbdata.dj.db.vo.study.AdminStudyVo">
     <id column="id" jdbcType="BIGINT" property="id" />
@@ -70,8 +70,25 @@
  	left join dj_dept de on de.id = s.dj_dept_id
  	<where>
          1 = 1
-   	</where>	
- </select> 
- 	
-  
+   	</where>
+ </select>
+
+    <select id="queryPartyMemberList" resultType="cn.dlbdata.dj.db.vo.party.PartyMemberInfoVo">
+        select u.id as id,pm.name as name,pm.sex_code as sex,pm.age as age,pm.birth_date as birthDate,pm.dept_id as deptId,dept.name as deptName,
+        u.role_id as roleId,pm.idcard as idCard,u.name as account,ifnull((select sum(sc.score) from dj_score sc where sc.user_id = pm.id),0) as totalScore
+        from dj_partymember pm
+        left join  dj_user u on u.id = pm.id
+        left join dj_dept dept on pm.dept_id = dept.id
+        <where>
+            <if test="name != null and name != ''">
+                and name LIKE concat(concat('%',#{name}),'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="queryScoreHistoryList" resultType="cn.dlbdata.dj.db.vo.score.ScoreDetailVo">
+        select sc.add_time as addTime,pm.name as partyMemberName,sc.apply_user_name as applicant,sc.approver_name as approver,
+        sc.score as score,sc.score_desc as scoreDesc
+        from dj_score sc left join dj_partymember pm on pm.id = sc.user_id
+    </select>
 </mapper>
