@@ -60,6 +60,15 @@ function dateFormatter(cellvalue, options, rowObject) {
 	return new Date(date).Format("yyyy-MM-dd");
 }
 
+function datetimeFormatterMinute(cellvalue, options, rowObject) {
+	if(cellvalue == undefined || cellvalue == "") {
+		return "";
+	}
+	var date = new Date(cellvalue);
+	date = date.setHours(date.getHours());
+	return new Date(date).Format("yyyy-MM-dd hh:mm");
+}
+
 function datetimeFormatter(cellvalue, options, rowObject) {
 	if(cellvalue == undefined || cellvalue == "") {
 		return "";
