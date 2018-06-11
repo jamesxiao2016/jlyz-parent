@@ -668,4 +668,21 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * <p>Title: deleteById</p>
+	 * <p>Description: 物理删除活动</p> 
+	 * @param id
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IActiveService#deleteById(java.lang.Long)
+	 */
+	@Override
+	public Long deleteById(Long id) {
+		if (id == null) {
+			logger.error("id is null");
+			return null;
+		}
+		activeMapper.deleteByPrimaryKey(id);
+		return id;
+	}
+
 }
