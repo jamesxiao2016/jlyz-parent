@@ -44,21 +44,9 @@ public class ComponentServiceImpl implements IComponentService {
 		Page<Map<String, Object>> page = PageHelper.startPage(pageNum, pageSize);
 		// 获取记录
 		List<Object> rows = sqlSessionTemplate.selectList(selectId, params, new RowBounds(offset, pageSize));
-		// // 获取countSql
-		// String countSql = MyBatisHelper.getSmartCountSql(sqlSessionTemplate, selectId, params);
-		// logger.info("countSql:" + countSql);
-		// SqlMapper sqlMapper = new SqlMapper(sqlSessionTemplate);
-		// 获取记录总数
-		// Integer count = sqlMapper.selectOne(countSql, params, Integer.class);
 		bean.setPage(pageNum);
-		// int total = 1;
-		// if (count % limit == 0) {
-		// total = count / limit;
-		// } else {
-		// total = count / limit + 1;
-		// }
-		// bean.setRecords(count);
-		// bean.setTotal(total);
+		bean.setRecords(page.getTotal());
+		bean.setTotal(page.getPages());
 		bean.setRows(rows);
 		return bean;
 	}
