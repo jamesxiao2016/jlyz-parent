@@ -70,6 +70,9 @@
  	left join dj_dept de on de.id = s.dj_dept_id
  	<where>
          1 = 1
+         <if test="createName != '' and createName != null ">
+         	and REPLACE(s.user_name,' ','') like #{createName}
+         </if>
    	</where>	
  </select> 
  	
