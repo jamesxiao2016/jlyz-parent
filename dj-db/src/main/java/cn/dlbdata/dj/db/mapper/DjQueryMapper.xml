@@ -87,11 +87,32 @@
                 and name LIKE concat(concat('%',#{name}),'%')
             </if>
         </where>
+        <choose>
+            <when test="orderBy !=null">
+                order by ${orderBy}
+            </when>
+            <otherwise>
+                order by deptId
+            </otherwise>
+        </choose>
     </select>
 
     <select id="queryScoreHistoryList" resultType="cn.dlbdata.dj.db.vo.score.ScoreDetailVo">
         select sc.add_time as addTime,pm.name as partyMemberName,sc.apply_user_name as applicant,sc.approver_name as approver,
         sc.score as score,sc.score_desc as scoreDesc
         from dj_score sc left join dj_partymember pm on pm.id = sc.user_id
+        <where>
+            <if test="name != null and name != ''">
+                and name LIKE concat(concat('%',#{name}),'%')
+            </if>
+        </where>
+        <choose>
+            <when test="orderBy !=null">
+                order by ${orderBy}
+            </when>
+            <otherwise>
+                order by addTime Desc
+            </otherwise>
+        </choose>
     </select>
 </mapper>

@@ -18,8 +18,7 @@ function query() {
 	var qryParam = {
 		"name" : getLikeVal($("#name").val()),
 		"start" : $("#start").val(),
-		"end" : $("#end").val(),
-		"orderBy" : 't.create_time desc'
+		"end" : $("#end").val()
 	};
 	jQuery(grid_selector).setGridParam({
 		postData : {
@@ -31,9 +30,9 @@ function query() {
 
 function init() {
 	var qryParam = {
-		"orderBy" : 't.create_time desc'
 	};
 	jQuery(grid_selector).jqGrid({
+        sortable: true,
 		url : '../../api/v1/component/query',
 		datatype : "json",
 		rownumbers : true,
@@ -116,8 +115,7 @@ function init() {
 		pager : pager_selector,
 		viewrecords : true,
 		height : '100%',
-		sortname : 't.create_time',
-		sortorder : "desc",
+
 		loadComplete : function() {
 			var table = this;
 			setTimeout(function() {
