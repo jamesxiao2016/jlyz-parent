@@ -92,6 +92,9 @@
         left join  dj_user u on u.id = pm.id
         left join dj_dept dept on pm.dept_id = dept.id
         <where>
+            <if test="deptId != null">
+                and pm.dept_id = #{deptId}
+            </if>
             <if test="name != null and name != ''">
                 and name LIKE concat(concat('%',#{name}),'%')
             </if>
@@ -224,6 +227,6 @@
  			and REPLACE(du.user_name,' ','') like #{userName}
    		</if>
    	</where> 
- </select>  
+ </select>
     
 </mapper>

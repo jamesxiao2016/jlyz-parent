@@ -7,8 +7,10 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
+import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
+import cn.dlbdata.dj.util.TreeUtil;
 import cn.dlbdata.dj.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -117,5 +119,13 @@ public class DeptController extends BaseController {
 		ResultVo<List<DeptIdNameDto>> result = new ResultVo<>(ResultCode.OK.getCode());
 		result.setData(list);
 		return result;
+	}
+
+	@GetMapping("/deptTree")
+	@ResponseBody
+	public List<DeptTreeVo> getDeptTree(@RequestParam("sectionId") Long sectionId) {
+		List<DeptTreeVo> depts = deptService.getDeptTree(sectionId);
+		List<DeptTreeVo> tree = TreeUtil.RecursiveAddress(depts);
+		return tree;
 	}
 }
