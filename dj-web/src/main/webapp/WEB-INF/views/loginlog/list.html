@@ -19,21 +19,23 @@
 			<div class="row col-sm-12">
 				<div class="ibox ">
 					<div class="ibox-title">
-						<h5>自主学习列表</h5>
+						<h5>登录日志</h5>
 					</div>
 					<div class="ibox-content">
 						<form class="form-horizontal">
 							<div class="form-group col-lg-4 col-md-4 col-sm-4">
-								<input type="text" id="name" name="name" placeholder="自主学习类型" class="form-control">
+								<input type="text" id="userAccount" name="userAccount" placeholder="请输入账号" class="form-control">
 							</div>
 							<div class="form-group col-lg-4 col-md-4 col-sm-4">
-								<input type="text" id="createName" name="createName" placeholder="党员名称" class="form-control">
+								<input type="text" id="userName" name="userName" placeholder="请输入用户名" class="form-control">
 							</div>
 							<div class="form-group col-lg-4 col-md-4 col-sm-4">
-								<select name="deptName">
-									<option value=""></option>
+								<select name="status" id="status" >
+									<option value = "0" selected="selected">请选择</option>
+									<option value = "1000">登录成功</option>
+									<option value = "1023">用户名或者密码错误</option>
+									<option value = "1010">登录失败</option>
 								</select>
-								<input type="text" id="" name="" placeholder="党支部名称" class="form-control">
 							</div>
 							<div class="form-group col-lg-4 col-md-4 col-sm-4" style="padding-top: 7px;margin-left: 0px">
 								<button id="btnQuery" class="btn btn-sm btn-primary pull-left m-t-n-xs" type="button">查  询</button>
@@ -66,7 +68,7 @@
 		<script src="../../static/js/plugins/component/common.js"></script>
 		<script src="../../static/js/plugins/component/myJqGrid.js"></script>
 		<script src="../js/common.js"></script>
-		<script src="../js/study/study_list.js"></script>
+		<script src="../js/loginlog/loginlog_list.js"></script>
 	</body>
 
 </html>

@@ -23,4 +23,13 @@ public interface ILogLoginService {
 	 * @return
 	 */
 	int insertLoginLogger(DjLogLogin djLogLogin);
+	
+	/**
+	 * 
+	 * <p>Title: deleteById</p> 
+	 * <p>Description: 删除登录日志</p> 
+	 * @param id
+	 * @return
+	 */
+	public Long deleteById(Long id);
 }

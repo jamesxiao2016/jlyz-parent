@@ -68,13 +68,13 @@ function init() {
 			label : '开始时间',
 			name : 'startTime',
 			index : 'start_time',
-			formatter : datetimeFormatter,
+			formatter : datetimeFormatterMinute,
 		}, 
 		{
 			label : '结束时间',
 			name : 'endTime',
 			index : 'end_time',
-			formatter : datetimeFormatter,
+			formatter : datetimeFormatterMinute,
 		}, 
 		{
 			label : '操作',

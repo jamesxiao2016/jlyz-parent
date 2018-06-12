@@ -1,6 +1,6 @@
 var grid_selector = "#grid-table";
 var pager_selector = "#grid-pager";
-var sId = "cn.dlbdata.dj.db.mapper.DjQueryMapper.queryActiveList";
+var sId = "cn.dlbdata.dj.db.mapper.DjQueryMapper.queryLoginLogList";
 $(function() {
 	init();
 	initEvent();
@@ -16,10 +16,10 @@ function initEvent() {
 
 function query() {
 	var qryParam = {
-		"name" : getLikeVal($("#name").val()),
-		"start" : $("#start").val(),
-		"end" : $("#end").val(),
-		"orderBy" : 't.create_time desc'
+		"userAccount" : $("#userAccount").val(),
+		"userName" : $("#userName").val(),
+		"status": $("#status").val(),
+		"orderBy" : 'create_time desc'
 	};
 	jQuery(grid_selector).setGridParam({
 		postData : {
@@ -38,47 +38,41 @@ function init() {
 		datatype : "json",
 		rownumbers : true,
 		colModel : [ {
-			label : '活动ID',
+			label : 'ID',
 			name : 'id',
 			index : 'id',
 			hidden : true
 		}, {
-			label : '活动名称',
-			name : 'activeName',
-			index : 'name',
+			label : '账号',
+			name : 'userAccount',
+			index : 'user_account',
 		}, {
-			label : '活动类型',
-			name : 'activeTypeName',
-			index : 'sub_type_name',
+			label : '用户名',
+			name : 'userName',
+			index : 'user_name',
+		}, {
+			label : '支部名称',
+			name : 'deptName',
+			index : 'dept_name',
 		}, 
 		{
-			label : '活动负责人',
-			name : 'principalName',
-			index : 'principal_name',
-		},
-		{
-			label : '活动创建人',
-			name : 'createUser',
-			index : 'user_name',
-		},
-		{
-			label : '活动状态',
+			label : '状态码',
 			name : 'status',
 			index : 'status',
-			formatter : statusFormatter,
-		},
+		}, 
 		{
-			label : '开始时间',
-			name : 'startTime',
-			index : 'start_time',
-			formatter : datetimeFormatterMinute,
-		},
-		{
-			label : '结束时间',
-			name : 'endTime',
-			index : 'end_time',
-			formatter : datetimeFormatterMinute,
-		},
+			label : '日志信息',
+			name : 'errorMsg',
+			index : 'error_msg',
+		}, 
+		 {
+			label : '登录时间',
+			name : 'createTime',
+			index : 'create_time',
+			formatter : datetimeFormatter,
+			align : "center",
+			width : 100
+		}, 
 		{
 			label : '操作',
 			name : '',
@@ -94,11 +88,11 @@ function init() {
 			params : JSON.stringify(qryParam)
 		},
 		rowNum : 10,
-		rowList : [ 10, 20, 30 ],
+		rowList : [ 10, 30, 50 ],
 		pager : pager_selector,
 		viewrecords : true,
 		height : '100%',
-		sortname : 't.create_time',
+		sortname : 'create_time',
 		sortorder : "desc",
 		loadComplete : function() {
 			var table = this;
@@ -127,37 +121,18 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='../active/detail.html?id=" + rowObject.id + "'>活动详情&nbsp;&nbsp;&nbsp;</a>";
+	var btnEdit = "<a href='../loginlog/detail.html?id=" + rowObject.id + "'>查看详情&nbsp;&nbsp;&nbsp;</a>";
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 
 	return btnEdit + "&nbsp;" + btnDel;
 }
-
-function statusFormatter(cellvalue, options, rowObject) {
-	if(cellvalue == "1")
-	{
-		return "已发布";
-	}
-	else if(cellvalue == "0")
-	{
-		return "待审核";
-	}
-	else if(cellvalue == "-1")
-	{
-		return "已取消";
-	}
-	
-	return "";
-}
-
-
 
 function delRecord(id) {
 	layer.confirm('确定要删除吗？', {
 		btn : [ '确定', '取消' ]
 	// 按钮
 	}, function() {
-		$.ajaxPost("../../admin/active/deleteById", {
+		$.ajaxPost("../../admin/loginlog/deleteById", {
 			id : id
 		}, function(data) {
 			if (data.code == 1000) {

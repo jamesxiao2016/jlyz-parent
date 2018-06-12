@@ -39,5 +39,22 @@ public class LogLoginServiceImpl extends BaseServiceImpl implements ILogLoginSer
 		}
 		return logLoginMapper.insertSelective(djLogLogin);
 	}
+	
+	/* (non-Javadoc)
+	 * <p>Title: deleteById</p>
+	 * <p>Description: 删除登录日志</p> 
+	 * @param id
+	 * @return  
+	 * @see cn.dlbdata.dj.service.ILogLoginService#deleteById(java.lang.Long)
+	 */
+	@Override
+	public Long deleteById(Long id) {
+		if (id == null) {
+			logger.error("id is null");
+			return null;
+		}
+		logLoginMapper.deleteByPrimaryKey(id);
+		return id;
+	}
 
 }

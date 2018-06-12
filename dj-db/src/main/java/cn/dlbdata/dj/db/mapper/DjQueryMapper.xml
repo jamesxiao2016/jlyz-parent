@@ -94,4 +94,37 @@
         sc.score as score,sc.score_desc as scoreDesc
         from dj_score sc left join dj_partymember pm on pm.id = sc.user_id
     </select>
+    
+  <!-- 登录日志列表 -->
+  <resultMap id="LoginLogResultMap" type="cn.dlbdata.dj.db.vo.loginlog.LoginLogVo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_account" jdbcType="VARCHAR" property="userAccount" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="error_msg" jdbcType="VARCHAR" property="errorMsg" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+ <select id="queryLoginLogList" resultMap="LoginLogResultMap">
+ 	SELECT  dll.id, dll.status, dll.user_account, dll.user_name, dll.error_msg, dll.create_time, dd.name dept_name
+ 	FROM dj_log_login dll
+ 	LEFT JOIN dj_dept dd ON dd.id = dll.dj_dept_id
+ 	<where>
+ 		1 = 1
+ 		<if test="userAccount != null and userAccount != ''">
+   			and dll.user_account = #{userAccount}
+   		</if>
+   		<if test="userName != null and userName != ''">
+ 			and REPLACE(dll.user_name,' ','') like #{userName}
+   		</if>
+   		<if test="status != 0 and status != null">
+ 			and dll.status = #{status}
+   		</if>
+   	</where> 
+ </select> 
+    
+    
+    
+    
+    
 </mapper>
