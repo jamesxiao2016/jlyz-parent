@@ -226,4 +226,24 @@
    	</where> 
  </select>  
     
+  <!-- 党费历史缴纳 -->
+  <resultMap id="PartymemberDuesResultMap" type="cn.dlbdata.dj.db.vo.party.PartymemberDuesVo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="dues_year" jdbcType="INTEGER" property="duesYear" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="dues_month" jdbcType="INTEGER" property="duesMonth" />
+    <result column="dues_money" jdbcType="FLOAT" property="duesMoney" />
+    <result column="real_money" jdbcType="FLOAT" property="realMoney" />
+    <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+  </resultMap>
+ <select id="queryPartymemberDuesList" resultMap="PartymemberDuesResultMap">
+ 	SELECT dpd.id, dpd.dues_year, dpd.dues_month, dpd.dues_money, dpd.real_money, dpd.status, dpd.payment_time, dp.name user_name
+ 	FROM dj_partymember_dues dpd
+ 	INNER JOIN dj_partymember dp ON dp.id = dpd.dj_partymember_id 
+ 	<where>
+ 		1 = 1
+ 		
+   	</where> 
+ </select>     
 </mapper>
