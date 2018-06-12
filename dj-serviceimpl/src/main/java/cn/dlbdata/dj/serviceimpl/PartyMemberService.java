@@ -266,9 +266,9 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		Page<ObserveLowPartyMemberVo> page = PageHelper.startPage(pageNum, pageSize);
 		List<ObserveLowPartyMemberVo> voList = partyMemberMapper.getObserveLowPartyMember(deptId, year);
 		for (ObserveLowPartyMemberVo vo : voList) {
-			// 取最后一条遵章守纪申请记录 没有记录则说明该党员未处理，有记录则取最后一条记录的状态
-			Integer status = applyMapper.getOneByUserIdOrderByCreateTimeDesc(vo.getId(), yearTimeStart,
-					yearTimeEnd,ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId());
+			// 取最后一条遵章守纪记录 没有记录则说明该党员未处理，有记录则取最后一条记录的状态
+			Integer status = disciplineMapper.getOneByUserIdOrderByCreateTimeDesc(vo.getId(), yearTimeStart,
+					yearTimeEnd);
 			if (status == null) {
 				vo.setStatus(-1);
 			} else {
@@ -278,25 +278,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		return PageUtils.toPaged(page);
 	}
 
-	/**
-	 * 遵章守纪详情 片区负责人使用
-	 *
-	 * @param applyId 申请Id
-	 * @return
-	 */
-	@Override
-	public ObserveLowDetailVo getObserveLowDetailForSection(Long applyId) {
-		ObserveLowDetailVo vo = applyMapper.getObserveLowDetailByApplyId(applyId);
-		if (vo != null) {
-			if (vo.getDisId() != null) {
-				List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_DISCIPLINE,vo.getDisId());
-				vo.setPicIds(picIds);
-			}
-		} else {
-			vo = new ObserveLowDetailVo();
-		}
-		return vo;
-	}
+
 
 	/**
 	 * 遵章守纪详情 支部书记使用
@@ -308,7 +290,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	public ObserveLowDetailVo getObserveLowDetailForDept(Long partyMemberId) {
 		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
 		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
-		ObserveLowDetailVo vo = applyMapper.getObserveLowDetailByPartyMemberId(partyMemberId,yearTimeStart,yearTimeEnd);
+		ObserveLowDetailVo vo = disciplineMapper.getByPartyMemberId(partyMemberId,yearTimeStart,yearTimeEnd);
 		if (vo != null ) {
 			if (vo.getDisId() != null) {
 				List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_DISCIPLINE,vo.getDisId());

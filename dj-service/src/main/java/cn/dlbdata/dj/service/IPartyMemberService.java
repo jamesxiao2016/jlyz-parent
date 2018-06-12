@@ -108,14 +108,6 @@ public interface IPartyMemberService {
 	Paged<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId, int pageIndex, int pageSize);
 
 	/**
-	 * 遵章守纪详情 片区负责人使用
-	 *
-	 * @param applyId 申请Id
-	 * @return
-	 */
-	ObserveLowDetailVo getObserveLowDetailForSection(Long applyId);
-
-	/**
 	 * 遵章守纪详情 支部书记使用
 	 *
 	 * @param partyMemberId 党员Id

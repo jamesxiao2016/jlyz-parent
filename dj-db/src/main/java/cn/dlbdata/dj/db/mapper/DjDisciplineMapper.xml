@@ -15,4 +15,17 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 
+  <select id="getOneByUserIdOrderByCreateTimeDesc" resultType="java.lang.Integer">
+    select status from dj_discipline where dj_user_id = #{userId}
+     and create_time &gt;= #{yearTimeStart} and create_time &lt;= #{yearTimeEnd}
+     order by create_time desc LIMIT 1
+  </select>
+  
+  <select id="getByPartyMemberId" resultType="cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo">
+    select dis.id as disId,pm.name as partyMemberName,dept.name as deptName,dis.reason as reason,dis.reason_desc as reasonDesc  from dj_discipline dis
+    left join dj_partymember pm on dis.dj_user_id = pm.id
+    left join dj_dept dept on dept.id = dis.dj_dept_id
+    where dis.dj_user_id = #{userId}  and dis.create_time &gt;= #{yearTimeStart} and dis.create_time &lt;= #{yearTimeEnd}
+    order by dis.create_time desc LIMIT 1
+  </select>
 </mapper>

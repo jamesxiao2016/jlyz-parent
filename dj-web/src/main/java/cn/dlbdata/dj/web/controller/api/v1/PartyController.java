@@ -301,22 +301,6 @@ public class PartyController extends BaseController {
 	}
 
 	/**
-	 * 遵章守纪详情 片区负责人使用
-	 *
-	 * @param applyId
-	 *            申请Id
-	 * @return
-	 */
-	@GetMapping("/getObserveLowDetailForSection")
-	@ResponseBody
-	public ResultVo<ObserveLowDetailVo> getObserveLowDetailForSection(@RequestParam("applyId") Long applyId) {
-		ResultVo<ObserveLowDetailVo> result = new ResultVo<>(ResultCode.OK.getCode());
-		ObserveLowDetailVo vo = partyMemberService.getObserveLowDetailForSection(applyId);
-		result.setData(vo);
-		return result;
-	}
-
-	/**
 	 * 遵章守纪详情 支部书记使用
 	 *
 	 * @param partyMemberId

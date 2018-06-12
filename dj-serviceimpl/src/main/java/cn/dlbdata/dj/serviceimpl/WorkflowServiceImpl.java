@@ -290,40 +290,9 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
                 score = subType.getScore();
             }
             // 处理分数，插入到积分明细表中
-            if (apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId())) {
-                boolean exists = scoreMapper.existScore(apply.getUserId(),apply.getApplyYear(),
-                        ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId());
-                if (!exists) {
-                    DjScore record = new DjScore();
-                    record.setAddStatus(DlbConstant.BASEDATA_STATUS_VALID);
-                    record.setAddTime(new Date());
-                    record.setAddYear(apply.getApplyYear());
-                    record.setUserId(apply.getUserId());
-                    record.setApplyUserId(apply.getApplyId());
-                    record.setApplyUserName(apply.getApplyName());
-                    record.setApproverId(user.getUserId());
-                    record.setApproverName(user.getUserName());
-                    record.setCreateTime(new Date());
-                    record.setDjSubTypeId(subType.getId());
-                    record.setDjTypeId(type.getId());
-                    record.setRecordId(apply.getRecordId());
-                    record.setRecrodDesc(apply.getRemark());
-                    record.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
-                    record.setScoreDesc(subType.getName());
-                    record.setScore(score);
-                    scoreMapper.insertSelective(record);
-                } else {
-                    resultVo.setCode(ResultCode.Forbidden.getCode());
-                    resultVo.setMsg("请勿重复驿站生活违纪扣分");
-                    return resultVo;
-                }
-
-            } else {
-
-                handScore(apply.getDjSubTypeId(), apply.getUserId(), apply.getApplyId(),apply.getApplyName(),
-                        apply.getApproverId(),apply.getApproverName(), score,
-                        apply.getRecordId(), apply.getRemark(), apply.getApplyYear());
-            }
+            handScore(apply.getDjSubTypeId(), apply.getUserId(), apply.getApplyId(),apply.getApplyName(),
+                    apply.getApproverId(),apply.getApproverName(), score,
+                    apply.getRecordId(), apply.getRemark(), apply.getApplyYear());
         }
 		// 插入审批记录表
 		DjApprove approve = new DjApprove();
@@ -452,9 +421,10 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
             return result;
         }
         int year = Calendar.getInstance().get(Calendar.YEAR);
-        int haveRecord = applyMapper.countByPartyMemberIdAndSubTypeIdAndYear(partymember.getId(),year,
-                ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId());
-        if (haveRecord > 0) {
+		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
+		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
+        Integer haveRecord = disciplineMapper.getOneByUserIdOrderByCreateTimeDesc(partymember.getId(),yearTimeStart,yearTimeEnd);
+        if (haveRecord != null) {
             result.setCode(ResultCode.BadRequest.getCode());
             result.setMsg("请勿重复处理");
             return result;
@@ -467,33 +437,36 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		record.setReason(param.getReason());
 		record.setReasonDesc(param.getReasonDesc());
 		record.setScore(-20F);
-		record.setStatus(0);
+		record.setStatus(AuditStatusEnum.PASS.getValue());
 		disciplineMapper.insertSelective(record);
-
-
+		boolean exists = scoreMapper.existScore(partymember.getId(),year,
+				ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId());
+		if (!exists) {
+			DjScore score = new DjScore();
+			score.setAddStatus(DlbConstant.BASEDATA_STATUS_VALID);
+			score.setAddTime(new Date());
+			score.setAddYear(year);
+			score.setUserId(partymember.getId());
+			score.setApplyUserId(user.getUserId());
+			score.setApplyUserName(user.getUserName());
+			score.setApproverId(user.getUserId());
+			score.setApproverName(user.getUserName());
+			score.setCreateTime(new Date());
+			score.setDjSubTypeId(ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId());
+			score.setDjTypeId(ActiveTypeEnum.ACTIVE_E.getActiveId());
+			score.setRecordId(record.getId());
+			score.setRecrodDesc(record.getReason());
+			score.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+			score.setScoreDesc(ActiveSubTypeEnum.ACTIVE_SUB_F.getDesc());
+			score.setScore(-20F);
+			scoreMapper.insertSelective(score);
+		} else {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("请勿重复驿站生活违纪扣分");
+			return result;
+		}
 		// 保存图片
 		savePics(record.getId(), DlbConstant.TABLE_NAME_DISCIPLINE, param.getPics());
-
-		// 判断是否需要审批，需要审批，提交申请，写入到申请表中
-		ApplyVo vo = new ApplyVo();
-		vo.setContent(record.getReason());
-		vo.setDjSubTypeId(ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId());
-		vo.setDjTypeId(ActiveTypeEnum.ACTIVE_E.getActiveId());
-		vo.setRoleId(RoleEnum.HEADER_OF_DISTRICT.getId());
-		vo.setRecordId(record.getId());
-		vo.setDjDeptId(user.getDeptId());
-		vo.setUserId(partymember.getId());
-		vo.setUserName(partymember.getName());
-		vo.setRemark("驿站生活违纪违规扣分申请");
-		vo.setTableName(DlbConstant.TABLE_NAME_DISCIPLINE);
-		vo.setApplyYear(Calendar.getInstance().get(Calendar.YEAR));
-		String rs = doApply(vo, user);
-		if (!CoreConst.SUCCESS.equals(rs)) {
-			logger.info("提交申请失败");
-			result.setCode(ResultCode.Forbidden.getCode());
-			result.setMsg("提交申请失败");
-		}
-
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(record.getId());
 		return result;
