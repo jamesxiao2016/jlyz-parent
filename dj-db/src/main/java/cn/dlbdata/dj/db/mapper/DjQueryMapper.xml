@@ -144,7 +144,7 @@
    	</where> 
  </select> 
  
-  <!-- 登录日志列表 -->
+  <!-- 积分等级列表 -->
   <resultMap id="ScoreLevelResultMap" type="cn.dlbdata.dj.db.vo.score.ScoreLevelVo">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -160,6 +160,28 @@
    	</where> 
  </select> 
     
-    
+  <!-- 操作日志列表 -->
+  <resultMap id="OperationLogResultMap" type="cn.dlbdata.dj.db.vo.operationlog.OperationLogVo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="opt_name" jdbcType="INTEGER" property="optName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="error_msg" jdbcType="VARCHAR" property="errorMsg" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+ <select id="queryOperationLogList" resultMap="OperationLogResultMap">
+ 	SELECT dlo.id, dlo.status, dlo.error_msg, dlo.create_time, dd.name dept_name, du.user_name, dod.name opt_name
+ 	FROM dj_log_opt dlo
+ 	LEFT JOIN dj_user du ON du.id = dlo.dj_user_id
+ 	LEFT JOIN dj_dept dd ON dd.id = dlo.dj_dept_id
+ 	LEFT JOIN dj_opt_dict dod ON dod.id = dlo.opt_id
+ 	<where>
+ 		1 = 1
+ 		<if test="userName != null and userName != ''">
+ 			and REPLACE(du.user_name,' ','') like #{userName}
+   		</if>
+   	</where> 
+ </select>  
     
 </mapper>
