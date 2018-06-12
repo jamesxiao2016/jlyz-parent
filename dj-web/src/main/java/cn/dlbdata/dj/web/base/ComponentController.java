@@ -50,4 +50,11 @@ public class ComponentController extends BaseController {
 	public List<SelectVo> getDictListByDictType(String dictType) {
 		return componentService.getDictListByDictType(dictType);
 	}
+	
+	@ResponseBody
+	@RequestMapping("/getDeptNameList")
+	public List<SelectVo> getDeptNameList() {
+		return componentService.getDeptNameList();
+	}
+	
 }

@@ -47,6 +47,17 @@ public class AdminActiveVo {
 	 * 活动创建人
 	 */
 	private String createUser;
+	/**
+	 * 支部名称
+	 */
+	private String deptName;
+	
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
 	public Long getId() {
 		return id;
 	}

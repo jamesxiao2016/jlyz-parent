@@ -12,10 +12,19 @@ function initEvent() {
 	$("#btnAdd").click(function() {
 		location.href = "add.html";
 	});
+	
+	//支部名称
+	$.post("../../api/v1/component/getDeptNameList", function(
+			data) {
+		$('.seldept').select2({
+			data : data
+		});
+	})
 }
 
 function query() {
 	var qryParam = {
+		"seldept" : $("#seldept").val(),
 		"userAccount" : $("#userAccount").val(),
 		"userName" : $("#userName").val(),
 		"status": $("#status").val(),
@@ -46,19 +55,23 @@ function init() {
 			label : '账号',
 			name : 'userAccount',
 			index : 'user_account',
+			width : 80,
 		}, {
 			label : '用户名',
 			name : 'userName',
 			index : 'user_name',
+			width : 80,
 		}, {
 			label : '支部名称',
 			name : 'deptName',
 			index : 'dept_name',
+			width : 170,
 		}, 
 		{
 			label : '状态码',
 			name : 'status',
 			index : 'status',
+			width : 80,
 		}, 
 		{
 			label : '日志信息',

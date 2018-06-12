@@ -27,4 +27,7 @@ public interface IComponentService {
 	 * @return
 	 */
 	public List<SelectVo> getDictListByDictType(String dictType);
+	
+	
+	public List<SelectVo> getDeptNameList();
 }

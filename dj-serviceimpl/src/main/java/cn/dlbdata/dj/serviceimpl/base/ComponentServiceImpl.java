@@ -18,7 +18,9 @@ import com.github.pagehelper.PageHelper;
 import cn.dlbdata.dj.common.core.bean.JqGridBean;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.web.vo.SelectVo;
+import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjDictMapper;
+import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjDict;
 import cn.dlbdata.dj.service.base.IComponentService;
 
@@ -32,6 +34,9 @@ public class ComponentServiceImpl implements IComponentService {
 	
 	@Autowired
 	private DjDictMapper dictMapper;
+	
+	@Autowired
+	private DjDeptMapper deptMapper;
 
 	@Override
 	public JqGridBean<Object> queryJqData(String selectId, Map<String, Object> params, Integer pageNum,
@@ -75,6 +80,24 @@ public class ComponentServiceImpl implements IComponentService {
 			}
 		}
 
+		return rlist;
+	}
+
+	/* (non-Javadoc)
+	 * <p>Title: getDeptNameList</p>
+	 * <p>Description: </p> 
+	 * @return  
+	 * @see cn.dlbdata.dj.service.base.IComponentService#getDeptNameList()
+	 */
+	@Override
+	public List<SelectVo> getDeptNameList() {
+		List<SelectVo> rlist = new ArrayList<>();
+		List<DjDept> list = deptMapper.selectAll();
+		if (list != null && list.size() > 0) {
+			for (DjDept dept : list) {
+				rlist.add(new SelectVo(String.valueOf(dept.getId()), dept.getName()));
+			}
+		}
 		return rlist;
 	}
 }

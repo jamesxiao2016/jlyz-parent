@@ -16,7 +16,7 @@ function initEvent() {
 
 function query() {
 	var qryParam = {
-		"name" : getLikeVal($("#name").val()),
+		"name" :  $("#name").val(),
 		"start" : $("#start").val(),
 		"end" : $("#end").val(),
 		"orderBy" : 'create_time desc'

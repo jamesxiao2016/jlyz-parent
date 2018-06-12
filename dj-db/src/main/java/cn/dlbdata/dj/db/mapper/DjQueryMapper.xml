@@ -32,22 +32,27 @@
     <result column="name" jdbcType="VARCHAR" property="activeName" />
     <result column="sub_type_name" jdbcType="VARCHAR" property="activeTypeName" />
     <result column="user_name" jdbcType="VARCHAR" property="createUser" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
     <result column="principal_name" jdbcType="VARCHAR" property="principalName" />
   </resultMap>
   <select id="queryActiveList" resultMap="ActiveResultMap">
-  	select t.id, t.name, t.status, t.start_time, t.end_time, t.principal_name, t.user_name, dst.name sub_type_name
+  	select t.id, t.name, t.status, t.start_time, t.end_time, t.principal_name, t.user_name, dst.name sub_type_name, dd.name dept_name
   	from dj_active t
   	left join dj_sub_type dst on dst.id = t.dj_sub_type_id
+  	left join dj_dept dd on dd.id = t.dj_dept_id 
     <where>
          1 = 1
    		<if test="name != null and name != ''">
    			and t.name like #{name}
    		</if>
-   		<if test="status != null">
+   		<if test="status != null and status != ''">
    			and t.status = #{status}
+   		</if>
+   		<if test="seldept != null and seldept != ''">
+   			and t.dj_dept_id = #{seldept}
    		</if>
 
     </where>
@@ -73,6 +78,10 @@
          <if test="createName != '' and createName != null ">
          	and REPLACE(s.user_name,' ','') like #{createName}
          </if>
+         <if test="seldept != '' and seldept != null ">
+         	and s.dj_dept_id = #{seldept}
+         </if>
+         
    	</where>	
  </select> 
 
@@ -138,8 +147,11 @@
    		<if test="userName != null and userName != ''">
  			and REPLACE(dll.user_name,' ','') like #{userName}
    		</if>
-   		<if test="status != 0 and status != null">
+   		<if test="status != '' and status != null">
  			and dll.status = #{status}
+   		</if>
+   		<if test="seldept != '' and seldept != null">
+ 			and dll.dj_dept_id = #{seldept}
    		</if>
    	</where> 
  </select> 
@@ -157,6 +169,9 @@
  	FROM dj_score_level
  	<where>
  		1 = 1
+ 		<if test="name != '' and name != null">
+ 			and name = #{name}
+   		</if>
    	</where> 
  </select> 
     
@@ -171,6 +186,33 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
  <select id="queryOperationLogList" resultMap="OperationLogResultMap">
+ 	SELECT dlo.id, dlo.status, dlo.error_msg, dlo.create_time, dd.name dept_name, du.user_name, dod.name opt_name
+ 	FROM dj_log_opt dlo
+ 	LEFT JOIN dj_user du ON du.id = dlo.dj_user_id
+ 	LEFT JOIN dj_dept dd ON dd.id = dlo.dj_dept_id
+ 	LEFT JOIN dj_opt_dict dod ON dod.id = dlo.opt_id
+ 	<where>
+ 		1 = 1
+ 		<if test="userName != null and userName != ''">
+ 			and REPLACE(du.user_name,' ','') like #{userName}
+   		</if>
+   		<if test="seldept != null and seldept != ''">
+ 			and dlo.dj_dept_id = #{seldept}
+   		</if>
+   	</where> 
+ </select>  
+
+  <!-- 角色管理 -->
+  <resultMap id="UserRoleResultMap" type="cn.dlbdata.dj.db.vo.operationlog.OperationLogVo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="opt_name" jdbcType="INTEGER" property="optName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="error_msg" jdbcType="VARCHAR" property="errorMsg" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+ <select id="queryUserRoleList" resultMap="UserRoleResultMap">
  	SELECT dlo.id, dlo.status, dlo.error_msg, dlo.create_time, dd.name dept_name, du.user_name, dod.name opt_name
  	FROM dj_log_opt dlo
  	LEFT JOIN dj_user du ON du.id = dlo.dj_user_id

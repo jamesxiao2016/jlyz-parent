@@ -12,11 +12,20 @@ function initEvent() {
 	$("#btnAdd").click(function() {
 		location.href = "add.html";
 	});
+	
+	//支部名称
+	$.post("../../api/v1/component/getDeptNameList", function(
+			data) {
+		$('.seldept').select2({
+			data : data
+		});
+	})
 }
 
 function query() {
 	var qryParam = {
 		"userName" : getLikeVal($("#userName").val()),
+		"seldept" :  $("#seldept").val(),
 		"start" : $("#start").val(),
 		"end" : $("#end").val(),
 		"orderBy" : 'create_time desc'
