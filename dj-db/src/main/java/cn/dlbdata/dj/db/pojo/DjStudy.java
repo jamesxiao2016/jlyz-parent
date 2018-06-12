@@ -79,6 +79,12 @@ public class DjStudy {
      */
     @Column(name = "approve_id")
     private Long approveId;
+    
+    /**
+     * 审批人姓名
+     */
+    @Column(name = "approve_name")
+    private String approveName;
 
     /**
      * 部门ID
@@ -388,6 +394,14 @@ public class DjStudy {
 
 	public void setPicIds(Long[] picIds) {
 		this.picIds = picIds;
+	}
+
+	public String getApproveName() {
+		return approveName;
+	}
+
+	public void setApproveName(String approveName) {
+		this.approveName = approveName;
 	}
     
 }

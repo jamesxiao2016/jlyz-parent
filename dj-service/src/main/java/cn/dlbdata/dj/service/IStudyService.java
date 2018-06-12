@@ -36,7 +36,7 @@ public interface IStudyService {
 	 * @param resubmitDto
 	 * @return
 	 */
-	ResultVo studyResubmit(StudyResubmitDto resubmitDto,UserVo user);
+	ResultVo<Long> studyResubmit(StudyResubmitDto resubmitDto,UserVo user);
 
 	/**
 	 * 根据ID获取自主学习详细信息

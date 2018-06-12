@@ -3,7 +3,7 @@ package cn.dlbdata.dj.constant;
 public class DlbConstant {
 	/** 已删除 */
 	public static final int BASEDATA_STATUS_DEL = -1;
-	/** 无效 */
+	/** 待处理 */
 	public static final int BASEDATA_STATUS_INVALID = 0;
 	/** 有效 */
 	public static final int BASEDATA_STATUS_VALID = 1;

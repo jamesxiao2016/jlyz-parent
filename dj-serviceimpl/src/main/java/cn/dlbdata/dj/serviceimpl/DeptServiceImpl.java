@@ -5,7 +5,9 @@ import java.util.List;
 
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.DjSectionMapper;
+import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjSection;
+import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
@@ -25,6 +27,8 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	private DjDeptMapper deptMapper;
 	@Autowired
     private DjSectionMapper sectionMapper;
+	@Autowired
+	private DjUserMapper userMapper;
 
 	@Override
 	public DjDept getDeptInfoById(Long id) {
@@ -112,5 +116,20 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	public List<DeptIdNameDto> getBranchDeptNameAndId(Long sectionId) {
 		List<DeptIdNameDto> list = deptMapper.getBranchDeptIdAndName(sectionId);
 		return list;
+	}
+
+	@Override
+	public DjUser getDeptBranch(Long deptId) {
+		if (deptId == null) {
+			return null;
+		}
+		DjDept dept = deptMapper.selectByPrimaryKey(deptId);
+
+		if (dept != null) {
+			DjUser user = userMapper.selectByPrimaryKey(dept.getPrincipalId());
+			return user;
+		}
+
+		return null;
 	}
 }

@@ -1,10 +1,8 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
-import cn.dlbdata.dj.db.vo.ToDoVo;
-import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
-import cn.dlbdata.dj.dto.study.StudyResubmitDto;
-import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
-import cn.dlbdata.dj.vo.*;
+import java.util.Calendar;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +16,20 @@ import cn.dlbdata.dj.common.core.util.PageUtils;
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.db.pojo.DjApply;
+import cn.dlbdata.dj.db.vo.ToDoVo;
 import cn.dlbdata.dj.db.vo.apply.PioneeringApplyDetailVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
+import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
+import cn.dlbdata.dj.dto.study.StudyResubmitDto;
+import cn.dlbdata.dj.dto.vangard.VanguardParamVo;
 import cn.dlbdata.dj.service.IStudyService;
 import cn.dlbdata.dj.service.IWorkflowService;
+import cn.dlbdata.dj.vo.AuditVo;
+import cn.dlbdata.dj.vo.DisciplineVo;
+import cn.dlbdata.dj.vo.StudyVo;
+import cn.dlbdata.dj.vo.ThoughtsVo;
+import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
-
-import java.util.Calendar;
-import java.util.List;
 
 @Controller
 @RequestMapping("/api/v1/flow")
@@ -64,8 +67,8 @@ public class WorkflowController extends BaseController {
      */
 	@PostMapping("/studyResubmit")
     @ResponseBody
-    public ResultVo studyResubmit(@RequestBody StudyResubmitDto resubmitDto) {
-        ResultVo result = new ResultVo<>();
+    public ResultVo<Long> studyResubmit(@RequestBody StudyResubmitDto resubmitDto) {
+        ResultVo<Long> result = new ResultVo<>();
         UserVo user = getCurrentUserFromCache();
         if (user == null) {
             result.setCode(ResultCode.NOT_LOGIN.getCode());

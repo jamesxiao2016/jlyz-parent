@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.dlbdata.dj.constant.*;
-import cn.dlbdata.dj.dto.study.StudyResubmitDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,16 +16,23 @@ import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
+import cn.dlbdata.dj.constant.ActiveTypeEnum;
+import cn.dlbdata.dj.constant.AuditStatusEnum;
+import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.constant.RoleEnum;
 import cn.dlbdata.dj.db.mapper.DjApplyMapper;
 import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.mapper.DjSubTypeMapper;
-import cn.dlbdata.dj.db.pojo.DjActivePic;
 import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.pojo.DjPicRecord;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.pojo.DjSubType;
+import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.vo.study.ReviewScheduleListVo;
+import cn.dlbdata.dj.dto.study.StudyResubmitDto;
+import cn.dlbdata.dj.service.IDeptService;
 import cn.dlbdata.dj.service.IStudyService;
 import cn.dlbdata.dj.service.IWorkflowService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
@@ -52,6 +57,9 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 
 	@Autowired
 	private DjPicRecordMapper picRecordMapper;
+
+	@Autowired
+	private IDeptService deptService;
 
 	@Override
 	@Transactional
@@ -104,11 +112,15 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		study.setCreateUserId(user.getUserId());
 		study.setUserName(user.getUserName());
 		study.setDjDeptId(user.getDeptId());
+		study.setStatus(DlbConstant.BASEDATA_STATUS_INVALID);
+		DjUser approver = deptService.getDeptBranch(user.getDeptId());
+		if (approver != null) {
+			study.setApproveId(approver.getId());
+			study.setApproveName(approver.getUserName());
+		}
 		if (isSave) {
-			study.setStatus(DlbConstant.BASEDATA_STATUS_INVALID);
 			studyMapper.insertSelective(study);
 		} else {
-			study.setStatus(DlbConstant.BASEDATA_STATUS_INVALID);
 			studyMapper.updateByPrimaryKeySelective(study);
 
 			// 删除原来的图片
@@ -158,7 +170,7 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 	 */
 	@Transactional
 	@Override
-	public ResultVo studyResubmit(StudyResubmitDto resubmitDto, UserVo user) {
+	public ResultVo<Long> studyResubmit(StudyResubmitDto resubmitDto, UserVo user) {
 		ResultVo<Long> result = new ResultVo<>();
 		DjApply djApply = applyMapper.selectByPrimaryKey(resubmitDto.getApplyId());
 		if (djApply == null) {
