@@ -2,7 +2,9 @@ package cn.dlbdata.dj.db.mapper;
 
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
+import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
+import org.apache.ibatis.annotations.Select;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -27,4 +29,7 @@ public interface DjDeptMapper extends Mapper<DjDept> {
 	 * @return
 	 */
 	List<Long> getDeptIdsBySectionId(long sectionId);
+
+	@Select("select name as name,id as deptId,parent_id as parentId from dj_dept where dj_section_id = #{sectionId}")
+	List<DeptTreeVo> getDeptTree(Long sectionId);
 }

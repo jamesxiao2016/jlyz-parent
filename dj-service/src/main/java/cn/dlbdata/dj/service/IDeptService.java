@@ -5,6 +5,7 @@ import java.util.List;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
+import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
 import cn.dlbdata.dj.vo.UserVo;
@@ -66,5 +67,7 @@ public interface IDeptService {
 	 * @return
 	 */
 	DjUser getDeptBranch(Long deptId);
+
+	List<DeptTreeVo> getDeptTree(Long sectionId);
 
 }

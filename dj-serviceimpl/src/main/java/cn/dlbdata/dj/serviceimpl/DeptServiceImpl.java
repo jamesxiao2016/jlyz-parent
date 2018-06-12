@@ -9,6 +9,7 @@ import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjSection;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
+import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
 import cn.dlbdata.dj.vo.UserVo;
@@ -132,4 +133,11 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 
 		return null;
 	}
+
+
+    @Override
+    public List<DeptTreeVo> getDeptTree(Long sectionId) {
+        List<DeptTreeVo> tree = deptMapper.getDeptTree(sectionId);
+        return tree;
+    }
 }
