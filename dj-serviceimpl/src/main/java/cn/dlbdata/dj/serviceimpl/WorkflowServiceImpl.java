@@ -757,9 +757,12 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	public PioneeringApplyDetailVo getPioneeringApplyDetail(Long partyMemberId) {
 	    int year = Calendar.getInstance().get(Calendar.YEAR);
 		IdNameTotalScoreVo idNameTotalScoreVo = partymemberMapper.getTotalScoreById(partyMemberId);
+		if (idNameTotalScoreVo == null) {
+			return new PioneeringApplyDetailVo();
+		}
 		PioneeringApplyDetailVo pioneeringApplyDetailVo = new PioneeringApplyDetailVo();
 		pioneeringApplyDetailVo.setPartyMemberName(idNameTotalScoreVo.getName());
-		pioneeringApplyDetailVo.setTotalScore(idNameTotalScoreVo.getTotalScore());
+		pioneeringApplyDetailVo.setTotalScore(convertNullToFloatZero(idNameTotalScoreVo.getTotalScore()));
 		List<ScoreAuditDetailVo> voList = applyMapper.getScoreAuditDetailByPtMemberId(year,
 				partyMemberId);
 		for (ScoreAuditDetailVo vo : voList) {
@@ -979,4 +982,11 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		resultVo.setMsg("加分成功!");
 		return resultVo;
 	}
+
+	private  Float convertNullToFloatZero(Float score){
+		score = score == null ?0F:score;
+		return score;
+
+	}
+
 }
