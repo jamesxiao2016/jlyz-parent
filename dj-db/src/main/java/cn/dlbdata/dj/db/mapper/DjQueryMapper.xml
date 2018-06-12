@@ -143,8 +143,22 @@
    		</if>
    	</where> 
  </select> 
-    
-    
+ 
+  <!-- 登录日志列表 -->
+  <resultMap id="ScoreLevelResultMap" type="cn.dlbdata.dj.db.vo.score.ScoreLevelVo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="level_min" jdbcType="INTEGER" property="levelMin" />
+    <result column="level_max" jdbcType="INTEGER" property="levelMax" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+ <select id="queryScoreLevelList" resultMap="ScoreLevelResultMap">
+ 	SELECT  id, name, level_min, level_max, create_time
+ 	FROM dj_score_level
+ 	<where>
+ 		1 = 1
+   	</where> 
+ </select> 
     
     
     
