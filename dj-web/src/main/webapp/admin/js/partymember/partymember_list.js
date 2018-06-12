@@ -13,20 +13,28 @@ function initEvent() {
 		location.href = "add.html";
 	});
 
-	//性别
-	$.post("../../api/v1/component/getDictList?dictType=sex", function(
-			data) {
+	// 性别
+	$.post("../../api/v1/component/getDictList?dictType=sex", function(data) {
 		$('.selsex').select2({
 			data : data
 		});
 	})
-	//职位
-	$.post("../../api/v1/component/getDictList?dictType=party_post", function(
-			data) {
-		$('.selpost').select2({
-			data : data
-		});
-	})
+	// 职位
+	// $.post("../../api/v1/component/getDictList?dictType=party_post",
+	// function(
+	// data) {
+	// $('.selpost').select2({
+	// data : data
+	// });
+	// })
+
+	$('.selpost').select2({
+		ajax : {
+			url : '../../api/v1/component/getDynamicDictList?dictType=party_post',
+			dataType : 'json',
+			delay : 150
+		}
+	});
 }
 
 function query() {

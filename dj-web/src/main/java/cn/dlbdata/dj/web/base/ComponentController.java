@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.bean.JqGridBean;
 import cn.dlbdata.dj.common.core.util.JsonUtil;
+import cn.dlbdata.dj.common.core.web.vo.SelectResultVo;
 import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.service.base.IComponentService;
 
@@ -49,5 +50,13 @@ public class ComponentController extends BaseController {
 	@RequestMapping("/getDictList")
 	public List<SelectVo> getDictListByDictType(String dictType) {
 		return componentService.getDictListByDictType(dictType);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getDynamicDictList")
+	public SelectResultVo getDynamicDictListByDictType(String dictType) {
+		SelectResultVo result = new SelectResultVo();
+		result.setResults(componentService.getDictListByDictType(dictType));
+		return result;
 	}
 }
