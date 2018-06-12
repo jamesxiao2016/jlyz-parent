@@ -12,6 +12,21 @@ function initEvent() {
 	$("#btnAdd").click(function() {
 		location.href = "add.html";
 	});
+
+	//性别
+	$.post("../../api/v1/component/getDictList?dictType=sex", function(
+			data) {
+		$('.selsex').select2({
+			data : data
+		});
+	})
+	//职位
+	$.post("../../api/v1/component/getDictList?dictType=party_post", function(
+			data) {
+		$('.selpost').select2({
+			data : data
+		});
+	})
 }
 
 function query() {
@@ -29,10 +44,9 @@ function query() {
 }
 
 function init() {
-	var qryParam = {
-	};
+	var qryParam = {};
 	jQuery(grid_selector).jqGrid({
-        sortable: true,
+		sortable : true,
 		url : '../../api/v1/component/query',
 		datatype : "json",
 		rownumbers : true,
@@ -45,58 +59,58 @@ function init() {
 			label : '姓名',
 			name : 'name',
 			index : 'name',
-			width :70
+			width : 70
 		}, {
 			label : '性别',
 			name : 'sex',
 			index : 'sex',
-            width :70
+			width : 70
 		}, {
 			label : '年龄',
 			name : 'age',
 			index : 'age',
 			align : "center",
-            width :70
+			width : 70
 		}, {
-            label : '总积分',
-            name : 'totalScore',
-            index : 'totalScore',
-            align : "center",
-            width :70
-        }, {
-            label : 'deptId',
-            name : 'deptId',
-            index : 'deptId',
-			hidden :true
-        }, {
-            label : '出生日期',
-            name : 'birthDate',
-            index : 'birthDate',
-            align : "center",
-            width :70
-        }, {
-            label : '所属支部',
-            name : 'deptName',
-            index : 'deptName',
-            align : "center",
+			label : '总积分',
+			name : 'totalScore',
+			index : 'totalScore',
+			align : "center",
+			width : 70
+		}, {
+			label : 'deptId',
+			name : 'deptId',
+			index : 'deptId',
+			hidden : true
+		}, {
+			label : '出生日期',
+			name : 'birthDate',
+			index : 'birthDate',
+			align : "center",
+			width : 70
+		}, {
+			label : '所属支部',
+			name : 'deptName',
+			index : 'deptName',
+			align : "center",
 			width : 300
-        }, {
-            label : '职级',
-            name : 'roleId',
-            index : 'roleId',
-            align : "center",
-            width :70
-        }, {
-            label : '身份证号',
-            name : 'idCard',
-            index : 'idCard',
-            align : "center"
-        }, {
-            label : '账号名称',
-            name : 'account',
-            index : 'account',
-            align : "center"
-        }, {
+		}, {
+			label : '职级',
+			name : 'roleId',
+			index : 'roleId',
+			align : "center",
+			width : 70
+		}, {
+			label : '身份证号',
+			name : 'idCard',
+			index : 'idCard',
+			align : "center"
+		}, {
+			label : '账号名称',
+			name : 'account',
+			index : 'account',
+			align : "center"
+		}, {
 			label : '操作',
 			name : '',
 			formatter : actionFormatter,
@@ -143,26 +157,27 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='../section/add.html?id=" + rowObject.id + "'>编辑</a>";
+	var btnEdit = "<a href='../section/add.html?id=" + rowObject.id
+			+ "'>编辑</a>";
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 
 	return btnEdit + "&nbsp;" + btnDel;
 }
 
 // function delRecord(id) {
-// 	layer.confirm('确定要删除吗？', {
-// 		btn : [ '确定', '取消' ]
-// 	// 按钮
-// 	}, function() {
-// 		$.ajaxPost("../../admin/section/deleteById", {
-// 			id : id
-// 		}, function(data) {
-// 			if (data.code == 1000) {
-// 				layer.msg("删除成功");
-// 				query();
-// 			} else {
-// 				layer.msg("删除失败");
-// 			}
-// 		})
-// 	});
+// layer.confirm('确定要删除吗？', {
+// btn : [ '确定', '取消' ]
+// // 按钮
+// }, function() {
+// $.ajaxPost("../../admin/section/deleteById", {
+// id : id
+// }, function(data) {
+// if (data.code == 1000) {
+// layer.msg("删除成功");
+// query();
+// } else {
+// layer.msg("删除失败");
+// }
+// })
+// });
 // }

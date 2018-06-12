@@ -1,5 +1,7 @@
 package cn.dlbdata.dj.serviceimpl.base;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +17,9 @@ import com.github.pagehelper.PageHelper;
 
 import cn.dlbdata.dj.common.core.bean.JqGridBean;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
+import cn.dlbdata.dj.common.core.web.vo.SelectVo;
+import cn.dlbdata.dj.db.mapper.DjDictMapper;
+import cn.dlbdata.dj.db.pojo.DjDict;
 import cn.dlbdata.dj.service.base.IComponentService;
 
 @Service
@@ -24,6 +29,9 @@ public class ComponentServiceImpl implements IComponentService {
 
 	@Autowired
 	protected SqlSessionTemplate sqlSessionTemplate;
+	
+	@Autowired
+	private DjDictMapper dictMapper;
 
 	@Override
 	public JqGridBean<Object> queryJqData(String selectId, Map<String, Object> params, Integer pageNum,
@@ -51,4 +59,22 @@ public class ComponentServiceImpl implements IComponentService {
 		return bean;
 	}
 
+	@Override
+	public List<SelectVo> getDictListByDictType(String dictType) {
+		if (StringUtils.isEmpty(dictType)) {
+			return Collections.emptyList();
+		}
+
+		List<SelectVo> rlist = new ArrayList<>();
+		DjDict condition = new DjDict();
+		condition.setDictType(dictType);
+		List<DjDict> list = dictMapper.select(condition);
+		if (list != null && list.size() > 0) {
+			for (DjDict dict : list) {
+				rlist.add(new SelectVo(dict.getDictCode(), dict.getDictName()));
+			}
+		}
+
+		return rlist;
+	}
 }

@@ -1,6 +1,7 @@
 package cn.dlbdata.dj.web.base;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.bean.JqGridBean;
 import cn.dlbdata.dj.common.core.util.JsonUtil;
+import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.service.base.IComponentService;
 
 @Controller
@@ -34,7 +36,7 @@ public class ComponentController extends BaseController {
 		if (param == null) {
 			param = new HashMap<>();
 		}
-		
+
 		if (StringUtils.isNotEmpty(sidx) && StringUtils.isNotEmpty(sord)) {
 			String orderBy = sidx + " " + sord;
 			param.put("orderBy", orderBy);
@@ -43,4 +45,9 @@ public class ComponentController extends BaseController {
 		return result;
 	}
 
+	@ResponseBody
+	@RequestMapping("/getDictList")
+	public List<SelectVo> getDictListByDictType(String dictType) {
+		return componentService.getDictListByDictType(dictType);
+	}
 }
