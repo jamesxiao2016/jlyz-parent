@@ -62,9 +62,9 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 			result.setMsg("参数错误");
 			return result;
 		}
-		if (!studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_B.getActiveSubId()) &&
-				!studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId()) &&
-				!studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_H.getActiveSubId())) {
+		if (!studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_B.getActiveSubId())
+				&& !studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId())
+				&& !studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_H.getActiveSubId())) {
 			result.setCode(ResultCode.ParameterError.getCode());
 			result.setMsg("参数错误");
 			return result;
@@ -105,18 +105,20 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		study.setUserName(user.getUserName());
 		study.setDjDeptId(user.getDeptId());
 		if (isSave) {
+			study.setStatus(DlbConstant.BASEDATA_STATUS_INVALID);
 			studyMapper.insertSelective(study);
 		} else {
+			study.setStatus(DlbConstant.BASEDATA_STATUS_INVALID);
 			studyMapper.updateByPrimaryKeySelective(study);
-			
-			//删除原来的图片
+
+			// 删除原来的图片
 			DjPicRecord record = new DjPicRecord();
 			record.setRecordId(study.getId());
 			record.setTableName(DlbConstant.TABLE_NAME_STUDY);
 			picRecordMapper.delete(record);
 		}
 
-		//保存图片
+		// 保存图片
 		savePics(study.getId(), DlbConstant.TABLE_NAME_STUDY, studyVo.getPics());
 
 		// 当前提交分数
@@ -187,12 +189,12 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		djStudy.setEndTime(DatetimeUtil.getDateByStr(resubmitDto.getEndTime()));
 		djStudy.setContent(resubmitDto.getContent());
 		studyMapper.updateByPrimaryKey(djStudy);
-		//删除原来的图片
+		// 删除原来的图片
 		DjPicRecord record = new DjPicRecord();
 		record.setRecordId(djStudy.getId());
 		record.setTableName(DlbConstant.TABLE_NAME_STUDY);
 		picRecordMapper.delete(record);
-		//保存图片
+		// 保存图片
 		savePics(djStudy.getId(), DlbConstant.TABLE_NAME_STUDY, resubmitDto.getPics());
 		result.setCode(ResultCode.OK.getCode());
 		result.setMsg("重新提交成功!");
@@ -243,7 +245,8 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 	/**
 	 * 获取自主学习详情
 	 *
-	 * @param applyId 申请Id
+	 * @param applyId
+	 *            申请Id
 	 * @return
 	 */
 	@Override
@@ -262,33 +265,34 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		if (djStudy == null) {
 			return detailVo;
 		}
-		detailVo.setStartTime(djStudy.getStartTime() == null?null:new Timestamp(djStudy.getStartTime().getTime()));
-		detailVo.setEndTime(djStudy.getEndTime() == null?null:new Timestamp(djStudy.getEndTime().getTime()));
+		detailVo.setStartTime(djStudy.getStartTime() == null ? null : new Timestamp(djStudy.getStartTime().getTime()));
+		detailVo.setEndTime(djStudy.getEndTime() == null ? null : new Timestamp(djStudy.getEndTime().getTime()));
 		detailVo.setContent(djStudy.getContent());
 		detailVo.setAuditorName(djApply.getApproverName());
-		List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_STUDY,
-					djStudy.getId());
+		List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_STUDY, djStudy.getId());
 		detailVo.setPicIds(picIds);
 		return detailVo;
 	}
 
-	/* (non-Javadoc)
-	 * <p>Title: getReviewScheduleList</p>
-	 * <p>Description: 获取审核进度列表</p> 
+	/*
+	 * (non-Javadoc) <p>Title: getReviewScheduleList</p> <p>Description: 获取审核进度列表</p>
+	 * 
 	 * @param subTypeId
-	 * @return  
+	 * 
+	 * @return
+	 * 
 	 * @see cn.dlbdata.dj.service.IStudyService#getReviewScheduleList(java.lang.Long)
 	 */
 	@Override
 	public List<ReviewScheduleListVo> getReviewScheduleList(Long subTypeId, Long userId) {
-		if(subTypeId == null || userId == null) {
+		if (subTypeId == null || userId == null) {
 			return null;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("subTypeId", subTypeId);
 		map.put("userId", userId);
 		List<ReviewScheduleListVo> list = studyMapper.getReviewScheduleList(map);
-		if( list.size() > 0 && list != null) {
+		if (list.size() > 0 && list != null) {
 			Long[] picIds = null;
 			for (ReviewScheduleListVo djStudy : list) {
 				Example example1 = new Example(DjPicRecord.class);
@@ -304,15 +308,17 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 				}
 			}
 		}
-		
+
 		return list;
 	}
 
-	/* (non-Javadoc)
-	 * <p>Title: deleteById</p>
-	 * <p>Description: 删除自主学习</p> 
+	/*
+	 * (non-Javadoc) <p>Title: deleteById</p> <p>Description: 删除自主学习</p>
+	 * 
 	 * @param id
-	 * @return  
+	 * 
+	 * @return
+	 * 
 	 * @see cn.dlbdata.dj.service.IStudyService#deleteById(java.lang.Long)
 	 */
 	@Override
@@ -322,12 +328,12 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 			return null;
 		}
 		int count = studyMapper.deleteByPrimaryKey(id);
-		if(count > 0) {
+		if (count > 0) {
 			Example example = new Example(DjApply.class);
 			example.createCriteria().andEqualTo("recordId", id);
 			applyMapper.deleteByExample(example);
 		}
-			return id;
+		return id;
 	}
 
 }
