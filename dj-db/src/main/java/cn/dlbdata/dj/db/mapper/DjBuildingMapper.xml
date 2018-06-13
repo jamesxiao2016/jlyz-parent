@@ -15,5 +15,6 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="principal_id" jdbcType="BIGINT" property="principalId" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
   </resultMap>
 </mapper>
