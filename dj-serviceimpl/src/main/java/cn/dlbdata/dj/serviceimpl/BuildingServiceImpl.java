@@ -5,13 +5,13 @@ import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.DjBuildingMapper;
+import cn.dlbdata.dj.db.mapperstruct.BuildingMapperStruct;
 import cn.dlbdata.dj.db.pojo.DjBuilding;
 import cn.dlbdata.dj.service.IBuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import cn.dlbdata.dj.db.dto.building.*;
-import cn.dlbdata.dj.db.mapperstruct.*;
 
 import java.util.Date;
 

@@ -6,8 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.common.core.exception.BusinessException;
+import cn.dlbdata.dj.common.core.util.DigitUtil;
+import cn.dlbdata.dj.common.util.StringUtil;
+import cn.dlbdata.dj.constant.*;
+import cn.dlbdata.dj.db.dto.partymember.PartyMemberAddOrUpdateDto;
 import cn.dlbdata.dj.db.mapper.*;
-import cn.dlbdata.dj.db.pojo.DjPicRecord;
+import cn.dlbdata.dj.db.mapperstruct.PartyMemberMapperStruct;
+import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.vo.party.*;
 import cn.dlbdata.dj.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +27,6 @@ import cn.dlbdata.dj.common.core.util.PageUtils;
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
-import cn.dlbdata.dj.constant.ActiveTypeEnum;
-import cn.dlbdata.dj.constant.AuditStatusEnum;
-import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
@@ -33,6 +35,7 @@ import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.PartyVo;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PartyMemberService extends BaseServiceImpl implements IPartyMemberService {
@@ -52,6 +55,13 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	private DjStudyMapper studyMapper;
 	@Autowired
 	private DjPicRecordMapper picRecordMapper;
+
+	@Autowired
+	private DjUserMapper userMapper;
+
+	@Autowired
+	private PartyMemberMapperStruct partyMemberMapperStruct;
+
 
 	@Override
 	public DjPartymember getInfoById(Long id) {
@@ -397,5 +407,90 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 			}
 		}
 		return list;
+	}
+
+	/**
+	 * 新增党员账号
+	 *
+	 * @param dto
+	 * @param user
+	 */
+	@Transactional
+	@Override
+	public void addPartyMember(PartyMemberAddOrUpdateDto dto, UserVo user) {
+		boolean exist = userMapper.existWithUserName(dto.getUserName(),null);
+		if (exist) {
+			throw new BusinessException("该用户名已存在!",ResultCode.Forbidden.getCode());
+		}
+		DjUser newUser = new DjUser();
+		newUser.setId(DigitUtil.generatorLongId());
+		newUser.setDjPartymemberId(newUser.getId());
+		newUser.setName(dto.getUserName());
+		newUser.setPwd(StringUtil.getMD5Digest32("12345678"));
+		newUser.setRoleId(RoleEnum.PARTY.getId());
+		newUser.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+		newUser.setDeptId(dto.getDeptId());
+		newUser.setCreateTime(new Date());
+		newUser.setUserName(dto.getName());
+		userMapper.insert(newUser);
+
+		DjPartymember partymember = partyMemberMapperStruct.dtoToEntity(dto);
+		partymember.setId(newUser.getId());
+		partymember.setBirthDate(DatetimeUtil.getDateByStr(dto.getBirthDate(),null));
+		partymember.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+		partyMemberMapper.insert(partymember);
+	}
+
+	/**
+	 * 更新党员信息
+	 *
+	 * @param id
+	 * @param dto
+	 * @param user
+	 * @return
+	 */
+	@Override
+	public boolean updatePartyMember(Long id, PartyMemberAddOrUpdateDto dto, UserVo user) {
+		DjPartymember partymember = partyMemberMapper.selectByPrimaryKey(id);
+		DjUser oldUser = userMapper.selectByPrimaryKey(id);
+		if (partymember == null || oldUser == null) {
+			throw new BusinessException("该党员不存在!",ResultCode.NotFound.getCode());
+		}
+
+		boolean exist = userMapper.existWithUserName(dto.getUserName(),id);
+		if (exist) {
+			throw new BusinessException("该用户名已存在!",ResultCode.Forbidden.getCode());
+		}
+		oldUser.setName(dto.getUserName());
+		oldUser.setDeptId(dto.getDeptId());
+		oldUser.setUserName(dto.getName());
+		userMapper.updateByPrimaryKey(oldUser);
+
+		partymember = partyMemberMapperStruct.updateToEntity(dto,partymember);
+		partymember.setBirthDate(DatetimeUtil.getDateByStr(dto.getBirthDate(),null));
+		partyMemberMapper.updateByPrimaryKey(partymember);
+
+		return true;
+	}
+
+	/**
+	 * 作废党员
+	 *
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public boolean invalidPartyMember(Long id,UserVo user) {
+		DjPartymember partymember = partyMemberMapper.selectByPrimaryKey(id);
+		DjUser oldUser = userMapper.selectByPrimaryKey(id);
+		if (partymember == null || oldUser == null) {
+			throw new BusinessException("该党员不存在!",ResultCode.NotFound.getCode());
+		}
+		partymember.setStatus(DlbConstant.BASEDATA_STATUS_DEL);
+		partyMemberMapper.updateByPrimaryKey(partymember);
+
+		oldUser.setStatus(DlbConstant.BASEDATA_STATUS_DEL);
+		userMapper.updateByPrimaryKey(oldUser);
+		return true;
 	}
 }

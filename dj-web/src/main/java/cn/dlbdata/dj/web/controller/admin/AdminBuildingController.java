@@ -51,7 +51,7 @@ public class AdminBuildingController extends BaseController {
         ResultVo result = new ResultVo<>();
         buildingService.invalid(id);
         result.setCode(CoreConst.ResultCode.OK.getCode());
-        result.setMsg("作废成功!");
+    result.setMsg("作废成功!");
         return result;
     }
 }
