@@ -29,12 +29,12 @@ function login() {
 		return false;
 	}
 
-	$.post("v1/login", {
+	$.post("loginAdmin", {
 		name : username,
 		pwd : $.md5(pwd)
 	}, function(data) {
-		if (data.result == "200") {
-			storeItem("token", data.data);
+		if (data.code == 1000) {
+			storeItem("admintoken", data.data.token);
 			location.href = "index.html";
 		} else {
 			if (data.reason) {
