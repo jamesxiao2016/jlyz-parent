@@ -13,13 +13,39 @@ function initEvent() {
 		location.href = "add.html";
 	});
 
-	//支部名称
-	$.post("../../api/v1/component/getDeptNameList", function(
-			data) {
-		$('.seldept').select2({
+	$.post("../../admin/section/getSectionList", function(data) {
+		$('#selsection').select2({
 			data : data
 		});
-	})
+
+		sectionId = $("#selsection").select2("val");
+
+//		initTree(sectionId);
+		deptList(sectionId);
+	});
+
+	$("#selsection").on("change", function() {
+		sectionId = $(this).val();
+		console.log(sectionId);
+//		initTree(sectionId);
+		deptList(sectionId);
+	});
+}
+
+
+function deptList(sectionId) {
+	var $select = $('#seldept');
+	var url = '../../api/v1/component/getDeptNameList?sectionId=' + sectionId;
+	$.post(url, function(data) {
+		
+		instance = $select.data('select2');  
+        if(instance){  
+          $select.select2('destroy').empty();  
+        }
+        $select.select2({
+			data : data
+		});
+	});
 }
 
 function query() {

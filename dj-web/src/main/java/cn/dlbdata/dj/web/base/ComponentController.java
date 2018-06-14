@@ -54,8 +54,8 @@ public class ComponentController extends BaseController {
 	
 	@ResponseBody
 	@RequestMapping("/getDeptNameList")
-	public List<SelectVo> getDeptNameList() {
-		return componentService.getDeptNameList();
+	public List<SelectVo> getDeptNameList(Long sectionId) {
+		return componentService.getDeptNameList(sectionId);
 	}
 	
 

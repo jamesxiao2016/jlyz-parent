@@ -20,9 +20,12 @@ import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjDictMapper;
+import cn.dlbdata.dj.db.mapper.DjSectionMapper;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjDict;
+import cn.dlbdata.dj.db.pojo.DjSection;
 import cn.dlbdata.dj.service.base.IComponentService;
+import tk.mybatis.mapper.entity.Example;
 
 @Service
 public class ComponentServiceImpl implements IComponentService {
@@ -37,6 +40,9 @@ public class ComponentServiceImpl implements IComponentService {
 	
 	@Autowired
 	private DjDeptMapper deptMapper;
+	
+	@Autowired
+	private DjSectionMapper sectionMapper;
 
 	@Override
 	public JqGridBean<Object> queryJqData(String selectId, Map<String, Object> params, Integer pageNum,
@@ -90,9 +96,13 @@ public class ComponentServiceImpl implements IComponentService {
 	 * @see cn.dlbdata.dj.service.base.IComponentService#getDeptNameList()
 	 */
 	@Override
-	public List<SelectVo> getDeptNameList() {
+	public List<SelectVo> getDeptNameList(Long sectionId) {
 		List<SelectVo> rlist = new ArrayList<>();
-		List<DjDept> list = deptMapper.selectAll();
+//		Example example = new Example(DjDept.class);
+//		example.createCriteria().andEqualTo("djSectionId", sectionId);
+		DjDept condition = new DjDept();
+		condition.setDjSectionId(sectionId);
+		List<DjDept> list = deptMapper.select(condition);
 		if (list != null && list.size() > 0) {
 			for (DjDept dept : list) {
 				rlist.add(new SelectVo(String.valueOf(dept.getId()), dept.getName()));

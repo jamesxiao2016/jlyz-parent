@@ -28,5 +28,11 @@ public interface IComponentService {
 	 */
 	public List<SelectVo> getDictListByDictType(String dictType);
 	
-	public List<SelectVo> getDeptNameList();
+	/**
+	 * 
+	 * <p>Title: getDeptNameList</p> 
+	 * <p>Description: 获取部门列表</p> 
+	 * @return
+	 */
+	public List<SelectVo> getDeptNameList(Long sectionId);
 }
