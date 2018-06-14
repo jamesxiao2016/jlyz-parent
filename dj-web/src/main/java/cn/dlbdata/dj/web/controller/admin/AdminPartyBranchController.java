@@ -1,16 +1,20 @@
 package cn.dlbdata.dj.web.controller.admin;
 
-import cn.dlbdata.dj.common.core.util.constant.CoreConst;
-import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
-import cn.dlbdata.dj.service.IDeptService;
-import cn.dlbdata.dj.vo.UserVo;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import cn.dlbdata.dj.common.core.util.constant.CoreConst;
+import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.common.core.web.vo.SelectResultVo;
+import cn.dlbdata.dj.common.core.web.vo.SelectVo;
+import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
+import cn.dlbdata.dj.service.IDeptService;
+import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
 
 /**
@@ -24,6 +28,7 @@ import cn.dlbdata.dj.web.base.BaseController;
 public class AdminPartyBranchController extends BaseController {
 	@Autowired
 	private IDeptService deptService;
+
 	/**
 	 * 查询列表
 	 * 
@@ -64,9 +69,10 @@ public class AdminPartyBranchController extends BaseController {
 			resultVo.setMsg("用户未登录或用户已退出");
 			return resultVo;
 		}
-		deptService.addBranch(dto,user);
+		deptService.addBranch(dto, user);
 		resultVo.setCode(CoreConst.ResultCode.OK.getCode());
 		resultVo.setMsg("新增党支部成功!");
 		return resultVo;
 	}
+
 }
