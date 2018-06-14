@@ -7,9 +7,7 @@ import cn.dlbdata.dj.service.IDeptService;
 import cn.dlbdata.dj.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import cn.dlbdata.dj.web.base.BaseController;
 
@@ -55,6 +53,7 @@ public class AdminPartyBranchController extends BaseController {
 	}
 
 	@PostMapping("/addBranch")
+	@ResponseBody
 	public ResultVo addBranch(@RequestBody DeptAddOrUpdateDto dto) {
 		UserVo user = getCurrentUserFromCache();
 		ResultVo resultVo = new ResultVo<>();
@@ -67,6 +66,40 @@ public class AdminPartyBranchController extends BaseController {
 		deptService.addBranch(dto,user);
 		resultVo.setCode(CoreConst.ResultCode.OK.getCode());
 		resultVo.setMsg("新增党支部成功!");
+		return resultVo;
+	}
+
+	@PostMapping("updateBranch/{id}")
+	@ResponseBody
+	public ResultVo updateBranch(@RequestBody DeptAddOrUpdateDto dto, @PathVariable Long id){
+		UserVo user = getCurrentUserFromCache();
+		ResultVo resultVo = new ResultVo<>();
+		if (user == null) {
+			logger.error("用户未登录");
+			resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
+			resultVo.setMsg("用户未登录或用户已退出");
+			return resultVo;
+		}
+		deptService.updateBranch(id,dto,user);
+		resultVo.setCode(CoreConst.ResultCode.OK.getCode());
+		resultVo.setMsg("修改党支部成功!");
+		return resultVo;
+	}
+
+	@PostMapping("invalidBranch/{id}")
+	@ResponseBody
+	public ResultVo invalidBranch(@PathVariable Long id) {
+		UserVo user = getCurrentUserFromCache();
+		ResultVo resultVo = new ResultVo<>();
+		if (user == null) {
+			logger.error("用户未登录");
+			resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
+			resultVo.setMsg("用户未登录或用户已退出");
+			return resultVo;
+		}
+		deptService.invalidBranch(id,user);
+		resultVo.setCode(CoreConst.ResultCode.OK.getCode());
+		resultVo.setMsg("作废党支部成功!");
 		return resultVo;
 	}
 }
