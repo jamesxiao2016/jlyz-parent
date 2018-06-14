@@ -8,11 +8,30 @@ public class StudyDetailVo {
     private Timestamp startTime;//活动开始时间
     private Timestamp endTime;//活动结束时间
     private String content;//主要内容
+    private String typeName;
+    private String deptName;
     private List<Long> picIds;//图片IdList
     private Integer status;
     private String auditorName;
 
-    public String getName() {
+    
+    public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+	public String getName() {
         return name;
     }
 

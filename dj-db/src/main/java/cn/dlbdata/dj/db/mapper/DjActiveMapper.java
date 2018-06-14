@@ -87,5 +87,14 @@ public interface DjActiveMapper extends Mapper<DjActive> {
 	 * @return
 	 */
 	List<ToDoVo> getUnStartedActive(Long userId);
+	
+	/**
+	 * 
+	 * <p>Title: selectActiveIndexById</p> 
+	 * <p>Description: 根据活动id查询活动详情</p> 
+	 * @param activeId
+	 * @return
+	 */
+	public DjActive selectAdminActiveIndexById(Long activeId);
 
 }

@@ -6,13 +6,17 @@
  */
 package cn.dlbdata.dj.web.controller.admin;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.db.pojo.DjActive;
 import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.web.base.BaseController;
 
@@ -45,8 +49,11 @@ public class AdminActiveController  extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/detail.html")
-	public String detail() {
-		return "active/detail.html";
+	public ModelAndView detail(Long id,Long roleId) {
+		ModelAndView view = new ModelAndView("active/detail.html");
+		ResultVo<Map<String, Object>> active = activeService.queryAdminActiveById(id,roleId);
+		view.addObject("active", active.getData());
+		return view;
 	}
 
 	/**

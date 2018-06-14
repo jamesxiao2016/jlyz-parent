@@ -25,6 +25,7 @@ function initEvent() {
 function query() {
 	var qryParam = {
 		"seldept" : $("#seldept").val(),
+		"selType" : $("#selType").val(),
 		"createName" : getLikeVal($("#createName").val()),
 		"start" : $("#start").val(),
 		"end" : $("#end").val(),
@@ -132,7 +133,7 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='../study/add.html?id=" + rowObject.id + "'>查看详情&nbsp;&nbsp;&nbsp;</a>";
+	var btnEdit = "<a href='../study/detail.html?id=" + rowObject.id + "'>查看详情&nbsp;&nbsp;&nbsp;</a>";
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 
 	return btnEdit + "&nbsp;" + btnDel;

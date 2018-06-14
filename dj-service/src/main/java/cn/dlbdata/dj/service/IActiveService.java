@@ -131,4 +131,21 @@ public interface IActiveService {
 	 * @return
 	 */
 	public Long deleteById(Long id);
+	
+	/**
+	 * 
+	 * <p>
+	 * Title: queryActiveById
+	 * </p>
+	 * <p>
+	 * Description: 获取活动详情
+	 * </p>
+	 * 
+	 * @param activeId
+	 * @return
+	 */
+	ResultVo<Map<String, Object>> queryAdminActiveById(Long activeId, Long roleId);
+	
+	
+	
 }

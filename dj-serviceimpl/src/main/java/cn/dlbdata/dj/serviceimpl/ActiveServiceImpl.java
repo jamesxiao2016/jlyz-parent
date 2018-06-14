@@ -685,4 +685,165 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		return id;
 	}
 
+	/* (non-Javadoc)
+	 * <p>Title: queryAdminActiveById</p>
+	 * <p>Description: 后台查询活动详情</p> 
+	 * @param activeId
+	 * @param roleId
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IActiveService#queryAdminActiveById(java.lang.Long, java.lang.Long)
+	 */
+	@Override
+	public ResultVo<Map<String, Object>> queryAdminActiveById(Long activeId, Long roleId) {
+		ResultVo<Map<String, Object>> result = new ResultVo<>();
+		if (activeId == null) {
+			logger.error("参数错误");
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		if (roleId == null) {
+			roleId = RoleEnum.PARTY.getId();
+		}
+		DjActive active = activeMapper.selectAdminActiveIndexById(activeId);
+		if (active == null) {
+			logger.error("参数错误");
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("获取活动失败");
+			return result;
+		}
+		JSONObject json = JSON.parseObject(JSON.toJSONString(active));
+		// 获取活动图集
+		Long[] picIds = new Long[0];
+		Example picExample = new Example(DjActivePic.class);
+		picExample.createCriteria().andEqualTo("djActiveId", active.getId());
+		List<DjActivePic> picList = activePicMapper.selectByExample(picExample);
+		/* 将与该活动相关的图片的id加入数组中 */
+		if (picList != null && picList.size() > 0) {
+			picIds = new Long[picList.size()];
+			for (int i = 0, count = picList.size(); i < count; i++) {
+				picIds[i] = picList.get(i).getDjPicId();
+			}
+			active.setPicIds(picIds);
+		}
+		json.put("picIds", picIds);
+		result.setData(json);
+		if (roleId == RoleEnum.PARTY.getId()) {
+			result.setCode(ResultCode.OK.getCode());
+			return result;
+		}
+
+		/**
+		 * 获取参与活动的部门列表
+		 */
+		Map<Long, String> deptNameMap = new HashMap<>();
+		DjActiveDept deptCondition = new DjActiveDept();
+		List<DjActiveDept> deptList = activeDeptMapper.select(deptCondition);
+		if (deptList != null) {
+			for (DjActiveDept d : deptList) {
+				DjDept dept = deptMapper.selectByPrimaryKey(d.getDjDeptId());
+				if (dept != null) {
+					deptNameMap.put(d.getDjDeptId(), dept.getName());
+				} else {
+					deptNameMap.put(d.getDjDeptId(), "");
+				}
+			}
+		}
+
+		/**
+		 * 查询参与人员列表
+		 */
+		Example example = new Example(DjActiveUser.class);
+		example.createCriteria().andEqualTo("djActiveId", activeId);
+		List<DjActiveUser> participateList = activeUserMapper.selectByExample(example);
+		if (participateList != null && participateList.size() > 0) {
+			List<Long> inList = new ArrayList<>();
+			List<Long> outList = new ArrayList<>();
+			for (DjActiveUser item : participateList) {
+				if (Integer.valueOf(DlbConstant.BASEDATA_STATUS_VALID).equals(item.getStatus())) {
+					inList.add(item.getDjUserId());
+				} else if (Integer.valueOf(DlbConstant.BASEDATA_STATUS_INVALID).equals(item.getStatus())) {
+					outList.add(item.getDjUserId());
+				}
+			}
+			List<DjPartymember> inUserList = new ArrayList<>();
+
+			List<DjPartymember> outUserList = new ArrayList<>();
+			if (inList.size() > 0) {
+				Example inUserExample = new Example(DjPartymember.class);
+				inUserExample.createCriteria().andIn("id", inList);
+				inUserExample.setOrderByClause("party_post_code");
+				inUserList.addAll(partymemberMapper.selectByExample(inUserExample));
+			}
+			int inUserListCount = inUserList.size();
+			// 参与人员集合
+			Map<String, List<DjPartymember>> inUserMap = new TreeMap<String, List<DjPartymember>>();
+
+			if (inUserList.size() > 0) {
+				for (int i = 0; i < inUserList.size(); i++) {
+					DjPartymember p = inUserList.get(i);
+					if (p == null) {
+						continue;
+					}
+					p.setDeptName(deptNameMap.get(p.getDeptId()));
+					List<DjPartymember> list = null;
+					if (i == 0) {
+						list = new ArrayList<DjPartymember>();
+						list.add(p);
+						inUserMap.put(p.getDeptName(), list);
+					} else {
+						list = inUserMap.get(p.getDeptName());
+						if (list == null) {
+							list = new ArrayList<DjPartymember>();
+						}
+						list.add(p);
+
+						inUserMap.put(p.getDeptName(), list);
+					}
+				}
+			}
+			if (outList.size() > 0) {
+				Example outUserExample = new Example(DjPartymember.class);
+				outUserExample.createCriteria().andIn("id", outList);
+				outUserExample.setOrderByClause("party_post_code");
+				outUserList.addAll(partymemberMapper.selectByExample(outUserExample));
+			}
+			int outUserListCount = outUserList.size();
+			// 未参与人集合
+			Map<String, List<DjPartymember>> outUserMap = new TreeMap<String, List<DjPartymember>>();
+			if (outUserList.size() > 0) {
+				for (int i = 0; i < outUserList.size(); i++) {
+					DjPartymember p = outUserList.get(i);
+					if (p == null) {
+						continue;
+					}
+					p.setDeptName(deptNameMap.get(p.getDeptId()));
+					List<DjPartymember> list = null;
+					if (i == 0) {
+						list = new ArrayList<DjPartymember>();
+						list.add(p);
+						outUserMap.put(p.getDeptName(), list);
+					} else {
+						list = outUserMap.get(p.getDeptName());
+						if (list == null) {
+							list = new ArrayList<DjPartymember>();
+						}
+						list.add(p);
+
+						outUserMap.put(p.getDeptName(), list);
+					}
+				}
+			}
+			// 参与人员总人数
+			json.put("participateCount", inUserListCount);
+			// 未参与人员总人数
+			json.put("notParticipateCount", outUserListCount);
+			// 参与人员集合
+			json.put("participate", inUserMap);
+			// 未参与人员集合
+			json.put("notParticipate", outUserMap);
+			result.setData(json);
+		}
+		return result;
+	}
+
 }

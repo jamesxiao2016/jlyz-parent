@@ -1,8 +1,8 @@
 /**
- *  <p>Title: AdminStudyController.java</p>  
+ *  <p>Title: AdminRoleController.java</p>  
  *  <p>Description: </p>  
  *  @author zhouxuan
- *  @date 2018年6月11日 
+ *  @date 2018年6月13日 
  */
 package cn.dlbdata.dj.web.controller.admin;
 
@@ -14,22 +14,23 @@ import org.springframework.web.servlet.ModelAndView;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.service.IStudyService;
-import cn.dlbdata.dj.vo.study.StudyDetailVo;
+import cn.dlbdata.dj.db.pojo.DjRole;
+import cn.dlbdata.dj.service.IRoleService;
 import cn.dlbdata.dj.web.base.BaseController;
 
 /**
- * <p>Title: AdminStudyController</p>
+ * <p>Title: AdminRoleController</p>
  * @author zhouxuan
  * <p>Description: </p>
- * @date 2018年6月11日  
+ * @date 2018年6月13日  
  */
 @Controller
-@RequestMapping("/admin/study")
-public class AdminStudyController  extends BaseController {
+@RequestMapping("/admin/role")
+public class AdminRoleController extends BaseController{
+	
 	@Autowired
-	private IStudyService studyService;
-
+	private IRoleService roleService;
+	
 	/**
 	 * 查询列表
 	 * 
@@ -37,7 +38,7 @@ public class AdminStudyController  extends BaseController {
 	 */
 	@RequestMapping("/list.html")
 	public String list() {
-		return "study/list.html";
+		return "role/list.html";
 	}
 
 	/**
@@ -46,11 +47,8 @@ public class AdminStudyController  extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/detail.html")
-	public ModelAndView detail(Long id) {
-		ModelAndView view = new ModelAndView("study/detail.html");
-		StudyDetailVo study = studyService.getAdminStudyDetail(id);
-		view.addObject("study", study);
-		return view;
+	public String detail() {
+		return "role/detail.html";
 	}
 
 	/**
@@ -58,22 +56,40 @@ public class AdminStudyController  extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/add.html")
-	public String add() {
-		return "study/add.html";
+	@RequestMapping("/update.html")
+	public ModelAndView update(Long id) {
+		ModelAndView view = new ModelAndView("role/update.html");
+		DjRole role = roleService.getRoleInfoById(id);
+		view.addObject("role", role);
+		return view;
 	}
+	
 	/**
+	 * 添加或修改界面
 	 * 
-	 * <p>Title: deleteById</p> 
-	 * <p>Description: 删除自主学习</p> 
-	 * @param id
 	 * @return
 	 */
+	@RequestMapping("/add.html")
+	public String add() {
+		return "role/add.html";
+	}
+
+	@RequestMapping("/save")
+	@ResponseBody
+	public ResultVo<Long> saveOrUpdate(DjRole djRole) {
+		ResultVo<Long> result = new ResultVo<>();
+		Long data = roleService.saveOrUpdate(djRole);
+		if (data != null) {
+			result.setCode(ResultCode.OK.getCode());
+		}
+		return result;
+	}
+
 	@RequestMapping("/deleteById")
 	@ResponseBody
 	public ResultVo<Long> deleteById(Long id) {
 		ResultVo<Long> result = new ResultVo<>();
-		Long data = studyService.deleteById(id);
+		Long data = roleService.deleteById(id);
 		if (data != null) {
 			result.setCode(ResultCode.OK.getCode());
 		}

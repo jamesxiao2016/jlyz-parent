@@ -43,20 +43,20 @@ function init() {
 			index : 'id',
 			hidden : true
 		}, {
-			label : '片区名称',
-			name : 'name',
+			label : '角色名称',
+			name : 'roleName',
 			index : 'name',
-		}, {
-			label : '负责人',
-			name : 'principalName',
-			index : 'principal_name',
-		}, {
-			label : '创建时间',
-			name : 'createTime',
-			index : 'create_time',
-			formatter : datetimeFormatter,
-			align : "center",
-			width : 100
+		}, 
+		{
+			label : '备注',
+			name : 'remark',
+			index : 'remark',
+		},
+		{
+			label : '状态',
+			name : 'status',
+			index : 'status',
+			formatter : statusFormatter,
 		}, {
 			label : '操作',
 			name : '',
@@ -105,18 +105,28 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='../section/add.html?id=" + rowObject.id + "'>编辑</a>";
+	var btnEdit = "<a href='../role/update.html?id=" + rowObject.id + "'>编辑&nbsp;&nbsp;&nbsp;</a>";
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 
 	return btnEdit + "&nbsp;" + btnDel;
 }
+
+function statusFormatter(cellvalue, options, rowObject) {
+	if(cellvalue == "1"){
+		return "有效";
+	}else if(cellvalue == "0"){
+		return "无效";
+	}
+	return "";
+}
+
 
 function delRecord(id) {
 	layer.confirm('确定要删除吗？', {
 		btn : [ '确定', '取消' ]
 	// 按钮
 	}, function() {
-		$.ajaxPost("../../admin/section/deleteById", {
+		$.ajaxPost("../../admin/role/deleteById", {
 			id : id
 		}, function(data) {
 			if (data.code == 1000) {

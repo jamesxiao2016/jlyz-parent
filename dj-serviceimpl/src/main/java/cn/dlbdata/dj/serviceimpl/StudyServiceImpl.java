@@ -30,6 +30,7 @@ import cn.dlbdata.dj.db.pojo.DjPicRecord;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.pojo.DjSubType;
 import cn.dlbdata.dj.db.pojo.DjUser;
+import cn.dlbdata.dj.db.vo.study.AdminStudyDetailVo;
 import cn.dlbdata.dj.db.vo.study.ReviewScheduleListVo;
 import cn.dlbdata.dj.dto.study.StudyResubmitDto;
 import cn.dlbdata.dj.service.IDeptService;
@@ -346,6 +347,32 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 			applyMapper.deleteByExample(example);
 		}
 		return id;
+	}
+
+	/* (non-Javadoc)
+	 * <p>Title: getAdminStudyDetail</p>
+	 * <p>Description: 后台根据id获取自主学习详情</p> 
+	 * @param applyId
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IStudyService#getAdminStudyDetail(java.lang.Long)
+	 */
+	@Override
+	public StudyDetailVo getAdminStudyDetail(Long applyId) {
+		StudyDetailVo detailVo = new StudyDetailVo();
+		AdminStudyDetailVo djStudy = studyMapper.getAdminStudyDetail(applyId);
+		if (djStudy == null) {
+			return detailVo;
+		}
+		detailVo.setAuditorName(djStudy.getUserName());
+		detailVo.setStartTime(djStudy.getStartTime() == null ? null : new Timestamp(djStudy.getStartTime().getTime()));
+		detailVo.setEndTime(djStudy.getEndTime() == null ? null : new Timestamp(djStudy.getEndTime().getTime()));
+		detailVo.setContent(djStudy.getContent());
+		detailVo.setStatus(djStudy.getStatus());
+		detailVo.setDeptName(djStudy.getDeptName());
+		detailVo.setTypeName(djStudy.getTypeName());
+		List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_STUDY, djStudy.getId());
+		detailVo.setPicIds(picIds);
+		return detailVo;
 	}
 
 }

@@ -24,18 +24,23 @@
 					</div>
 					<div class="ibox-content">
 						<form class="form-horizontal">
-							<div class="form-group col-lg-4 col-md-4 col-sm-4">
-								<input type="text" id="name" name="name" placeholder="自主学习类型" class="form-control">
-							</div>
-							<div class="form-group col-lg-4 col-md-4 col-sm-4">
+							<div class="form-group col-lg-2 col-md-2 col-sm-2">
 								<input type="text" id="createName" name="createName" placeholder="党员名称" class="form-control">
+							</div>
+							<div class="form-group col-lg-2 col-md-2 col-sm-2">
+								<select class="form-control selType" id="selType" name="selType">
+									<option value = "" selected="selected">请选择自主发起的类型</option>
+									<option value = "12" >政治学习自主学习</option>
+									<option value = "62">公益服务自主活动</option>
+									<option value = "22">组织生活自主活动</option>
+								</select>
 							</div>
 							<div class="form-group col-lg-3 col-md-3 col-sm-3">
 								<select class="form-control seldept" id="seldept" name="seldept">
 									<option value = "" selected="selected">请选择支部</option>
 								</select>
 							</div>
-							<div class="form-group col-lg-4 col-md-4 col-sm-4" style="padding-top: 7px;margin-left: 0px">
+							<div class="form-group col-lg-1 col-md-1 col-sm-1" style="padding-top: 7px;margin-left: 0px">
 								<button id="btnQuery" class="btn btn-sm btn-primary pull-left m-t-n-xs" type="button">查  询</button>
 							</div>
 						</form>

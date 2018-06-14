@@ -20,7 +20,7 @@ public class DjRole {
     /**
      * 角色描述
      */
-    private String sex;
+    private String remark;
 
     /**
      * 状态
@@ -66,23 +66,6 @@ public class DjRole {
         this.name = name;
     }
 
-    /**
-     * 获取角色描述
-     *
-     * @return sex - 角色描述
-     */
-    public String getSex() {
-        return sex;
-    }
-
-    /**
-     * 设置角色描述
-     *
-     * @param sex 角色描述
-     */
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
 
     /**
      * 获取状态
@@ -93,7 +76,15 @@ public class DjRole {
         return status;
     }
 
-    /**
+    public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	/**
      * 设置状态
      *
      * @param status 状态

@@ -15,12 +15,11 @@ function initEvent() {
 }
 
 function query() {
-	alert(123);
 	var qryParam = {
-		"name" : getLikeVal($("#name").val()),
+		"userName" :  $("#userName").val(),
 		"start" : $("#start").val(),
 		"end" : $("#end").val(),
-		"orderBy" : 'create_time desc'
+		"orderBy" : 'dpd.payment_time desc'
 	};
 	jQuery(grid_selector).setGridParam({
 		postData : {
@@ -32,7 +31,7 @@ function query() {
 
 function init() {
 	var qryParam = {
-		"orderBy" : 'create_time desc'
+		"orderBy" : 'dpd.payment_time desc'
 	};
 	jQuery(grid_selector).jqGrid({
 		url : '../../api/v1/component/query',
@@ -47,15 +46,6 @@ function init() {
 			label : '党员姓名',
 			name : 'userName',
 			index : 'user_name',
-		}, {
-			label : '待缴纳金额',
-			name : 'duesMoney',
-			index : 'dues_money',
-		}, 
-		{
-			label : '实缴纳金额',
-			name : 'realMoney',
-			index : 'real_money',
 		}, 
 		{
 			label : '待缴纳年份',
@@ -68,13 +58,18 @@ function init() {
 			index : 'dues_month',
 		}, 
 		{
+			label : '待缴纳金额',
+			name : 'duesMoney',
+			index : 'dues_money',
+		}, 
+		{
 			label : '缴费状态',
 			name : 'status',
 			index : 'status',
 			formatter :  statusFormatter,
 		},
 		{
-			label : '创建时间',
+			label : '缴费时间',
 			name : 'paymentTime',
 			index : 'payment_time',
 			formatter : datetimeFormatter,
@@ -99,7 +94,7 @@ function init() {
 		pager : pager_selector,
 		viewrecords : true,
 		height : '100%',
-		sortname : 't.create_time',
+		sortname : 'dpd.payment_time',
 		sortorder : "desc",
 		loadComplete : function() {
 			var table = this;

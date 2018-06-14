@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>活动详情</title>
+		<title>自主学习详情</title>
 		<link href="../../static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
 		<link href="../../static/css/font-awesome.css?v=4.4.0" rel="stylesheet">
 		<link href="../../static/css/animate.css" rel="stylesheet">
@@ -16,7 +16,7 @@
 			<div class="row">
 				<div class="ibox float-e-margins">
 					<div class="ibox-title">
-						<h5 id="title">活动详情</h5>
+						<h5 id="title">自主学习详情</h5>
 						<div class="ibox-tools">
 						</div>
 					</div>
@@ -24,15 +24,27 @@
 							<input id="id" name="id" type="hidden" value="${active.id}"/>
 							<br />
 							<div class="form-group">
-								<label class="col-sm-3 control-label" style="text-align: right">活动名称：</label>
+								<label class="col-sm-3 control-label" style="text-align: right">自主学习名称：</label>
 								<div class="col-sm-8">
-									<p>${active.name}</p>
+									<p>${study.typeName}</p>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label" style="text-align: right">活动发起人：</label>
+								<label class="col-sm-3 control-label" style="text-align: right">学习内容：</label>
 								<div class="col-sm-8">
-									<p>${active.userName}</p>
+									<p>${study.content}</p>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" style="text-align: right">发起人：</label>
+								<div class="col-sm-8">
+									<p>${study.auditorName}</p>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" style="text-align: right">所属支部：</label>
+								<div class="col-sm-8">
+									<p>${study.deptName}</p>
 								</div>
 							</div>
 							<div class="form-group">
@@ -41,58 +53,20 @@
 									<!-- freemarker时间格式化 -->
 									<#setting date_format="yyyy-MM-dd hh:mm">
 									<span>
-									${active.startTime?number?number_to_datetime?date}
+									${study.startTime?date}
 									</span>
 									~
 									<span>
-									${active.endTime?number?number_to_datetime?date}
+									${study.endTime?date}
 									</span>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label" style="text-align: right">活动地点：</label>
-								<div class="col-sm-8">
-									<p>${active.address}</p>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label" style="text-align: right">活动内容：</label>
-								<div class="col-sm-8">
-									<p>${active.content}</p>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label" style="text-align: right">参与人员：</label>
-								<div class="col-sm-8" style="height:auto;min-height: 30px;">
-								<!-- 参与人员 -->
-								<#list active.participate?keys as key>
-								  <h4>${key}：</h4>
-								  <#assign memberlist = active.participate[key]/>
-								  <#list memberlist as item>
-								  	${item.name}
-								  </#list>
-								</#list>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label" style="text-align: right">未参与人员：</label>
-								<div class="col-sm-8" style="height:auto;min-height: 30px;">
-								<!-- 未参与人员 -->
-								<#list active.notParticipate?keys as key>
-								 <h4>${key}：</h4> 
-								  <#assign memberlist = active.notParticipate[key]/>
-								  <#list memberlist as item>
-								  	${item.name}
-								  </#list>
-								</#list>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label" style="text-align: right">活动图集：</label>
 								<div class="col-sm-8" style="height: auto;">
 									<span style="float: left;">
-									<#list active.picIds as su>
-										<img src="http://pj.dlbdata.cn/dangjian/api/v1/picture/showThumbnail?pictureId=${su}"/>
+									<#list study.picIds as pic>
+									<a href="http://pj.dlbdata.cn/dangjian/api/v1/picture/show?pictureId=${pic}">	<img src="http://pj.dlbdata.cn/dangjian/api/v1/picture/showThumbnail?pictureId=${pic}"/></a>
 									</#list>
 									</span>
 								</div>
@@ -117,7 +91,7 @@
 		<script src="../../static/js/plugins/component/core.js"></script>
 		<script src="../../static/js/plugins/component/common.js"></script>
 		<script src="../js/common.js"></script>
-		<script src="../js/active/active_detail.js"></script>
+		<script src="../js/study/study_detail.js"></script>
 		
 	</body>
 

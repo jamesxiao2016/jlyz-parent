@@ -29,7 +29,7 @@ function query() {
 		"status" : $("#status").val(),
 		"start" : $("#start").val(),
 		"end" : $("#end").val(),
-		"orderBy" : 'create_time desc'
+		"orderBy" : 't.start_time desc'
 	};
 	jQuery(grid_selector).setGridParam({
 		postData : {
@@ -41,7 +41,7 @@ function query() {
 
 function init() {
 	var qryParam = {
-		"orderBy" : 'create_time desc'
+		"orderBy" : 't.start_time desc'
 	};
 	jQuery(grid_selector).jqGrid({
 		url : '../../api/v1/component/query',
@@ -62,12 +62,12 @@ function init() {
 			index : 'sub_type_name',
 			width: 90,
 		}, {
-			label : '活动负责人',
+			label : '负责人',
 			name : 'principalName',
 			index : 'principal_name',
 			width: 50,
 		}, {
-			label : '活动创建人',
+			label : '发起人',
 			name : 'createUser',
 			index : 'user_name',
 			width: 50,
@@ -113,7 +113,7 @@ function init() {
 		pager : pager_selector,
 		viewrecords : true,
 		height : '100%',
-		sortname : 'create_time',
+		sortname : 't.start_time',
 		sortorder : "desc",
 		loadComplete : function() {
 			var table = this;
@@ -142,8 +142,7 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='../active/detail.html?id=" + rowObject.id
-			+ "'>活动详情&nbsp;&nbsp;&nbsp;</a>";
+	var btnEdit = "<a href='../active/detail.html?id=" + rowObject.id + "&roleId=6"+"'>活动详情&nbsp;&nbsp;&nbsp;</a>";
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 
 	return btnEdit + "&nbsp;" + btnDel;

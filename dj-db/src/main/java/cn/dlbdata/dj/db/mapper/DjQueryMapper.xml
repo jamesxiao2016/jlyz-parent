@@ -54,7 +54,9 @@
    		<if test="seldept != null and seldept != ''">
    			and t.dj_dept_id = #{seldept}
    		</if>
-
+		<if test="orderBy != null and orderBy != ''">
+   			order by ${orderBy}
+   		</if>
     </where>
   </select>
 
@@ -75,6 +77,9 @@
  	left join dj_dept de on de.id = s.dj_dept_id
  	<where>
          1 = 1
+         <if test="selType != '' and selType != null ">
+         	and djs.id = #{selType}
+         </if>
          <if test="createName != '' and createName != null ">
          	and REPLACE(s.user_name,' ','') like #{createName}
          </if>
@@ -206,27 +211,18 @@
  </select>  
 
   <!-- 角色管理 -->
-  <resultMap id="UserRoleResultMap" type="cn.dlbdata.dj.db.vo.operationlog.OperationLogVo">
+  <resultMap id="UserRoleResultMap" type="cn.dlbdata.dj.db.vo.role.RoleVo">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
-    <result column="opt_name" jdbcType="INTEGER" property="optName" />
+    <result column="name" jdbcType="VARCHAR" property="roleName" />
     <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="error_msg" jdbcType="VARCHAR" property="errorMsg" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
  <select id="queryUserRoleList" resultMap="UserRoleResultMap">
- 	SELECT dlo.id, dlo.status, dlo.error_msg, dlo.create_time, dd.name dept_name, du.user_name, dod.name opt_name
- 	FROM dj_log_opt dlo
- 	LEFT JOIN dj_user du ON du.id = dlo.dj_user_id
- 	LEFT JOIN dj_dept dd ON dd.id = dlo.dj_dept_id
- 	LEFT JOIN dj_opt_dict dod ON dod.id = dlo.opt_id
+ 	SELECT id, name, status, remark
+ 	FROM dj_role
  	<where>
  		1 = 1
- 		<if test="userName != null and userName != ''">
- 			and REPLACE(du.user_name,' ','') like #{userName}
-   		</if>
-   	</where> 
+    </where> 
  </select>
     
   <!-- 党费历史缴纳 -->
@@ -246,7 +242,12 @@
  	INNER JOIN dj_partymember dp ON dp.id = dpd.dj_partymember_id 
  	<where>
  		1 = 1
- 		
+   		<if test="userName != '' and userName != null">
+ 			and dp.name = #{userName}
+   		</if>
+   		<if test="paymentTime != '' and paymentTime != null">
+ 			oder by ${paymentTime}
+   		</if>
    	</where> 
  </select>     
 </mapper>

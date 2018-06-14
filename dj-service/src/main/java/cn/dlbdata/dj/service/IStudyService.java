@@ -46,7 +46,7 @@ public interface IStudyService {
 	 * @return
 	 */
 	public DjStudy getStudyInfoById(Long studyId);
-
+	
 	/**
 	 * 删除自主学习内容
 	 * 
@@ -63,6 +63,15 @@ public interface IStudyService {
 	 * @return
 	 */
 	StudyDetailVo getStudyDetail(Long applyId);
+	
+	/**
+	 * 后台获取自主学习详情
+	 *
+	 * @param applyId 申请Id
+	 * @return
+	 */
+	StudyDetailVo getAdminStudyDetail(Long applyId);
+	
 	/**
 	 * 
 	 * <p>Title: getReviewScheduleList</p> 

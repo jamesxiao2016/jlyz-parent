@@ -7574,8 +7574,11 @@ body.skin-3 {
     .fixed-nav #content-main {
         height: calc(100% - 38px);
     }
+    .col-sm-8 {
+    	 height: 30px;
+    }
 }
-
+ 
 .navbar-static-side {
     /*background: #2f4050;*/
 }

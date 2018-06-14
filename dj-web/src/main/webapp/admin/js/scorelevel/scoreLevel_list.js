@@ -56,14 +56,7 @@ function init() {
 			name : 'levelMax',
 			index : 'level_max',
 		},
-		{
-			label : '创建时间',
-			name : 'createTime',
-			index : 'create_time',
-			formatter : datetimeFormatter,
-			align : "center",
-			width : 100
-		}, {
+		 {
 			label : '操作',
 			name : '',
 			formatter : actionFormatter,
