@@ -9,6 +9,7 @@ public class ObserveLowDetailVo {
     private String reasonDesc;//原因描述
     private List<Long> picIds;//图片Ids
     private Long disId;//遵章守纪Id
+    private String approverName;
 
     public String getPartyMemberName() {
         return partyMemberName;
@@ -56,5 +57,13 @@ public class ObserveLowDetailVo {
 
     public void setDisId(Long disId) {
         this.disId = disId;
+    }
+
+    public String getApproverName() {
+        return approverName;
+    }
+
+    public void setApproverName(String approverName) {
+        this.approverName = approverName;
     }
 }

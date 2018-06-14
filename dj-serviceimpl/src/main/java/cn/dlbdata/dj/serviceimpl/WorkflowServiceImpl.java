@@ -438,6 +438,8 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		record.setReasonDesc(param.getReasonDesc());
 		record.setScore(-20F);
 		record.setStatus(AuditStatusEnum.PASS.getValue());
+		record.setApproverId(user.getUserId());
+		record.setApproverName(user.getUserName());
 		disciplineMapper.insertSelective(record);
 		boolean exists = scoreMapper.existScore(partymember.getId(),year,
 				ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId());

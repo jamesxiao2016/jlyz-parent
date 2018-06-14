@@ -13,6 +13,8 @@
     <result column="dj_dept_id" jdbcType="BIGINT" property="djDeptId" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="approver_id" jdbcType="BIGINT" property="approverId" />
+    <result column="approver_name" jdbcType="VARCHAR" property="approverName" />
   </resultMap>
 
   <select id="getOneByUserIdOrderByCreateTimeDesc" resultType="java.lang.Integer">
@@ -22,7 +24,7 @@
   </select>
   
   <select id="getByPartyMemberId" resultType="cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo">
-    select dis.id as disId,pm.name as partyMemberName,dept.name as deptName,dis.reason as reason,dis.reason_desc as reasonDesc  from dj_discipline dis
+    select dis.id as disId,pm.name as partyMemberName,dept.name as deptName,dis.reason as reason,dis.reason_desc as reasonDesc,dis.approver_name as approverName  from dj_discipline dis
     left join dj_partymember pm on dis.dj_user_id = pm.id
     left join dj_dept dept on dept.id = dis.dj_dept_id
     where dis.dj_user_id = #{userId}  and dis.create_time &gt;= #{yearTimeStart} and dis.create_time &lt;= #{yearTimeEnd}

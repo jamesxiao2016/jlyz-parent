@@ -47,6 +47,12 @@ public class DjDiscipline {
     @Column(name = "create_time")
     private Date createTime;
 
+    @Column(name = "approver_id")
+    private Long approverId;
+
+    @Column(name = "approver_name")
+    private String approverName;
+
     /**
      * 获取记录ID
      *
@@ -185,5 +191,21 @@ public class DjDiscipline {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Long getApproverId() {
+        return approverId;
+    }
+
+    public void setApproverId(Long approverId) {
+        this.approverId = approverId;
+    }
+
+    public String getApproverName() {
+        return approverName;
+    }
+
+    public void setApproverName(String approverName) {
+        this.approverName = approverName;
     }
 }
