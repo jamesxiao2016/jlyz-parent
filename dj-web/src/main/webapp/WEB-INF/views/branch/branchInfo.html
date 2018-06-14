@@ -9,7 +9,8 @@
 <link href="../../static/css/font-awesome.css" rel="stylesheet">
 <link href="../../static/css/plugins/jqgrid/ui.jqgrid.css"
 	rel="stylesheet">
-<link href="../../static/css/plugins/select2/select2.min.css" rel="stylesheet">
+<link href="../../static/css/plugins/select2/select2.min.css"
+	rel="stylesheet">
 <link href="../../static/css/animate.css" rel="stylesheet">
 <link href="../../static/css/style.css" rel="stylesheet">
 <link href="../../static/js/plugins/My97DatePicker/skin/WdatePicker.css"
@@ -17,6 +18,14 @@
 <link
 	href="../../static/css/plugins/ztree/bootstrapStyle/bootstrapStyle.css"
 	rel="stylesheet">
+<style type="text/css">
+.m-t {
+	margin-top: 0px;
+}
+.form-group {
+    margin-bottom: 8px;
+}
+</style>
 </head>
 
 <body class="white-bg">
@@ -46,23 +55,22 @@
 								<div class="form-group">
 									<label class="col-sm-2 control-label">党支部名称：</label>
 									<div class="col-sm-9">
-										<input id="name" name="name" class="form-control"
-											type="text" required />
+										<input id="name" name="name" class="form-control" type="text"
+											required />
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">所在位置：</label>
 									<div class="col-sm-5">
-										<select id="dj_building_id" name="dj_building_id" class="form-control"></select>
+										<select id="dj_building_id" name="dj_building_id"
+											class="form-control"></select>
 									</div>
-									
+
 									<label class="col-sm-2 control-label">党员数量：</label>
 									<div class="col-sm-2">
 										<input id="peopleNum" name="peopleNum" class="form-control"
 											type="number" required />
 									</div>
-								</div>
-								<div class="form-group">
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">地址：</label>
@@ -85,10 +93,8 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="col-sm-8 col-sm-offset-3">
+									<div class="col-sm-8 col-sm-offset-5">
 										<button id="btnSubmit" class="btn btn-primary" type="button">提交</button>
-										<button id="btnBack" class="btn btn-primary" type="button"
-											style="margin-left: 10px;">返回</button>
 									</div>
 								</div>
 							</form>

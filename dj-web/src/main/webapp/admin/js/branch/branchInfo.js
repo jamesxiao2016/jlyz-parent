@@ -34,9 +34,15 @@ function initEvent() {
 }
 
 function loadBuilding(sectionId) {
+	var $select = $('#dj_building_id');
 	var url = '../../admin/building/getBuildingList?sectionId=' + sectionId;
 	$.post(url, function(data) {
-		$('#dj_building_id').select2({
+		
+		instance = $select.data('select2');  
+        if(instance){  
+          $select.select2('destroy').empty();  
+        }
+        $select.select2({
 			data : data
 		});
 	});
