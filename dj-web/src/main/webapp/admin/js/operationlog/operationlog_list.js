@@ -28,7 +28,7 @@ function query() {
 		"seldept" :  $("#seldept").val(),
 		"start" : $("#start").val(),
 		"end" : $("#end").val(),
-		"orderBy" : 'create_time desc'
+		"orderBy" : 'dlo.create_time desc'
 	};
 	jQuery(grid_selector).setGridParam({
 		postData : {
@@ -40,7 +40,7 @@ function query() {
 
 function init() {
 	var qryParam = {
-		"orderBy" : 'create_time desc'
+		"orderBy" : 'dlo.create_time desc'
 	};
 	jQuery(grid_selector).jqGrid({
 		url : '../../api/v1/component/query',
@@ -51,11 +51,6 @@ function init() {
 			name : 'id',
 			index : 'id',
 			hidden : true
-		}, {
-			label : '操作人',
-			name : 'userName',
-			index : 'user_name',
-			width : 70,
 		}, 
 		{
 			label : '支部名称',
@@ -64,15 +59,22 @@ function init() {
 			width : 170,
 		}, 
 		{
+			label : '操作人',
+			name : 'userName',
+			index : 'user_name',
+			width : 70,
+		}, 
+		{
 			label : '操作位置',
 			name : 'optName',
 			index : 'opt_name',
 			width : 70,
 		}, 
 		{
-			label : '状态码',
+			label : '状态',
 			name : 'status',
 			index : 'status',
+			formatter : statusFormatter,
 			width : 70,
 		}, 
 		{
@@ -106,7 +108,7 @@ function init() {
 		pager : pager_selector,
 		viewrecords : true,
 		height : '100%',
-		sortname : 'create_time',
+		sortname : 'dlo.create_time',
 		sortorder : "desc",
 		loadComplete : function() {
 			var table = this;
@@ -135,10 +137,18 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='../operationlog/add.html?id=" + rowObject.id + "'>编辑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>";
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 
-	return btnEdit + "&nbsp;" + btnDel;
+	return btnDel;
+}
+
+function statusFormatter(cellvalue, options, rowObject) {
+	if(cellvalue == "1000"){
+		return "成功";
+	}else{
+		return "失败";
+	}
+	return "";
 }
 
 function delRecord(id) {

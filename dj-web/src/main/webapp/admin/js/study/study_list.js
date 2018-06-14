@@ -52,26 +52,22 @@ function init() {
 			name : 'id',
 			index : 'id',
 			hidden : true
-		}, {
-			label : '学习类型',
-			name : 'typeName',
-			index : 'sub_type_name',
-		}, {
-			label : '党员',
-			name : 'userName',
-			index : 'user_name',
-			width: 70 ,
-		}, {
+		}, 
+		 {
 			label : '支部名称',
 			name : 'deptName',
 			index : 'dept_name',
 			width: 200 ,
-		}, 
+		},
 		{
-			label : '提交时间',
-			name : 'createTime',
-			index : 'create_time',
-			formatter : datetimeFormatter,
+			label : '学习类型',
+			name : 'typeName',
+			index : 'sub_type_name',
+		}, {
+			label : '党员姓名',
+			name : 'userName',
+			index : 'user_name',
+			width: 70 ,
 		}, 
 		{
 			label : '开始时间',
@@ -84,6 +80,12 @@ function init() {
 			name : 'endTime',
 			index : 'end_time',
 			formatter : datetimeFormatterMinute,
+		}, 
+		{
+			label : '提交时间',
+			name : 'createTime',
+			index : 'create_time',
+			formatter : datetimeFormatter,
 		}, 
 		{
 			label : '操作',

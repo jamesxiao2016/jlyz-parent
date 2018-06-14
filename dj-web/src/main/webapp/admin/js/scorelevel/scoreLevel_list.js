@@ -104,7 +104,7 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='../scorelevel/add.html?id=" + rowObject.id + "'>编辑</a>";
+	var btnEdit = "<a href='../scorelevel/update.html?id=" + rowObject.id + "'>编辑&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>";
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 
 	return btnEdit + "&nbsp;" + btnDel;

@@ -28,7 +28,7 @@ function query() {
 		"userAccount" : $("#userAccount").val(),
 		"userName" : $("#userName").val(),
 		"status": $("#status").val(),
-		"orderBy" : 'create_time desc'
+		"orderBy" : 'dll.create_time desc'
 	};
 	jQuery(grid_selector).setGridParam({
 		postData : {
@@ -40,7 +40,7 @@ function query() {
 
 function init() {
 	var qryParam = {
-		"orderBy" : 'create_time desc'
+		"orderBy" : 'dll.create_time desc'
 	};
 	jQuery(grid_selector).jqGrid({
 		url : '../../api/v1/component/query',
@@ -51,26 +51,29 @@ function init() {
 			name : 'id',
 			index : 'id',
 			hidden : true
-		}, {
-			label : '账号',
-			name : 'userAccount',
-			index : 'user_account',
-			width : 80,
-		}, {
-			label : '用户名',
-			name : 'userName',
-			index : 'user_name',
-			width : 80,
-		}, {
-			label : '支部名称',
+		}, 
+		 {
+			label : '党支部名称',
 			name : 'deptName',
 			index : 'dept_name',
 			width : 170,
 		}, 
 		{
-			label : '状态码',
+			label : '账号',
+			name : 'userAccount',
+			index : 'user_account',
+			width : 80,
+		}, {
+			label : '姓名',
+			name : 'userName',
+			index : 'user_name',
+			width : 80,
+		},
+		{
+			label : '状态',
 			name : 'status',
 			index : 'status',
+			formatter : statusFormatter,
 			width : 80,
 		}, 
 		{
@@ -105,7 +108,7 @@ function init() {
 		pager : pager_selector,
 		viewrecords : true,
 		height : '100%',
-		sortname : 'create_time',
+		sortname : 'dll.create_time',
 		sortorder : "desc",
 		loadComplete : function() {
 			var table = this;
@@ -134,10 +137,19 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='../loginlog/detail.html?id=" + rowObject.id + "'>查看详情&nbsp;&nbsp;&nbsp;</a>";
+	
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 
-	return btnEdit + "&nbsp;" + btnDel;
+	return  btnDel;
+}
+
+function statusFormatter(cellvalue, options, rowObject) {
+	if(cellvalue == "1000"){
+		return "成功";
+	}else{
+		return "失败";
+	}
+	return "";
 }
 
 function delRecord(id) {

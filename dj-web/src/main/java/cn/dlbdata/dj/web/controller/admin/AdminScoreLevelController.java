@@ -6,9 +6,17 @@
  */
 package cn.dlbdata.dj.web.controller.admin;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
+import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.db.pojo.DjRole;
+import cn.dlbdata.dj.db.pojo.DjScoreLevel;
+import cn.dlbdata.dj.service.IScoreLevelService;
 import cn.dlbdata.dj.web.base.BaseController;
 
 /**
@@ -21,6 +29,8 @@ import cn.dlbdata.dj.web.base.BaseController;
 @RequestMapping("/admin/scorelevel")
 public class AdminScoreLevelController extends BaseController {
 	
+	@Autowired
+	private IScoreLevelService scoreLevelService;
 
 	/**
 	 * 查询列表
@@ -51,12 +61,26 @@ public class AdminScoreLevelController extends BaseController {
 	public String add() {
 		return "scorelevel/add.html";
 	}
+	
+	/**
+	 * 添加或修改界面
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/update.html")
+	public ModelAndView update(Long id) {
+		ModelAndView view = new ModelAndView("scorelevel/update.html");
+		DjScoreLevel scoreLevel = scoreLevelService.getScoreLevelInfoById(id);
+		view.addObject("scoreLevel", scoreLevel);
+		return view;
+	}
+	
 
-	/*@RequestMapping("/save")
+	@RequestMapping("/save")
 	@ResponseBody
-	public ResultVo<Long> saveOrUpdate(DjSection section) {
+	public ResultVo<Long> saveOrUpdate(DjScoreLevel djScoreLevel) {
 		ResultVo<Long> result = new ResultVo<>();
-		Long data = sectionService.saveOrUpdate(section);
+		Long data = scoreLevelService.saveOrUpdate(djScoreLevel);
 		if (data != null) {
 			result.setCode(ResultCode.OK.getCode());
 		}
@@ -67,11 +91,11 @@ public class AdminScoreLevelController extends BaseController {
 	@ResponseBody
 	public ResultVo<Long> deleteById(Long id) {
 		ResultVo<Long> result = new ResultVo<>();
-		Long data = sectionService.deleteById(id);
+		Long data = scoreLevelService.deleteById(id);
 		if (data != null) {
 			result.setCode(ResultCode.OK.getCode());
 		}
 		return result;
-	}*/
+	}
 	
 }

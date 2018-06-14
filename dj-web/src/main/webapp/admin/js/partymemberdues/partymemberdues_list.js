@@ -12,11 +12,20 @@ function initEvent() {
 	$("#btnAdd").click(function() {
 		location.href = "add.html";
 	});
+	
+	//支部名称
+	$.post("../../api/v1/component/getDeptNameList", function(
+			data) {
+		$('.seldept').select2({
+			data : data
+		});
+	})
 }
 
 function query() {
 	var qryParam = {
 		"userName" :  $("#userName").val(),
+		"seldept" :$("#seldept").val(),
 		"start" : $("#start").val(),
 		"end" : $("#end").val(),
 		"orderBy" : 'dpd.payment_time desc'
@@ -42,31 +51,43 @@ function init() {
 			name : 'id',
 			index : 'id',
 			hidden : true
-		}, {
+		}, 
+		 {
+			label : '党支部名称',
+			name : 'deptName',
+			index : 'dept_name',
+			width : 170,
+		}, 
+		{
 			label : '党员姓名',
 			name : 'userName',
 			index : 'user_name',
+			width : 70,
 		}, 
 		{
 			label : '待缴纳年份',
 			name : 'duesYear',
 			index : 'dues_year',
+			width : 70,
 		}, 
 		{
 			label : '待缴纳月份',
 			name : 'duesMonth',
 			index : 'dues_month',
+			width : 70,
 		}, 
 		{
 			label : '待缴纳金额',
 			name : 'duesMoney',
 			index : 'dues_money',
+			width : 70,
 		}, 
 		{
 			label : '缴费状态',
 			name : 'status',
 			index : 'status',
 			formatter :  statusFormatter,
+			width : 70,
 		},
 		{
 			label : '缴费时间',
@@ -75,15 +96,6 @@ function init() {
 			formatter : datetimeFormatter,
 			align : "center",
 			width : 100
-		}, {
-			label : '操作',
-			name : '',
-			formatter : actionFormatter,
-			fixed : true,
-			sortable : false,
-			resize : false,
-			align : "center",
-			width : 150,
 		} ],
 		postData : {
 			"sId" : sId,

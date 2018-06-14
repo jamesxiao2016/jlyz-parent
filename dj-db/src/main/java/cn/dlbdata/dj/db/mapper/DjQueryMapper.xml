@@ -161,6 +161,9 @@
    		<if test="seldept != '' and seldept != null">
  			and dll.dj_dept_id = #{seldept}
    		</if>
+   		<if test="orderBy != '' and orderBy != null">
+ 			order by dll.create_time desc
+   		</if>
    	</where> 
  </select> 
  
@@ -207,6 +210,9 @@
    		<if test="seldept != null and seldept != ''">
  			and dlo.dj_dept_id = #{seldept}
    		</if>
+   		<if test="orderBy != '' and orderBy != null">
+ 			order by dlo.create_time desc
+   		</if>
    	</where> 
  </select>  
 
@@ -241,18 +247,23 @@
     <result column="dues_money" jdbcType="FLOAT" property="duesMoney" />
     <result column="real_money" jdbcType="FLOAT" property="realMoney" />
     <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
   </resultMap>
  <select id="queryPartymemberDuesList" resultMap="PartymemberDuesResultMap">
- 	SELECT dpd.id, dpd.dues_year, dpd.dues_month, dpd.dues_money, dpd.real_money, dpd.status, dpd.payment_time, dp.name user_name
+ 	SELECT dpd.id, dpd.dues_year, dpd.dues_month, dpd.dues_money, dpd.real_money, dpd.status, dpd.payment_time, dp.name user_name, dd.name dept_name
  	FROM dj_partymember_dues dpd
  	INNER JOIN dj_partymember dp ON dp.id = dpd.dj_partymember_id 
+ 	LEFT JOIN dj_dept dd ON dd.id = dp.dept_id
  	<where>
  		1 = 1
    		<if test="userName != '' and userName != null">
  			and dp.name = #{userName}
    		</if>
-   		<if test="paymentTime != '' and paymentTime != null">
- 			oder by ${paymentTime}
+   		<if test="seldept != '' and seldept != null">
+ 			and dd.name = ${seldept}
+   		</if>
+   		<if test="orderBy != '' and orderBy != null">
+ 			order by  dpd.payment_time desc
    		</if>
    	</where> 
  </select>     

@@ -73,12 +73,6 @@ function init() {
 			width: 50,
 		}, 
 		{
-			label : '支部名称',
-			name : 'deptName',
-			index : 'dept_name',
-			width: 190,
-		},
-		{
 			label : '活动状态',
 			name : 'status',
 			index : 'status',

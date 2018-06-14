@@ -46,7 +46,15 @@ public class PartymemberDuesVo {
 	
 	private Integer status;
 	
+	private String deptName;
 	
+	
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
 	public Integer getStatus() {
 		return status;
 	}
