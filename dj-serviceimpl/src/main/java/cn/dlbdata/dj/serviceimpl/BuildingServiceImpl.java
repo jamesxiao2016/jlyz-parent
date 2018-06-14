@@ -1,28 +1,25 @@
 package cn.dlbdata.dj.serviceimpl;
 
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import cn.dlbdata.dj.common.core.exception.BusinessException;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.db.dto.building.BuildingAddOrUpdateDto;
 import cn.dlbdata.dj.db.mapper.DjBuildingMapper;
-import cn.dlbdata.dj.db.mapperstruct.BuildingMapperStruct;
 import cn.dlbdata.dj.db.pojo.DjBuilding;
 import cn.dlbdata.dj.service.IBuildingService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import cn.dlbdata.dj.db.dto.building.*;
-
-import java.util.Date;
 
 @Service
 public class BuildingServiceImpl implements IBuildingService {
 
     @Autowired
     private DjBuildingMapper buildingMapper;
-    
-    private BuildingMapperStruct buildingMapperStruct;
-
 
     /**
      * 新增楼宇
@@ -40,7 +37,15 @@ public class BuildingServiceImpl implements IBuildingService {
         if (existWithName) {
             throw new BusinessException("已存在同名的楼宇!",CoreConst.ResultCode.Forbidden.getCode());
         }
-        DjBuilding building = buildingMapperStruct.dtoToEntity(dto);
+        
+        DjBuilding building = new DjBuilding();
+
+        building.setDjSectionId( dto.getSectionId() );
+        building.setName( dto.getName() );
+        building.setFloorNum( dto.getFloorNum() );
+        building.setAddress( dto.getAddress() );
+        building.setCode( dto.getCode() );
+
         building.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
         building.setId(DigitUtil.generatorLongId());
         building.setCreateTime(new Date());
@@ -73,7 +78,12 @@ public class BuildingServiceImpl implements IBuildingService {
         if (existWithName) {
             throw new BusinessException("已存在同名的楼宇!",CoreConst.ResultCode.Forbidden.getCode());
         }
-        building = buildingMapperStruct.updateToEntity(dto,building);
+        building.setDjSectionId( dto.getSectionId() );
+        building.setName( dto.getName() );
+        building.setFloorNum( dto.getFloorNum() );
+        building.setAddress( dto.getAddress() );
+        building.setCode( dto.getCode() );
+
         buildingMapper.updateByPrimaryKey(building);
         return true;
     }

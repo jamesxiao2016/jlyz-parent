@@ -3,25 +3,24 @@ package cn.dlbdata.dj.serviceimpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.dlbdata.dj.common.core.exception.BusinessException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
+import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjSectionMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
+import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjSection;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
-import cn.dlbdata.dj.vo.UserVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import cn.dlbdata.dj.db.mapper.DjDeptMapper;
-import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.service.IDeptService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
+import cn.dlbdata.dj.vo.UserVo;
 import tk.mybatis.mapper.entity.Example;
 
 @Service
