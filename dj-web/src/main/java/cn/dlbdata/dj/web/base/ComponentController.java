@@ -60,6 +60,7 @@ public class ComponentController extends BaseController {
 	
 
 	@RequestMapping("/getDynamicDictList")
+	@ResponseBody
 	public SelectResultVo getDynamicDictListByDictType(String dictType) {
 		SelectResultVo result = new SelectResultVo();
 		result.setResults(componentService.getDictListByDictType(dictType));

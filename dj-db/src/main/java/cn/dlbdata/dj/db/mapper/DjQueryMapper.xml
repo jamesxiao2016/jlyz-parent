@@ -224,6 +224,12 @@
  		1 = 1
     </where> 
  </select>
+
+    <select id="queryBuildingList" resultType="cn.dlbdata.dj.db.vo.building.AdminBuildingVo">
+        select bud.id,bud.name,bud.code,sec.name as sectionName,bud.floor_num as floorNum,bud.party_num as partyNum,
+         bud.people_num as peopleNum, bud.address, bud.status,bud.create_time as createTime
+         from dj_building bud left join dj_section sec on bud.dj_section_id = sec.id
+    </select>
     
   <!-- 党费历史缴纳 -->
   <resultMap id="PartymemberDuesResultMap" type="cn.dlbdata.dj.db.vo.party.PartymemberDuesVo">

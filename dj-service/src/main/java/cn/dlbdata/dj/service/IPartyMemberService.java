@@ -3,6 +3,7 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.db.dto.partymember.PartyMemberAddOrUpdateDto;
 import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.common.core.util.Paged;
@@ -138,4 +139,27 @@ public interface IPartyMemberService {
 	 */
 	public List<DjPartyMemberVo> selectPartymemberByDeptId(@Param("deptId")Integer deptId);
 	public List<ScoreTypeVo> getRadarChartByUserId(Long userId, Integer year);
+
+	/**
+	 * 新增党员账号
+	 * @param dto
+	 * @param user
+	 */
+	void addPartyMember(PartyMemberAddOrUpdateDto dto,UserVo user);
+
+	/**
+	 * 更新党员信息
+	 * @param id
+	 * @param dto
+	 * @param user
+	 * @return
+	 */
+	boolean updatePartyMember(Long id,PartyMemberAddOrUpdateDto dto,UserVo user);
+
+	/**
+	 * 作废党员
+	 * @param id
+	 * @return
+	 */
+	boolean invalidPartyMember(Long id,UserVo user);
 }

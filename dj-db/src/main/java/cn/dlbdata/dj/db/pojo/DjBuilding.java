@@ -44,7 +44,8 @@ public class DjBuilding {
     /**
      * 地址
      */
-    private Integer address;
+    @Column(name = "address")
+    private String address;
 
     /**
      * 状态
@@ -59,6 +60,12 @@ public class DjBuilding {
      */
     @Column(name = "principal_id")
     private Long principalId;
+
+    /**
+     * 楼宇编号
+     */
+    @Column(name = "code")
+    private String code;
 
     /**
      * 获取记录ID
@@ -173,7 +180,7 @@ public class DjBuilding {
      *
      * @return address - 地址
      */
-    public Integer getAddress() {
+    public String getAddress() {
         return address;
     }
 
@@ -182,7 +189,7 @@ public class DjBuilding {
      *
      * @param address 地址
      */
-    public void setAddress(Integer address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -234,5 +241,13 @@ public class DjBuilding {
      */
     public void setPrincipalId(Long principalId) {
         this.principalId = principalId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

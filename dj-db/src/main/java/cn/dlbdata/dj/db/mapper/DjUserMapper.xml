@@ -19,4 +19,14 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
   </resultMap>
+
+  <select id="existWithUserName" resultType="boolean">
+    select count(*) from dj_user
+    <where>
+      name = #{userName}
+      <if test="id != null">
+        and id != #{id}
+      </if>
+    </where>
+  </select>
 </mapper>

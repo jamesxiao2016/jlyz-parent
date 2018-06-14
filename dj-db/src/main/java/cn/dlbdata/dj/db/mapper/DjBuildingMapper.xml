@@ -11,9 +11,31 @@
     <result column="floor_num" jdbcType="INTEGER" property="floorNum" />
     <result column="party_num" jdbcType="INTEGER" property="partyNum" />
     <result column="people_num" jdbcType="INTEGER" property="peopleNum" />
-    <result column="address" jdbcType="INTEGER" property="address" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="principal_id" jdbcType="BIGINT" property="principalId" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
   </resultMap>
+
+  <select id="existWithCode" resultType="boolean">
+    select count(*) from dj_building
+    <where>
+      code = #{code}
+      <if test="id != null">
+        and id != #{id}
+      </if>
+    </where>
+
+  </select>
+
+  <select id="existWithName" resultType="boolean">
+    select count(*) from dj_building
+    <where>
+      name = #{name}
+      <if test="id != null">
+        and id != #{id}
+      </if>
+    </where>
+  </select>
 </mapper>

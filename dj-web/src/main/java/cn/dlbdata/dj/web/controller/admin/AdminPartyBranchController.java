@@ -1,6 +1,14 @@
 package cn.dlbdata.dj.web.controller.admin;
 
+import cn.dlbdata.dj.common.core.util.constant.CoreConst;
+import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
+import cn.dlbdata.dj.service.IDeptService;
+import cn.dlbdata.dj.vo.UserVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.dlbdata.dj.web.base.BaseController;
@@ -14,6 +22,8 @@ import cn.dlbdata.dj.web.base.BaseController;
 @Controller
 @RequestMapping("/admin/branch")
 public class AdminPartyBranchController extends BaseController {
+	@Autowired
+	private IDeptService deptService;
 	/**
 	 * 查询列表
 	 * 
@@ -42,5 +52,21 @@ public class AdminPartyBranchController extends BaseController {
 	@RequestMapping("/add.html")
 	public String add() {
 		return "add.html";
+	}
+
+	@PostMapping("/addBranch")
+	public ResultVo addBranch(@RequestBody DeptAddOrUpdateDto dto) {
+		UserVo user = getCurrentUserFromCache();
+		ResultVo resultVo = new ResultVo<>();
+		if (user == null) {
+			logger.error("用户未登录");
+			resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
+			resultVo.setMsg("用户未登录或用户已退出");
+			return resultVo;
+		}
+		deptService.addBranch(dto,user);
+		resultVo.setCode(CoreConst.ResultCode.OK.getCode());
+		resultVo.setMsg("新增党支部成功!");
+		return resultVo;
 	}
 }
