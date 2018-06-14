@@ -12,7 +12,6 @@ import cn.dlbdata.dj.common.util.StringUtil;
 import cn.dlbdata.dj.constant.*;
 import cn.dlbdata.dj.db.dto.partymember.PartyMemberAddOrUpdateDto;
 import cn.dlbdata.dj.db.mapper.*;
-import cn.dlbdata.dj.db.mapperstruct.PartyMemberMapperStruct;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.vo.party.*;
 import cn.dlbdata.dj.vo.UserVo;
@@ -59,8 +58,6 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	@Autowired
 	private DjUserMapper userMapper;
 
-	@Autowired
-	private PartyMemberMapperStruct partyMemberMapperStruct;
 
 
 	@Override
@@ -434,7 +431,17 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		newUser.setUserName(dto.getName());
 		userMapper.insert(newUser);
 
-		DjPartymember partymember = partyMemberMapperStruct.dtoToEntity(dto);
+		DjPartymember partymember = new DjPartymember();
+
+		partymember.setName( dto.getName() );
+		partymember.setSexCode( dto.getSexCode() );
+		partymember.setAge( dto.getAge() );
+		partymember.setPhone( dto.getPhone() );
+		partymember.setEmail( dto.getEmail() );
+		partymember.setIdcard( dto.getIdcard() );
+		partymember.setDeptId( dto.getDeptId() );
+		partymember.setEducationCode( dto.getEducationCode() );
+		partymember.setPartyPostCode( dto.getPartyPostCode() );
 		partymember.setId(newUser.getId());
 		partymember.setBirthDate(DatetimeUtil.getDateByStr(dto.getBirthDate(),null));
 		partymember.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
@@ -449,6 +456,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	 * @param user
 	 * @return
 	 */
+	@Transactional
 	@Override
 	public boolean updatePartyMember(Long id, PartyMemberAddOrUpdateDto dto, UserVo user) {
 		DjPartymember partymember = partyMemberMapper.selectByPrimaryKey(id);
@@ -466,7 +474,15 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		oldUser.setUserName(dto.getName());
 		userMapper.updateByPrimaryKey(oldUser);
 
-		partymember = partyMemberMapperStruct.updateToEntity(dto,partymember);
+		partymember.setName( dto.getName() );
+		partymember.setSexCode( dto.getSexCode() );
+		partymember.setAge( dto.getAge() );
+		partymember.setPhone( dto.getPhone() );
+		partymember.setEmail( dto.getEmail() );
+		partymember.setIdcard( dto.getIdcard() );
+		partymember.setDeptId( dto.getDeptId() );
+		partymember.setEducationCode( dto.getEducationCode() );
+		partymember.setPartyPostCode( dto.getPartyPostCode() );
 		partymember.setBirthDate(DatetimeUtil.getDateByStr(dto.getBirthDate(),null));
 		partyMemberMapper.updateByPrimaryKey(partymember);
 
@@ -479,6 +495,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	 * @param id
 	 * @return
 	 */
+	@Transactional
 	@Override
 	public boolean invalidPartyMember(Long id,UserVo user) {
 		DjPartymember partymember = partyMemberMapper.selectByPrimaryKey(id);

@@ -2,6 +2,7 @@ package cn.dlbdata.dj.service;
 
 import java.util.List;
 
+import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
@@ -69,5 +70,13 @@ public interface IDeptService {
 	DjUser getDeptBranch(Long deptId);
 
 	List<DeptTreeVo> getDeptTree(Long sectionId);
+
+	/**
+	 * 新增党支部
+	 * @param dto
+	 * @param user
+	 * @return
+	 */
+	boolean addBranch(DeptAddOrUpdateDto dto,UserVo user);
 
 }

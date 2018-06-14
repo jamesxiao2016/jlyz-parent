@@ -3,7 +3,9 @@ package cn.dlbdata.dj.serviceimpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.dlbdata.dj.common.core.exception.BusinessException;
 import cn.dlbdata.dj.constant.DlbConstant;
+import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
 import cn.dlbdata.dj.db.mapper.DjSectionMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjSection;
@@ -140,4 +142,25 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
         List<DeptTreeVo> tree = deptMapper.getDeptTree(sectionId);
         return tree;
     }
+
+	/**
+	 * 新增党支部
+	 *
+	 * @param dto
+	 * @param user
+	 * @return
+	 */
+	@Override
+	public boolean addBranch(DeptAddOrUpdateDto dto, UserVo user) {
+	    //当传入的上级党支部为0或者null，该支部为根支部，否则则为叶子支部(此时需要校验上级支部是否存在)
+	    if (dto.getParentId() != null && dto.getParentId() !=0) {
+	        DjDept parentDept = deptMapper.selectByPrimaryKey(dto.getParentId());
+	        if (parentDept == null) {
+//	            throw new BusinessException("所选择的上级党支部不存在!",);
+            }
+
+        }
+
+		return true;
+	}
 }
