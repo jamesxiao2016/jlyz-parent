@@ -25,4 +25,15 @@
     select sec.name ,(select count(0) from dj_dept  dept where dept.dj_section_id = sec.id) as branchSum,sec.people_num as peopleSum,sec.principal_name as leaderName
     from dj_section sec where sec.id=#{sectionId}
   </select>
+
+  <select id="existWithName" resultType="boolean">
+    select count(*) from dj_section
+    <where>
+      name = #{name}
+      <if test="id != null">
+        and id != id
+      </if>
+    </where>
+
+  </select>
 </mapper>

@@ -26,7 +26,7 @@ public class DjSection {
     /**
      * 地址
      */
-    private Integer address;
+    private String address;
 
     /**
      * 状态
@@ -107,7 +107,7 @@ public class DjSection {
      *
      * @return address - 地址
      */
-    public Integer getAddress() {
+    public String getAddress() {
         return address;
     }
 
@@ -116,7 +116,7 @@ public class DjSection {
      *
      * @param address 地址
      */
-    public void setAddress(Integer address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 

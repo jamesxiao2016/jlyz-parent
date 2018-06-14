@@ -226,7 +226,7 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
         }
         if (dto.getPrincipalId() != null) {
             DjUser newPrincipal = userMapper.selectByPrimaryKey(dto.getPrincipalId());
-            DjUser oldPrincipal = userMapper.selectByPrimaryKey(dept.getPrincipalId());
+
             if (newPrincipal == null) {
                 throw new BusinessException("所选的支部书记不存在!",CoreConst.ResultCode.NotFound.getCode());
             }
@@ -236,6 +236,7 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
             }
             if (dept.getPrincipalId() != null) {
                 if (!dept.getPrincipalId().equals(dto.getPrincipalId())) {
+                    DjUser oldPrincipal = userMapper.selectByPrimaryKey(dept.getPrincipalId());
                     //修改原部门负责人的角色为普通党员
                     //修改新的部门负责人的角色为党支部书记
                     oldPrincipal.setRoleId(RoleEnum.PARTY.getId());
@@ -251,6 +252,17 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
                 newPrincipal.setRoleId(RoleEnum.BRANCH_PARTY.getId());
             }
             userMapper.updateByPrimaryKey(newPrincipal);
+        } else {
+            //清空支部书记
+            if (dept.getPrincipalId() != null) {//如果原来支部书记则需要将原支部书记的角色置为普通党员
+                DjUser oldPrincipal = userMapper.selectByPrimaryKey(dept.getPrincipalId());
+                if (oldPrincipal != null) {
+                    oldPrincipal.setRoleId(RoleEnum.PARTY.getId());
+                    userMapper.updateByPrimaryKey(oldPrincipal);
+                }
+            }
+            dept.setPrincipalId(null);
+            dept.setPrincipalName(null);
         }
 
         dept.setDjSectionId(dto.getSectionId());

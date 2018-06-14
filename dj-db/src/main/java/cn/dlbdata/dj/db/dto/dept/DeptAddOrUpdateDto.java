@@ -8,7 +8,7 @@ public class DeptAddOrUpdateDto {
     private String address;
     private String phone;
     private Long parentId;
-    private Long principalId;
+    private Long principalId;//新增时不需要
 
     public Long getSectionId() {
         return sectionId;
