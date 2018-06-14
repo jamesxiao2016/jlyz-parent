@@ -15,7 +15,7 @@ body.signin {
 }
 
 .signinpanel {
-	width: 750px;
+	width: 450px;
 	margin: 15% auto 0 auto;
 }
 
@@ -28,24 +28,60 @@ body.signin {
 
 .loginpanel .title {
 	height: 54px;
-	font-size: 34px;
+	font-size: 24px;
 	font-family: PingFang-SC-Bold;
 	color: rgba(255, 255, 255, 1);
 	line-height: 48px;
 }
 
 .loginpanel .font {
-	font-size: 16px;
+	font-size: 12px;
 	font-family: PingFang-SC-Medium;
 	color: #fff;
 }
 
 .loginbtn {
-	width: 280px;
+	width: 220px;
 	height: 40px;
 	background: rgba(233, 144, 54, 1);
 	border-radius: 33px;
 	opacity: 0.8001999999999999;
+}
+
+.form-control,
+.single-line {
+    background-color: #FFFFFF;
+    background-image: none;
+    border: 1px solid #e5e6e7;
+    border-radius: 1px;
+    color: inherit;
+    display: block;
+    padding: 6px 12px;
+    -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    width: 60%;
+    font-size: 14px;
+	margin:24px auto;
+	padding: 0 !important;
+}
+//
+登录页样式修改
+.form-control {
+	width: 60%;
+	margin: 24px auto;
+	padding: 0 !important;
+}
+
+.signinpanel input {
+	height: 34px;
+}
+
+.uname {
+	width: 100%;
+}
+
+.pword {
+	width: 100%;
 }
 
 @media screen and (max-width: 768px) {
