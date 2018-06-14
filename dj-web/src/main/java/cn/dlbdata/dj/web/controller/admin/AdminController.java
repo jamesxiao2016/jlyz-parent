@@ -24,10 +24,10 @@ public class AdminController {
 	@Autowired
 	private IUserService userService;
 	
-	@PostMapping("/login")
+	@PostMapping("/loginAdmin")
 	@ResponseBody
-	public ResultVo<UserVo> login(LoginVo vo) {
-		ResultVo<UserVo> result = userService.login(vo);
+	public ResultVo<UserVo> loginAdmin(LoginVo vo) {
+		ResultVo<UserVo> result = userService.loginAdmin(vo);
 		return result;
 	}
 }

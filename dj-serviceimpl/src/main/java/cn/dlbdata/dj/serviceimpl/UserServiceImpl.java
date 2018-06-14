@@ -112,6 +112,53 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 	}
 
 	@Override
+	public ResultVo<UserVo> loginAdmin(LoginVo vo) {
+		ResultVo<UserVo> result = new ResultVo<>(ResultCode.Forbidden.getCode());
+		if (StringUtils.isEmpty(vo.getName()) || StringUtils.isEmpty(vo.getPwd())) {
+			result.setCode(ResultCode.ParameterError.getCode());
+			result.setMsg("请输入用户名或密码");
+			return result;
+		}
+		long startTime = System.currentTimeMillis();
+		// 用户检查
+		DjUser user = getUserInfoByName(vo.getName());
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("用户名或密码错误");
+			return result;
+		}
+		long endUserTime = System.currentTimeMillis();
+		logger.info("查询用户->" + (endUserTime - startTime));
+
+		// 密码验证
+		if (!vo.getPwd().equalsIgnoreCase(user.getPwd())) {
+			logger.error("密码错误");
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("用户名或密码错误");
+			return result;
+		}
+
+		UserVo data = new UserVo();
+		data.setDeptId(user.getDeptId());
+		data.setMemeberId(user.getDjPartymemberId());
+		data.setName(user.getName());
+		data.setUserId(user.getId());
+		data.setAvatar(user.getAvatar());
+		data.setRoleId(user.getRoleId());
+		data.setUserName(user.getUserName());
+		// 生成token
+		String token = JwtTokenUtil.createToken(user.getId() + "", user.getName(), user.getDeptId() + "",
+				user.getRoleId() + "", 0);
+		data.setToken(token);
+		JwtTokenUtil.USER_TICKET_CACHE.put(MD5Util.encode(token), token);
+		
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(data);
+
+		return result;
+	}
+
+	@Override
 	public ResultVo<UserVo> login(LoginVo vo) {
 		ResultVo<UserVo> result = new ResultVo<>(ResultCode.Forbidden.getCode());
 		if (StringUtils.isEmpty(vo.getName()) || StringUtils.isEmpty(vo.getPwd())) {
@@ -224,7 +271,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		if (user == null) {
 			return null;
 		}
-		if(roleId == null) {
+		if (roleId == null) {
 			roleId = user.getRoleId();
 		}
 		UserVo data = new UserVo();
@@ -256,8 +303,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			data.setDeptName(dept.getName());
 			// 党委
 			data.setPartyCommittee(dept.getAddress());
-			
-			//党支书角色
+
+			// 党支书角色
 			if (RoleEnum.BRANCH_PARTY.getId().equals(roleId)) {
 				data.setHonor(dept.getHonor());
 				data.setPeopleNum(dept.getPeopleNum());
@@ -277,10 +324,10 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 				data.setCommitteeNum(peopleNum);
 			}
 		}
-		//if (isShowScore != null && isShowScore == 1) {
-			Float totalScore = getSumScoreByUserId(user.getId(), Calendar.getInstance().get(Calendar.YEAR));
-			data.setTotalScore(totalScore);
-		//}
+		// if (isShowScore != null && isShowScore == 1) {
+		Float totalScore = getSumScoreByUserId(user.getId(), Calendar.getInstance().get(Calendar.YEAR));
+		data.setTotalScore(totalScore);
+		// }
 		// CacheManager.getInstance().put(user.getId() + "", data);
 		return data;
 	}
@@ -358,4 +405,5 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
 		return str;
 	}
+
 }

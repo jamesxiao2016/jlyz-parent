@@ -1,10 +1,14 @@
 package cn.dlbdata.dj.serviceimpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.common.core.util.DigitUtil;
+import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.db.mapper.DjSectionMapper;
 import cn.dlbdata.dj.db.pojo.DjSection;
 import cn.dlbdata.dj.service.ISectionService;
@@ -51,6 +55,18 @@ public class SectionServiceImpl extends BaseServiceImpl implements ISectionServi
 		}
 		sectionMapper.deleteByPrimaryKey(id);
 		return id;
+	}
+
+	@Override
+	public List<SelectVo> getSectionList() {
+		List<SelectVo> rlist = new ArrayList<>();
+		List<DjSection> list = sectionMapper.selectAll();
+		if (list != null) {
+			for (DjSection section : list) {
+				rlist.add(new SelectVo(section.getId() + "", section.getName()));
+			}
+		}
+		return rlist;
 	}
 
 }

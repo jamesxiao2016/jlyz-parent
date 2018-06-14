@@ -23,7 +23,8 @@ body.signin {
 	height: 310px;
 	background: rgba(0, 0, 0, 1);
 	border-radius: 15px;
-	opacity: 0.2893;
+	opacity: 0.3;
+	padding-top: 15px;
 }
 
 .loginpanel .title {
@@ -32,6 +33,7 @@ body.signin {
 	font-family: PingFang-SC-Bold;
 	color: rgba(255, 255, 255, 1);
 	line-height: 48px;
+	margin-top: 20px;
 }
 
 .loginpanel .font {
@@ -43,9 +45,11 @@ body.signin {
 .loginbtn {
 	width: 220px;
 	height: 40px;
-	background: rgba(233, 144, 54, 1);
+	background: #E99036;
 	border-radius: 33px;
-	opacity: 0.8001999999999999;
+	opacity: 0.9;
+	color:#FFFFFF;
+	font-size: 18px;
 }
 
 .form-control,

@@ -79,4 +79,19 @@ public interface IDeptService {
 	 */
 	boolean addBranch(DeptAddOrUpdateDto dto,UserVo user);
 
+	/**
+	 * 修改党支部.
+	 * @param id 党支部Id
+	 * @return
+	 */
+	boolean updateBranch(Long id,DeptAddOrUpdateDto dto,UserVo user);
+
+	/**
+	 * 作废党支部.
+	 * @param id
+	 * @param user
+	 * @return
+	 */
+	boolean invalidBranch(Long id,UserVo user);
+
 }

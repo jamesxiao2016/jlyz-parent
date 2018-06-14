@@ -1,13 +1,22 @@
 package cn.dlbdata.dj.web.controller.admin;
 
-import cn.dlbdata.dj.common.core.util.constant.CoreConst;
-import cn.dlbdata.dj.common.core.web.vo.ResultVo;
-import cn.dlbdata.dj.service.IBuildingService;
-import cn.dlbdata.dj.web.base.BaseController;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import cn.dlbdata.dj.db.dto.building.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import cn.dlbdata.dj.common.core.util.constant.CoreConst;
+import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.common.core.web.vo.SelectResultVo;
+import cn.dlbdata.dj.common.core.web.vo.SelectVo;
+import cn.dlbdata.dj.db.dto.building.BuildingAddOrUpdateDto;
+import cn.dlbdata.dj.service.IBuildingService;
+import cn.dlbdata.dj.web.base.BaseController;
 
 
 @Controller
@@ -54,4 +63,19 @@ public class AdminBuildingController extends BaseController {
     result.setMsg("作废成功!");
         return result;
     }
+    
+
+	/**
+	 * 根据片区ID获取楼宇列表
+	 * 
+	 * @param sectionId
+	 * @return
+	 */
+    @RequestMapping("/getBuildingList")
+	@ResponseBody
+	public List<SelectVo> getBuildingList(Long sectionId) {
+		List<SelectVo> data = buildingService.getBuildingListBySectionId(sectionId);
+		return data;
+	}
+
 }

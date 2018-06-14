@@ -27,7 +27,7 @@ public class DjDept {
     /**
      * 楼层
      */
-    private String floor;
+    private Integer floor;
 
     /**
      * 部门名称
@@ -146,7 +146,7 @@ public class DjDept {
      *
      * @return floor - 楼层
      */
-    public String getFloor() {
+    public Integer getFloor() {
         return floor;
     }
 
@@ -155,7 +155,7 @@ public class DjDept {
      *
      * @param floor 楼层
      */
-    public void setFloor(String floor) {
+    public void setFloor(Integer floor) {
         this.floor = floor;
     }
 

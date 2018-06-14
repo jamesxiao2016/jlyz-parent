@@ -24,6 +24,14 @@ public interface IUserService {
 	 * @return
 	 */
 	public ResultVo<UserVo> login(LoginVo vo);
+	
+	/**
+	 * 用户登录
+	 * 
+	 * @param vo
+	 * @return
+	 */
+	public ResultVo<UserVo> loginAdmin(LoginVo vo);
 
 	/**
 	 * 获取党员详细信息
