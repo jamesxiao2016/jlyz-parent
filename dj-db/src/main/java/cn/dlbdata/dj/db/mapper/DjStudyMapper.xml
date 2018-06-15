@@ -65,13 +65,13 @@
   	</where>
   </select>
   
-  <select id="getPendingCount" parameterMap="map" resultType="java.lang.Integer">
-  	select count(*) from dj_study where (status = 0 or status = 2)
+  <select id="getPendingCount" resultType="java.lang.Integer">
+  	select count(*) from dj_study where status >=0
   	<if test="typeId != null">
-  		djTypeId = #{typeId}
+  		and dj_type_Id = #{typeId}
   	</if>
   	<if test="userId != null">
-  		createUserId = #{userId}
+  		and create_user_id = #{userId}
   	</if>
   </select>
   
