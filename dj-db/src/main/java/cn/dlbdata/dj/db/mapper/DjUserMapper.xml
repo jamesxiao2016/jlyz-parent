@@ -29,4 +29,12 @@
       </if>
     </where>
   </select>
+  
+  <select id="getByRoleIdAndDeptIdIn" resultMap="BaseResultMap">
+    select id,dj_partymember_id,name,pwd,role_id,status,dept_id,token,avatar,login_count,last_time,create_time,user_name
+    from dj_user where role_id = #{roleId} and dept_id in
+    <foreach item="item" index="index" collection="deptIds" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
 </mapper>
