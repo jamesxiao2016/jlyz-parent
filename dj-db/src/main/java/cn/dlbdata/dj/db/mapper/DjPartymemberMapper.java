@@ -42,7 +42,7 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
      * @param id
      * @return
      */
-    IdNameTotalScoreVo getTotalScoreById(long id);
+    IdNameTotalScoreVo getTotalScoreById(@Param("id") long id,@Param("year") int year);
     /**
      * 
      * <p>Title: getSumScoreByIdCard</p> 

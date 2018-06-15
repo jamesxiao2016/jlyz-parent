@@ -758,7 +758,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 	@Override
 	public PioneeringApplyDetailVo getPioneeringApplyDetail(Long partyMemberId) {
 	    int year = Calendar.getInstance().get(Calendar.YEAR);
-		IdNameTotalScoreVo idNameTotalScoreVo = partymemberMapper.getTotalScoreById(partyMemberId);
+		IdNameTotalScoreVo idNameTotalScoreVo = partymemberMapper.getTotalScoreById(partyMemberId,year);
 		if (idNameTotalScoreVo == null) {
 			return new PioneeringApplyDetailVo();
 		}
