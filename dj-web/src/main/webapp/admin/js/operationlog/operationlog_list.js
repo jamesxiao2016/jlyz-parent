@@ -19,15 +19,12 @@ function initEvent() {
 		});
 
 		sectionId = $("#selsection").select2("val");
-
-//		initTree(sectionId);
 		deptList(sectionId);
 	});
 
 	$("#selsection").on("change", function() {
 		sectionId = $(this).val();
 		console.log(sectionId);
-//		initTree(sectionId);
 		deptList(sectionId);
 	});
 }
@@ -50,6 +47,7 @@ function deptList(sectionId) {
 
 function query() {
 	var qryParam = {
+		"optStatus" : $("#optStatus").val(),
 		"userName" : getLikeVal($("#userName").val()),
 		"seldept" :  $("#seldept").val(),
 		"start" : $("#start").val(),

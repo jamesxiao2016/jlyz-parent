@@ -81,7 +81,7 @@
          	and djs.id = #{selType}
          </if>
          <if test="createName != '' and createName != null ">
-         	and REPLACE(s.user_name,' ','') like #{createName}
+         	and s.user_name like #{createName}
          </if>
          <if test="seldept != '' and seldept != null ">
          	and s.dj_dept_id = #{seldept}
@@ -149,21 +149,27 @@
  	LEFT JOIN dj_dept dd ON dd.id = dll.dj_dept_id
  	<where>
  		1 = 1
- 		<if test="userAccount != null and userAccount != ''">
+ 		<if test="loginStatus == 1">
+ 			<if test="userAccount != null and userAccount != ''">
    			and dll.user_account = #{userAccount}
-   		</if>
-   		<if test="userName != null and userName != ''">
- 			and REPLACE(dll.user_name,' ','') like #{userName}
-   		</if>
-   		<if test="status != '' and status != null">
- 			and dll.status = #{status}
-   		</if>
-   		<if test="seldept != '' and seldept != null">
- 			and dll.dj_dept_id = #{seldept}
-   		</if>
-   		<if test="orderBy != '' and orderBy != null">
- 			order by dll.create_time desc
-   		</if>
+	   		</if>
+	   		<if test="userName != null and userName != ''">
+	 			and dll.user_name like #{userName}
+	   		</if>
+	   		<if test="status != '' and status != null">
+	 			and dll.status = #{status}
+	   		</if>
+	   		<if test="seldept != '' and seldept != null">
+	 			and dll.dj_dept_id = #{seldept}
+	   		</if>
+ 		</if>
+ 		<if test="loginStatus == 0">
+ 			and dj_user_id is null
+ 		</if>
+ 		
+	   		<if test="orderBy != '' and orderBy != null">
+	 			order by dll.create_time desc
+	   		</if>
    	</where> 
  </select> 
  
@@ -204,12 +210,17 @@
  	LEFT JOIN dj_opt_dict dod ON dod.id = dlo.opt_id
  	<where>
  		1 = 1
- 		<if test="userName != null and userName != ''">
- 			and REPLACE(du.user_name,' ','') like #{userName}
-   		</if>
-   		<if test="seldept != null and seldept != ''">
- 			and dlo.dj_dept_id = #{seldept}
-   		</if>
+ 		<if test="optStatus == 1">
+ 			<if test="userName != null and userName != ''">
+ 				and du.user_name like #{userName}
+	   		</if>
+	   		<if test="seldept != null and seldept != ''">
+	 			and dlo.dj_dept_id = #{seldept}
+	   		</if>
+ 		</if>
+ 		<if test="optStatus == 0">
+ 			and dlo.dj_dept_id is null
+ 		</if>
    		<if test="orderBy != '' and orderBy != null">
  			order by dlo.create_time desc
    		</if>
@@ -260,7 +271,7 @@
  			and dp.name = #{userName}
    		</if>
    		<if test="seldept != '' and seldept != null">
- 			and dd.name = ${seldept}
+ 			and dd.id = ${seldept}
    		</if>
    		<if test="orderBy != '' and orderBy != null">
  			order by  dpd.payment_time desc

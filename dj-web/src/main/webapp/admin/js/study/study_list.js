@@ -17,18 +17,15 @@ function initEvent() {
 		$('#selsection').select2({
 			data : data
 		});
-
 		sectionId = $("#selsection").select2("val");
-
-//		initTree(sectionId);
 		deptList(sectionId);
 	});
 
 	$("#selsection").on("change", function() {
 		sectionId = $(this).val();
 		console.log(sectionId);
-//		initTree(sectionId);
 		deptList(sectionId);
+		query();
 	});
 }
 
@@ -44,6 +41,7 @@ function deptList(sectionId) {
         $select.select2({
 			data : data
 		});
+        query();
 	});
 }
 
@@ -67,6 +65,7 @@ function query() {
 
 function init() {
 	var qryParam = {
+		"seldept" : "0",
 		"orderBy" : 'create_time desc'
 	};
 	jQuery(grid_selector).jqGrid({
