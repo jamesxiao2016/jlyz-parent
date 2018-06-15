@@ -157,9 +157,16 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	@Transactional
 	@Override
 	public boolean addBranch(DeptAddOrUpdateDto dto, UserVo user) {
-        DjSection section = sectionMapper.selectByPrimaryKey(dto.getSectionId());
+        DjBuilding building = buildingMapper.selectByPrimaryKey(dto.getBuildingId());
+        if (building == null) {
+            throw new BusinessException("所选的大楼不存在!",CoreConst.ResultCode.NotFound.getCode());
+        }
+        if (building.getDjSectionId() == null) {
+            throw new BusinessException("大楼对应的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
+        }
+        DjSection section = sectionMapper.selectByPrimaryKey(building.getDjSectionId());
         if (section == null) {
-            throw new BusinessException("所选的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
+            throw new BusinessException("大楼对应的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
         }
 	    //当传入的上级党支部为0或者null，该支部为根支部，否则则为叶子支部(此时需要校验上级支部是否存在)
 	    if (dto.getParentId() != null && dto.getParentId() != 0) {
@@ -171,22 +178,19 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	            throw new BusinessException("所选的上级党支部不属于所选片区!",CoreConst.ResultCode.Forbidden.getCode());
             }
         }
-        DjBuilding building = buildingMapper.selectByPrimaryKey(dto.getBuildingId());
-	    if (building == null) {
-	        throw new BusinessException("所选的大楼不存在!",CoreConst.ResultCode.NotFound.getCode());
-        }
+
         DjDept dept = new DjDept();
         dept.setId(DigitUtil.generatorLongId());
-        dept.setDjSectionId(dto.getSectionId());
-        dept.setDjBuildingId(dto.getBuildingId());
+        dept.setDjSectionId(section.getId());
+        dept.setDjBuildingId(building.getId());
         dept.setFloor(dto.getFloor());
         dept.setName(dto.getName());
         dept.setAddress(dto.getAddress());
         dept.setPhone(dto.getPhone());
         dept.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
         dept.setParentId(dto.getParentId());
+        dept.setBuildingCode(building.getCode());
         deptMapper.insert(dept);
-
 		return true;
 	}
 
@@ -206,9 +210,16 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
         if (dept.getStatus() != DlbConstant.BASEDATA_STATUS_VALID) {
             throw new BusinessException("只有有效状态的党支部才能修改!",CoreConst.ResultCode.Forbidden.getCode());
         }
-        DjSection section = sectionMapper.selectByPrimaryKey(dto.getSectionId());
+        DjBuilding building = buildingMapper.selectByPrimaryKey(dto.getBuildingId());
+        if (building == null) {
+            throw new BusinessException("所选的大楼不存在!",CoreConst.ResultCode.NotFound.getCode());
+        }
+        if (building.getDjSectionId() == null) {
+            throw new BusinessException("大楼对应的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
+        }
+        DjSection section = sectionMapper.selectByPrimaryKey(building.getDjSectionId());
         if (section == null) {
-            throw new BusinessException("所选的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
+            throw new BusinessException("大楼对应的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
         }
         //当传入的上级党支部为0或者null，该支部为根支部，否则则为叶子支部(此时需要校验上级支部是否存在)
         if (dto.getParentId() != null && dto.getParentId() != 0) {
@@ -220,10 +231,6 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
                 throw new BusinessException("所选的上级党支部不属于所选片区!",CoreConst.ResultCode.Forbidden.getCode());
             }
         }
-        DjBuilding building = buildingMapper.selectByPrimaryKey(dto.getBuildingId());
-        if (building == null) {
-            throw new BusinessException("所选的大楼不存在!",CoreConst.ResultCode.NotFound.getCode());
-        }
         if (dto.getPrincipalId() != null) {
             DjUser newPrincipal = userMapper.selectByPrimaryKey(dto.getPrincipalId());
 
@@ -231,7 +238,7 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
                 throw new BusinessException("所选的支部书记不存在!",CoreConst.ResultCode.NotFound.getCode());
             }
             if (!newPrincipal.getDeptId().equals(dept.getId())) {
-                throw new BusinessException("只有本支部的人才能被设为本部门的支部书记!",
+                throw new BusinessException("只有本支部的人才能被设为本支部的支部书记!",
                         CoreConst.ResultCode.Forbidden.getCode());
             }
             if (dept.getPrincipalId() != null) {
@@ -265,13 +272,14 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
             dept.setPrincipalName(null);
         }
 
-        dept.setDjSectionId(dto.getSectionId());
-        dept.setDjBuildingId(dto.getBuildingId());
+        dept.setDjSectionId(section.getId());
+        dept.setDjBuildingId(building.getId());
         dept.setFloor(dto.getFloor());
         dept.setName(dto.getName());
         dept.setAddress(dto.getAddress());
         dept.setPhone(dto.getPhone());
         dept.setParentId(dto.getParentId());
+        dept.setBuildingCode(building.getCode());
         deptMapper.updateByPrimaryKey(dept);
         return true;
     }

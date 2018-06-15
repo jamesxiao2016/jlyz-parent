@@ -88,6 +88,12 @@ public class DjDept {
     private String honor;
 
     /**
+     * 楼宇编号
+     */
+    @Column(name = "building_code")
+    private String buildingCode;
+
+    /**
      * 获取记录ID
      *
      * @return id - 记录ID
@@ -332,4 +338,12 @@ public class DjDept {
 	public void setHonor(String honor) {
 		this.honor = honor;
 	}
+
+    public String getBuildingCode() {
+        return buildingCode;
+    }
+
+    public void setBuildingCode(String buildingCode) {
+        this.buildingCode = buildingCode;
+    }
 }

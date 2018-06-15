@@ -32,4 +32,6 @@ public interface DjDeptMapper extends Mapper<DjDept> {
 
 	@Select("select name as name,id as deptId,parent_id as parentId from dj_dept where dj_section_id = #{sectionId}")
 	List<DeptTreeVo> getDeptTree(Long sectionId);
+
+	List<DjDept> getByBuildingId(long buildingId);
 }

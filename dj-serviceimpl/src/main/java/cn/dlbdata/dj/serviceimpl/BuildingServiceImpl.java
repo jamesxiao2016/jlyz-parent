@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.dlbdata.dj.db.mapper.DjDeptMapper;
+import cn.dlbdata.dj.db.mapper.DjSectionMapper;
+import cn.dlbdata.dj.db.pojo.DjDept;
+import cn.dlbdata.dj.db.pojo.DjSection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +27,10 @@ public class BuildingServiceImpl implements IBuildingService {
 
 	@Autowired
 	private DjBuildingMapper buildingMapper;
+	@Autowired
+	private DjSectionMapper sectionMapper;
+	@Autowired
+	private DjDeptMapper djDeptMapper;
 
 	/**
 	 * 新增楼宇
@@ -41,10 +49,16 @@ public class BuildingServiceImpl implements IBuildingService {
 		if (existWithName) {
 			throw new BusinessException("已存在同名的楼宇!", CoreConst.ResultCode.Forbidden.getCode());
 		}
-
+        if (dto.getSectionId() == null) {
+			throw new BusinessException("请选择片区",CoreConst.ResultCode.Forbidden.getCode());
+		}
+		DjSection section = sectionMapper.selectByPrimaryKey(dto.getSectionId());
+		if (section == null) {
+			throw new BusinessException("所选的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
+		}
 		DjBuilding building = new DjBuilding();
 
-		building.setDjSectionId(dto.getSectionId());
+		building.setDjSectionId(section.getId());
 		building.setName(dto.getName());
 		building.setFloorNum(dto.getFloorNum());
 		building.setAddress(dto.getAddress());
@@ -68,6 +82,13 @@ public class BuildingServiceImpl implements IBuildingService {
 	@Transactional
 	@Override
 	public boolean update(Long id, BuildingAddOrUpdateDto dto) {
+		if (dto.getSectionId() == null) {
+			throw new BusinessException("请选择片区",CoreConst.ResultCode.Forbidden.getCode());
+		}
+		DjSection section = sectionMapper.selectByPrimaryKey(dto.getSectionId());
+		if (section == null) {
+			throw new BusinessException("所选的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
+		}
 		DjBuilding building = buildingMapper.selectByPrimaryKey(id);
 		if (building == null) {
 			throw new BusinessException("楼宇不存在!", CoreConst.ResultCode.NotFound.getCode());
@@ -91,6 +112,12 @@ public class BuildingServiceImpl implements IBuildingService {
 		building.setCode(dto.getCode());
 
 		buildingMapper.updateByPrimaryKey(building);
+		List<DjDept> depts = djDeptMapper.getByBuildingId(building.getId());
+		for (DjDept dept : depts) {
+			dept.setBuildingCode(building.getCode());
+			dept.setDjSectionId(section.getId());
+			djDeptMapper.updateByPrimaryKey(dept);
+		}
 		return true;
 	}
 

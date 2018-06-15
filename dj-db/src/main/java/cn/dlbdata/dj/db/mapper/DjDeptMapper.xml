@@ -19,6 +19,8 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="principal_id" jdbcType="BIGINT" property="principalId" />
     <result column="principal_name" jdbcType="VARCHAR" property="principalName" />
+    <result column="building_code" jdbcType="VARCHAR" property="buildingCode" />
+    <result column="honor" jdbcType="VARCHAR" property="honor" />
   </resultMap>
 
 
@@ -40,5 +42,11 @@
 
   <select id="getDeptIdsBySectionId" resultType="java.lang.Long">
     select id from dj_dept where dj_section_id = #{sectionId}
+  </select>
+
+  <select id="getByBuildingId" resultMap="BaseResultMap">
+    select id,dj_section_id,dj_building_id,floor,name,people_num,address,phone,status,parent_id,dept_level,create_time,
+    principal_id,principal_name,building_code,honor
+    from dj_dept where dj_building_id = #{buildingId}
   </select>
 </mapper>
