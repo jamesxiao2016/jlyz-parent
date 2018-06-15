@@ -62,8 +62,9 @@
         pm.dept_id = #{deptId}
   </select>
 
-  <select id="getTotalScoreById" parameterType="long" resultType="cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo">
-    select id,name,ifnull((SELECT sum(score) FROM dj_score sc WHERE sc.user_id = pm.id),0) as score from dj_partymember pm where id =#{id}
+  <select id="getTotalScoreById"  resultType="cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo">
+    select pm.id,pm.name,ifnull((SELECT sum(score) FROM dj_score sc WHERE sc.user_id = pm.id and sc.add_year = #{year}),0) as totalScore from dj_partymember pm
+    where pm.id =#{id}
   </select>
   
   <select id="getSumScoreByIdCard" parameterType="map" resultType="float">
