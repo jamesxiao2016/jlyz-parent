@@ -956,7 +956,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		}
 		// 政治学习
 		Float zzxxNow = scoreMapper.getSumScoreByUserIdAndType(user.getUserId(), year,
-				ActiveTypeEnum.ACTIVE_A.getActiveId(), ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId());
+				ActiveTypeEnum.ACTIVE_A.getActiveId(), ActiveSubTypeEnum.ACTIVE_SUB_B.getActiveSubId());
 		zzxxNow = zzxxNow == null ? 0L : zzxxNow;
 		Float zzxxInProcess = 0F;
 		if (zzxxNow < 5F) {
