@@ -53,6 +53,7 @@ import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.PartyVo;
 import cn.dlbdata.dj.vo.UserVo;
+import tk.mybatis.mapper.entity.Example;
 
 @Service
 public class PartyMemberService extends BaseServiceImpl implements IPartyMemberService {
@@ -130,11 +131,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 				if (vo.getId() == ActiveTypeEnum.ACTIVE_A.getActiveId()
 						|| vo.getId() == ActiveTypeEnum.ACTIVE_B.getActiveId()
 						|| vo.getId() == ActiveTypeEnum.ACTIVE_F.getActiveId()) {
-					DjStudy record = new DjStudy();
-					record.setDjTypeId(vo.getId());
-					record.setStatus(DlbConstant.BASEDATA_STATUS_INVALID);
-					record.setCreateUserId(userId);
-					int count = studyMapper.selectCount(record);
+					int count = studyMapper.getPendingCount(vo.getId(), userId);
 					vo.setPendingNum(count);
 				} else if (vo.getId() == ActiveTypeEnum.ACTIVE_G.getActiveId()) {
 					vo.setPendingNum(0);
@@ -186,31 +183,33 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	/**
 	 * 思想汇报详情
 	 *
-	 * @param id        党员ID
-	 * @param subTypeId 活动二级分类ID
+	 * @param id
+	 *            党员ID
+	 * @param subTypeId
+	 *            活动二级分类ID
 	 * @return
 	 */
 	@Override
 	public ReportDetailVo getReportDetail(Long id, Long subTypeId) {
-		if (!subTypeId.equals(ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId()) &&
-				!subTypeId.equals(ActiveSubTypeEnum.ACTIVE_SUB_L.getActiveSubId())) {
+		if (!subTypeId.equals(ActiveSubTypeEnum.ACTIVE_SUB_K.getActiveSubId())
+				&& !subTypeId.equals(ActiveSubTypeEnum.ACTIVE_SUB_L.getActiveSubId())) {
 			return new ReportDetailVo();
 		}
 		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
 		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
-		List<ReportDetailVo> vos = thoughtsMapper.getReportDetail(id,subTypeId,yearTimeStart,yearTimeEnd);
+		List<ReportDetailVo> vos = thoughtsMapper.getReportDetail(id, subTypeId, yearTimeStart, yearTimeEnd);
 
-		if (vos.size()>0) {
+		if (vos.size() > 0) {
 			ReportDetailVo detailVo = vos.get(0);
 
-			List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_THOUGHTS,detailVo.getId());
+			List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_THOUGHTS,
+					detailVo.getId());
 			detailVo.setPicIds(picIds);
 			return detailVo;
 		} else {
 			return new ReportDetailVo();
 		}
 	}
-
 
 	/**
 	 * 先锋作用评分党员列表
@@ -301,41 +300,43 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		return PageUtils.toPaged(page);
 	}
 
-
-
 	/**
 	 * 遵章守纪详情 支部书记使用
 	 *
-	 * @param partyMemberId 党员Id
+	 * @param partyMemberId
+	 *            党员Id
 	 * @return
 	 */
 	@Override
 	public ObserveLowDetailVo getObserveLowDetailForDept(Long partyMemberId) {
 		Date yearTimeStart = DatetimeUtil.getCurrYearFirst();
 		Date yearTimeEnd = DatetimeUtil.getCurrYearLast();
-		ObserveLowDetailVo vo = disciplineMapper.getByPartyMemberId(partyMemberId,yearTimeStart,yearTimeEnd);
-		if (vo != null ) {
+		ObserveLowDetailVo vo = disciplineMapper.getByPartyMemberId(partyMemberId, yearTimeStart, yearTimeEnd);
+		if (vo != null) {
 			if (vo.getDisId() != null) {
-				List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_DISCIPLINE,vo.getDisId());
+				List<Long> picIds = picRecordMapper.getIdsByTableNameAndRecordId(DlbConstant.TABLE_NAME_DISCIPLINE,
+						vo.getDisId());
 				vo.setPicIds(picIds);
 			}
-		} else {//即使查不出数据也应当返回正确的结构
+		} else {// 即使查不出数据也应当返回正确的结构
 			vo = new ObserveLowDetailVo();
 		}
 		return vo;
 	}
 
-	/* (non-Javadoc)
-	 * <p>Title: getSumScoreByIdCard</p>
-	 * <p>Description: 根据身份证查询总积分</p> 
+	/*
+	 * (non-Javadoc) <p>Title: getSumScoreByIdCard</p> <p>Description: 根据身份证查询总积分</p>
+	 * 
 	 * @param idCard
-	 * @return  
+	 * 
+	 * @return
+	 * 
 	 * @see cn.dlbdata.dj.service.IPartyMemberService#getSumScoreByIdCard(java.lang.String)
 	 */
 	@Override
 	public ResultVo<Float> getSumScoreByIdCard(String idCard) {
 		ResultVo<Float> result = new ResultVo<>();
-		if(idCard == null) {
+		if (idCard == null) {
 			result.setCode(ResultCode.Forbidden.getCode());
 			result.setMsg("获取总积分失败");
 			return result;
@@ -357,28 +358,31 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	 * @return
 	 */
 	@Override
-	public AnnualActiveInfo getAnnualActiveInfo(UserVo user,Integer year) {
+	public AnnualActiveInfo getAnnualActiveInfo(UserVo user, Integer year) {
 		AnnualActiveInfo result = new AnnualActiveInfo();
 
 		Date startTime = DatetimeUtil.getYearFirst(year);
 		Date endTime = DatetimeUtil.getYearLast(year);
 		// 获取参与活动次数
-		int activeCount = activeMapper.getUserActiveCountByActiveTypeAndTime(user.getUserId(), null, startTime, endTime);
+		int activeCount = activeMapper.getUserActiveCountByActiveTypeAndTime(user.getUserId(), null, startTime,
+				endTime);
 		// 获取参与金领驿站活动次数
 		int jlyzCount = activeMapper.getUserActiveCountByActiveTypeAndTime(user.getUserId(),
 				ActiveSubTypeEnum.ACTIVE_SUB_E.getActiveSubId(), startTime, endTime);
-		Float totalScore = scoreMapper.getSumScoreByUserId(user.getUserId(),year);
+		Float totalScore = scoreMapper.getSumScoreByUserId(user.getUserId(), year);
 		result.setScore(totalScore);
 		result.setJlyzActiveNum(jlyzCount);
 		result.setActiveNum(activeCount);
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * <p>Title: selectPartymemberByDeptId</p>
-	 * <p>Description: 提供给外部使用的部门党员信息</p> 
+	/*
+	 * (non-Javadoc) <p>Title: selectPartymemberByDeptId</p> <p>Description: 提供给外部使用的部门党员信息</p>
+	 * 
 	 * @param departmentid
-	 * @return  
+	 * 
+	 * @return
+	 * 
 	 * @see cn.dlbdata.dj.service.IPartyMemberService#selectPartymemberByDeptId(java.lang.Integer)
 	 */
 	@Override
@@ -387,12 +391,15 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		return partyMemberMapper.selectPartymemberByDeptId(deptId);
 	}
 
-	/* (non-Javadoc)
-	 * <p>Title: getRadarChartByUserId</p>
-	 * <p>Description: </p> 
+	/*
+	 * (non-Javadoc) <p>Title: getRadarChartByUserId</p> <p>Description: </p>
+	 * 
 	 * @param userId
+	 * 
 	 * @param year
-	 * @return  
+	 * 
+	 * @return
+	 * 
 	 * @see cn.dlbdata.dj.service.IPartyMemberService#getRadarChartByUserId(java.lang.Long, java.lang.Integer)
 	 */
 	@Override
@@ -431,9 +438,9 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	@Transactional
 	@Override
 	public void addPartyMember(PartyMemberAddOrUpdateDto dto, UserVo user) {
-		boolean exist = userMapper.existWithUserName(dto.getUserName(),null);
+		boolean exist = userMapper.existWithUserName(dto.getUserName(), null);
 		if (exist) {
-			throw new BusinessException("该用户名已存在!",ResultCode.Forbidden.getCode());
+			throw new BusinessException("该用户名已存在!", ResultCode.Forbidden.getCode());
 		}
 		DjUser newUser = new DjUser();
 		newUser.setId(DigitUtil.generatorLongId());
@@ -446,20 +453,20 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		newUser.setCreateTime(new Date());
 		newUser.setUserName(dto.getName());
 		userMapper.insert(newUser);
-		
+
 		DjPartymember partymember = new DjPartymember();
 
-		partymember.setName( dto.getName() );
-		partymember.setSexCode( dto.getSexCode() );
-		partymember.setAge( dto.getAge() );
-		partymember.setPhone( dto.getPhone() );
-		partymember.setEmail( dto.getEmail() );
-		partymember.setIdcard( dto.getIdcard() );
-		partymember.setDeptId( dto.getDeptId() );
-		partymember.setEducationCode( dto.getEducationCode() );
-		partymember.setPartyPostCode( dto.getPartyPostCode() );
+		partymember.setName(dto.getName());
+		partymember.setSexCode(dto.getSexCode());
+		partymember.setAge(dto.getAge());
+		partymember.setPhone(dto.getPhone());
+		partymember.setEmail(dto.getEmail());
+		partymember.setIdcard(dto.getIdcard());
+		partymember.setDeptId(dto.getDeptId());
+		partymember.setEducationCode(dto.getEducationCode());
+		partymember.setPartyPostCode(dto.getPartyPostCode());
 		partymember.setId(newUser.getId());
-		partymember.setBirthDate(DatetimeUtil.getDateByStr(dto.getBirthDate(),null));
+		partymember.setBirthDate(DatetimeUtil.getDateByStr(dto.getBirthDate(), null));
 		partymember.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		partyMemberMapper.insert(partymember);
 	}
@@ -478,29 +485,29 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		DjPartymember partymember = partyMemberMapper.selectByPrimaryKey(id);
 		DjUser oldUser = userMapper.selectByPrimaryKey(id);
 		if (partymember == null || oldUser == null) {
-			throw new BusinessException("该党员不存在!",ResultCode.NotFound.getCode());
+			throw new BusinessException("该党员不存在!", ResultCode.NotFound.getCode());
 		}
 
-		boolean exist = userMapper.existWithUserName(dto.getUserName(),id);
+		boolean exist = userMapper.existWithUserName(dto.getUserName(), id);
 		if (exist) {
-			throw new BusinessException("该用户名已存在!",ResultCode.Forbidden.getCode());
+			throw new BusinessException("该用户名已存在!", ResultCode.Forbidden.getCode());
 		}
 		oldUser.setName(dto.getUserName());
 		oldUser.setDeptId(dto.getDeptId());
 		oldUser.setUserName(dto.getName());
 		userMapper.updateByPrimaryKey(oldUser);
 
-		partymember.setName( dto.getName() );
-		partymember.setSexCode( dto.getSexCode() );
-		partymember.setAge( dto.getAge() );
-		partymember.setPhone( dto.getPhone() );
-		partymember.setEmail( dto.getEmail() );
-		partymember.setIdcard( dto.getIdcard() );
-		partymember.setDeptId( dto.getDeptId() );
-		partymember.setEducationCode( dto.getEducationCode() );
-		partymember.setPartyPostCode( dto.getPartyPostCode() );
+		partymember.setName(dto.getName());
+		partymember.setSexCode(dto.getSexCode());
+		partymember.setAge(dto.getAge());
+		partymember.setPhone(dto.getPhone());
+		partymember.setEmail(dto.getEmail());
+		partymember.setIdcard(dto.getIdcard());
+		partymember.setDeptId(dto.getDeptId());
+		partymember.setEducationCode(dto.getEducationCode());
+		partymember.setPartyPostCode(dto.getPartyPostCode());
 
-		partymember.setBirthDate(DatetimeUtil.getDateByStr(dto.getBirthDate(),null));
+		partymember.setBirthDate(DatetimeUtil.getDateByStr(dto.getBirthDate(), null));
 		partyMemberMapper.updateByPrimaryKey(partymember);
 
 		return true;
@@ -513,11 +520,11 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	 * @return
 	 */
 	@Override
-	public boolean invalidPartyMember(Long id,UserVo user) {
+	public boolean invalidPartyMember(Long id, UserVo user) {
 		DjPartymember partymember = partyMemberMapper.selectByPrimaryKey(id);
 		DjUser oldUser = userMapper.selectByPrimaryKey(id);
 		if (partymember == null || oldUser == null) {
-			throw new BusinessException("该党员不存在!",ResultCode.NotFound.getCode());
+			throw new BusinessException("该党员不存在!", ResultCode.NotFound.getCode());
 		}
 		partymember.setStatus(DlbConstant.BASEDATA_STATUS_DEL);
 		partyMemberMapper.updateByPrimaryKey(partymember);

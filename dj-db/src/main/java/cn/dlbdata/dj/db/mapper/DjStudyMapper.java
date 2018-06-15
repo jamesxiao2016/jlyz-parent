@@ -14,4 +14,12 @@ public interface DjStudyMapper extends Mapper<DjStudy> {
 	List<ReviewScheduleListVo> getReviewScheduleList(Map<String , Object> map);
 	
 	AdminStudyDetailVo getAdminStudyDetail(@Param("id") Long id);
+	
+	/**
+	 * 获取审批列表的数量
+	 * @param typeId
+	 * @param userId
+	 * @return
+	 */
+	public int getPendingCount(@Param("typeId") Long typeId,@Param("userId") Long userId);
 }

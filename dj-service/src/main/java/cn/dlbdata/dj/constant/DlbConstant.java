@@ -7,6 +7,8 @@ public class DlbConstant {
 	public static final int BASEDATA_STATUS_INVALID = 0;
 	/** 有效 */
 	public static final int BASEDATA_STATUS_VALID = 1;
+	/** 已拒绝 */
+	public static final int BASEDATA_STATUS_REJECT = 2;
 
 	/** 表名-自主学习表 */
 	public static final String TABLE_NAME_STUDY = "dj_study";
