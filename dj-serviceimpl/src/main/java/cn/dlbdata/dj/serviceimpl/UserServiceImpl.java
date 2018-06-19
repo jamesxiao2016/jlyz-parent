@@ -150,7 +150,10 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		String token = JwtTokenUtil.createToken(user.getId() + "", user.getName(), user.getDeptId() + "",
 				user.getRoleId() + "", 0);
 		data.setToken(token);
-		JwtTokenUtil.USER_TICKET_CACHE.put(MD5Util.encode(token), token);
+
+		//加入缓存
+		JwtTokenUtil.USER_TOKEN_CACHE.put(MD5Util.encode(token), token);
+		CacheManager.getInstance().put(user.getId()+ "", data);
 		
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(data);
@@ -198,11 +201,13 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		String token = JwtTokenUtil.createToken(user.getId() + "", user.getName(), user.getDeptId() + "",
 				user.getRoleId() + "", 0);
 		data.setToken(token);
-		JwtTokenUtil.USER_TICKET_CACHE.put(MD5Util.encode(token), token);
 		long endTime = System.currentTimeMillis();
 		logger.info("create token time->" + (endTime - endQueryUserInfoTime));
 
+		//加入缓存
+		JwtTokenUtil.USER_TOKEN_CACHE.put(MD5Util.encode(token), token);
 		CacheManager.getInstance().put(user.getId() + "", data);
+		
 		logger.info("total time->" + (endTime - startTime));
 		// 返回结果
 		result.setCode(ResultCode.OK.getCode());

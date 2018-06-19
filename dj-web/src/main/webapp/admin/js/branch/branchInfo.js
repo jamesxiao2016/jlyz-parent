@@ -8,11 +8,8 @@ $(function() {
 });
 
 function initEvent() {
-	$("#btnQuery").click(query);
 
-	$("#btnAdd").click(function() {
-		location.href = "add.html";
-	});
+	$("#btnSubmit").click(saveDeptInfo);
 
 	$.post("../../admin/section/getSectionList", function(data) {
 		$('#selsection').select2({
@@ -33,16 +30,54 @@ function initEvent() {
 	});
 }
 
+function saveDeptInfo() {
+	// 验证参数
+	if (!validatorForm.form()) {
+		return;
+	}
+	var id = $("#id").val();
+	var formData = $("#deptForm").formSerialize();
+	console.log(formData);
+	$.ajaxPost("../../admin/updateBranch/"+id, formData, function(data) {
+		if (data.code == 1000) {
+			layer.msg("保存成功");
+		} else {
+			if (data.reason) {
+				layer.msg(data.reason);
+			} else {
+				layer.msg("保存失败");
+			}
+		}
+	});
+}
+
+var validatorForm;
+
+function initValidate() {
+	var icon = "<i class='fa fa-times-circle'></i> ";
+	validatorForm = $("#productForm").validate({
+		rules : {
+			roleName : {
+				required : true,
+				minlength : 2
+			}
+		},
+		messages : {
+			roleName : icon + "请输入角色名称"
+		}
+	});
+}
+
 function loadBuilding(sectionId) {
-	var $select = $('#dj_building_id');
+	var $select = $('#buildingId');
 	var url = '../../admin/building/getBuildingList?sectionId=' + sectionId;
 	$.post(url, function(data) {
-		
-		instance = $select.data('select2');  
-        if(instance){  
-          $select.select2('destroy').empty();  
-        }
-        $select.select2({
+
+		instance = $select.data('select2');
+		if (instance) {
+			$select.select2('destroy').empty();
+		}
+		$select.select2({
 			data : data
 		});
 	});
@@ -61,7 +96,9 @@ function query(deptId) {
 }
 
 function init() {
-	var qryParam = {"deptId" : 0};
+	var qryParam = {
+		"deptId" : 0
+	};
 	jQuery(grid_selector).jqGrid({
 		sortable : true,
 		url : '../../api/v1/component/query',
@@ -151,6 +188,16 @@ var setting = {
 function zTreeOnClick(event, treeId, treeNode, clickFlag) {
 	var deptId = treeNode["deptId"];
 	query(deptId);
+
+	getDeptInfo(deptId);
+}
+
+function getDeptInfo(deptId) {
+	$.get("../../admin/branch/detail/" + deptId, function(data) {
+		console.log(data);
+		$.setDataToForm(data.data);
+		$("#buildingId").val(data.data.buildingId).trigger("change");
+	});
 }
 
 var zTreeObj;

@@ -297,7 +297,7 @@ $.ajaxPost = function(url, param, callback, completeCallback, errorCallback) {
 		}
 	}
 	if (!token) {
-		//top.location.href = getLoginUrl();
+		// top.location.href = getLoginUrl();
 	}
 	return $.ajax({
 		type : "POST",
@@ -337,3 +337,23 @@ $.ajaxPost = function(url, param, callback, completeCallback, errorCallback) {
 		}
 	});
 }
+
+var baseUrl = "/dangjian";
+var token = localStorage.getItem("atoken");
+
+$.ajaxSetup({
+	dataType : "json",
+	cache : false,
+	headers : {
+		"atoken" : token
+	},
+	xhrFields : {
+		withCredentials : true
+	},
+	complete : function(xhr) {
+		// token过期，则跳转到登录页面
+		if (xhr.responseJSON.code == 1010) {
+			parent.location.href = baseUrl + '/admin/login.html';
+		}
+	}
+});

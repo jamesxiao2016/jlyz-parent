@@ -34,7 +34,7 @@ function login() {
 		pwd : $.md5(pwd)
 	}, function(data) {
 		if (data.code == 1000) {
-			storeItem("admintoken", data.data.token);
+			storeItem("atoken", data.data.token);
 			location.href = "index.html";
 		} else {
 			if (data.reason) {

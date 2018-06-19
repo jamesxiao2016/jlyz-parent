@@ -52,6 +52,16 @@ public class BaseController {
 
 		return currUser;
 	}
+	
+	protected UserVo getCurrentAdminUserFromCache() {
+		// 从header中获取token
+		String token = getHeader("atoken");
+
+		// 从缓存中获取当前用户的信息
+		UserVo currUser = getCacheUserByToken(token);
+
+		return currUser;
+	}
 
 	/**
 	 * 获取Token中用户ID
@@ -67,7 +77,7 @@ public class BaseController {
 		}
 		String tokenMd5 = MD5Util.encode(token);
 		// 检查token是否有效
-		String tokenCache = JwtTokenUtil.USER_TICKET_CACHE.getIfPresent(tokenMd5);
+		String tokenCache = JwtTokenUtil.USER_TOKEN_CACHE.getIfPresent(tokenMd5);
 		if (!token.equals(tokenCache)) {
 			return null;
 		}
@@ -111,7 +121,7 @@ public class BaseController {
 
 		String tokenMd5 = MD5Util.encode(token);
 		// 检查token是否有效
-		String tokenCache = JwtTokenUtil.USER_TICKET_CACHE.getIfPresent(tokenMd5);
+		String tokenCache = JwtTokenUtil.USER_TOKEN_CACHE.getIfPresent(tokenMd5);
 		if (!token.equals(tokenCache)) {
 			return null;
 		}
