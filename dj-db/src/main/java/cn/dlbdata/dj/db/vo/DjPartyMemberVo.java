@@ -1,14 +1,22 @@
 package cn.dlbdata.dj.db.vo;
 
+import java.sql.Date;
+
 public class DjPartyMemberVo {
 	private String name;
 	private Integer sex;
 	private Float totalScore;
 	private Integer educationCode;
 	private Integer partyPostCode;
+	private Date birthDate;
 	
 	
-	
+	public Date getBirthDate() {
+		return birthDate;
+	}
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
 	public Integer getEducationCode() {
 		return educationCode;
 	}
