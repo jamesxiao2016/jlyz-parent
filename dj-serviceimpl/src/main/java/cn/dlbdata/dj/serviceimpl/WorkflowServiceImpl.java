@@ -132,10 +132,10 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		record.setDjRoleId(vo.getRoleId());
 		record.setApplyYear(vo.getApplyYear());
 		DjSubType subType = subTypeMapper.selectByPrimaryKey(vo.getDjSubTypeId());
-		if (subType != null) {
+		if (vo.getScore() == null) {
 			record.setScore(subType.getScore());
-			record.setSubTypeName(subType.getName());
 		}
+		record.setSubTypeName(subType.getName());
 		DjUser approver = null;
 
 		if (vo.getDjTypeId() == ActiveTypeEnum.ACTIVE_A.getActiveId()
