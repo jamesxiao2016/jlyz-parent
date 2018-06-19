@@ -55,7 +55,7 @@ function submitForm() {
 	}
 	var formData = $("#productForm").formSerialize();
 	console.log(formData);
-	$.ajaxPost("../section/save", formData, function(data) {
+	$.ajaxPost("../section/addSection", formData, function(data) {
 		if (data.code == 1000) {
 			history.go(-1);
 		} else {

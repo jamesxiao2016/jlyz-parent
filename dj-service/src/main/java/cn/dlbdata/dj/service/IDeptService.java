@@ -5,6 +5,7 @@ import java.util.List;
 import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjUser;
+import cn.dlbdata.dj.db.vo.dept.DeptDetailVo;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
@@ -100,5 +101,12 @@ public interface IDeptService {
 	 * @return
 	 */
 	boolean invalidBranch(Long id,UserVo user);
+
+	/**
+	 * 查询党支部详情
+	 * @param id
+	 * @return
+	 */
+	DeptDetailVo getDetailBy(Long id);
 
 }

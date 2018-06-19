@@ -11,6 +11,7 @@ import cn.dlbdata.dj.constant.RoleEnum;
 import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
 import cn.dlbdata.dj.db.mapper.*;
 import cn.dlbdata.dj.db.pojo.*;
+import cn.dlbdata.dj.db.vo.dept.DeptDetailVo;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
@@ -327,5 +328,28 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 			return list.get(0);
 		}
 		return null;
+	}
+
+	/**
+	 * 查询党支部详情
+	 *
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public DeptDetailVo getDetailBy(Long id) {
+		DjDept dept = deptMapper.selectByPrimaryKey(id);
+		if (dept ==  null) {
+			return new DeptDetailVo();
+		}
+		DeptDetailVo vo = new DeptDetailVo();
+		vo.setBuildingId(dept.getDjBuildingId());
+		vo.setFloor(dept.getFloor());
+		vo.setName(dept.getName());
+		vo.setAddress(dept.getAddress());
+		vo.setPhone(dept.getPhone());
+		vo.setParentId(dept.getParentId());
+		vo.setPrincipalId(dept.getPrincipalId());
+		return vo;
 	}
 }
