@@ -951,7 +951,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 					ActiveTypeEnum.ACTIVE_B.getActiveId(), ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId());
 			zzshInProcess = zzshInProcess == null ? 0L : zzshInProcess;
 			if ((2.5F - zzshNow) < zzshInProcess) {
-				zzshInProcess = 10F - zzshNow;
+				zzshInProcess = 2.5F - zzshNow;
 			}
 		}
 		// 政治学习
