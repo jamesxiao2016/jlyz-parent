@@ -8,8 +8,8 @@ package cn.dlbdata.dj.web.controller.api.v1;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,64 +24,69 @@ import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IScoreService;
 import cn.dlbdata.dj.web.base.BaseController;
-import cn.dlbdata.dj.web.vo.TokenVo;
+
 /**
- * <p>Title: ApiController</p>
+ * <p>
+ * Title: ApiController
+ * </p>
+ * 
  * @author zhouxuan
- * <p>Description: </p>
- * @date 2018年6月6日  
+ *         <p>
+ *         Description:
+ *         </p>
+ * @date 2018年6月6日
  */
 @Controller
 @RequestMapping("/api/v1/api")
-public class ApiController extends BaseController{
+public class ApiController extends BaseController {
 	@Autowired
 	private IPartyMemberService partyMemberService;
 	@Autowired
 	private IScoreService scoreService;
-    
-    /**
-     * 支部党员信息
-     * @param departmentid
-     * @return
-     */
-    @GetMapping(value="/selectPartymemberByDeptId")
-    @ResponseBody
-    public ResultVo<List<DjPartyMemberVo>> selectPartymemberByDeptId(Integer deptId){
-    	ResultVo<List<DjPartyMemberVo>> result = new ResultVo<>();
-    	if(deptId == null) {
-    		result.setCode(ResultCode.NOT_LOGIN.getCode());
-    		result.setMsg("查询失败");
-    		return result;
-    	}
-        List<DjPartyMemberVo> list = partyMemberService.selectPartymemberByDeptId(deptId);
-       if(list.size() == 0 || list == null) {
-    	result.setCode(ResultCode.NOT_LOGIN.getCode());
-   		result.setMsg("查询失败");
-   		return result;
-       }
-       result.setCode(ResultCode.OK.getCode());
-  		result.setData(list);
-        return result;
-    }
-    /**
-     * 根据用户id获取雷达图
-     * @param userId
-     * @param year
-     * @return
-     */
+
+	/**
+	 * 根据支部ID获取支部名称获取党员信息
+	 * 
+	 * @param deptId
+	 *            支部ID
+	 * @param deptName
+	 *            支部名称
+	 * @return
+	 */
+	@GetMapping(value = "/selectPartymemberByDeptId")
+	@ResponseBody
+	public ResultVo<List<DjPartyMemberVo>> selectPartymemberByDeptId(Long deptId, String deptName) {
+		ResultVo<List<DjPartyMemberVo>> result = new ResultVo<>();
+		if (deptId == null && StringUtils.isEmpty(deptName)) {
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
+			result.setMsg("查询失败");
+			return result;
+		}
+		List<DjPartyMemberVo> list = partyMemberService.selectPartymemberByDeptId(deptId, deptName);
+		if (list.size() == 0 || list == null) {
+			result.setCode(ResultCode.NotFound.getCode());
+			result.setMsg("查询失败");
+			return result;
+		}
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(list);
+		return result;
+	}
+
+	/**
+	 * 根据用户id获取雷达图
+	 * 
+	 * @param userId
+	 * @param year
+	 * @return
+	 */
 	@GetMapping("/getRadarChartByUserId")
 	@ResponseBody
 	public ResultVo<List<ScoreTypeVo>> getRadarChartByUserId(Long userId, Integer year) {
 		ResultVo<List<ScoreTypeVo>> result = new ResultVo<>(ResultCode.OK.getCode());
-//		TokenVo vo = getTokenUserInfo();
-//		if (vo == null) {
-//			logger.error("用户未登录");
-//			result.setCode(ResultCode.NOT_LOGIN.getCode());
-//			return result;
-//		}
 		if (userId == null) {
-			logger.error("用户未登录");
-			result.setCode(ResultCode.NOT_LOGIN.getCode());
+			logger.error("参数错误");
+			result.setCode(ResultCode.ParameterError.getCode());
 			return result;
 		}
 		if (year == null) {
@@ -92,31 +97,30 @@ public class ApiController extends BaseController{
 		return result;
 	}
 
-    
-    /**
-     * 获取党员参加活动的积分明细
-     * @param userId
-     * @return
-    */
-    @GetMapping(value="/getScoreAndActiveList")
-    @ResponseBody
-    public ResultVo<List<ScoreActiveVo>> getScoreAndActiveList(Integer userId){
-    	ResultVo<List<ScoreActiveVo>> result = new ResultVo<>();
-    	if(userId == null ) {
-    		result.setMsg("查询失败！！！");
-    		result.setCode(ResultCode.NOT_LOGIN.getCode());
-    		return result;
-    	}
-    	List<ScoreActiveVo> list = scoreService.getScoreAndActiveList(userId);
-    	if(list == null || list.size() == 0) {
-    		result.setMsg("查询为空，没有相关的信息");
-    		result.setCode(ResultCode.NOT_LOGIN.getCode());
-    		return result;
-    	}
-    	result.setData(list);
-    	result.setCode(ResultCode.OK.getCode());
-    	return result;
-    }
-	
-	
+	/**
+	 * 获取党员参加活动的积分明细
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	@GetMapping(value = "/getScoreAndActiveList")
+	@ResponseBody
+	public ResultVo<List<ScoreActiveVo>> getScoreAndActiveList(Long userId) {
+		ResultVo<List<ScoreActiveVo>> result = new ResultVo<>();
+		if (userId == null) {
+			result.setMsg("用户ID为空");
+			result.setCode(ResultCode.ParameterError.getCode());
+			return result;
+		}
+		List<ScoreActiveVo> list = scoreService.getScoreAndActiveList(userId);
+		if (list == null || list.size() == 0) {
+			result.setMsg("查询为空，没有相关的信息");
+			result.setCode(ResultCode.NotFound.getCode());
+			return result;
+		}
+		result.setData(list);
+		result.setCode(ResultCode.OK.getCode());
+		return result;
+	}
+
 }

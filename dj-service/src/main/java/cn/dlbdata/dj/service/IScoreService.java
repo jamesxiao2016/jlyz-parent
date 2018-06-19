@@ -55,5 +55,5 @@ public interface IScoreService {
 	 */
 	public DjSubType getSubTypeInfoById(Long id);
 	
-	public List<ScoreActiveVo> getScoreAndActiveList(@Param("userId") Integer userId);
+	public List<ScoreActiveVo> getScoreAndActiveList(@Param("userId") Long userId);
 }

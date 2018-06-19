@@ -1,11 +1,13 @@
 package cn.dlbdata.dj.serviceimpl;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,7 @@ import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.mapper.DjThoughtsMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
+import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.pojo.DjUser;
@@ -49,6 +52,7 @@ import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
 import cn.dlbdata.dj.db.vo.party.ReportDetailVo;
 import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
+import cn.dlbdata.dj.service.IDeptService;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.PartyVo;
@@ -73,9 +77,10 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	private DjStudyMapper studyMapper;
 	@Autowired
 	private DjPicRecordMapper picRecordMapper;
-
 	@Autowired
 	private DjUserMapper userMapper;
+	@Autowired
+	private IDeptService deptService;
 
 	@Override
 	public DjPartymember getInfoById(Long id) {
@@ -386,9 +391,24 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	 * @see cn.dlbdata.dj.service.IPartyMemberService#selectPartymemberByDeptId(java.lang.Integer)
 	 */
 	@Override
-	public List<DjPartyMemberVo> selectPartymemberByDeptId(Integer deptId) {
-		// TODO Auto-generated method stub
-		return partyMemberMapper.selectPartymemberByDeptId(deptId);
+	public List<DjPartyMemberVo> selectPartymemberByDeptId(Long deptId, String deptName) {
+		// 参数检查，2个参数必须传一个
+		if (deptId == null && StringUtils.isEmpty(deptName)) {
+			return Collections.emptyList();
+		}
+
+		// 获取部门信息
+		DjDept dept = deptService.getDeptInfoById(deptId);
+		if (StringUtils.isNotEmpty(deptName)) {
+			dept = deptService.getDeptInfoByName(deptName);
+		}
+
+		// 无部门信息
+		if (dept == null) {
+			return Collections.emptyList();
+		}
+
+		return partyMemberMapper.selectPartymemberByDeptId(dept.getId());
 	}
 
 	/*

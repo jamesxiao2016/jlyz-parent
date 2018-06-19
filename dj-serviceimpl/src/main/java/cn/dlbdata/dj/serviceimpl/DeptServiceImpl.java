@@ -16,6 +16,8 @@ import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
 import cn.dlbdata.dj.vo.UserVo;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,13 +31,13 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	@Autowired
 	private DjDeptMapper deptMapper;
 	@Autowired
-    private DjSectionMapper sectionMapper;
+	private DjSectionMapper sectionMapper;
 	@Autowired
 	private DjUserMapper userMapper;
 	@Autowired
-    private DjBuildingMapper buildingMapper;
+	private DjBuildingMapper buildingMapper;
 	@Autowired
-    private DjPartymemberMapper partymemberMapper;
+	private DjPartymemberMapper partymemberMapper;
 
 	@Override
 	public DjDept getDeptInfoById(Long id) {
@@ -56,15 +58,16 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 		return deptMapper.selectByExample(example);
 	}
 
-	/* (non-Javadoc)
-	 * <p>Title: getDeptMessage</p>
-	 * <p>Description: 党支部信息</p> 
-	 * @return  
+	/*
+	 * (non-Javadoc) <p>Title: getDeptMessage</p> <p>Description: 党支部信息</p>
+	 * 
+	 * @return
+	 * 
 	 * @see cn.dlbdata.dj.service.IDeptService#getDeptMessage()
 	 */
 	@Override
 	public DjDept getDeptMessage(Long deptId) {
-		if(deptId == null) {
+		if (deptId == null) {
 			return null;
 		}
 		return deptMapper.selectByPrimaryKey(deptId);
@@ -84,39 +87,43 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 		return voList;
 	}
 
-    /**
-     * 获取片区信息（片区负责人登录时首页）
-     *
-     * @param userId id
-     * @return
-     */
-    @Override
-    public SectionInfoVo getSectionInfo(Long userId) {
-        DjSection  section = sectionMapper.getByPrincipalId(userId);
-        if (section == null) {//当前用户不是片区负责人
-            return new SectionInfoVo();
-        }
-        SectionInfoVo sectionInfoVo = sectionMapper.getSectionInfo(section.getId());
-        sectionInfoVo.setPartyCommittee(DlbConstant.PARTYCOMMITTEE_LJZ);
-        return sectionInfoVo;
-    }
+	/**
+	 * 获取片区信息（片区负责人登录时首页）
+	 *
+	 * @param userId
+	 *            id
+	 * @return
+	 */
+	@Override
+	public SectionInfoVo getSectionInfo(Long userId) {
+		DjSection section = sectionMapper.getByPrincipalId(userId);
+		if (section == null) {// 当前用户不是片区负责人
+			return new SectionInfoVo();
+		}
+		SectionInfoVo sectionInfoVo = sectionMapper.getSectionInfo(section.getId());
+		sectionInfoVo.setPartyCommittee(DlbConstant.PARTYCOMMITTEE_LJZ);
+		return sectionInfoVo;
+	}
 
-	/* (non-Javadoc)
-	 * <p>Title: selectDeptNameByDeptId</p>
-	 * <p>Description: 获取支部名称</p> 
+	/*
+	 * (non-Javadoc) <p>Title: selectDeptNameByDeptId</p> <p>Description: 获取支部名称</p>
+	 * 
 	 * @param deptId
-	 * @return  
+	 * 
+	 * @return
+	 * 
 	 * @see cn.dlbdata.dj.service.IDeptService#selectDeptNameByDeptId(java.lang.Long)
 	 */
-//	@Override
-//	public DjDept selectDeptNameByDeptId(Long deptId) {
-//		
-//		return deptMapper.selectByPrimaryKey(deptId);
-//	}
+	// @Override
+	// public DjDept selectDeptNameByDeptId(Long deptId) {
+	//
+	// return deptMapper.selectByPrimaryKey(deptId);
+	// }
 	/**
 	 * 查询片区内的党支部Id和Name
 	 *
-	 * @param sectionId 片区Id
+	 * @param sectionId
+	 *            片区Id
 	 * @return DeptIdNameDto
 	 */
 	@Override
@@ -140,12 +147,11 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 		return null;
 	}
 
-
-    @Override
-    public List<DeptTreeVo> getDeptTree(Long sectionId) {
-        List<DeptTreeVo> tree = deptMapper.getDeptTree(sectionId);
-        return tree;
-    }
+	@Override
+	public List<DeptTreeVo> getDeptTree(Long sectionId) {
+		List<DeptTreeVo> tree = deptMapper.getDeptTree(sectionId);
+		return tree;
+	}
 
 	/**
 	 * 新增党支部
@@ -157,149 +163,169 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	@Transactional
 	@Override
 	public boolean addBranch(DeptAddOrUpdateDto dto, UserVo user) {
-        DjBuilding building = buildingMapper.selectByPrimaryKey(dto.getBuildingId());
-        if (building == null) {
-            throw new BusinessException("所选的大楼不存在!",CoreConst.ResultCode.NotFound.getCode());
-        }
-        if (building.getDjSectionId() == null) {
-            throw new BusinessException("大楼对应的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
-        }
-        DjSection section = sectionMapper.selectByPrimaryKey(building.getDjSectionId());
-        if (section == null) {
-            throw new BusinessException("大楼对应的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
-        }
-	    //当传入的上级党支部为0或者null，该支部为根支部，否则则为叶子支部(此时需要校验上级支部是否存在)
-	    if (dto.getParentId() != null && dto.getParentId() != 0) {
-	        DjDept parentDept = deptMapper.selectByPrimaryKey(dto.getParentId());
-	        if (parentDept == null) {
-	            throw new BusinessException("所选择的上级党支部不存在!",CoreConst.ResultCode.NotFound.getCode());
-            }
-            if (!parentDept.getDjSectionId().equals(section.getId()) ) {
-	            throw new BusinessException("所选的上级党支部不属于所选片区!",CoreConst.ResultCode.Forbidden.getCode());
-            }
-        }
+		DjBuilding building = buildingMapper.selectByPrimaryKey(dto.getBuildingId());
+		if (building == null) {
+			throw new BusinessException("所选的大楼不存在!", CoreConst.ResultCode.NotFound.getCode());
+		}
+		if (building.getDjSectionId() == null) {
+			throw new BusinessException("大楼对应的片区不存在!", CoreConst.ResultCode.NotFound.getCode());
+		}
+		DjSection section = sectionMapper.selectByPrimaryKey(building.getDjSectionId());
+		if (section == null) {
+			throw new BusinessException("大楼对应的片区不存在!", CoreConst.ResultCode.NotFound.getCode());
+		}
+		// 当传入的上级党支部为0或者null，该支部为根支部，否则则为叶子支部(此时需要校验上级支部是否存在)
+		if (dto.getParentId() != null && dto.getParentId() != 0) {
+			DjDept parentDept = deptMapper.selectByPrimaryKey(dto.getParentId());
+			if (parentDept == null) {
+				throw new BusinessException("所选择的上级党支部不存在!", CoreConst.ResultCode.NotFound.getCode());
+			}
+			if (!parentDept.getDjSectionId().equals(section.getId())) {
+				throw new BusinessException("所选的上级党支部不属于所选片区!", CoreConst.ResultCode.Forbidden.getCode());
+			}
+		}
 
-        DjDept dept = new DjDept();
-        dept.setId(DigitUtil.generatorLongId());
-        dept.setDjSectionId(section.getId());
-        dept.setDjBuildingId(building.getId());
-        dept.setFloor(dto.getFloor());
-        dept.setName(dto.getName());
-        dept.setAddress(dto.getAddress());
-        dept.setPhone(dto.getPhone());
-        dept.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
-        dept.setParentId(dto.getParentId());
-        dept.setBuildingCode(building.getCode());
-        deptMapper.insert(dept);
+		DjDept dept = new DjDept();
+		dept.setId(DigitUtil.generatorLongId());
+		dept.setDjSectionId(section.getId());
+		dept.setDjBuildingId(building.getId());
+		dept.setFloor(dto.getFloor());
+		dept.setName(dto.getName());
+		dept.setAddress(dto.getAddress());
+		dept.setPhone(dto.getPhone());
+		dept.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+		dept.setParentId(dto.getParentId());
+		dept.setBuildingCode(building.getCode());
+		deptMapper.insert(dept);
 		return true;
 	}
 
-    /**
-     * 修改党支部.
-     *
-     * @param id   党支部Id
-     * @return
-     */
-    @Transactional
-    @Override
-    public boolean updateBranch(Long id, DeptAddOrUpdateDto dto, UserVo user) {
-        DjDept dept = deptMapper.selectByPrimaryKey(id);
-        if (dept == null) {
-            throw new BusinessException("所选党支部不存在!",CoreConst.ResultCode.NotFound.getCode());
-        }
-        if (dept.getStatus() != DlbConstant.BASEDATA_STATUS_VALID) {
-            throw new BusinessException("只有有效状态的党支部才能修改!",CoreConst.ResultCode.Forbidden.getCode());
-        }
-        DjBuilding building = buildingMapper.selectByPrimaryKey(dto.getBuildingId());
-        if (building == null) {
-            throw new BusinessException("所选的大楼不存在!",CoreConst.ResultCode.NotFound.getCode());
-        }
-        if (building.getDjSectionId() == null) {
-            throw new BusinessException("大楼对应的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
-        }
-        DjSection section = sectionMapper.selectByPrimaryKey(building.getDjSectionId());
-        if (section == null) {
-            throw new BusinessException("大楼对应的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
-        }
-        //当传入的上级党支部为0或者null，该支部为根支部，否则则为叶子支部(此时需要校验上级支部是否存在)
-        if (dto.getParentId() != null && dto.getParentId() != 0) {
-            DjDept parentDept = deptMapper.selectByPrimaryKey(dto.getParentId());
-            if (parentDept == null) {
-                throw new BusinessException("所选择的上级党支部不存在!",CoreConst.ResultCode.NotFound.getCode());
-            }
-            if (!parentDept.getDjSectionId().equals(section.getId()) ) {
-                throw new BusinessException("所选的上级党支部不属于所选片区!",CoreConst.ResultCode.Forbidden.getCode());
-            }
-        }
-        if (dto.getPrincipalId() != null) {
-            DjUser newPrincipal = userMapper.selectByPrimaryKey(dto.getPrincipalId());
+	/**
+	 * 修改党支部.
+	 *
+	 * @param id
+	 *            党支部Id
+	 * @return
+	 */
+	@Transactional
+	@Override
+	public boolean updateBranch(Long id, DeptAddOrUpdateDto dto, UserVo user) {
+		DjDept dept = deptMapper.selectByPrimaryKey(id);
+		if (dept == null) {
+			throw new BusinessException("所选党支部不存在!", CoreConst.ResultCode.NotFound.getCode());
+		}
+		if (dept.getStatus() != DlbConstant.BASEDATA_STATUS_VALID) {
+			throw new BusinessException("只有有效状态的党支部才能修改!", CoreConst.ResultCode.Forbidden.getCode());
+		}
+		DjBuilding building = buildingMapper.selectByPrimaryKey(dto.getBuildingId());
+		if (building == null) {
+			throw new BusinessException("所选的大楼不存在!", CoreConst.ResultCode.NotFound.getCode());
+		}
+		if (building.getDjSectionId() == null) {
+			throw new BusinessException("大楼对应的片区不存在!", CoreConst.ResultCode.NotFound.getCode());
+		}
+		DjSection section = sectionMapper.selectByPrimaryKey(building.getDjSectionId());
+		if (section == null) {
+			throw new BusinessException("大楼对应的片区不存在!", CoreConst.ResultCode.NotFound.getCode());
+		}
+		// 当传入的上级党支部为0或者null，该支部为根支部，否则则为叶子支部(此时需要校验上级支部是否存在)
+		if (dto.getParentId() != null && dto.getParentId() != 0) {
+			DjDept parentDept = deptMapper.selectByPrimaryKey(dto.getParentId());
+			if (parentDept == null) {
+				throw new BusinessException("所选择的上级党支部不存在!", CoreConst.ResultCode.NotFound.getCode());
+			}
+			if (!parentDept.getDjSectionId().equals(section.getId())) {
+				throw new BusinessException("所选的上级党支部不属于所选片区!", CoreConst.ResultCode.Forbidden.getCode());
+			}
+		}
+		if (dto.getPrincipalId() != null) {
+			DjUser newPrincipal = userMapper.selectByPrimaryKey(dto.getPrincipalId());
 
-            if (newPrincipal == null) {
-                throw new BusinessException("所选的支部书记不存在!",CoreConst.ResultCode.NotFound.getCode());
-            }
-            if (!newPrincipal.getDeptId().equals(dept.getId())) {
-                throw new BusinessException("只有本支部的人才能被设为本支部的支部书记!",
-                        CoreConst.ResultCode.Forbidden.getCode());
-            }
-            if (dept.getPrincipalId() != null) {
-                if (!dept.getPrincipalId().equals(dto.getPrincipalId())) {
-                    DjUser oldPrincipal = userMapper.selectByPrimaryKey(dept.getPrincipalId());
-                    //修改原部门负责人的角色为普通党员
-                    //修改新的部门负责人的角色为党支部书记
-                    oldPrincipal.setRoleId(RoleEnum.PARTY.getId());
-                    newPrincipal.setRoleId(RoleEnum.BRANCH_PARTY.getId());
-                    userMapper.updateByPrimaryKey(oldPrincipal);
-                    dept.setPrincipalName(newPrincipal.getUserName());
-                    dept.setPrincipalId(newPrincipal.getId());
-                }
-            } else {
-                dept.setPrincipalName(newPrincipal.getUserName());
-                dept.setPrincipalId(newPrincipal.getId());
-                //修改新的部门负责人的角色为党支部书记
-                newPrincipal.setRoleId(RoleEnum.BRANCH_PARTY.getId());
-            }
-            userMapper.updateByPrimaryKey(newPrincipal);
-        } else {
-            //清空支部书记
-            if (dept.getPrincipalId() != null) {//如果原来支部书记则需要将原支部书记的角色置为普通党员
-                DjUser oldPrincipal = userMapper.selectByPrimaryKey(dept.getPrincipalId());
-                if (oldPrincipal != null) {
-                    oldPrincipal.setRoleId(RoleEnum.PARTY.getId());
-                    userMapper.updateByPrimaryKey(oldPrincipal);
-                }
-            }
-            dept.setPrincipalId(null);
-            dept.setPrincipalName(null);
-        }
+			if (newPrincipal == null) {
+				throw new BusinessException("所选的支部书记不存在!", CoreConst.ResultCode.NotFound.getCode());
+			}
+			if (!newPrincipal.getDeptId().equals(dept.getId())) {
+				throw new BusinessException("只有本支部的人才能被设为本支部的支部书记!", CoreConst.ResultCode.Forbidden.getCode());
+			}
+			if (dept.getPrincipalId() != null) {
+				if (!dept.getPrincipalId().equals(dto.getPrincipalId())) {
+					DjUser oldPrincipal = userMapper.selectByPrimaryKey(dept.getPrincipalId());
+					// 修改原部门负责人的角色为普通党员
+					// 修改新的部门负责人的角色为党支部书记
+					oldPrincipal.setRoleId(RoleEnum.PARTY.getId());
+					newPrincipal.setRoleId(RoleEnum.BRANCH_PARTY.getId());
+					userMapper.updateByPrimaryKey(oldPrincipal);
+					dept.setPrincipalName(newPrincipal.getUserName());
+					dept.setPrincipalId(newPrincipal.getId());
+				}
+			} else {
+				dept.setPrincipalName(newPrincipal.getUserName());
+				dept.setPrincipalId(newPrincipal.getId());
+				// 修改新的部门负责人的角色为党支部书记
+				newPrincipal.setRoleId(RoleEnum.BRANCH_PARTY.getId());
+			}
+			userMapper.updateByPrimaryKey(newPrincipal);
+		} else {
+			// 清空支部书记
+			if (dept.getPrincipalId() != null) {// 如果原来支部书记则需要将原支部书记的角色置为普通党员
+				DjUser oldPrincipal = userMapper.selectByPrimaryKey(dept.getPrincipalId());
+				if (oldPrincipal != null) {
+					oldPrincipal.setRoleId(RoleEnum.PARTY.getId());
+					userMapper.updateByPrimaryKey(oldPrincipal);
+				}
+			}
+			dept.setPrincipalId(null);
+			dept.setPrincipalName(null);
+		}
 
-        dept.setDjSectionId(section.getId());
-        dept.setDjBuildingId(building.getId());
-        dept.setFloor(dto.getFloor());
-        dept.setName(dto.getName());
-        dept.setAddress(dto.getAddress());
-        dept.setPhone(dto.getPhone());
-        dept.setParentId(dto.getParentId());
-        dept.setBuildingCode(building.getCode());
-        deptMapper.updateByPrimaryKey(dept);
-        return true;
-    }
+		dept.setDjSectionId(section.getId());
+		dept.setDjBuildingId(building.getId());
+		dept.setFloor(dto.getFloor());
+		dept.setName(dto.getName());
+		dept.setAddress(dto.getAddress());
+		dept.setPhone(dto.getPhone());
+		dept.setParentId(dto.getParentId());
+		dept.setBuildingCode(building.getCode());
+		deptMapper.updateByPrimaryKey(dept);
+		return true;
+	}
 
-    /**
-     * 作废党支部.
-     *
-     * @param id
-     * @param user
-     * @return
-     */
-    @Transactional
-    @Override
-    public boolean invalidBranch(Long id, UserVo user) {
-        DjDept dept = deptMapper.selectByPrimaryKey(id);
-        if (dept == null) {
-            throw new BusinessException("所选党支部不存在!",CoreConst.ResultCode.NotFound.getCode());
-        }
-        dept.setStatus(DlbConstant.BASEDATA_STATUS_DEL);
-        deptMapper.updateByPrimaryKey(dept);
-        return true;
-    }
+	/**
+	 * 作废党支部.
+	 *
+	 * @param id
+	 * @param user
+	 * @return
+	 */
+	@Transactional
+	@Override
+	public boolean invalidBranch(Long id, UserVo user) {
+		DjDept dept = deptMapper.selectByPrimaryKey(id);
+		if (dept == null) {
+			throw new BusinessException("所选党支部不存在!", CoreConst.ResultCode.NotFound.getCode());
+		}
+		dept.setStatus(DlbConstant.BASEDATA_STATUS_DEL);
+		deptMapper.updateByPrimaryKey(dept);
+		return true;
+	}
+
+	@Override
+	public DjDept getDeptInfoByName(String deptName) {
+		if (StringUtils.isEmpty(deptName)) {
+			return null;
+		}
+		deptName = deptName.trim();
+
+		DjDept condition = new DjDept();
+		condition.setName(deptName);
+
+		List<DjDept> list = deptMapper.select(condition);
+		if (list != null && list.size() > 0) {
+			if (list.size() > 1) {
+				logger.error(deptName + "->部门的数量:" + list.size());
+			}
+			return list.get(0);
+		}
+		return null;
+	}
 }

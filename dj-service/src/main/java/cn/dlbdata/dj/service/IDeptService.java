@@ -26,6 +26,13 @@ public interface IDeptService {
 	public DjDept getDeptInfoById(Long id);
 	
 	/**
+	 * 根据部门名称获取部门对象
+	 * @param deptName
+	 * @return
+	 */
+	public DjDept getDeptInfoByName(String deptName);
+	
+	/**
 	 * 根据ID获取下级部门列表
 	 * @param parentId 部门ID
 	 * @return

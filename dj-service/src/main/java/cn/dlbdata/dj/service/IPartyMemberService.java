@@ -1,17 +1,22 @@
 package cn.dlbdata.dj.service;
 
 import java.util.List;
-import java.util.Map;
 
-import cn.dlbdata.dj.db.dto.partymember.PartyMemberAddOrUpdateDto;
 import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.db.dto.partymember.PartyMemberAddOrUpdateDto;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
-import cn.dlbdata.dj.db.vo.party.*;
+import cn.dlbdata.dj.db.vo.party.AllPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.AnnualActiveInfo;
+import cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo;
+import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.ReportDetailVo;
+import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import cn.dlbdata.dj.vo.PartyVo;
 import cn.dlbdata.dj.vo.UserVo;
@@ -71,31 +76,42 @@ public interface IPartyMemberService {
 
 	/**
 	 *
-	 * @param deptId 支部ID
-	 * @param subTypeId 子活动ID  11："思想汇报自主汇报"，12："思想汇报书面汇报"
+	 * @param deptId
+	 *            支部ID
+	 * @param subTypeId
+	 *            子活动ID 11："思想汇报自主汇报"，12："思想汇报书面汇报"
 	 * @return 思想汇报评分查询党员列表
 	 */
-	Paged<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId,int pageNum, int pageSize);
+	Paged<ReportPartyMemberVo> getReportPartyMember(long deptId, long subTypeId, int pageNum, int pageSize);
 
 	/**
 	 * 思想汇报详情
-	 * @param id 党员ID
-	 * @param subTypeId 活动二级分类ID
+	 * 
+	 * @param id
+	 *            党员ID
+	 * @param subTypeId
+	 *            活动二级分类ID
 	 * @return
 	 */
-	ReportDetailVo getReportDetail(Long id,Long subTypeId);
-
+	ReportDetailVo getReportDetail(Long id, Long subTypeId);
 
 	/**
 	 * 先锋作用评分党员列表
+	 * 
 	 * @param deptId
 	 * @return
 	 */
-	Paged<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId,int pageNum, int pageSize);
+	Paged<PioneeringPartyMemberVo> getPioneeringPartyMembers(Long deptId, int pageNum, int pageSize);
+
 	/**
 	 * 
-	 * <p>Title: queryAllPartyMembersByDeptId</p> 
-	 * <p>Description: 查询支部全部党员的信息以及分数</p> 
+	 * <p>
+	 * Title: queryAllPartyMembersByDeptId
+	 * </p>
+	 * <p>
+	 * Description: 查询支部全部党员的信息以及分数
+	 * </p>
+	 * 
 	 * @param deptId
 	 * @return
 	 */
@@ -103,7 +119,9 @@ public interface IPartyMemberService {
 
 	/**
 	 * 违章守纪评分党员列表
-	 * @param deptId 支部Id
+	 * 
+	 * @param deptId
+	 *            支部Id
 	 * @return
 	 */
 	Paged<ObserveLowPartyMemberVo> getObserveLowPartyMember(Long deptId, int pageIndex, int pageSize);
@@ -111,15 +129,21 @@ public interface IPartyMemberService {
 	/**
 	 * 遵章守纪详情 支部书记使用
 	 *
-	 * @param partyMemberId 党员Id
+	 * @param partyMemberId
+	 *            党员Id
 	 * @return
 	 */
 	ObserveLowDetailVo getObserveLowDetailForDept(Long partyMemberId);
 
 	/**
 	 * 
-	 * <p>Title: getSumScoreByIdCard</p> 
-	 * <p>Description: 根据身份证查询党员总积分</p> 
+	 * <p>
+	 * Title: getSumScoreByIdCard
+	 * </p>
+	 * <p>
+	 * Description: 根据身份证查询党员总积分
+	 * </p>
+	 * 
 	 * @param idCard
 	 * @return
 	 */
@@ -127,39 +151,50 @@ public interface IPartyMemberService {
 
 	/**
 	 * 获取党员年度活动信息
+	 * 
 	 * @return
 	 */
-	AnnualActiveInfo getAnnualActiveInfo(UserVo user,Integer year);
+	AnnualActiveInfo getAnnualActiveInfo(UserVo user, Integer year);
+
 	/**
 	 * 
-	 * <p>Title: selectPartymemberByDeptId</p> 
-	 * <p>Description: 提供给外部使用的部门党员信息</p> 
+	 * <p>
+	 * Title: selectPartymemberByDeptId
+	 * </p>
+	 * <p>
+	 * Description: 提供给外部使用的部门党员信息
+	 * </p>
+	 * 
 	 * @param deptId
 	 * @return
 	 */
-	public List<DjPartyMemberVo> selectPartymemberByDeptId(@Param("deptId")Integer deptId);
+	public List<DjPartyMemberVo> selectPartymemberByDeptId(@Param("deptId") Long deptId, String deptName);
+
 	public List<ScoreTypeVo> getRadarChartByUserId(Long userId, Integer year);
 
 	/**
 	 * 新增党员账号
+	 * 
 	 * @param dto
 	 * @param user
 	 */
-	void addPartyMember(PartyMemberAddOrUpdateDto dto,UserVo user);
+	void addPartyMember(PartyMemberAddOrUpdateDto dto, UserVo user);
 
 	/**
 	 * 更新党员信息
+	 * 
 	 * @param id
 	 * @param dto
 	 * @param user
 	 * @return
 	 */
-	boolean updatePartyMember(Long id,PartyMemberAddOrUpdateDto dto,UserVo user);
+	boolean updatePartyMember(Long id, PartyMemberAddOrUpdateDto dto, UserVo user);
 
 	/**
 	 * 作废党员
+	 * 
 	 * @param id
 	 * @return
 	 */
-	boolean invalidPartyMember(Long id,UserVo user);
+	boolean invalidPartyMember(Long id, UserVo user);
 }

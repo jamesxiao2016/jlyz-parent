@@ -83,7 +83,7 @@ public class ScoreServiceImpl extends BaseServiceImpl implements IScoreService {
 	 * @see cn.dlbdata.dj.service.IScoreService#getScoreAndActiveList(java.lang.Integer)
 	 */
 	@Override
-	public List<ScoreActiveVo> getScoreAndActiveList(Integer userId) {
+	public List<ScoreActiveVo> getScoreAndActiveList(Long userId) {
 		
 		return scoreMapper.getScoreAndActiveList(userId);
 	}
