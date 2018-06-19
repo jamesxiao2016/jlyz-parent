@@ -4,6 +4,23 @@ public class DjPartyMemberVo {
 	private String name;
 	private Integer sex;
 	private Float totalScore;
+	private Integer educationCode;
+	private Integer partyPostCode;
+	
+	
+	
+	public Integer getEducationCode() {
+		return educationCode;
+	}
+	public void setEducationCode(Integer educationCode) {
+		this.educationCode = educationCode;
+	}
+	public Integer getPartyPostCode() {
+		return partyPostCode;
+	}
+	public void setPartyPostCode(Integer partyPostCode) {
+		this.partyPostCode = partyPostCode;
+	}
 	public String getName() {
 		return name;
 	}
