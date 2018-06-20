@@ -49,4 +49,9 @@
     principal_id,principal_name,building_code,honor
     from dj_dept where dj_building_id = #{buildingId}
   </select>
+  
+  <select id="getDeptNameAndPeopleSum" parameterType="long" resultType="cn.dlbdata.dj.db.vo.dept.DeptAndPartyMemberVo">
+    select  dept.name as deptName,(select count(pm.id) from dj_partymember pm where pm.dept_id = dept.id) as peopleSum
+     from dj_dept dept where dept.id = #{id}
+  </select>
 </mapper>

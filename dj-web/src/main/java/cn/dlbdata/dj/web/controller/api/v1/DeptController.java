@@ -6,6 +6,8 @@
  */
 package cn.dlbdata.dj.web.controller.api.v1;
 
+import cn.dlbdata.dj.common.core.util.constant.CoreConst;
+import cn.dlbdata.dj.db.vo.dept.DeptAndPartyMemberVo;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
@@ -127,5 +129,21 @@ public class DeptController extends BaseController {
 		List<DeptTreeVo> depts = deptService.getDeptTree(sectionId);
 		List<DeptTreeVo> tree = TreeUtil.RecursiveAddress(depts);
 		return tree;
+	}
+
+	/**
+	 * 查询党支部和党员列表
+	 * @param id 党支部Id
+	 * @return
+	 */
+	@GetMapping("/deptAndPartyMemberList")
+	@ResponseBody
+	public ResultVo<DeptAndPartyMemberVo> getDeptAndPartyMemberList(@RequestParam("id") Long id) {
+		ResultVo<DeptAndPartyMemberVo> resultVo = new ResultVo<>();
+		DeptAndPartyMemberVo vo = deptService.getDeptAndPartyMemberList(id);
+		resultVo.setData(vo);
+		resultVo.setCode(CoreConst.ResultCode.OK.getCode());
+		resultVo.setMsg("成功!");
+		return resultVo;
 	}
 }

@@ -1,8 +1,11 @@
 package cn.dlbdata.dj.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import cn.dlbdata.dj.db.vo.dept.DeptAndPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.AllPartyMemberVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,8 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	private DjUserMapper userMapper;
 	@Autowired
 	private DjBuildingMapper buildingMapper;
+	@Autowired
+	private DjPartymemberMapper partymemberMapper;
 
 	@Override
 	public DjDept getDeptInfoById(Long id) {
@@ -368,6 +373,24 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 		else {
 			vo.setParentName("-");
 		}
+		return vo;
+	}
+
+	/**
+	 * 查询党支部和党员列表
+	 *
+	 * @param id 党支部Id
+	 * @return
+	 */
+	@Override
+	public DeptAndPartyMemberVo getDeptAndPartyMemberList(Long id) {
+		DeptAndPartyMemberVo vo = deptMapper.getDeptNameAndPeopleSum(id);
+		if (vo == null) {
+			return new DeptAndPartyMemberVo();
+		}
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		List<AllPartyMemberVo> partyMembers = partymemberMapper.getPartyMembersVoByDeptId(id,year);
+		vo.setPartyMembers(partyMembers);
 		return vo;
 	}
 }
