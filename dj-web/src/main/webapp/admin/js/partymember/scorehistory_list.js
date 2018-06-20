@@ -12,11 +12,48 @@ function initEvent() {
 	$("#btnAdd").click(function() {
 		location.href = "add.html";
 	});
+	
+	$.post("../../admin/section/getSectionList", function(data) {
+		$('#selsection').select2({
+			data : data
+		});
+
+		sectionId = $("#selsection").select2("val");
+		deptList(sectionId);
+	});
+
+	$("#selsection").on("change", function() {
+		sectionId = $(this).val();
+		console.log(sectionId);
+		deptList(sectionId);
+		query();
+	});
+	
 }
+
+function deptList(sectionId) {
+	var $select = $('#seldept');
+	var url = '../../api/v1/component/getDeptNameList?sectionId=' + sectionId;
+	$.post(url, function(data) {
+		
+		instance = $select.data('select2');  
+        if(instance){  
+          $select.select2('destroy').empty();  
+        }
+        $select.select2({
+			data : data
+		});
+        query();
+	});
+}
+
 
 function query() {
 	var qryParam = {
-		"name" : getLikeVal($("#name").val())
+		
+		"name" : getLikeVal($("#name").val()),
+		"seldept" : $("#seldept").val(),
+		"orderBy" : 'pm.party_post_code asc'
 	};
 	jQuery(grid_selector).setGridParam({
 		postData : {
@@ -28,6 +65,8 @@ function query() {
 
 function init() {
 	var qryParam = {
+			"seldept" : "0",
+			"orderBy" : 'pm.party_post_code asc'
 	};
 	jQuery(grid_selector).jqGrid({
         sortable: true,
@@ -73,6 +112,8 @@ function init() {
 		pager : pager_selector,
 		viewrecords : true,
 		height : '100%',
+		sortname : 'pm.party_post_code',
+		sortorder : "asc",
 		loadComplete : function() {
 			var table = this;
 			setTimeout(function() {

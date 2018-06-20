@@ -119,12 +119,16 @@
         sc.score as score,sc.score_desc as scoreDesc
         from dj_score sc left join dj_partymember pm on pm.id = sc.user_id
         <where>
+         1 = 1
             <if test="name != null and name != ''">
                 and name LIKE concat(concat('%',#{name}),'%')
             </if>
+            <if test="seldept != null and seldept != ''">
+                and pm.dept_id = #{seldept}
+            </if>
         </where>
         <choose>
-            <when test="orderBy !=null">
+            <when test="orderBy != null ">
                 order by ${orderBy}
             </when>
             <otherwise>
