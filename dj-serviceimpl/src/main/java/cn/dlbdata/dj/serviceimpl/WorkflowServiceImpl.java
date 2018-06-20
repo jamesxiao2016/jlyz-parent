@@ -961,12 +961,12 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 				ActiveTypeEnum.ACTIVE_B.getActiveId(), ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId());
 		zzshNow = zzshNow == null ? 0L : zzshNow;
 		Float zzshInProcess = 0F;
-		if (zzshNow < 2.5F) {
+		if (zzshNow < 2F) {
 			zzshInProcess = applyMapper.countScoreInProcess(user.getUserId(), year,
 					ActiveTypeEnum.ACTIVE_B.getActiveId(), ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId());
 			zzshInProcess = zzshInProcess == null ? 0L : zzshInProcess;
-			if ((2.5F - zzshNow) < zzshInProcess) {
-				zzshInProcess = 2.5F - zzshNow;
+			if ((2F - zzshNow) < zzshInProcess) {
+				zzshInProcess = 2F - zzshNow;
 			}
 		}
 		// 政治学习
