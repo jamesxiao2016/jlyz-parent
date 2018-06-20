@@ -108,7 +108,7 @@ function init() {
 			params : JSON.stringify(qryParam)
 		},
 		rowNum : 10,
-		rowList : [ 10, 20, 30 ],
+		rowList : [ 10, 30, 50],
 		pager : pager_selector,
 		viewrecords : true,
 		height : '100%',
