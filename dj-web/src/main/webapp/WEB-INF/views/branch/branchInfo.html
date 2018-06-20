@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>APP列表</title>
+<title>党支部列表</title>
 <link href="../../static/css/bootstrap.min.css" rel="stylesheet">
 <link href="../../static/css/font-awesome.css" rel="stylesheet">
 <link href="../../static/css/plugins/jqgrid/ui.jqgrid.css"
@@ -42,14 +42,15 @@
 					</div>
 					<div class="col-sm-8">
 						<div>
-							<form class="form-horizontal m-t" id="productForm" method="post"
+							<form class="form-horizontal m-t" id="deptForm" method="post"
 								action="../../v1/product/saveApp">
 								<input id="id" name="id" type="hidden" />
 								<div class="form-group">
 									<label class="col-sm-2 control-label">上级党支部：</label>
 									<div class="col-sm-9">
+										<input type="hidden" id="parentId" name="parentId" />
 										<input id="parentName" name="parentName" class="form-control"
-											type="text" required />
+											type="text" readonly="readonly" />
 									</div>
 								</div>
 								<div class="form-group">
@@ -60,38 +61,44 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-2 control-label">所在位置：</label>
+									<label class="col-sm-2 control-label">所在楼宇：</label>
 									<div class="col-sm-5">
-										<select id="dj_building_id" name="dj_building_id"
+										<select id="buildingId" name="buildingId"
 											class="form-control"></select>
 									</div>
 
-									<label class="col-sm-2 control-label">党员数量：</label>
+									<label class="col-sm-2 control-label">楼层：</label>
 									<div class="col-sm-2">
-										<input id="peopleNum" name="peopleNum" class="form-control"
-											type="number" required />
+										<input id="floor" name="floor" class="form-control"
+											type="number"  />
 									</div>
 								</div>
-								<div class="form-group">
+								<!-- <div class="form-group">
 									<label class="col-sm-2 control-label">地址：</label>
 									<div class="col-sm-9">
 										<input id="address" name="address" class="form-control"
 											type="number" required />
 									</div>
-								</div>
+								</div> -->
 								<div class="form-group">
 									<label class="col-sm-2 control-label">支部评级：</label>
-									<div class="col-sm-9">
+									<div class="col-sm-5">
 										<input id="honor" name="honor" class="form-control"
-											type="number" required />
+											type="text"  />
+									</div>
+									
+									<label class="col-sm-2 control-label">党员数量：</label>
+									<div class="col-sm-2">
+										<input id="peopleNum" name="peopleNum" class="form-control"
+											type="number"  />
 									</div>
 								</div>
-								<div class="form-group">
+								<!-- <div class="form-group">
 									<label class="col-sm-2 control-label">说明：</label>
 									<div class="col-sm-9">
 										<textarea id="remark" name="remark" class="form-control"></textarea>
 									</div>
-								</div>
+								</div> -->
 								<div class="form-group">
 									<div class="col-sm-8 col-sm-offset-5">
 										<button id="btnSubmit" class="btn btn-primary" type="button">提交</button>

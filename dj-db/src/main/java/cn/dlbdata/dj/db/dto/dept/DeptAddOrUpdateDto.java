@@ -1,12 +1,15 @@
 package cn.dlbdata.dj.db.dto.dept;
 
 public class DeptAddOrUpdateDto {
+	private Long id;
     private Long buildingId;
     private Integer floor;
     private String name;
     private String address;
     private String phone;
     private Long parentId;
+    private Integer peopleNum;
+    private String honor;
     private Long principalId;//新增时不需要
 
     public Long getBuildingId() {
@@ -64,4 +67,28 @@ public class DeptAddOrUpdateDto {
     public void setPrincipalId(Long principalId) {
         this.principalId = principalId;
     }
+
+	public Integer getPeopleNum() {
+		return peopleNum;
+	}
+
+	public void setPeopleNum(Integer peopleNum) {
+		this.peopleNum = peopleNum;
+	}
+
+	public String getHonor() {
+		return honor;
+	}
+
+	public void setHonor(String honor) {
+		this.honor = honor;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

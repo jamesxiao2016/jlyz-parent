@@ -132,10 +132,10 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		record.setDjRoleId(vo.getRoleId());
 		record.setApplyYear(vo.getApplyYear());
 		DjSubType subType = subTypeMapper.selectByPrimaryKey(vo.getDjSubTypeId());
-		if (subType != null) {
+		if (vo.getScore() == null) {
 			record.setScore(subType.getScore());
-			record.setSubTypeName(subType.getName());
 		}
+		record.setSubTypeName(subType.getName());
 		DjUser approver = null;
 
 		if (vo.getDjTypeId() == ActiveTypeEnum.ACTIVE_A.getActiveId()
@@ -350,10 +350,24 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		if (subType == null) {
 			return;
 		}
+
 		DjType type = typeMapper.selectByPrimaryKey(subType.getDjTypeId());
 		if (type == null) {
 			return;
 		}
+
+		// 组织生活自主活动 只能加一次分
+		if (subTypeId.equals(ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId())) {
+			DjStudy condition = new DjStudy();
+			condition.setCreateUserId(userId);
+			condition.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
+			int count = studyMapper.selectCount(condition);
+			if (count >= 1) {
+				logger.error("组织生活自主活动 只能加一次分->" + userId);
+				return;
+			}
+		}
+		
 		// 写入积分记录表
 		// 根据类型判断最大分数
 		if (year == null) {
@@ -377,6 +391,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		if (userTypeScore == null) {
 			userTypeScore = 0F;
 		}
+
 		// 积分没有积满，则往积分表中插入记录
 		if (userSubTypeScore < subTypeMaxScore && userTypeScore < typeMaxScore) {
 			DjScore record = new DjScore();
@@ -946,12 +961,12 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 				ActiveTypeEnum.ACTIVE_B.getActiveId(), ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId());
 		zzshNow = zzshNow == null ? 0L : zzshNow;
 		Float zzshInProcess = 0F;
-		if (zzshNow < 10F) {
+		if (zzshNow < 2F) {
 			zzshInProcess = applyMapper.countScoreInProcess(user.getUserId(), year,
 					ActiveTypeEnum.ACTIVE_B.getActiveId(), ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId());
 			zzshInProcess = zzshInProcess == null ? 0L : zzshInProcess;
-			if ((10F - zzshNow) < zzshInProcess) {
-				zzshInProcess = 10F - zzshNow;
+			if ((2F - zzshNow) < zzshInProcess) {
+				zzshInProcess = 2F - zzshNow;
 			}
 		}
 		// 政治学习

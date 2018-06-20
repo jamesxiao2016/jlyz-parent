@@ -96,10 +96,10 @@
     order by p.party_post_code 
   </select> 
   
-  
-  
-  
-  
-  
+  <select id="getPartyMembersVoByDeptId" resultType="cn.dlbdata.dj.db.vo.party.AllPartyMemberVo">
+    select pm.id,pm.name,pm.sex_code as sexCode,pm.age,
+    ifnull((select sum(score) from dj_score sc where sc.user_id = pm.id and sc.add_year =#{year}),0) as totalScore
+     from dj_partymember pm where pm.dept_id = #{deptId} order by pm.party_post_code
+  </select>
  
 </mapper>

@@ -1,13 +1,17 @@
 package cn.dlbdata.dj.db.vo.dept;
 
 public class DeptDetailVo {
+	private Long id;
     private Long buildingId;
     private Integer floor;
     private String name;
     private String address;
     private String phone;
     private Long parentId;
+    private String parentName;
     private Long principalId;
+    private Integer peopleNum;
+    private String honor;
 
     public Long getBuildingId() {
         return buildingId;
@@ -64,4 +68,36 @@ public class DeptDetailVo {
     public void setPrincipalId(Long principalId) {
         this.principalId = principalId;
     }
+
+	public Integer getPeopleNum() {
+		return peopleNum;
+	}
+
+	public void setPeopleNum(Integer peopleNum) {
+		this.peopleNum = peopleNum;
+	}
+
+	public String getHonor() {
+		return honor;
+	}
+
+	public void setHonor(String honor) {
+		this.honor = honor;
+	}
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

@@ -214,7 +214,7 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		}
 		activeMapper.insertSelective(active);
 
-		//如果没有传，则默认为本部门
+		// 如果没有传，则默认为本部门
 		if (activeVo.getDeptIds() == null) {
 			Long[] deptIds = new Long[] { user.getDeptId() };
 			activeVo.setDeptIds(deptIds);
@@ -668,11 +668,13 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * <p>Title: deleteById</p>
-	 * <p>Description: 物理删除活动</p> 
+	/*
+	 * (non-Javadoc) <p>Title: deleteById</p> <p>Description: 物理删除活动</p>
+	 * 
 	 * @param id
-	 * @return  
+	 * 
+	 * @return
+	 * 
 	 * @see cn.dlbdata.dj.service.IActiveService#deleteById(java.lang.Long)
 	 */
 	@Override
@@ -685,12 +687,15 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		return id;
 	}
 
-	/* (non-Javadoc)
-	 * <p>Title: queryAdminActiveById</p>
-	 * <p>Description: 后台查询活动详情</p> 
+	/*
+	 * (non-Javadoc) <p>Title: queryAdminActiveById</p> <p>Description: 后台查询活动详情</p>
+	 * 
 	 * @param activeId
+	 * 
 	 * @param roleId
-	 * @return  
+	 * 
+	 * @return
+	 * 
 	 * @see cn.dlbdata.dj.service.IActiveService#queryAdminActiveById(java.lang.Long, java.lang.Long)
 	 */
 	@Override

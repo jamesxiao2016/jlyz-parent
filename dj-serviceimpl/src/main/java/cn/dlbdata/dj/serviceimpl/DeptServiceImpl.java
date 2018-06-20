@@ -1,7 +1,15 @@
 package cn.dlbdata.dj.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import cn.dlbdata.dj.db.vo.dept.DeptAndPartyMemberVo;
+import cn.dlbdata.dj.db.vo.party.AllPartyMemberVo;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.dlbdata.dj.common.core.exception.BusinessException;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
@@ -9,22 +17,23 @@ import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.constant.RoleEnum;
 import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
-import cn.dlbdata.dj.db.mapper.*;
-import cn.dlbdata.dj.db.pojo.*;
+import cn.dlbdata.dj.db.mapper.DjBuildingMapper;
+import cn.dlbdata.dj.db.mapper.DjDeptMapper;
+import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
+import cn.dlbdata.dj.db.mapper.DjSectionMapper;
+import cn.dlbdata.dj.db.mapper.DjUserMapper;
+import cn.dlbdata.dj.db.pojo.DjBuilding;
+import cn.dlbdata.dj.db.pojo.DjDept;
+import cn.dlbdata.dj.db.pojo.DjSection;
+import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.vo.dept.DeptDetailVo;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
-import cn.dlbdata.dj.vo.UserVo;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import cn.dlbdata.dj.service.IDeptService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
-import org.springframework.transaction.annotation.Transactional;
+import cn.dlbdata.dj.vo.UserVo;
 import tk.mybatis.mapper.entity.Example;
 
 @Service
@@ -339,7 +348,7 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	@Override
 	public DeptDetailVo getDetailBy(Long id) {
 		DjDept dept = deptMapper.selectByPrimaryKey(id);
-		if (dept ==  null) {
+		if (dept == null) {
 			return new DeptDetailVo();
 		}
 		DeptDetailVo vo = new DeptDetailVo();
@@ -350,6 +359,38 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 		vo.setPhone(dept.getPhone());
 		vo.setParentId(dept.getParentId());
 		vo.setPrincipalId(dept.getPrincipalId());
+		vo.setHonor(dept.getHonor());
+		vo.setPeopleNum(dept.getPeopleNum());
+		if (dept.getParentId() != null && dept.getParentId() > 0) {
+			DjDept parentDept = deptMapper.selectByPrimaryKey(dept.getParentId());
+			if (parentDept != null) {
+				vo.setParentName(parentDept.getName());
+			}
+			else {
+				vo.setParentName("-");
+			}
+		}
+		else {
+			vo.setParentName("-");
+		}
+		return vo;
+	}
+
+	/**
+	 * 查询党支部和党员列表
+	 *
+	 * @param id 党支部Id
+	 * @return
+	 */
+	@Override
+	public DeptAndPartyMemberVo getDeptAndPartyMemberList(Long id) {
+		DeptAndPartyMemberVo vo = deptMapper.getDeptNameAndPeopleSum(id);
+		if (vo == null) {
+			return new DeptAndPartyMemberVo();
+		}
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		List<AllPartyMemberVo> partyMembers = partymemberMapper.getPartyMembersVoByDeptId(id,year);
+		vo.setPartyMembers(partyMembers);
 		return vo;
 	}
 }

@@ -81,4 +81,7 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
 	public List<DjPartyMemberVo> selectPartymemberByDeptId(@Param("deptId") Long deptId);
 
 	public List<ScoreTypeVo> getRadarChartByUserId(Long userId, Integer year);
+
+	List<AllPartyMemberVo> getPartyMembersVoByDeptId(@Param("deptId") Long deptId,
+													 @Param("year") int year);
 }

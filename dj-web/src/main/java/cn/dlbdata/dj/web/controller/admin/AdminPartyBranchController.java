@@ -61,7 +61,7 @@ public class AdminPartyBranchController extends BaseController {
 	@PostMapping("/addBranch")
 	@ResponseBody
 	public ResultVo<String> addBranch(@RequestBody DeptAddOrUpdateDto dto) {
-		UserVo user = getCurrentUserFromCache();
+		UserVo user = getCurrentAdminUserFromCache();
 		ResultVo<String> resultVo = new ResultVo<>();
 		if (user == null) {
 			logger.error("用户未登录");
@@ -84,7 +84,7 @@ public class AdminPartyBranchController extends BaseController {
 	@PostMapping("updateBranch/{id}")
 	@ResponseBody
 	public ResultVo<String> updateBranch(@RequestBody DeptAddOrUpdateDto dto, @PathVariable Long id){
-		UserVo user = getCurrentUserFromCache();
+		UserVo user = getCurrentAdminUserFromCache();
 		ResultVo<String> resultVo = new ResultVo<>();
 		if (user == null) {
 			logger.error("用户未登录");
@@ -106,7 +106,7 @@ public class AdminPartyBranchController extends BaseController {
 	@PostMapping("invalidBranch/{id}")
 	@ResponseBody
 	public ResultVo<String> invalidBranch(@PathVariable Long id) {
-		UserVo user = getCurrentUserFromCache();
+		UserVo user = getCurrentAdminUserFromCache();
 		ResultVo<String> resultVo = new ResultVo<>();
 		if (user == null) {
 			logger.error("用户未登录");
@@ -128,14 +128,9 @@ public class AdminPartyBranchController extends BaseController {
 	@GetMapping("/detail/{id}")
 	@ResponseBody
 	public ResultVo<DeptDetailVo> getDetail(@PathVariable Long id) {
-//		UserVo user = getCurrentUserFromCache();
+		UserVo user = getCurrentAdminUserFromCache();
 		ResultVo<DeptDetailVo> resultVo = new ResultVo<>();
-//		if (user == null) {
-//			logger.error("用户未登录");
-//			resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
-//			resultVo.setMsg("用户未登录或用户已退出");
-//			return resultVo;
-//		}
+
 		DeptDetailVo vo = deptService.getDetailBy(id);
 		resultVo.setData(vo);
 		resultVo.setCode(CoreConst.ResultCode.OK.getCode());

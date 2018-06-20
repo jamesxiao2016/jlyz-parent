@@ -5,6 +5,7 @@ import java.util.List;
 import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjUser;
+import cn.dlbdata.dj.db.vo.dept.DeptAndPartyMemberVo;
 import cn.dlbdata.dj.db.vo.dept.DeptDetailVo;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
@@ -108,5 +109,14 @@ public interface IDeptService {
 	 * @return
 	 */
 	DeptDetailVo getDetailBy(Long id);
+
+	/**
+	 * 查询党支部和党员列表
+	 * @param id 党支部Id
+	 * @return
+	 */
+	DeptAndPartyMemberVo getDeptAndPartyMemberList(Long id);
+
+
 
 }

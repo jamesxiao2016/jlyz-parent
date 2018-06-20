@@ -24,7 +24,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtTokenUtil {
 	static Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
 
-	public final static Cache<String, String> USER_TICKET_CACHE = CacheBuilder.newBuilder()
+	public final static Cache<String, String> USER_TOKEN_CACHE = CacheBuilder.newBuilder()
 			// 设置cache的初始大小为10，要合理设置该值
 			.initialCapacity(10)
 			// 设置并发数为5，即同一时间最多只能有5个线程往cache执行写入操作

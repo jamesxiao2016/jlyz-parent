@@ -110,7 +110,7 @@ public class LoginController extends BaseController {
 			CacheManager.getInstance().remove(tokenMap.get(JwtTokenUtil.KEY_UID));
 		}
 		if (StringUtils.isNotEmpty(token)) {
-			JwtTokenUtil.USER_TICKET_CACHE.invalidate(MD5Util.encode(token));
+			JwtTokenUtil.USER_TOKEN_CACHE.invalidate(MD5Util.encode(token));
 		}
 		return result;
 	}
