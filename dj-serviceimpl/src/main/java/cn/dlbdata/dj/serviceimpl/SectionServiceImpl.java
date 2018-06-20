@@ -136,4 +136,12 @@ public class SectionServiceImpl extends BaseServiceImpl implements ISectionServi
         }
         return rlist;
     }
+
+	@Override
+	public DjSection getSectionInfoById(Long id) {
+		if(id == null) {
+			return null;
+		}
+		return sectionMapper.selectByPrimaryKey(id);
+	}
 }

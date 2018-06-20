@@ -51,12 +51,10 @@ function init() {
 			name : 'principalName',
 			index : 'principal_name',
 		}, {
-			label : '创建时间',
-			name : 'createTime',
-			index : 'create_time',
-			formatter : datetimeFormatter,
+			label : '说明',
+			name : 'address',
+			index : 'address',
 			align : "center",
-			width : 100
 		}, {
 			label : '操作',
 			name : '',
@@ -105,7 +103,7 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='../section/add.html?id=" + rowObject.id + "'>编辑</a>";
+	var btnEdit = "<a href='../section/detail.html?id=" + rowObject.id + "'>编辑</a>";
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 
 	return btnEdit + "&nbsp;" + btnDel;

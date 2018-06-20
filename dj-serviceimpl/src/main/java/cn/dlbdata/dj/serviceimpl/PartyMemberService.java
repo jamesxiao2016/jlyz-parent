@@ -22,6 +22,8 @@ import cn.dlbdata.dj.common.core.util.PageUtils;
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.common.core.web.vo.SelectResultVo;
+import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.common.util.StringUtil;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
@@ -57,7 +59,6 @@ import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.PartyVo;
 import cn.dlbdata.dj.vo.UserVo;
-import tk.mybatis.mapper.entity.Example;
 
 @Service
 public class PartyMemberService extends BaseServiceImpl implements IPartyMemberService {
@@ -552,5 +553,17 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		oldUser.setStatus(DlbConstant.BASEDATA_STATUS_DEL);
 		userMapper.updateByPrimaryKey(oldUser);
 		return true;
+	}
+
+	@Override
+	public SelectResultVo getPartyMembersBySectionId(Long sectionId) {
+		SelectResultVo result = new SelectResultVo();
+		if(sectionId == null) {
+			return result;
+		}
+		
+		List<SelectVo> results = partyMemberMapper.getPartyMembersBySectionId(sectionId);
+		result.setResults(results);
+		return result;
 	}
 }
