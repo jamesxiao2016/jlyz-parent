@@ -32,11 +32,13 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="name" jdbcType="VARCHAR" property="typeName" />
     <result column="user_name" jdbcType="VARCHAR" property="approveName" />
+    <result column="remark" jdbcType="VARCHAR" property="refuseReason" />
   </resultMap>
   
    <select id="getReviewScheduleList" parameterType="map" resultMap="BaseResultMapTwo">
-    select djs.id, djs.start_time, djs.end_time, djs.content, djs.status, djt.name, djs.approve_name
+    select djs.id, djs.start_time, djs.end_time, djs.content, djs.status, djt.name, djs.approve_name, da.remark
     	from dj_study djs 
+    	left join dj_apply da on da.record_id = djs.id
     	left join dj_type djt on djt.id = djs.dj_type_id
     	where djs.dj_sub_type_id = #{subTypeId} and djs.create_user_id = #{userId}
   </select>

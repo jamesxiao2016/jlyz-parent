@@ -42,7 +42,17 @@ public class ReviewScheduleListVo {
 	private Integer status;
 	
 	private Long[] picIds;
+	
+	private String refuseReason;
+	
+	
 
+	public String getRefuseReason() {
+		return refuseReason;
+	}
+	public void setRefuseReason(String refuseReason) {
+		this.refuseReason = refuseReason;
+	}
 	public String getApproveName() {
 		return approveName;
 	}
