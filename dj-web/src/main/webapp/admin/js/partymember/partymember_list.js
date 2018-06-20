@@ -72,7 +72,8 @@ function init() {
 			label : '性别',
 			name : 'sex',
 			index : 'sex',
-			width : 70
+			width : 70,
+            formatter : sexFormatter
 		}, {
 			label : '年龄',
 			name : 'age',
@@ -170,6 +171,12 @@ function actionFormatter(cellvalue, options, rowObject) {
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 
 	return btnEdit + "&nbsp;" + btnDel;
+}
+
+function sexFormatter(cellvalue, options, rowObject) {
+	var name = parent.getDictName("sex",cellvalue);
+	console.log(name);
+	return name;
 }
 
 // function delRecord(id) {
