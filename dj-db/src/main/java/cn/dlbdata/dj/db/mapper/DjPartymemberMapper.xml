@@ -102,4 +102,10 @@
      from dj_partymember pm where pm.dept_id = #{deptId} order by pm.party_post_code
   </select>
  
+  <!-- 获取片区下所有的党员信息 -->
+  <select id="getPartyMembersBySectionId" parameterType="java.lang.Long" resultType="cn.dlbdata.dj.common.core.web.vo.SelectVo">
+    select p.id,p.name text from dj_partymember p
+    left join dj_dept d on d.id = p.dept_id
+    where d.dj_section_id = #{sectionId}
+  </select>
 </mapper>

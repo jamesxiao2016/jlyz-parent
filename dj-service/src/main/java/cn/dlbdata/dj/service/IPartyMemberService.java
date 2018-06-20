@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.common.core.util.Paged;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.common.core.web.vo.SelectResultVo;
 import cn.dlbdata.dj.db.dto.partymember.PartyMemberAddOrUpdateDto;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
@@ -197,4 +198,11 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	boolean invalidPartyMember(Long id, UserVo user);
+	
+	/**
+	 * 获取片区下的所有党员信息
+	 * @param sectionId
+	 * @return
+	 */
+	public SelectResultVo getPartyMembersBySectionId(Long sectionId);
 }

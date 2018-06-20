@@ -2,6 +2,7 @@ package cn.dlbdata.dj.service;
 
 import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.db.dto.section.SectionAddOrUpdateDto;
+import cn.dlbdata.dj.db.pojo.DjSection;
 import cn.dlbdata.dj.service.base.IBaseService;
 import cn.dlbdata.dj.vo.UserVo;
 
@@ -29,6 +30,12 @@ public interface ISectionService extends IBaseService {
 	 */
 	boolean updateSection(SectionAddOrUpdateDto dto,Long id,UserVo user);
 
+	/**
+	 * 获取片区信息
+	 * @param id
+	 * @return
+	 */
+	public DjSection getSectionInfoById(Long id);
 
     /**
      * 获取所有片区列表（下拉框使用）

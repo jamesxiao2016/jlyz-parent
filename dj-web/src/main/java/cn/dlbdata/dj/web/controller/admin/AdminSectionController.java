@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.common.core.web.vo.SelectResultVo;
 import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.db.pojo.DjSection;
+import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.ISectionService;
 import cn.dlbdata.dj.web.base.BaseController;
 
@@ -35,6 +38,8 @@ public class AdminSectionController extends BaseController {
 
 	@Autowired
 	private ISectionService sectionService;
+	@Autowired
+	private IPartyMemberService partyMemberService;
 
 	/**
 	 * 查询列表
@@ -52,8 +57,11 @@ public class AdminSectionController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/detail.html")
-	public String detail() {
-		return "section/detail.html";
+	public ModelAndView detail(Long id) {
+		ModelAndView view = new ModelAndView("section/detail.html");
+		DjSection record = sectionService.getSectionInfoById(id);
+		view.addObject("record", record);
+		return view;
 	}
 
 	/**
@@ -68,20 +76,21 @@ public class AdminSectionController extends BaseController {
 
 	/**
 	 * 新增片区
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/addSection")
 	@ResponseBody
-	public ResultVo<Long> addSection(@RequestBody SectionAddOrUpdateDto dto) {
+	public ResultVo<Long> addSection(SectionAddOrUpdateDto dto) {
 		UserVo user = getCurrentUserFromCache();
 		ResultVo<Long> resultVo = new ResultVo<>();
-		if (user == null) {
-			logger.error("用户未登录");
-			resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
-			resultVo.setMsg("用户未登录或用户已退出");
-			return resultVo;
-		}
-		Long id = sectionService.addSection(dto,user);
+//		if (user == null) {
+//			logger.error("用户未登录");
+//			resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
+//			resultVo.setMsg("用户未登录或用户已退出");
+//			return resultVo;
+//		}
+		Long id = sectionService.addSection(dto, user);
 		resultVo.setCode(CoreConst.ResultCode.OK.getCode());
 		resultVo.setMsg("新增片区成功!");
 		resultVo.setData(id);
@@ -99,29 +108,40 @@ public class AdminSectionController extends BaseController {
 		return result;
 	}
 
-    /**
-     * 获取所有片区列表
-     *
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/getSectionList")
-    public List<SelectVo> getSectionList() {
-        return sectionService.getSectionList();
-    }
+	/**
+	 * 获取所有片区列表
+	 *
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/getSectionList")
+	public List<SelectVo> getSectionList() {
+		return sectionService.getSectionList();
+	}
+
+	/**
+	 * 获取所有片区列表
+	 *
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/getPartyMembersBySectionId")
+	public SelectResultVo getPartyMembersBySectionId(Long sectionId) {
+		return partyMemberService.getPartyMembersBySectionId(sectionId);
+	}
 
 	@RequestMapping("/updateSection/{id}")
 	@ResponseBody
-	public ResultVo updateSection(@RequestBody SectionAddOrUpdateDto dto, @PathVariable Long id) {
+	public ResultVo<Long> updateSection(SectionAddOrUpdateDto dto, @PathVariable Long id) {
 		UserVo user = getCurrentUserFromCache();
 		ResultVo<Long> resultVo = new ResultVo<>();
-		if (user == null) {
-			logger.error("用户未登录");
-			resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
-			resultVo.setMsg("用户未登录或用户已退出");
-			return resultVo;
-		}
-		sectionService.updateSection(dto,id,user);
+//		if (user == null) {
+//			logger.error("用户未登录");
+//			resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
+//			resultVo.setMsg("用户未登录或用户已退出");
+//			return resultVo;
+//		}
+		sectionService.updateSection(dto, id, user);
 		resultVo.setCode(CoreConst.ResultCode.OK.getCode());
 		resultVo.setMsg("修改片区信息成功!");
 		return resultVo;

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
@@ -84,4 +85,6 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
 
 	List<AllPartyMemberVo> getPartyMembersVoByDeptId(@Param("deptId") Long deptId,
 													 @Param("year") int year);
+	
+	public List<SelectVo> getPartyMembersBySectionId(@Param("sectionId") Long sectionId);
 }
