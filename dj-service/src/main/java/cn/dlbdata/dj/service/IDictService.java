@@ -13,4 +13,10 @@ public interface IDictService extends IBaseService {
 	 * @return
 	 */
 	public List<SelectVo> getDictListByDictType(String dictType);
+	
+	/**
+	 * 获取所有的字典列表
+	 * @return
+	 */
+	public List<SelectVo> getAllDictList();
 }
