@@ -338,6 +338,59 @@ $.ajaxPost = function(url, param, callback, completeCallback, errorCallback) {
 	});
 }
 
+$.ajaxJson = function(url, param, callback, completeCallback, errorCallback) {
+	var token = getStoreItem("token");
+	if (jQuery.isFunction(param)) {
+		callback = param;
+		param = null;
+	} else {
+		if (!token && param) {
+			token = param["token"];
+		}
+	}
+	if (!token) {
+		// top.location.href = getLoginUrl();
+	}
+	return $.ajax({
+		type : "POST",
+		traditional : true,
+		contentType : "application/json",
+		dataType : "json",
+		url : url,
+		data : JSON.stringify(param),
+		beforeSend : function(reqObj, settings) {
+			reqObj.setRequestHeader('token', token);
+		},
+		success : function(data) {
+			if (data.code == 1010) {
+				top.location.href = "login.html";
+			} else {
+				if (callback) {
+					callback(data);
+				}
+			}
+		},
+		error : function(XMLHttpRequest, textStatus) {
+			layer.closeAll('loading');
+			if (textStatus == 'parsererror') {
+				console.log("url:" + url)
+				top.location.href = "login.html";
+			}
+			if (errorCallback && jQuery.isFunction(errorCallback)) {
+				errorCallback(XMLHttpRequest, textStatus);
+			} else {
+				layer.msg("服务器加载失败，请联系管理员 " + textStatus);
+			}
+		},
+		complete : function(XMLHttpRequest, textStatus) {
+			layer.closeAll('loading');
+			if (completeCallback && jQuery.isFunction(completeCallback)) {
+				completeCallback(XMLHttpRequest, textStatus);
+			}
+		}
+	});
+}
+
 var baseUrl = "/dangjian";
 var token = localStorage.getItem("atoken");
 

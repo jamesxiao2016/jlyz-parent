@@ -39,7 +39,7 @@ function submitForm() {
 	var id = $("#id").val();
 	var formData = $("#productForm").formSerialize();
 	console.log(formData);
-	$.ajaxPost("../section/updateSection/" + id, formData, function(data) {
+	$.ajaxJson("../section/updateSection/" + id, formData, function(data) {
 		if (data.code == 1000) {
 			history.go(-1);
 		} else {
