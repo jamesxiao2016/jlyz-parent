@@ -1,3 +1,6 @@
+
+var baseUrl = "/dj-web";
+
 /**
  * 字符串替换 使用示例： var text = "a{0}b{0}c{1}d\nqq{0}"; var text2 = $.format(text, 1,
  * 2); alert(text2);
@@ -391,7 +394,6 @@ $.ajaxJson = function(url, param, callback, completeCallback, errorCallback) {
 	});
 }
 
-var baseUrl = "/dangjian";
 var token = localStorage.getItem("atoken");
 
 $.ajaxSetup({

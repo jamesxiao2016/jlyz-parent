@@ -21,9 +21,9 @@ body.signin {
 
 .loginpanel {
 	height: 310px;
-	background: rgba(0, 0, 0, 1);
+	background: #875D4D;/*#875C4D;*/
 	border-radius: 15px;
-	opacity: 0.3;
+	/* opacity: 0.3; */
 	padding-top: 15px;
 }
 
@@ -78,6 +78,7 @@ body.signin {
 
 .signinpanel input {
 	height: 34px;
+	color : #000;
 }
 
 .uname {

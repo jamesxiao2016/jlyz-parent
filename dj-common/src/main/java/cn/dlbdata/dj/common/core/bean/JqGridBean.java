@@ -20,6 +20,10 @@ public class JqGridBean<T> extends MsgVo<T> implements Serializable {
 		super(result);
 	}
 
+	public JqGridBean(String result, String msg) {
+		super(result, msg);
+	}
+
 	public int getTotal() {
 		if (total == 0) {
 			total = 1;
