@@ -7,6 +7,7 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
+import cn.dlbdata.dj.db.vo.dept.DeptAndApplyInfoVo;
 import cn.dlbdata.dj.db.vo.dept.DeptAndPartyMemberVo;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
@@ -146,4 +147,20 @@ public class DeptController extends BaseController {
 		resultVo.setMsg("成功!");
 		return resultVo;
 	}
+
+    /**
+     * 获取片区内的党支部列表和支部内是否有先锋作用申请
+     * @param sectionId
+     * @return
+     */
+    @RequestMapping("/getDeptListAndApplyInfo")
+    @ResponseBody
+    public ResultVo<List<DeptAndApplyInfoVo>> getDeptListAndApplyInfo(@RequestParam("sectionId") Long sectionId) {
+        ResultVo<List<DeptAndApplyInfoVo>> resultVo = new ResultVo<>();
+        List<DeptAndApplyInfoVo> vo = deptService.getDeptListAndApplyInfo(sectionId);
+        resultVo.setData(vo);
+        resultVo.setCode(CoreConst.ResultCode.OK.getCode());
+        resultVo.setMsg("成功!");
+        return resultVo;
+    }
 }

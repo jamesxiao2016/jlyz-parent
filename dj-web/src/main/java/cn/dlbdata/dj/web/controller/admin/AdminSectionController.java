@@ -81,7 +81,7 @@ public class AdminSectionController extends BaseController {
 	 */
 	@RequestMapping("/addSection")
 	@ResponseBody
-	public ResultVo<Long> addSection(SectionAddOrUpdateDto dto) {
+	public ResultVo<Long> addSection(@RequestBody SectionAddOrUpdateDto dto) {
 		UserVo user = getCurrentUserFromCache();
 		ResultVo<Long> resultVo = new ResultVo<>();
 //		if (user == null) {
@@ -132,7 +132,7 @@ public class AdminSectionController extends BaseController {
 
 	@RequestMapping("/updateSection/{id}")
 	@ResponseBody
-	public ResultVo<Long> updateSection(SectionAddOrUpdateDto dto, @PathVariable Long id) {
+	public ResultVo<Long> updateSection(@RequestBody SectionAddOrUpdateDto dto, @PathVariable Long id) {
 		UserVo user = getCurrentUserFromCache();
 		ResultVo<Long> resultVo = new ResultVo<>();
 //		if (user == null) {

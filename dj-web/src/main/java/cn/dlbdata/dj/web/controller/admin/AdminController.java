@@ -4,16 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.service.IDictService;
-import cn.dlbdata.dj.service.IUserService;
-import cn.dlbdata.dj.vo.LoginVo;
-import cn.dlbdata.dj.vo.UserVo;
 
 /**
  * 处理后台管理员登录的登录
@@ -26,16 +22,7 @@ import cn.dlbdata.dj.vo.UserVo;
 public class AdminController {
 
 	@Autowired
-	private IUserService userService;
-	@Autowired
 	private IDictService dictService;
-
-	@PostMapping("/loginAdmin")
-	@ResponseBody
-	public ResultVo<UserVo> loginAdmin(LoginVo vo) {
-		ResultVo<UserVo> result = userService.loginAdmin(vo);
-		return result;
-	}
 
 	@RequestMapping("/getAllDictList")
 	@ResponseBody

@@ -29,7 +29,7 @@ function login() {
 		return false;
 	}
 
-	$.post("loginAdmin", {
+	$.post("../api/v1/loginAdmin", {
 		name : username,
 		pwd : $.md5(pwd)
 	}, function(data) {

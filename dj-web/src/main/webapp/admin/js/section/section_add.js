@@ -30,24 +30,6 @@ function initValidate() {
 	});
 }
 
-function getProdInfo(id) {
-	if (id != undefined && id != "") {
-		$("#id").val(id);
-		$("#nametip").hide();
-		$("#title").text("编辑角色");
-
-		$.ajaxPost("../../v1/system/getRoleInfoById", {
-			id : id
-		}, function(data) {
-			if (data.result == 200) {
-				$.setDataToForm(data.data);
-			} else {
-				layer.msg("获取角色信息失败");
-			}
-		})
-	}
-}
-
 function submitForm() {
 	// 验证参数
 	if (!validatorForm.form()) {
@@ -55,7 +37,7 @@ function submitForm() {
 	}
 	var formData = $("#productForm").formSerialize();
 	console.log(formData);
-	$.ajaxPost("../section/addSection", formData, function(data) {
+	$.ajaxJson("../section/addSection", formData, function(data) {
 		if (data.code == 1000) {
 			history.go(-1);
 		} else {
@@ -66,6 +48,4 @@ function submitForm() {
 			}
 		}
 	});
-	// $.submitForm();
-	// $("#productForm").submit();
 }

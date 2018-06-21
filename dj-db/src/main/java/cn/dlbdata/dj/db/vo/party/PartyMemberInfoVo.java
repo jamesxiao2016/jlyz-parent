@@ -12,6 +12,7 @@ public class PartyMemberInfoVo {
     private Long idCard;
     private String account;
     private Float totalScore;
+    private String partyPostCode;
 
     public Long getId() {
         return id;
@@ -99,5 +100,13 @@ public class PartyMemberInfoVo {
 
     public void setTotalScore(Float totalScore) {
         this.totalScore = totalScore;
+    }
+
+    public String getPartyPostCode() {
+        return partyPostCode;
+    }
+
+    public void setPartyPostCode(String partyPostCode) {
+        this.partyPostCode = partyPostCode;
     }
 }

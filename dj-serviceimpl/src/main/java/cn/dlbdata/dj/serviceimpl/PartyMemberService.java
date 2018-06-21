@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.db.vo.party.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,13 +47,6 @@ import cn.dlbdata.dj.db.pojo.DjStudy;
 import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
-import cn.dlbdata.dj.db.vo.party.AllPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.AnnualActiveInfo;
-import cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo;
-import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.ReportDetailVo;
-import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import cn.dlbdata.dj.service.IDeptService;
 import cn.dlbdata.dj.service.IPartyMemberService;
@@ -565,5 +559,20 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		List<SelectVo> results = partyMemberMapper.getPartyMembersBySectionId(sectionId);
 		result.setResults(results);
 		return result;
+	}
+
+	/**
+	 * 查询党员详细信息.
+	 *
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public PartyMemberDetailVo getPartyMemberDetailById(long id) {
+		PartyMemberDetailVo vo = partyMemberMapper.getPartyMemberDetailById(id);
+		if (vo == null) {
+			return new PartyMemberDetailVo();
+		}
+		return vo;
 	}
 }

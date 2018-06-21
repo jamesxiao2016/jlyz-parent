@@ -21,7 +21,6 @@ import cn.dlbdata.dj.common.util.StringUtil;
 import cn.dlbdata.dj.db.pojo.DjLogLogin;
 import cn.dlbdata.dj.service.ILogLoginService;
 import cn.dlbdata.dj.service.IUserService;
-import cn.dlbdata.dj.serviceimpl.LogLoginServiceImpl;
 import cn.dlbdata.dj.vo.LoginVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
@@ -128,4 +127,13 @@ public class LoginController extends BaseController {
 		userService.getALlUser();
 		return new ResultVo<>(ResultCode.OK.getCode());
 	}
+	
+
+	@PostMapping("/loginAdmin")
+	@ResponseBody
+	public ResultVo<UserVo> loginAdmin(LoginVo vo) {
+		ResultVo<UserVo> result = userService.loginAdmin(vo);
+		return result;
+	}
+
 }
