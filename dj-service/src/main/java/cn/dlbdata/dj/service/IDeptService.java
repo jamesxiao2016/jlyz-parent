@@ -5,10 +5,7 @@ import java.util.List;
 import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjUser;
-import cn.dlbdata.dj.db.vo.dept.DeptAndPartyMemberVo;
-import cn.dlbdata.dj.db.vo.dept.DeptDetailVo;
-import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
-import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
+import cn.dlbdata.dj.db.vo.dept.*;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
 import cn.dlbdata.dj.vo.UserVo;
@@ -116,6 +113,13 @@ public interface IDeptService {
 	 * @return
 	 */
 	DeptAndPartyMemberVo getDeptAndPartyMemberList(Long id);
+
+	/**
+	 * 获取片区内的党支部列表和支部内是否有先锋作用申请
+	 * @param sectionId
+	 * @return
+	 */
+	List<DeptAndApplyInfoVo> getDeptListAndApplyInfo(Long sectionId);
 
 
 

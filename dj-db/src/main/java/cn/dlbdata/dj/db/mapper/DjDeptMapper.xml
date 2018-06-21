@@ -54,4 +54,8 @@
     select  dept.name as deptName,(select count(pm.id) from dj_partymember pm where pm.dept_id = dept.id) as peopleSum
      from dj_dept dept where dept.id = #{id}
   </select>
+  
+  <select id="getDeptListAndApplyInfo" parameterType="java.lang.Long" resultType="cn.dlbdata.dj.db.vo.dept.DeptAndApplyInfoVo">
+    select dept.id as deptId,dept.name as deptName,if((select count(app.id) from dj_apply app where app.status = 0 and app.dj_type_id = 4 and app.dj_dept_id = dept.id)>0,1,0) as haveApply from dj_dept dept where dept.dj_section_id = #{sectionId}
+  </select>
 </mapper>

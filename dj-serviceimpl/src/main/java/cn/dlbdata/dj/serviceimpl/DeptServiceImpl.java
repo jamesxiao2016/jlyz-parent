@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import cn.dlbdata.dj.db.vo.dept.DeptAndPartyMemberVo;
+import cn.dlbdata.dj.db.vo.dept.*;
 import cn.dlbdata.dj.db.vo.party.AllPartyMemberVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +26,6 @@ import cn.dlbdata.dj.db.pojo.DjBuilding;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjSection;
 import cn.dlbdata.dj.db.pojo.DjUser;
-import cn.dlbdata.dj.db.vo.dept.DeptDetailVo;
-import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
-import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
 import cn.dlbdata.dj.service.IDeptService;
@@ -393,4 +390,16 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 		vo.setPartyMembers(partyMembers);
 		return vo;
 	}
+
+    /**
+     * 获取片区内的党支部列表和支部内是否有先锋作用申请
+     *
+     * @param sectionId
+     * @return
+     */
+    @Override
+    public List<DeptAndApplyInfoVo> getDeptListAndApplyInfo(Long sectionId) {
+        List<DeptAndApplyInfoVo> list = deptMapper.getDeptListAndApplyInfo(sectionId);
+        return list;
+    }
 }
