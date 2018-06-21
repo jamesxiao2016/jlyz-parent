@@ -99,11 +99,11 @@
         left join dj_dept dept on pm.dept_id = dept.id
         left join dj_section sc on dept.dj_section_id = sc.id
         <where>
-            <if test="section != null">
-                and sc.id = #{section}
+            <if test="sectionId != null">
+                and sc.id = #{sectionId}
             </if>
-            <if test="dept != null">
-                and dept.id = #{dept}
+            <if test="deptId != null">
+                and dept.id = #{deptId}
             </if>
             <if test="name != null and name != ''">
                 and pm.name LIKE concat(concat('%',#{name}),'%')

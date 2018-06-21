@@ -70,8 +70,8 @@ function query() {
 		"name" : getLikeVal($("#name").val()),
         "sex" : $("#selsex").val(),
         "position" : $("#selpost").val(),
-        "dept" : $("#seldept").val(),
-        "section" : $("#selsection").val()
+        "deptId" : $("#seldept").val(),
+        "sectionId" : $("#selsection").val()
 	};
 	jQuery(grid_selector).setGridParam({
 		postData : {
