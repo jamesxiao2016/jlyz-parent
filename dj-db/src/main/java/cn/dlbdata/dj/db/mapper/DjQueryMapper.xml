@@ -92,16 +92,27 @@
 
     <select id="queryPartyMemberList" resultType="cn.dlbdata.dj.db.vo.party.PartyMemberInfoVo">
         select u.id as id,pm.name as name,pm.sex_code as sex,pm.age as age,pm.birth_date as birthDate,pm.dept_id as deptId,dept.name as deptName,
-        u.role_id as roleId,pm.idcard as idCard,u.name as account,ifnull((select sum(sc.score) from dj_score sc where sc.user_id = pm.id),0) as totalScore
+        u.role_id as roleId,pm.idcard as idCard,u.name as account,ifnull((select sum(sc.score) from dj_score sc where sc.user_id = pm.id),0) as totalScore,
+        pm.party_post_code as partyPostCode
         from dj_partymember pm
         left join  dj_user u on u.id = pm.id
         left join dj_dept dept on pm.dept_id = dept.id
+        left join dj_section sc on dept.dj_section_id = sc.id
         <where>
-            <if test="deptId != null">
-                and pm.dept_id = #{deptId}
+            <if test="section != null">
+                and sc.id = #{section}
+            </if>
+            <if test="dept != null">
+                and dept.id = #{dept}
             </if>
             <if test="name != null and name != ''">
-                and name LIKE concat(concat('%',#{name}),'%')
+                and pm.name LIKE concat(concat('%',#{name}),'%')
+            </if>
+            <if test="sex != null">
+                and pm.sex_code = #{sex}
+            </if>
+            <if test="position != null">
+                and pm.party_post_code = #{position}
             </if>
         </where>
         <choose>

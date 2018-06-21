@@ -10,7 +10,7 @@ function initEvent() {
 	$("#btnQuery").click(query);
 
 	$("#btnAdd").click(function() {
-		location.href = "add.html";
+		location.href = "partymember_add.html";
 	});
 
 	// 性别
@@ -18,7 +18,21 @@ function initEvent() {
 		$('.selsex').select2({
 			data : data
 		});
-	})
+	});
+    $.post("../../admin/section/getSectionList", function(data) {
+        $('#selsection').select2({
+            data : data
+        });
+        sectionId = $("#selsection").select2("val");
+        deptList(sectionId);
+    });
+
+    $("#selsection").on("change", function() {
+        sectionId = $(this).val();
+        console.log(sectionId);
+        deptList(sectionId);
+        query();
+    });
 	// 职位
 	// $.post("../../api/v1/component/getDictList?dictType=party_post",
 	// function(
@@ -27,21 +41,37 @@ function initEvent() {
 	// data : data
 	// });
 	// })
+    function deptList(sectionId) {
+        var $select = $('#seldept');
+        var url = '../../api/v1/component/getDeptNameList?sectionId=' + sectionId;
+        $.post(url, function(data) {
+
+            instance = $select.data('select2');
+            if(instance){
+                $select.select2('destroy').empty();
+            }
+            $select.select2({
+                data : data
+            });
+        });
+    }
 
 	$('.selpost').select2({
-		ajax : {
-			url : '../../api/v1/component/getDynamicDictList?dictType=party_post',
-			dataType : 'json',
-			delay : 150
-		}
-	});
+        ajax : {
+            url : '../../api/v1/component/getDynamicDictList?dictType=party_post',
+            dataType : 'json',
+            delay : 150
+        }
+    });
 }
 
 function query() {
 	var qryParam = {
 		"name" : getLikeVal($("#name").val()),
-		"start" : $("#start").val(),
-		"end" : $("#end").val()
+        "sex" : $("#selsex").val(),
+        "position" : $("#selpost").val(),
+        "dept" : $("#seldept").val(),
+        "section" : $("#selsection").val()
 	};
 	jQuery(grid_selector).setGridParam({
 		postData : {
@@ -69,6 +99,18 @@ function init() {
 			index : 'name',
 			width : 70
 		}, {
+            label : '账号',
+            name : 'account',
+            index : 'account',
+            align : "center"
+        }, {
+            label : '职位',
+            name : 'partyPostCode',
+            index : 'partyPostCode',
+            align : "center",
+            width : 70,
+            formatter : positionFormatter
+        }, {
 			label : '性别',
 			name : 'sex',
 			index : 'sex',
@@ -104,21 +146,11 @@ function init() {
 			align : "center",
 			width : 300
 		}, {
-			label : '职级',
-			name : 'roleId',
-			index : 'roleId',
-			align : "center",
-			width : 70
-		}, {
 			label : '身份证号',
 			name : 'idCard',
 			index : 'idCard',
-			align : "center"
-		}, {
-			label : '账号名称',
-			name : 'account',
-			index : 'account',
-			align : "center"
+			align : "center",
+			hidden :true
 		}, {
 			label : '操作',
 			name : '',
@@ -166,7 +198,7 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='../section/add.html?id=" + rowObject.id
+	var btnEdit = "<a href='../partymember/add.html?id=" + rowObject.id
 			+ "'>编辑</a>";
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 
@@ -177,6 +209,13 @@ function sexFormatter(cellvalue, options, rowObject) {
 	var name = parent.getDictName("sex",cellvalue);
 	console.log(name);
 	return name;
+}
+
+function positionFormatter(cellvalue, options, rowObject) {
+    var name = parent.getDictName("party_post",cellvalue);
+    console.log(name);
+    return name;
+
 }
 
 // function delRecord(id) {

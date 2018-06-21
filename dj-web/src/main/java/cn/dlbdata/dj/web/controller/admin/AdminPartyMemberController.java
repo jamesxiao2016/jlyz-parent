@@ -58,9 +58,9 @@ public class AdminPartyMemberController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/add.html")
+	@RequestMapping("partymember_add.html")
 	public String add() {
-		return "add.html";
+		return "partymember/partymember_add.html";
 	}
 
 	/**
@@ -70,15 +70,15 @@ public class AdminPartyMemberController extends BaseController {
 	 */
 	@PostMapping("/addPartyMember")
     @ResponseBody
-    public ResultVo addPartyMember(@RequestBody PartyMemberAddOrUpdateDto dto) {
+    public ResultVo addPartyMember(PartyMemberAddOrUpdateDto dto) {
         UserVo user = getCurrentUserFromCache();
         ResultVo resultVo = new ResultVo<>(CoreConst.ResultCode.OK.getCode());
-        if (user == null) {
-            logger.error("用户未登录");
-            resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
-            resultVo.setMsg("用户未登录或用户已退出");
-            return resultVo;
-        }
+//        if (user == null) {
+//            logger.error("用户未登录");
+//            resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
+//            resultVo.setMsg("用户未登录或用户已退出");
+//            return resultVo;
+//        }
         partyMemberService.addPartyMember(dto,user);
         resultVo.setCode(CoreConst.ResultCode.OK.getCode());
         resultVo.setMsg("新增党员成功!");
