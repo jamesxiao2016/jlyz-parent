@@ -3,17 +3,13 @@ package cn.dlbdata.dj.db.mapper;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.db.vo.party.*;
 import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
-import cn.dlbdata.dj.db.vo.party.AllPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.IdNameTotalScoreVo;
-import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface DjPartymemberMapper extends Mapper<DjPartymember> {
@@ -87,4 +83,6 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
 													 @Param("year") int year);
 	
 	public List<SelectVo> getPartyMembersBySectionId(@Param("sectionId") Long sectionId);
+
+	PartyMemberDetailVo getPartyMemberDetailById(long id);
 }

@@ -198,7 +198,7 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='../partymember/add.html?id=" + rowObject.id
+	var btnEdit = "<a href='../partymember/partymember_detail.html?id=" + rowObject.id
 			+ "'>编辑</a>";
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 

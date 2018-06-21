@@ -2,6 +2,7 @@ package cn.dlbdata.dj.service;
 
 import java.util.List;
 
+import cn.dlbdata.dj.db.vo.party.*;
 import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.common.core.util.Paged;
@@ -11,13 +12,6 @@ import cn.dlbdata.dj.db.dto.partymember.PartyMemberAddOrUpdateDto;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
-import cn.dlbdata.dj.db.vo.party.AllPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.AnnualActiveInfo;
-import cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo;
-import cn.dlbdata.dj.db.vo.party.ObserveLowPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo;
-import cn.dlbdata.dj.db.vo.party.ReportDetailVo;
-import cn.dlbdata.dj.db.vo.party.ReportPartyMemberVo;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
 import cn.dlbdata.dj.vo.PartyVo;
 import cn.dlbdata.dj.vo.UserVo;
@@ -205,4 +199,13 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	public SelectResultVo getPartyMembersBySectionId(Long sectionId);
+
+	/**
+	 * 查询党员详细信息.
+	 * @param id
+	 * @return
+	 */
+	PartyMemberDetailVo getPartyMemberDetailById(long id);
+
+
 }

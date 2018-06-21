@@ -108,4 +108,10 @@
     left join dj_dept d on d.id = p.dept_id
     where d.dj_section_id = #{sectionId}
   </select>
+  
+  <select id="getPartyMemberDetailById" resultType="cn.dlbdata.dj.db.vo.party.PartyMemberDetailVo">
+    select pm.id,pm.name,pm.dept_id as deptId,u.name as userName,pm.sex_code as sexCode, pm.age,pm.phone,pm.email,
+    pm.idcard,pm.birth_date as birthDate,pm.education_code as educationCode,pm.party_post_code as partyPostCode
+    from dj_partymember pm left join dj_user u on u.id = pm.id where pm.id = #{id}
+  </select>
 </mapper>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>添加产品</title>
+<link href="../../static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+<link href="../../static/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+<link href="../../static/css/animate.css" rel="stylesheet">
+<link href="../../static/css/plugins/select2/select2.min.css"
+	rel="stylesheet">
+<link href="../../static/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="ibox float-e-margins">
+				<div class="ibox-title">
+					<h5 id="title">修改党员</h5>
+					<div class="ibox-tools"></div>
+				</div>
+				<div class="ibox-content">
+					<form class="form-horizontal m-t" id="productForm" method="post"
+						action="../section/updateSection/${record.id}">
+						<input id="id" name="id" type="hidden" value="${record.id}" />
+						<div class="form-group">
+							<label class="col-sm-3 control-label">姓名：</label>
+							<div class="col-sm-8">
+								<input id="name" name="name" value="${record.name}"
+									   class="form-control" type="text" required=""/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">账户名：</label>
+							<div class="col-sm-8">
+								<input id="userName" name="userName" value="${record.userName}"
+									   class="form-control" type="text" required=""/>
+							</div>
+						</div>
+						<label class="col-sm-3 control-label">电子邮箱：</label>
+						<div class="form-group">
+							<div class="col-sm-8">
+								<input id="email" name="email" value="${record.email}" class="form-control" type="text"/>
+							</div>
+						</div>
+						<label class="col-sm-3 control-label">片区：</label>
+						<div class="form-group col-lg-3 col-md-3 col-sm-3">
+							<select class="form-control selsection" id="selsection" name="selsection" style="height: 34px;">
+								<!--<option value = "" selected="selected">请选择片区</option>-->
+							</select>
+						</div>
+						<label class="col-sm-3 control-label">党支部：</label>
+						<div class="form-group col-lg-3 col-md-3 col-sm-3">
+							<select class="form-control seldept" id="deptId" name="deptId" value="${record.deptId}" style="height: 34px;">
+								<!--<option value = "" selected="selected">请选择支部</option>-->
+							</select>
+						</div>
+						<label class="col-sm-2 control-label">性别：</label>
+						<div class="form-group col-lg-2 col-md-2 col-sm-2">
+							<select class="form-control selsex" id="sexCode" name="selsex" value="${record.sexCode}"></select>
+						</div>
+						<label class="col-sm-2 control-label">年龄：</label>
+						<div class="col-sm-2">
+							<input id="age" name="age" value="${record.age}" class="form-control"
+								   type="number"  />
+						</div>
+
+						<label class="col-sm-2 control-label">联系电话：</label>
+						<div class="col-sm-2">
+							<input id="phone" name="phone" value="${record.phone}" class="form-control"
+								   type="text"  />
+						</div>
+						<label class="col-sm-2 control-label">身份证号：</label>
+						<div class="col-sm-2">
+							<input id="idcard" name="idcard" value="${record.idcard}" class="form-control"
+								   type="text"  />
+						</div>
+						<label class="col-sm-2 control-label">出生日期：</label>
+						<div class="col-sm-2">
+							<input id="birthDate" name="birthDate" value="${record.birthDate}" class="form-control"
+								   type="text"  />
+						</div>
+						<label class="col-sm-3 control-label">学历：</label>
+						<div class="form-group col-lg-3 col-md-3 col-sm-3">
+						<select class="form-control seledu" id="educationCode" name="seledu" value="${record.educationCode}"
+								required=""></select>
+					</div>
+
+						<label class="col-sm-3 control-label">职位：</label>
+						<div class="form-group col-lg-3 col-md-3 col-sm-3">
+						<select class="form-control selpost" id="partyPostCode" name="selpost"
+								value="${record.partyPostCode}" required=""></select>
+					</div>
+						<div class="form-group">
+							<div class="col-sm-8 col-sm-offset-3">
+								<button id="btnSubmit" class="btn btn-primary" type="button">提交</button>
+								<button id="btnBack" class="btn btn-primary" type="button"
+									style="margin-left: 10px;">返回</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 全局js -->
+	<script src="../../static/js/jquery.min.js?v=2.1.4"></script>
+	<script src="../../static/js/bootstrap.min.js?v=3.3.6"></script>
+	<script src="../../static/js/content.js?v=1.0.0"></script>
+	<script src="../../static/js/plugins/validate/jquery.validate.min.js"></script>
+	<script src="../../static/js/plugins/validate/messages_zh.min.js"></script>
+	<script src="../../static/js/plugins/layer/layer.min.js"></script>
+	<script src="../../static/js/plugins/select2/select2.full.min.js"></script>
+	<script src="../../static/js/plugins/component/core.js"></script>
+	<script src="../../static/js/plugins/component/common.js"></script>
+	<script src="../js/common.js"></script>
+	<script src="../js/section/section_detail.js"></script>
+	<script type="text/javascript">
+		var sectionId = '${record.id}';
+		$(function() {
+			if (sectionId) {
+				$.get(
+						"../../admin/section/getPartyMembersBySectionId?sectionId="
+								+ sectionId, function(data) {
+							$('#principalId').select2({
+								data : data.results
+							});
+						});
+			}
+		})
+	</script>
+</body>
+
+</html>

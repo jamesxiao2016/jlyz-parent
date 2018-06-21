@@ -3,6 +3,8 @@ package cn.dlbdata.dj.web.controller.admin;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.dto.partymember.PartyMemberAddOrUpdateDto;
+import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.vo.party.PartyMemberDetailVo;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import cn.dlbdata.dj.web.base.BaseController;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 党员管理Controller
@@ -48,9 +51,12 @@ public class AdminPartyMemberController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/detail.html")
-	public String detail() {
-		return "detail.html";
+	@RequestMapping("/partymember_detail.html")
+	public ModelAndView detail(Long id) {
+		ModelAndView view = new ModelAndView("partymember/partymember_detail.html");
+		PartyMemberDetailVo record = partyMemberService.getPartyMemberDetailById(id);
+		view.addObject("record", record);
+		return view;
 	}
 
 	/**
