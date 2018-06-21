@@ -37,4 +37,22 @@
       #{item}
     </foreach>
   </select>
+  
+  <!-- 第三方登录 -->
+  <resultMap id="ThirdLoginResultMap" type="cn.dlbdata.dj.db.vo.UserResVo">
+    <result column="id" jdbcType="BIGINT" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="pwd" jdbcType="VARCHAR" property="password" />
+    <result column="phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="sex_code" jdbcType="INTEGER" property="sex" />
+    <result column="avatar" jdbcType="VARCHAR" property="headerImg" />
+  </resultMap>
+  <select id="getUserFromAccountAndPwd" resultMap="ThirdLoginResultMap">
+  	select du.id, du.user_name, du.pwd, djp.phone, du.avatar, djp.party_post_code, du.dept_id, djp.sex_code
+  	from dj_user du 
+  	left join dj_partymember djp on djp.id = du.dj_partymember_id 
+  	where du.name  = #{account} and du.pwd = #{password}
+  </select>
+  
 </mapper>

@@ -23,7 +23,8 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
-
+	
+  <!-- 审批列表 -->
   <resultMap type="cn.dlbdata.dj.db.vo.study.ReviewScheduleListVo" id="BaseResultMapTwo">
   	 <id column="id" jdbcType="BIGINT" property="id" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />

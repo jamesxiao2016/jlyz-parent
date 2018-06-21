@@ -25,6 +25,7 @@ import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjSection;
 import cn.dlbdata.dj.db.pojo.DjUser;
+import cn.dlbdata.dj.db.vo.UserResVo;
 import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 import cn.dlbdata.dj.vo.LoginVo;
@@ -32,7 +33,9 @@ import cn.dlbdata.dj.vo.UserVo;
 
 @Service
 public class UserServiceImpl extends BaseServiceImpl implements IUserService {
-
+	
+	@Autowired
+	private IUserService userService;
 	@Autowired
 	private DjUserMapper userMapper;
 	@Autowired
@@ -409,6 +412,54 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		}
 
 		return str;
+	}
+
+	/* (non-Javadoc)
+	 * <p>Title: thirdLogin</p>
+	 * <p>Description: 第三方登录</p> 
+	 * @param account
+	 * @param password
+	 * @param miandeng
+	 * @param phoneType
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IUserService#thirdLogin(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ResultVo<UserResVo> thirdLogin(String account, String password, String miandeng, String phoneType) {
+		ResultVo<UserResVo> result = new ResultVo<>();
+		if (StringUtils.isEmpty(account) || StringUtils.isEmpty(password)) {
+			result.setCode(ResultCode.ParameterError.getCode());
+			result.setMsg("请输入用户名或密码");
+			return result;
+		}
+		// 用户检查
+		password = MD5Util.encode(password);
+		UserResVo user = userMapper.getUserFromAccountAndPwd(account, password);
+		if (user == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("用户名或密码错误");
+			return result;
+		}
+		// 密码验证
+		if (!password.equalsIgnoreCase(user.getPassword())) {
+			logger.error("密码错误");
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("用户名或密码错误");
+			return result;
+		}
+		if(miandeng != null && miandeng != "") {
+			user.setIsMiandeng(miandeng);
+		}
+		Calendar date = Calendar.getInstance();
+		Integer year = date.get(Calendar.YEAR);
+		Float score = userService.getSumScoreByUserId( user.getUserId(), year);
+		if(score == null) {
+			user.setIntegral(0f);
+		}
+		user.setIntegral(score);
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(user);
+		return result;
 	}
 
 }

@@ -82,9 +82,15 @@ public class JwtTokenUtil {
 			Date now = new Date(nowMillis);
 			Map<String, Object> claims = new HashMap<String, Object>();// 创建payload的私有声明（根据特定的业务需要添加，如果要拿这个做验证，一般是需要和jwt的接收方提前沟通好验证方式的）
 			claims.put(KEY_UID, uid);
-			claims.put(KEY_UNAME, uname);
-			claims.put(KEY_CID, cid);
-			claims.put(KEY_UTYPE, utype);
+			if (StringUtils.isNotEmpty(uname)) {
+				claims.put(KEY_UNAME, uname);
+			}
+			if (StringUtils.isNotEmpty(uname)) {
+				claims.put(KEY_CID, cid);
+			}
+			if (StringUtils.isNotEmpty(uname)) {
+				claims.put(KEY_UTYPE, utype);
+			}
 
 			// 下面就是在为payload添加各种标准声明和私有声明了
 			JwtBuilder builder = Jwts.builder() // 这里其实就是new一个JwtBuilder，设置jwt的body

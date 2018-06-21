@@ -6,6 +6,7 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjUser;
+import cn.dlbdata.dj.db.vo.UserResVo;
 import cn.dlbdata.dj.vo.LoginVo;
 import cn.dlbdata.dj.vo.UserVo;
 
@@ -104,4 +105,16 @@ public interface IUserService {
 	 * @return
 	 */
 	public List<DjUser> getALlUser();
+	
+	/**
+	 * 
+	 * <p>Title: thirdLogin</p> 
+	 * <p>Description: 第三方登录</p> 
+	 * @param account
+	 * @param password
+	 * @param miandeng
+	 * @param phoneType
+	 * @return
+	 */
+	public  ResultVo<UserResVo> thirdLogin(String account, String password, String miandeng, String phoneType );
 }

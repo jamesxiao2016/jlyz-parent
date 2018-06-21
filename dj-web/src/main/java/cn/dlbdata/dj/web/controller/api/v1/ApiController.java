@@ -13,17 +13,23 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.dlbdata.dj.common.core.util.ConfigUtil;
+import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.ScoreActiveVo;
+import cn.dlbdata.dj.db.vo.UserResVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IScoreService;
+import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.web.base.BaseController;
+import cn.dlbdata.dj.web.util.TokenUtil;
 
 /**
  * <p>
@@ -37,8 +43,13 @@ import cn.dlbdata.dj.web.base.BaseController;
  * @date 2018年6月6日
  */
 @Controller
-@RequestMapping("/api/v1/api")
+@RequestMapping("/api/v1/auth")
 public class ApiController extends BaseController {
+
+	private String THIRD_KEJIANG = ConfigUtil.get("third_kejiang");
+	
+	@Autowired
+	private IUserService userService;
 	@Autowired
 	private IPartyMemberService partyMemberService;
 	@Autowired
@@ -120,6 +131,67 @@ public class ApiController extends BaseController {
 		}
 		result.setData(list);
 		result.setCode(ResultCode.OK.getCode());
+		return result;
+	}
+
+	/**
+	 * 
+	 * <p>
+	 * Title: getToken
+	 * </p>
+	 * <p>
+	 * Description: 第三方获取token
+	 * </p>
+	 * 
+	 * @return
+	 */
+	@GetMapping(value = "/getToken")
+	@ResponseBody
+	public ResultVo<String> getToken(String code) {
+		ResultVo<String> result = new ResultVo<>();
+		if (!THIRD_KEJIANG.equals(code)) {
+			result.setCode(ResultCode.INVALID_TOKEN.getCode());
+			result.setMsg("无效token");
+			return result;
+		}
+
+		String token = JwtTokenUtil.createToken(code, "", "", "", 0);
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(token);
+		TokenUtil.TOKEN_MAP.put(token, token);
+		return result;
+	}
+
+	/**
+	 * 
+	 * <p>Title: login</p> 
+	 * <p>Description: 第三方登录逻辑</p> 
+	 * @param token
+	 * @param account
+	 * @param password
+	 * @param miandeng
+	 * @param phoneType
+	 * @return
+	 */
+	@PostMapping(value = "/login")
+	@ResponseBody
+	public ResultVo<UserResVo> login(String token, String account, String password, String miandeng, String phoneType) {
+		ResultVo<UserResVo> result = new ResultVo<>();
+		if (StringUtils.isEmpty(token)) {
+			result.setCode(ResultCode.NotFound.getCode());
+			result.setMsg("token不能为空");
+			return result;
+		}
+		// 判断token是否有
+		if (!token.equals(TokenUtil.TOKEN_MAP.get(token))) {
+			result.setCode(ResultCode.INVALID_TOKEN.getCode());
+			result.setMsg("token无效");
+			return result;
+		}
+		// 移除token
+		TokenUtil.TOKEN_MAP.remove(token);
+		//登录逻辑处理
+		result = userService.thirdLogin(account, password, miandeng, phoneType);
 		return result;
 	}
 

@@ -42,6 +42,7 @@ public class CoreConst {
 	 */
 	public static enum ResultCode {
 		OK(1000, "OK"), // 成功统一返回
+		INVALID_TOKEN(1001, "无效token"),//第三方登录无效token
 		NOT_LOGIN(1010, "Not Login"), // 未登录
 		BadRequest(1020, "Bad Request"), // 默认返回此错误码
 		Unauthorized(1021, "Unauthorized"), // 非法请求要求身份验证

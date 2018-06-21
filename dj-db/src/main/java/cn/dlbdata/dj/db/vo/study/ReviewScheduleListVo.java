@@ -40,9 +40,13 @@ public class ReviewScheduleListVo {
 	 * 审批状态
 	 */
 	private Integer status;
-	
+	/**
+	 * 图片集
+	 */
 	private Long[] picIds;
-	
+	/**
+	 * 驳回原因
+	 */
 	private String refuseReason;
 	
 	
