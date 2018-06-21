@@ -8,6 +8,7 @@ package cn.dlbdata.dj.web.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -76,7 +77,7 @@ public class AdminRoleController extends BaseController{
 
 	@RequestMapping("/save")
 	@ResponseBody
-	public ResultVo<Long> saveOrUpdate(DjRole djRole) {
+	public ResultVo<Long> saveOrUpdate(@RequestBody DjRole djRole) {
 		ResultVo<Long> result = new ResultVo<>();
 		Long data = roleService.saveOrUpdate(djRole);
 		if (data != null) {

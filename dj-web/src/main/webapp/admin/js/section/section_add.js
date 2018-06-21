@@ -48,6 +48,4 @@ function submitForm() {
 			}
 		}
 	});
-	// $.submitForm();
-	// $("#productForm").submit();
 }

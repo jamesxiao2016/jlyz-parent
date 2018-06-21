@@ -8,6 +8,7 @@ package cn.dlbdata.dj.web.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -78,7 +79,7 @@ public class AdminScoreLevelController extends BaseController {
 
 	@RequestMapping("/save")
 	@ResponseBody
-	public ResultVo<Long> saveOrUpdate(DjScoreLevel djScoreLevel) {
+	public ResultVo<Long> saveOrUpdate(@RequestBody DjScoreLevel djScoreLevel) {
 		ResultVo<Long> result = new ResultVo<>();
 		Long data = scoreLevelService.saveOrUpdate(djScoreLevel);
 		if (data != null) {

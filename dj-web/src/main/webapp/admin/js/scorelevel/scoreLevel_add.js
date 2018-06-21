@@ -55,7 +55,7 @@ function submitForm() {
 	}
 	var formData = $("#productForm").formSerialize();
 	console.log(formData);
-	$.ajaxPost("../scorelevel/save", formData, function(data) {
+	$.ajaxJson("../scorelevel/save", formData, function(data) {
 		if (data.code == 1000) {
 			history.go(-1);
 		} else {
@@ -66,6 +66,4 @@ function submitForm() {
 			}
 		}
 	});
-	// $.submitForm();
-	// $("#productForm").submit();
 }
