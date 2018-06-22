@@ -13,21 +13,28 @@ function initEvent() {
 		location.href = "add.html";
 	});
 	
-	$.post("../../admin/section/getSectionList", function(data) {
-		$('#selsection').select2({
-			data : data
+	$.post("../../admin/getSectionAndDeptTree", function(data) {
+		$('#seldept').select2({
+			data : data,
+			language : "zh-CN"
 		});
-
-		sectionId = $("#selsection").select2("val");
-		deptList(sectionId);
 	});
-
-	$("#selsection").on("change", function() {
-		sectionId = $(this).val();
-		console.log(sectionId);
-		deptList(sectionId);
-		query();
-	});
+	
+//	$.post("../../admin/section/getSectionList", function(data) {
+//		$('#selsection').select2({
+//			data : data
+//		});
+//
+//		sectionId = $("#selsection").select2("val");
+//		deptList(sectionId);
+//	});
+//
+//	$("#selsection").on("change", function() {
+//		sectionId = $(this).val();
+//		console.log(sectionId);
+//		deptList(sectionId);
+//		query();
+//	});
 	
 }
 

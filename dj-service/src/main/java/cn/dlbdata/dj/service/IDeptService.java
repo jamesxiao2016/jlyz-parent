@@ -121,6 +121,9 @@ public interface IDeptService {
 	 */
 	List<DeptAndApplyInfoVo> getDeptListAndApplyInfo(Long sectionId);
 
-
-
+	/**
+	 * 获取片区及党支部
+	 * @return
+	 */
+	List<SelectTreeVo> getSectionAndDeptTree();
 }

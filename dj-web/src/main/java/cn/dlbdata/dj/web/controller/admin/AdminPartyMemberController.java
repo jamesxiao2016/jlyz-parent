@@ -1,18 +1,25 @@
 package cn.dlbdata.dj.web.controller.admin;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.dto.partymember.PartyMemberAddOrUpdateDto;
-import cn.dlbdata.dj.db.pojo.DjPartymember;
+import cn.dlbdata.dj.db.vo.dept.SelectTreeVo;
 import cn.dlbdata.dj.db.vo.party.PartyMemberDetailVo;
+import cn.dlbdata.dj.service.IDeptService;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.vo.UserVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
 import cn.dlbdata.dj.web.base.BaseController;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 党员管理Controller
@@ -26,6 +33,8 @@ public class AdminPartyMemberController extends BaseController {
 
     @Autowired
     private IPartyMemberService partyMemberService;
+    @Autowired
+    private IDeptService deptService;
 	/**
 	 * 查询列表党员列表
 	 * 
@@ -55,7 +64,9 @@ public class AdminPartyMemberController extends BaseController {
 	public ModelAndView detail(Long id) {
 		ModelAndView view = new ModelAndView("partymember/partymember_detail.html");
 		PartyMemberDetailVo record = partyMemberService.getPartyMemberDetailById(id);
+		List<SelectTreeVo> tree = deptService.getSectionAndDeptTree();
 		view.addObject("record", record);
+		view.addObject("tree", tree);
 		return view;
 	}
 
@@ -76,9 +87,9 @@ public class AdminPartyMemberController extends BaseController {
 	 */
 	@PostMapping("/addPartyMember")
     @ResponseBody
-    public ResultVo addPartyMember(PartyMemberAddOrUpdateDto dto) {
+    public ResultVo<Long> addPartyMember(PartyMemberAddOrUpdateDto dto) {
         UserVo user = getCurrentUserFromCache();
-        ResultVo resultVo = new ResultVo<>(CoreConst.ResultCode.OK.getCode());
+        ResultVo<Long> resultVo = new ResultVo<>(CoreConst.ResultCode.OK.getCode());
 //        if (user == null) {
 //            logger.error("用户未登录");
 //            resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
@@ -99,10 +110,10 @@ public class AdminPartyMemberController extends BaseController {
 	 */
 	@PostMapping("/updatePartyMember/{id}")
 	@ResponseBody
-	public ResultVo updatePartyMember(@RequestBody PartyMemberAddOrUpdateDto dto,
+	public ResultVo<Long> updatePartyMember(@RequestBody PartyMemberAddOrUpdateDto dto,
 									  @PathVariable Long id) {
 		UserVo user = getCurrentUserFromCache();
-		ResultVo resultVo = new ResultVo<>();
+		ResultVo<Long> resultVo = new ResultVo<>();
 		if (user == null) {
 			logger.error("用户未登录");
 			resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
@@ -122,9 +133,9 @@ public class AdminPartyMemberController extends BaseController {
 	 */
 	@PostMapping("/invalidPartyMember/{id}")
 	@ResponseBody
-	public ResultVo invalidPartyMember(@PathVariable Long id) {
+	public ResultVo<Long> invalidPartyMember(@PathVariable Long id) {
 		UserVo user = getCurrentUserFromCache();
-		ResultVo resultVo = new ResultVo<>();
+		ResultVo<Long> resultVo = new ResultVo<>();
 		if (user == null) {
 			logger.error("用户未登录");
 			resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());

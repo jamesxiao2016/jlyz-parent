@@ -362,12 +362,10 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 			DjDept parentDept = deptMapper.selectByPrimaryKey(dept.getParentId());
 			if (parentDept != null) {
 				vo.setParentName(parentDept.getName());
-			}
-			else {
+			} else {
 				vo.setParentName("-");
 			}
-		}
-		else {
+		} else {
 			vo.setParentName("-");
 		}
 		return vo;
@@ -376,7 +374,8 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	/**
 	 * 查询党支部和党员列表
 	 *
-	 * @param id 党支部Id
+	 * @param id
+	 *            党支部Id
 	 * @return
 	 */
 	@Override
@@ -386,20 +385,48 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 			return new DeptAndPartyMemberVo();
 		}
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-		List<AllPartyMemberVo> partyMembers = partymemberMapper.getPartyMembersVoByDeptId(id,year);
+		List<AllPartyMemberVo> partyMembers = partymemberMapper.getPartyMembersVoByDeptId(id, year);
 		vo.setPartyMembers(partyMembers);
 		return vo;
 	}
 
-    /**
-     * 获取片区内的党支部列表和支部内是否有先锋作用申请
-     *
-     * @param sectionId
-     * @return
-     */
-    @Override
-    public List<DeptAndApplyInfoVo> getDeptListAndApplyInfo(Long sectionId) {
-        List<DeptAndApplyInfoVo> list = deptMapper.getDeptListAndApplyInfo(sectionId);
-        return list;
-    }
+	/**
+	 * 获取片区内的党支部列表和支部内是否有先锋作用申请
+	 *
+	 * @param sectionId
+	 * @return
+	 */
+	@Override
+	public List<DeptAndApplyInfoVo> getDeptListAndApplyInfo(Long sectionId) {
+		List<DeptAndApplyInfoVo> list = deptMapper.getDeptListAndApplyInfo(sectionId);
+		return list;
+	}
+
+	@Override
+	public List<SelectTreeVo> getSectionAndDeptTree() {
+		List<SelectTreeVo> rlist = new ArrayList<SelectTreeVo>();
+
+		List<DjSection> sectionList = sectionMapper.selectAll();
+		if (sectionList != null) {
+			SelectTreeVo vo = null;
+			for (DjSection section : sectionList) {
+				vo = new SelectTreeVo("s" + section.getId(), section.getName(), "0");
+				vo.setChildren(getDeptBySectionId(section.getId()));
+				rlist.add(vo);
+			}
+		}
+		return rlist;
+	}
+
+	private List<SelectTreeVo> getDeptBySectionId(Long sectionId) {
+		List<SelectTreeVo> rlist = new ArrayList<>();
+		List<DeptIdNameDto> list = getBranchDeptNameAndId(sectionId);
+		if (list != null) {
+			for (DeptIdNameDto dto : list) {
+				rlist.add(new SelectTreeVo("" + dto.getValue(), dto.getName(), "s" + sectionId));
+			}
+		}
+
+		return rlist;
+	}
 }

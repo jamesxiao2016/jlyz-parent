@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.common.core.web.vo.SelectVo;
+import cn.dlbdata.dj.db.vo.dept.SelectTreeVo;
+import cn.dlbdata.dj.service.IDeptService;
 import cn.dlbdata.dj.service.IDictService;
 import cn.dlbdata.dj.service.IUserService;
 import cn.dlbdata.dj.vo.UserVo;
@@ -28,6 +30,8 @@ public class AdminController extends BaseController {
 	private IDictService dictService;
 	@Autowired
 	private IUserService userService;
+	@Autowired
+	private IDeptService deptService;
 
 	@RequestMapping("/getAdminUserInfo")
 	@ResponseBody
@@ -71,4 +75,12 @@ public class AdminController extends BaseController {
 		result.setData(data);
 		return result;
 	}
+	
+	@RequestMapping("/getSectionAndDeptTree")
+	@ResponseBody
+	public List<SelectTreeVo> getSectionAndDeptTree() {
+		List<SelectTreeVo> data = deptService.getSectionAndDeptTree();
+		return data;
+	}
+	
 }

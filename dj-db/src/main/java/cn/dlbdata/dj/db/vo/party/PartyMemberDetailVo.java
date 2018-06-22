@@ -2,8 +2,9 @@ package cn.dlbdata.dj.db.vo.party;
 
 public class PartyMemberDetailVo {
     private Long id;
-    private String name;//党员姓名
+    private Long djSectionId;
     private Long deptId;//部门Id
+    private String name;//党员姓名
     private String userName;//账户名
     private Integer sexCode;//性别
     private Integer age;//年龄
@@ -109,4 +110,12 @@ public class PartyMemberDetailVo {
     public void setPartyPostCode(String partyPostCode) {
         this.partyPostCode = partyPostCode;
     }
+
+	public Long getDjSectionId() {
+		return djSectionId;
+	}
+
+	public void setDjSectionId(Long djSectionId) {
+		this.djSectionId = djSectionId;
+	}
 }

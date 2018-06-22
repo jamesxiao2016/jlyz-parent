@@ -1,10 +1,53 @@
-var id = "";
 $(function() {
-	id = $.getUrlParam("id");
-	//getProdInfo(id);
+	initData();
 	initEvent();
 	initValidate();
 });
+
+function initData() {
+	var eduData = parent.dictMap["education"];
+	var postData = parent.dictMap["party_post"];
+	var eduSelData = parent.getSelectDataByDictType("education");;
+
+	var postSelData = parent.getSelectDataByDictType("party_post");
+	$("#partyPostCode").select2({
+		data : postSelData,
+		language : "zh-CN"
+	});
+
+	$("#educationCode").select2({
+		data : eduSelData,
+		language : "zh-CN"
+	});
+
+	$("#partyPostCode").select2("val", memberPost);
+	$("#educationCode").select2("val", memberEdu);
+	
+	//加载党支部
+	$.post("../../admin/getSectionAndDeptTree", function(data) {
+		$('#deptId').select2({
+			data : data,
+			language : "zh-CN"
+		});
+		$("#deptId").val(memberDeptId).trigger('change');
+	});
+	
+}
+
+function deptList(sectionId) {
+	var $select = $('#deptId');
+	var url = '../../api/v1/component/getDeptNameList?sectionId=' + sectionId;
+	$.post(url, function(data) {
+		instance = $select.data('select2');
+		if (instance) {
+			$select.select2('destroy').empty();
+		}
+		$select.select2({
+			data : data,
+			language : "zh-CN"
+		});
+	});
+}
 
 function initEvent() {
 	$("#btnSubmit").click(submitForm);
@@ -29,7 +72,6 @@ function initValidate() {
 		}
 	});
 }
-
 
 function submitForm() {
 	// 验证参数

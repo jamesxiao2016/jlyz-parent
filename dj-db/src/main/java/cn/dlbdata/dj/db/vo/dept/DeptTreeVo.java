@@ -3,40 +3,50 @@ package cn.dlbdata.dj.db.vo.dept;
 import java.util.List;
 
 public class DeptTreeVo {
-    private String name;
-    private Long deptId;
-    private Long parentId;
-    private List<DeptTreeVo> children;
+	private String name;
+	private Long deptId;
+	private Long parentId;
+	private List<DeptTreeVo> children;
 
-    public String getName() {
-        return name;
-    }
+	public DeptTreeVo() {
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	}
 
-    public Long getDeptId() {
-        return deptId;
-    }
+	public DeptTreeVo(Long deptId, String name, Long parentId) {
+		this.deptId = deptId;
+		this.name = name;
+		this.parentId = parentId;
+	}
 
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Long getParentId() {
-        return parentId;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
+	public Long getDeptId() {
+		return deptId;
+	}
 
-    public List<DeptTreeVo> getChildren() {
-        return children;
-    }
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
 
-    public void setChildren(List<DeptTreeVo> children) {
-        this.children = children;
-    }
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+
+	public List<DeptTreeVo> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<DeptTreeVo> children) {
+		this.children = children;
+	}
 }

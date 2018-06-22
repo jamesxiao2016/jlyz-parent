@@ -13,62 +13,34 @@ function initEvent() {
 		location.href = "partymember_add.html";
 	});
 
-	// 性别
-	$.post("../../api/v1/component/getDictList?dictType=sex", function(data) {
-		$('.selsex').select2({
-			data : data
+	$.post("../../admin/getSectionAndDeptTree", function(data) {
+		$('#seldept').select2({
+			data : data,
+			language : "zh-CN"
 		});
 	});
-    $.post("../../admin/section/getSectionList", function(data) {
-        $('#selsection').select2({
-            data : data
-        });
-        sectionId = $("#selsection").select2("val");
-        deptList(sectionId);
-    });
+//	var sexData = parent.getSelectDataByDictType("sex");
+//	$(".selsex").select2({
+//		data : sexData,
+//		language : "zh-CN"
+//	});
+	var postData = parent.getSelectDataByDictType("party_post");
+	$('#selpost').select2({
+		data : postData,
+		language : "zh-CN"
+	})
 
-    $("#selsection").on("change", function() {
+    $("#seldept").on("change", function() {
         sectionId = $(this).val();
-        console.log(sectionId);
-        deptList(sectionId);
         query();
     });
-	// 职位
-	// $.post("../../api/v1/component/getDictList?dictType=party_post",
-	// function(
-	// data) {
-	// $('.selpost').select2({
-	// data : data
-	// });
-	// })
-    function deptList(sectionId) {
-        var $select = $('#seldept');
-        var url = '../../api/v1/component/getDeptNameList?sectionId=' + sectionId;
-        $.post(url, function(data) {
-
-            instance = $select.data('select2');
-            if(instance){
-                $select.select2('destroy').empty();
-            }
-            $select.select2({
-                data : data
-            });
-        });
-    }
-
-	$('.selpost').select2({
-        ajax : {
-            url : '../../api/v1/component/getDynamicDictList?dictType=party_post',
-            dataType : 'json',
-            delay : 150
-        }
-    });
+	
 }
 
 function query() {
 	var qryParam = {
 		"name" : getLikeVal($("#name").val()),
-        "sex" : $("#selsex").val(),
+        //"sex" : $("#selsex").val(),
         "position" : $("#selpost").val(),
         "deptId" : $("#seldept").val(),
         "sectionId" : $("#selsection").val()
@@ -207,15 +179,12 @@ function actionFormatter(cellvalue, options, rowObject) {
 
 function sexFormatter(cellvalue, options, rowObject) {
 	var name = parent.getDictName("sex",cellvalue);
-	console.log(name);
 	return name;
 }
 
 function positionFormatter(cellvalue, options, rowObject) {
     var name = parent.getDictName("party_post",cellvalue);
-    console.log(name);
     return name;
-
 }
 
 // function delRecord(id) {

@@ -2,14 +2,14 @@ package cn.dlbdata.dj.db.mapper;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 import cn.dlbdata.dj.db.pojo.DjApply;
 import cn.dlbdata.dj.db.vo.apply.ScoreApplyVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreAuditDetailVo;
 import cn.dlbdata.dj.db.vo.party.ObserveLowDetailVo;
 import cn.dlbdata.dj.db.vo.study.PendingPtMemberVo;
-import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface DjApplyMapper extends Mapper<DjApply> {

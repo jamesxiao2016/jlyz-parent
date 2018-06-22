@@ -99,19 +99,19 @@
         left join dj_dept dept on pm.dept_id = dept.id
         left join dj_section sc on dept.dj_section_id = sc.id
         <where>
-            <if test="sectionId != null">
+            <if test="sectionId != null and sectionId != ''">
                 and sc.id = #{sectionId}
             </if>
-            <if test="deptId != null">
+            <if test="deptId != null and deptId != ''">
                 and dept.id = #{deptId}
             </if>
             <if test="name != null and name != ''">
                 and pm.name LIKE concat(concat('%',#{name}),'%')
             </if>
-            <if test="sex != null">
+            <if test="sex != null and sex != ''">
                 and pm.sex_code = #{sex}
             </if>
-            <if test="position != null">
+            <if test="position != null and position != ''">
                 and pm.party_post_code = #{position}
             </if>
         </where>
@@ -120,7 +120,7 @@
                 order by ${orderBy}
             </when>
             <otherwise>
-                order by deptId
+                order by deptId,partyPostCode
             </otherwise>
         </choose>
     </select>

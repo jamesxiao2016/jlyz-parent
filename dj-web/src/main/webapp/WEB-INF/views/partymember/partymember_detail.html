@@ -53,12 +53,12 @@
 							<label class="col-sm-2 control-label">党内职务：</label>
 							<div class="col-sm-3">
 								<select class="form-control selpost" id="partyPostCode"
-									name="selpost" ></select>
+									name="partyPostCode" ></select>
 							</div>
 							<label class="col-sm-2 control-label">学历：</label>
 							<div class="col-sm-3">
 								<select class="form-control seledu" id="educationCode"
-									name="seledu"></select>
+									name="educationCode"></select>
 							</div>
 						</div>
 						<div class="form-group">
@@ -75,14 +75,8 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">所属党支部：</label>
-							<div class="col-sm-8">
-								<select class="col-sm-4 selsection" id="selsection"
-									name="selsection" style="height: 34px;">
-									<!--<option value = "" selected="selected">请选择片区</option>-->
-								</select>
-								<select class="col-sm-6 seldept" id="deptId" name="deptId"
-									value="${record.deptId}" style="height: 34px;">
-									<!--<option value = "" selected="selected">请选择支部</option>-->
+							<div class="col-sm-4">
+								<select class="col-sm-12 seldept" id="deptId" name="deptId" style="height: 34px;">
 								</select>
 							</div>
 						</div>
@@ -107,23 +101,15 @@
 	<script src="../../static/js/plugins/validate/messages_zh.min.js"></script>
 	<script src="../../static/js/plugins/layer/layer.min.js"></script>
 	<script src="../../static/js/plugins/select2/select2.full.min.js"></script>
+	<script src="../../static/js/plugins/select2/i18n/zh.js"></script>
 	<script src="../../static/js/plugins/component/core.js"></script>
 	<script src="../../static/js/plugins/component/common.js"></script>
 	<script src="../js/common.js"></script>
-	<script src="../js/section/section_detail.js"></script>
+	<script src="../js/partymember/partymember_detail.js"></script>
 	<script type="text/javascript">
-		var sectionId = '${record.id}';
-		$(function() {
-			if (sectionId) {
-				$.get(
-						"../../admin/section/getPartyMembersBySectionId?sectionId="
-								+ sectionId, function(data) {
-							$('#principalId').select2({
-								data : data.results
-							});
-						});
-			}
-		})
+		var memberDeptId = '${record.deptId}';
+		var memberEdu = '${record.educationCode}';
+		var memberPost = '${record.partyPostCode}';
 	</script>
 </body>
 

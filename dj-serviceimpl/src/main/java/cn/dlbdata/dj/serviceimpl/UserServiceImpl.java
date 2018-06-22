@@ -140,6 +140,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			result.setMsg("用户名或密码错误");
 			return result;
 		}
+		
 
 		UserVo data = new UserVo();
 		data.setDeptId(user.getDeptId());
@@ -153,6 +154,13 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		String token = JwtTokenUtil.createToken(user.getId() + "", user.getName(), user.getDeptId() + "",
 				user.getRoleId() + "", 0);
 		data.setToken(token);
+
+		DjPartymember partymember = partyMemberMapper.selectByPrimaryKey(user.getDjPartymemberId());
+		if(partymember != null) {
+			data.setSex(partymember.getSexCode());
+			data.setEmail(partymember.getEmail());
+			data.setTelphone(partymember.getPhone());
+		}
 
 		// 加入缓存
 		JwtTokenUtil.USER_TOKEN_CACHE.put(MD5Util.encode(token), token);

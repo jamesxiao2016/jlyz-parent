@@ -45,6 +45,10 @@ public class UserVo implements Serializable {
 	private Integer peopleNum;
 	// 党委党员人数
 	private Integer committeeNum;
+	// 邮箱
+	private String email;
+	// 联系电话
+	private String telphone;
 
 	public Long getUserId() {
 		return userId;
@@ -196,6 +200,22 @@ public class UserVo implements Serializable {
 
 	public void setCommitteeNum(Integer committeeNum) {
 		this.committeeNum = committeeNum;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTelphone() {
+		return telphone;
+	}
+
+	public void setTelphone(String telphone) {
+		this.telphone = telphone;
 	}
 
 }

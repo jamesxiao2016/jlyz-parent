@@ -8,9 +8,13 @@ $(function() {
 function getUserInfo() {
 	$.ajaxPost("../admin/getAdminUserInfo",function(data) {
 		if(data.code === 1000) {
-			$("#uName").text(data.data.userName);
-			$("#userName").val(data.data.userName);
-			$("#loginName").val(data.data.name);
+			if(data && data.data) {
+				$("#uName").text(data.data.userName);
+				$("#userName").val(data.data.userName);
+				$("#loginName").val(data.data.name);
+				$("#email").val(data.data.email);
+				$("#telphone").val(data.data.telphone);
+			}
 		}
 	});
 }
@@ -183,6 +187,19 @@ function getDictName(dictType, dictCode) {
 		dictName = "";
 	}
 	return dictName;
+}
+
+//从字典表中读取字典
+function getSelectDataByDictType(dictType) {
+	var dictData = dictMap[dictType];
+	var selectData = [];
+	$.each(dictData, function(index, item) {
+		selectData.push({
+			id : index,
+			text : item
+		});
+	});
+	return selectData;
 }
 
 /**
