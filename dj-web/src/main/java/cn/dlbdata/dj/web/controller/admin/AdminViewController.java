@@ -1,5 +1,7 @@
 package cn.dlbdata.dj.web.controller.admin;
 
+import java.io.IOException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,10 +14,16 @@ public class AdminViewController extends BaseController {
 	/**
 	 * 登录页面
 	 * @return
+	 * @throws IOException 
 	 */
 	@RequestMapping("/")
-	public String welcome () {
-		return index();
+	public void welcome () throws IOException {
+		response.sendRedirect("admin/login.html");
+	}
+	
+	@RequestMapping("/login.html")
+	public void login () throws IOException {
+		response.sendRedirect("admin/login.html");
 	}
 	
 	/**
@@ -23,7 +31,7 @@ public class AdminViewController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/admin/login.html")
-	public String login() {
+	public String adminlogin() {
 		return "login.html";
 	}
 

@@ -12,6 +12,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -29,6 +31,7 @@ import cn.dlbdata.dj.web.vo.TokenVo;
 @Component
 @Aspect
 public class AdminControllerInterceptor {
+	protected Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Pointcut("execution(public * cn.dlbdata.dj.web.controller.admin.*.*(..)) || execution(public * cn.dlbdata.dj.web.base.ComponentController.query*(..))")
 	public void checkToken() {
@@ -36,18 +39,15 @@ public class AdminControllerInterceptor {
 
 	@Before("checkToken()")
 	public void beforeCheckToken() {
-		System.out.println("调用方法之前。。。。");
 	}
 
 	@AfterReturning("checkToken()")
 	public void afterCheckToken() {
-		System.out.println("调用方法结束之后。。。。");
 	}
 
 	// 抛出异常时才调用
 	@AfterThrowing("checkToken()")
 	public void afterThrowing() {
-		System.out.println("校验token出现异常了......");
 	}
 
 	@Around("checkToken()")
@@ -56,10 +56,9 @@ public class AdminControllerInterceptor {
 		// 日志实体对象
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 				.getRequest();
-		// HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-		// .getResponse();
 		Object result = pjp.proceed();
-		String contextPath = request.getContextPath();
+		String requestUrl = request.getRequestURI();
+		logger.info("requestUrl->" + requestUrl);
 
 		if (result instanceof ResultVo) {
 			// 获取当前登陆用户信息

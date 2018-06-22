@@ -7,35 +7,83 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>党员积分制管理系统 - 登录</title>
 <link rel="shortcut icon" href="favicon.ico" />
-<link rel="bookmark" href="favicon.ico" type="image/x-icon" >
+<link rel="bookmark" href="favicon.ico" type="image/x-icon">
 <link href="../static/css/bootstrap.min.css" rel="stylesheet">
 <link href="../static/css/font-awesome.css?v=4.4.0" rel="stylesheet">
 <link href="../static/css/animate.css" rel="stylesheet">
 <link href="../static/css/style.css" rel="stylesheet">
 <link href="css/login.css" rel="stylesheet">
+<link rel="stylesheet" href="css/font_login.css">
+
+<style>
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    background-color: white !important;
+    background-image: none !important;
+    color: #fff !important;
+}
+
+.item {
+	margin: 30px 60px;
+	margin-top: 44px;
+	border-bottom: 1px solid #fff;
+	/* opacity: .5; */
+}
+
+.iconfont {
+	color: #fff;
+}
+
+.item input {
+	padding-left: 24px;
+	width: 90%;
+	border: 0;
+	background: #875D4D;
+	outline: none;
+}
+
+.pwd {
+	margin: 44px 20px 140px 30px;
+	/* opacity: .5; */
+	height: 30px;
+}
+
+.pwd .left {
+	float: left;
+}
+
+.pwd span {
+	margin-left: 24px;
+}
+
+.pwd .pwdRem {
+	height: 15px;
+}
+
+.pwd .fotget {
+	float: right;
+}
+</style>
 </head>
 
 <body class="signin">
 	<div class="signinpanel">
 		<div class="loginpanel">
-			<div class="title">欢迎使用党员积分制管理系统</div>
-			<div class="form-control">
-				<input type="text" id="username" class="uname"
-					placeholder="用户名" />
+			<div class="title">党员积分制管理系统</div>
+			<div class="item" style="margin-top: 50px;">
+				<i class="iconfont icon-renmin"></i>
+				<input type="text" id="username" class="uname" placeholder="请输入用户名" />
 			</div>
-			<div class="form-control">
-				<input type="password" id="pwd" class="pword m-b"
-					placeholder="密码" />
+			<div class="item">
+				<i class="iconfont icon-mima"></i> <input type="password" id="pwd"
+					class="pword" placeholder="请输入登录密码" />
 			</div>
-			<!-- <div class="" style="margin: 24px auto;">
-				<span style="float: left">
-				<input type="checkbox" checked="checked"><strong class="font">记住密码</strong>
-				</span>
-				<span style="float: right">
-				<a href="forgot_pwd.html" style="float: right;"><strong class="font">忘记密码？</strong></a>
-				</span>
-			</div> -->
-			<div class="" style="margin: 40px auto;">
+			<div class="pwd" style="display: none">
+				<div class="left">
+					<input type="checkbox" class="pwdRem" value=""> <span>记住密码</span>
+				</div>
+				<span class="fotget">忘记密码？</span>
+			</div>
+			<div class="" style="margin: 60px auto;">
 				<button id="btnLogin" type="button" class="loginbtn">登 录</button>
 			</div>
 		</div>
