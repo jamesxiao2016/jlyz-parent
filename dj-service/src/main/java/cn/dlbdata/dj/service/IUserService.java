@@ -25,7 +25,7 @@ public interface IUserService {
 	 * @return
 	 */
 	public ResultVo<UserVo> login(LoginVo vo);
-	
+
 	/**
 	 * 用户登录
 	 * 
@@ -99,22 +99,49 @@ public interface IUserService {
 	 * @return
 	 */
 	public Float getSumScoreByUserId(Long userId, Integer year);
-	
+
 	/**
 	 * 将党员数据导入到用户表中
+	 * 
 	 * @return
 	 */
 	public List<DjUser> getALlUser();
-	
+
 	/**
 	 * 
-	 * <p>Title: thirdLogin</p> 
-	 * <p>Description: 第三方登录</p> 
+	 * <p>
+	 * Title: thirdLogin
+	 * </p>
+	 * <p>
+	 * Description: 第三方登录
+	 * </p>
+	 * 
 	 * @param account
 	 * @param password
 	 * @param miandeng
 	 * @param phoneType
 	 * @return
 	 */
-	public  ResultVo<UserResVo> thirdLogin(String account, String password, String miandeng, String phoneType );
+	public ResultVo<UserResVo> thirdLogin(String account, String password, String miandeng, String phoneType);
+
+	/**
+	 * 修改密码
+	 * 
+	 * @param user
+	 * @param oldPwd
+	 * @param newPwd
+	 * @return
+	 */
+	public ResultVo<String> modifyPwd(UserVo user, String oldPwd, String newPwd);
+
+	/**
+	 * 修改用户信息
+	 * 
+	 * @param user
+	 * @param userName
+	 * @param email
+	 * @param telphone
+	 * @return
+	 */
+	public ResultVo<String> modifyUser(UserVo user, String userName, String email, String telphone);
 }

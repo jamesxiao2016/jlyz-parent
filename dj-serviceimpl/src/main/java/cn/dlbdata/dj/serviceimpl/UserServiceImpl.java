@@ -33,7 +33,7 @@ import cn.dlbdata.dj.vo.UserVo;
 
 @Service
 public class UserServiceImpl extends BaseServiceImpl implements IUserService {
-	
+
 	@Autowired
 	private IUserService userService;
 	@Autowired
@@ -154,10 +154,10 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 				user.getRoleId() + "", 0);
 		data.setToken(token);
 
-		//加入缓存
+		// 加入缓存
 		JwtTokenUtil.USER_TOKEN_CACHE.put(MD5Util.encode(token), token);
-		CacheManager.getInstance().put(user.getId()+ "", data);
-		
+		CacheManager.getInstance().put(user.getId() + "", data);
+
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(data);
 
@@ -207,10 +207,10 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		long endTime = System.currentTimeMillis();
 		logger.info("create token time->" + (endTime - endQueryUserInfoTime));
 
-		//加入缓存
+		// 加入缓存
 		JwtTokenUtil.USER_TOKEN_CACHE.put(MD5Util.encode(token), token);
 		CacheManager.getInstance().put(user.getId() + "", data);
-		
+
 		logger.info("total time->" + (endTime - startTime));
 		// 返回结果
 		result.setCode(ResultCode.OK.getCode());
@@ -414,15 +414,21 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		return str;
 	}
 
-	/* (non-Javadoc)
-	 * <p>Title: thirdLogin</p>
-	 * <p>Description: 第三方登录</p> 
+	/*
+	 * (non-Javadoc) <p>Title: thirdLogin</p> <p>Description: 第三方登录</p>
+	 * 
 	 * @param account
+	 * 
 	 * @param password
+	 * 
 	 * @param miandeng
+	 * 
 	 * @param phoneType
-	 * @return  
-	 * @see cn.dlbdata.dj.service.IUserService#thirdLogin(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * 
+	 * @return
+	 * 
+	 * @see cn.dlbdata.dj.service.IUserService#thirdLogin(java.lang.String, java.lang.String, java.lang.String,
+	 * java.lang.String)
 	 */
 	@Override
 	public ResultVo<UserResVo> thirdLogin(String account, String password, String miandeng, String phoneType) {
@@ -445,13 +451,90 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		user.setIsMiandeng(miandeng);
 		Calendar date = Calendar.getInstance();
 		Integer year = date.get(Calendar.YEAR);
-		Float score = userService.getSumScoreByUserId( user.getUserId(), year);
-		if(score == null) {
+		Float score = userService.getSumScoreByUserId(user.getUserId(), year);
+		if (score == null) {
 			user.setIntegral(0f);
 		}
 		user.setIntegral(score);
 		result.setCode(ResultCode.OK.getCode());
 		result.setData(user);
+		return result;
+	}
+
+	@Override
+	public ResultVo<String> modifyPwd(UserVo userVo, String oldPwd, String newPwd) {
+		ResultVo<String> result = new ResultVo<>();
+		if (userVo == null || userVo.getUserId() == null) {
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
+			result.setMsg(ResultCode.NOT_LOGIN.getDesc());
+			return result;
+		}
+
+		if (StringUtils.isEmpty(oldPwd) || StringUtils.isEmpty(newPwd)) {
+			result.setCode(ResultCode.ParameterError.getCode());
+			result.setMsg(ResultCode.ParameterError.getDesc());
+			return result;
+		}
+
+		DjUser user = userMapper.selectByPrimaryKey(userVo.getUserId());
+		if (user == null) {
+			result.setCode(ResultCode.NotFound.getCode());
+			result.setMsg(ResultCode.NotFound.getDesc());
+			return result;
+		}
+
+		if (!oldPwd.equals(user.getPwd())) {
+			result.setCode(ResultCode.BadRequest.getCode());
+			result.setMsg("原密码不正确");
+			return result;
+		}
+
+		user.setPwd(newPwd);
+		userMapper.updateByPrimaryKeySelective(user);
+
+		result.setCode(ResultCode.OK.getCode());
+		return result;
+	}
+
+	@Override
+	public ResultVo<String> modifyUser(UserVo userVo, String userName, String email, String telphone) {
+		ResultVo<String> result = new ResultVo<>();
+		if (userVo == null || userVo.getUserId() == null) {
+			result.setCode(ResultCode.NOT_LOGIN.getCode());
+			result.setMsg(ResultCode.NOT_LOGIN.getDesc());
+			return result;
+		}
+
+		if (StringUtils.isEmpty(userName)) {
+			result.setCode(ResultCode.ParameterError.getCode());
+			result.setMsg(ResultCode.ParameterError.getDesc());
+			return result;
+		}
+
+		DjUser user = userMapper.selectByPrimaryKey(userVo.getUserId());
+		if (user == null) {
+			result.setCode(ResultCode.NotFound.getCode());
+			result.setMsg(ResultCode.NotFound.getDesc());
+			return result;
+		}
+
+		DjPartymember partyMember = partyMemberMapper.selectByPrimaryKey(user.getDjPartymemberId());
+		if (partyMember == null) {
+			result.setCode(ResultCode.NotFound.getCode());
+			result.setMsg(ResultCode.NotFound.getDesc());
+			return result;
+		}
+		user.setUserName(userName);
+		userMapper.updateByPrimaryKeySelective(user);
+		
+		partyMember.setName(userName);
+		if (StringUtils.isNotEmpty(email))
+			partyMember.setEmail(email);
+		if (StringUtils.isNotEmpty(telphone))
+			partyMember.setPhone(telphone);
+		partyMemberMapper.updateByPrimaryKey(partyMember);
+
+		result.setCode(ResultCode.OK.getCode());
 		return result;
 	}
 

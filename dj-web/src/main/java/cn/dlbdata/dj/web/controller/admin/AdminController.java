@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.service.IDictService;
+import cn.dlbdata.dj.service.IUserService;
+import cn.dlbdata.dj.vo.UserVo;
+import cn.dlbdata.dj.web.base.BaseController;
 
 /**
  * 处理后台管理员登录的登录
@@ -19,10 +22,37 @@ import cn.dlbdata.dj.service.IDictService;
  */
 @Controller
 @RequestMapping("/admin")
-public class AdminController {
+public class AdminController extends BaseController {
 
 	@Autowired
 	private IDictService dictService;
+	@Autowired
+	private IUserService userService;
+
+	@RequestMapping("/getAdminUserInfo")
+	@ResponseBody
+	public ResultVo<UserVo> getAdminUserInfo() {
+		ResultVo<UserVo> result = new ResultVo<>();
+		UserVo data = getCurrentAdminUserFromCache();
+		result.setData(data);
+		return result;
+	}
+
+	@RequestMapping("/modifyPwd")
+	@ResponseBody
+	public ResultVo<String> modifyPwd(String oldPwd, String newPwd) {
+		UserVo user = getCurrentAdminUserFromCache();
+		ResultVo<String> result = userService.modifyPwd(user, oldPwd, newPwd);
+		return result;
+	}
+
+	@RequestMapping("/modifyUser")
+	@ResponseBody
+	public ResultVo<String> modifyUser(String userName, String email, String telphone) {
+		UserVo user = getCurrentAdminUserFromCache();
+		ResultVo<String> result = userService.modifyUser(user, userName, email, telphone);
+		return result;
+	}
 
 	@RequestMapping("/getAllDictList")
 	@ResponseBody

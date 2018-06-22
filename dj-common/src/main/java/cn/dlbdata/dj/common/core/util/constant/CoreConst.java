@@ -42,17 +42,17 @@ public class CoreConst {
 	 */
 	public static enum ResultCode {
 		OK(1000, "OK"), // 成功统一返回
-		INVALID_TOKEN(1001, "无效token"),//第三方登录无效token
-		NOT_LOGIN(1010, "Not Login"), // 未登录
-		BadRequest(1020, "Bad Request"), // 默认返回此错误码
-		Unauthorized(1021, "Unauthorized"), // 非法请求要求身份验证
-		ParameterError(1022, "Parameter Error"), // 参数错误统一返回此错误码
-		Forbidden(1023, "Forbidden"), // 资源不能访问
-		NotFound(1024, "Not Found"), // 资源不存在
-		MethodNotAllowed(1025, "Method Not Allowed"), // 方法不允许访问
-		InternalServerError(1026, "500 Internal Server Error"), //
-		ServiceUnavailable(1027, "Service Unavailable");
-		
+		INVALID_TOKEN(1001, "无效token"), // 第三方登录无效token
+		NOT_LOGIN(1010, "用户未登录或已过期"), // 未登录
+		BadRequest(1020, "操作失败"), // 默认返回此错误码
+		Unauthorized(1021, "身份验证失败"), // 非法请求要求身份验证
+		ParameterError(1022, "参数错误"), // 参数错误统一返回此错误码
+		Forbidden(1023, "不允许访问"), // 资源不能访问
+		NotFound(1024, "数据不存在"), // 资源不存在
+		MethodNotAllowed(1025, "方法不允许访问"), // 方法不允许访问
+		InternalServerError(1026, "系统错误"), //
+		ServiceUnavailable(1027, "服务不可用");
+
 		ResultCode(int code, String desc) {
 			this.code = code;
 			this.desc = desc;
