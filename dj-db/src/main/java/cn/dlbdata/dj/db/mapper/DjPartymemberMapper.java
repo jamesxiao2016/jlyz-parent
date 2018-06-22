@@ -85,4 +85,11 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
 	public List<SelectVo> getPartyMembersBySectionId(@Param("sectionId") Long sectionId);
 
 	PartyMemberDetailVo getPartyMemberDetailById(long id);
+
+	/**
+	 * 通过身份证获取党员，请谨慎使用，返回字段不全
+	 * @param idCard
+	 * @return
+	 */
+	DjPartymember getByIdCard(String idCard);
 }

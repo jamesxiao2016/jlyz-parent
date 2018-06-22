@@ -114,4 +114,8 @@
     pm.idcard,pm.birth_date as birthDate,pm.education_code as educationCode,pm.party_post_code as partyPostCode
     from dj_partymember pm left join dj_user u on u.id = pm.id where pm.id = #{id}
   </select>
+  
+  <select id="getByIdCard" resultMap="BaseResultMap">
+    select id,name,idcard,dept_id from dj_partymember where idcard = #{idcard}
+  </select>
 </mapper>

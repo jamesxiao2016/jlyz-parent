@@ -15,4 +15,23 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+  
+  <select id="existWithOrderCode" resultType="boolean">
+    select count(*) from dj_partymember_dues where order_code = #{orderCode}
+
+  </select>
+
+  <insert id="batchInsert" parameterType="java.util.List">
+    insert into dj_partymember_dues (id, dj_partymember_id, dues_year,
+    dues_month, dues_money, real_money,
+    payment_time, status, create_time,
+    order_code)
+    values
+    <foreach collection="list" item="item" index="index" separator="," >
+      (#{item.id}, #{item.djPartymemberId}, #{item.duesYear},
+      #{item.duesMonth}, #{item.duesMoney}, #{item.realMoney},
+      #{item.paymentTime}, #{item.status}, #{item.createTime},
+      #{item.orderCode})
+    </foreach>
+  </insert>
 </mapper>

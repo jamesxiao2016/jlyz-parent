@@ -56,6 +56,10 @@ public class DjPartymemberDues {
     @Column(name = "create_time")
     private Date createTime;
 
+    @Column(name = "order_code")
+    private String orderCode;
+
+
     /**
      * 获取记录ID
      *
@@ -212,5 +216,13 @@ public class DjPartymemberDues {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
     }
 }

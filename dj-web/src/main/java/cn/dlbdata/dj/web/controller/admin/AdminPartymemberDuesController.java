@@ -6,10 +6,26 @@
  */
 package cn.dlbdata.dj.web.controller.admin;
 
+import cn.dlbdata.dj.common.core.util.PoiUtil;
+import cn.dlbdata.dj.common.core.util.constant.CoreConst;
+import cn.dlbdata.dj.common.core.util.poi.ExcelReplaceDataVO;
+import cn.dlbdata.dj.common.core.util.poi.ExcelUtil;
+import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.service.PartyMemberDueService;
+import cn.dlbdata.dj.web.util.UploadUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cn.dlbdata.dj.web.base.BaseController;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Title: AdminPartymemberDuesController</p>
@@ -20,6 +36,8 @@ import cn.dlbdata.dj.web.base.BaseController;
 @Controller
 @RequestMapping("/admin/partymemberdues")
 public class AdminPartymemberDuesController extends BaseController {
+    @Autowired
+    private PartyMemberDueService partyMemberDueService;
 	
 	
 	/**
@@ -73,5 +91,47 @@ public class AdminPartymemberDuesController extends BaseController {
 		}
 		return result;
 	}*/
+
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	@ResponseBody
+	public ResultVo upload(MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
+		String userId = getHeader("userId");
+		ResultVo<String> result = new ResultVo<String>();
+		//将文件保存，并返回文件所在地址
+		String path = UploadUtil.upload(file,request,response,userId);
+		if (path == null) {
+			result.setCode(CoreConst.ResultCode.InternalServerError.getCode());
+			result.setMsg("上传失败");
+		}
+		//根据文件的地址读取文件，返回文件中的数据
+		List<List<Object>> lists = PoiUtil.readExecl(path);
+
+		//若文件中内容校验发现错误则返回错误信息VO
+        Map<String, List<ExcelReplaceDataVO>> map = null;
+		if (lists!= null && lists.size()>1) {//第一行是表格头部，list.size>1才是表格中有数据
+            System.out.println(lists.toString());
+		    map = partyMemberDueService.saveDues(lists);
+        } else {
+            result.setMsg("请上传有数据的表格");
+            result.setCode(CoreConst.ResultCode.InternalServerError.getCode());
+            return result;
+        }
+        if (map != null) {
+            List<ExcelReplaceDataVO> errorList= map.get("error");
+            StringBuffer sb = new StringBuffer();
+            sb.append(path).insert(path.lastIndexOf("."),"err");
+            String newpath = sb.toString();
+            ExcelUtil.replaceModel(errorList,path,newpath);
+            result.setCode(CoreConst.ResultCode.NotFound.getCode());//TODO 错误Code后面需要调整
+            result.setData(newpath);
+            result.setMsg("文件中发现错误，请下载后查看");
+            return result;
+        } else {
+            result.setCode(CoreConst.ResultCode.OK.getCode());
+            result.setMsg("成功");
+            return result;
+        }
+
+	}
 	
 }

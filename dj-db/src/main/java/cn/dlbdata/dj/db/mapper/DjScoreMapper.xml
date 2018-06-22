@@ -100,6 +100,20 @@
   	from dj_score ps
   	where ps.user_id = #{userId}
   </select>
+
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into dj_score (id, dj_type_id, dj_sub_type_id,
+		score, user_id, add_time,apply_user_id, approver_id, add_year,
+		add_status,score_desc,record_id,recrod_desc,status,create_time,
+		apply_user_name,approver_name)
+		values
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{item.id}, #{item.djTypeId}, #{item.djSubTypeId},
+		    #{item.score}, #{item.userId}, #{item.addTime},#{item.applyUserId}, #{item.approverId}, #{item.addYear},
+			#{item.addStatus},#{item.scoreDesc},#{item.recordId},#{item.recrodDesc},#{item.status},#{item.createTime},
+			#{item.applyUserName},#{item.approverName})
+		</foreach>
+	</insert>
 	
 	
 	

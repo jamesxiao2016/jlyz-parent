@@ -79,4 +79,6 @@ public interface DjScoreMapper extends Mapper<DjScore> {
 	 */
 	boolean existScore(@Param("userId") Long userId, @Param("year") int year, @Param("subTypeId") Long subTypeId);
 
+	int batchInsert(List<DjScore> list);
+
 }
