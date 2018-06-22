@@ -145,13 +145,13 @@ public class ApiController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@GetMapping(value = "/getToken")
+	@RequestMapping(value = "/getToken")
 	@ResponseBody
 	public ResultVo<String> getToken(String code) {
 		ResultVo<String> result = new ResultVo<>();
 		if (!THIRD_KEJIANG.equals(code)) {
 			result.setCode(ResultCode.INVALID_TOKEN.getCode());
-			result.setMsg("无效token");
+			result.setMsg("无效标识");
 			return result;
 		}
 

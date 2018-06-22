@@ -440,16 +440,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			result.setMsg("用户名或密码错误");
 			return result;
 		}
-		// 密码验证
-		if (!password.equalsIgnoreCase(user.getPassword())) {
-			logger.error("密码错误");
-			result.setCode(ResultCode.Forbidden.getCode());
-			result.setMsg("用户名或密码错误");
-			return result;
-		}
-		if(miandeng != null && miandeng != "") {
-			user.setIsMiandeng(miandeng);
-		}
+		user.setUserId(0L);
+		user.setDeptId("");
+		user.setIsMiandeng(miandeng);
 		Calendar date = Calendar.getInstance();
 		Integer year = date.get(Calendar.YEAR);
 		Float score = userService.getSumScoreByUserId( user.getUserId(), year);
