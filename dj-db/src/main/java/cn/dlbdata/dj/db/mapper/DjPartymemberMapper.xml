@@ -79,6 +79,7 @@
   </select>
   
   <resultMap id="BaseResultMapThree" type="cn.dlbdata.dj.db.vo.DjPartyMemberVo">
+    <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="sex_code" jdbcType="INTEGER" property="sex" />
     <result column="totalscore" jdbcType="DOUBLE" property="totalScore" />
@@ -87,7 +88,7 @@
     <result column="birth_date" jdbcType="DATE" property="birthDate" />
   </resultMap>
     <select id="selectPartymemberByDeptId" parameterType="Long" resultMap="BaseResultMapThree">
-    select  p.name, p.sex_code, p.education_code, p.party_post_code, p.birth_date,
+    select  p.id, p.name, p.sex_code, p.education_code, p.party_post_code, p.birth_date,
 	(select sum(table1.score) from dj_score table1 where table1.user_id = p.id and add_year = (select year(now()) )) as totalscore 
 	from dj_partymember p
     left join dj_user pu on p.id = pu.id 

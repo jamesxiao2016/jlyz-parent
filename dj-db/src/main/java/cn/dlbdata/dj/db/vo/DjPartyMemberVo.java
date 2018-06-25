@@ -3,6 +3,7 @@ package cn.dlbdata.dj.db.vo;
 import java.sql.Date;
 
 public class DjPartyMemberVo {
+	private Long id;
 	private String name;
 	private Integer sex;
 	private Float totalScore;
@@ -11,6 +12,12 @@ public class DjPartyMemberVo {
 	private Date birthDate;
 	
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public Date getBirthDate() {
 		return birthDate;
 	}
