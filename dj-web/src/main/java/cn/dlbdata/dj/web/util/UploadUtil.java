@@ -31,6 +31,6 @@ public class UploadUtil {
         } catch (Exception e) {
             return null;
         }
-        return path+"/"+fileName;
+        return path+"\\"+fileName;
     }
 }

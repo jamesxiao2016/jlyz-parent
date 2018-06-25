@@ -15,15 +15,15 @@ import cn.dlbdata.dj.service.PartyMemberDueService;
 import cn.dlbdata.dj.web.util.UploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import cn.dlbdata.dj.web.base.BaseController;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -134,5 +134,40 @@ public class AdminPartymemberDuesController extends BaseController {
         }
 
 	}
-	
+
+	/**
+	 * 下载错误文件
+	 * @param path 错误文件路径
+	 */
+	@RequestMapping(value = "/uploadErrorExcel", method = RequestMethod.POST)
+	@ResponseBody
+	public void uploadErrorExcel(@RequestParam("path") String path, HttpServletResponse response)
+			throws ServletException, IOException {
+		try {
+			File file = new File(path);
+			// 取得文件名。
+			String filename = file.getName();
+			// 以流的形式下载文件。
+			InputStream fis = new BufferedInputStream(new FileInputStream(path));
+			byte[] buffer = new byte[fis.available()];
+			fis.read(buffer);
+			fis.close();
+			// 清空response
+			response.reset();
+			// 设置response的Header
+			response.addHeader("Content-Disposition", "attachment;filename="
+					+ new String(filename.getBytes()));
+			response.addHeader("Content-Length", "" + file.length());
+			OutputStream toClient = new BufferedOutputStream(
+					response.getOutputStream());
+			response.setContentType("application/vnd.ms-excel;charset=gb2312");
+			toClient.write(buffer);
+			toClient.flush();
+			toClient.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+
 }

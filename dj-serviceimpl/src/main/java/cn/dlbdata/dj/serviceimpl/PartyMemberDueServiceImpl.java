@@ -13,6 +13,7 @@ import cn.dlbdata.dj.db.pojo.DjPartymember;
 import cn.dlbdata.dj.db.pojo.DjPartymemberDues;
 import cn.dlbdata.dj.db.pojo.DjScore;
 import cn.dlbdata.dj.service.PartyMemberDueService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,14 +37,11 @@ public class PartyMemberDueServiceImpl implements PartyMemberDueService {
         List<String> orderCodeList = new ArrayList<>();
         Set<String> orderCodeSet = new HashSet<>();
         for (int i = 1;i<data.size();i++) {
-            orderCodeList.add(data.get(i).get(2).toString());
-            orderCodeSet.add(data.get(i).get(2).toString());
+            orderCodeList.add(data.get(i).get(1).toString());
+            orderCodeSet.add(data.get(i).get(1).toString());
         }
-        List<String> repeatList = new ArrayList<>();
-        if (orderCodeList.size() != orderCodeSet.size()) {//传入的Excel中存在重复的订单号
-           orderCodeList.removeAll(orderCodeSet);//取差集
-            repeatList = orderCodeList;
-        }
+        Collection rs = CollectionUtils.disjunction(orderCodeList,orderCodeSet);
+        List<String> repeatList = new ArrayList<String>(rs);
         List<DjPartymemberDues> duesList = new ArrayList<>();
         List<DjScore> scoreList = new ArrayList<>();
         boolean hasError = false;

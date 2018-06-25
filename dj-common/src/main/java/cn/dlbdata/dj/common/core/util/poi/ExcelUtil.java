@@ -50,7 +50,7 @@ public class ExcelUtil {
 					// 获取单元格内容
 					HSSFRow row = sheet.getRow(data.getRow());
 					HSSFCell cell = row.getCell((short) data.getColumn());
-					String str = cell.getStringCellValue();
+                    String str = data.getValue();
 					// 写入单元格内容
 					cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 					// cell.setEncoding(HSSFCell.ENCODING_UTF_16);
