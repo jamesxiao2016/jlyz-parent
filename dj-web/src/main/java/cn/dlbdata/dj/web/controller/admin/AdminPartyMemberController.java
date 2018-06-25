@@ -87,7 +87,7 @@ public class AdminPartyMemberController extends BaseController {
 	 */
 	@PostMapping("/addPartyMember")
     @ResponseBody
-    public ResultVo<Long> addPartyMember(PartyMemberAddOrUpdateDto dto) {
+    public ResultVo<Long> addPartyMember(@RequestBody PartyMemberAddOrUpdateDto dto) {
         UserVo user = getCurrentUserFromCache();
         ResultVo<Long> resultVo = new ResultVo<>(CoreConst.ResultCode.OK.getCode());
 //        if (user == null) {
