@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.db.pojo.*;
 import cn.dlbdata.dj.db.vo.party.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +42,6 @@ import cn.dlbdata.dj.db.mapper.DjScoreMapper;
 import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.mapper.DjThoughtsMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
-import cn.dlbdata.dj.db.pojo.DjDept;
-import cn.dlbdata.dj.db.pojo.DjPartymember;
-import cn.dlbdata.dj.db.pojo.DjStudy;
-import cn.dlbdata.dj.db.pojo.DjUser;
 import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
@@ -484,6 +481,24 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		partymember.setBirthDate(DatetimeUtil.getDateByStr(dto.getBirthDate(), null));
 		partymember.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		partyMemberMapper.insert(partymember);
+        //基础分
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        DjScore score = new DjScore();
+        score.setId(DigitUtil.generatorLongId());
+        score.setDjTypeId(ActiveTypeEnum.ACTIVE_E.getActiveId());
+        score.setDjSubTypeId(ActiveSubTypeEnum.ACTIVE_SUB_P.getActiveSubId());
+        score.setScore(20F);
+        score.setUserId(partymember.getId());
+        score.setAddTime(new Date());
+        score.setApplyUserId(null);
+        score.setApplyUserName("系统自动");
+        score.setApproverId(null);
+        score.setApproverName("系统自动");
+        score.setAddYear(year);
+        score.setAddStatus(1);
+        score.setScoreDesc("遵纪守法基础积分");
+        score.setCreateTime(new Date());
+        scoreMapper.insert(score);
 	}
 
 	/**

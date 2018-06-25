@@ -26,11 +26,12 @@ import cn.dlbdata.dj.vo.LoginVo;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 处理用户登录的controller
  * 
  * @author xiaowei
- *
  */
 @Controller
 @RequestMapping("/api/v1")
@@ -41,39 +42,56 @@ public class LoginController extends BaseController {
 	@Autowired
 	private ILogLoginService LogLoginService;
 
-	/**
-	 * 用户登录
-	 * 
-	 * @param vo
-	 * @return
-	 */
-	@ResponseBody
-	@PostMapping("/login")
-	public ResultVo<UserVo> login(@RequestBody LoginVo vo) {
-		long start = System.currentTimeMillis();
-		vo.setPwd(StringUtil.getMD5Digest32(vo.getPwd()));
-		ResultVo<UserVo> result = userService.login(vo);
-		DjLogLogin djLogLogin = new DjLogLogin();
-		if (result.getData() != null) {
-			djLogLogin.setDjUserId(result.getData().getUserId());
-			djLogLogin.setErrorMsg(result.getMsg());
-			djLogLogin.setUserName(result.getData().getUserName());
-			djLogLogin.setDjDeptId(result.getData().getDeptId());
-			djLogLogin.setUserAccount(result.getData().getName());
-			djLogLogin.setCreateTime(new Date());
-			djLogLogin.setStatus(result.getCode());
-			djLogLogin.setSourceType(SourceTypeEnum.LOCAL_LOGIN.getId());
-		} else {
-			djLogLogin.setErrorMsg(result.getMsg());
-			djLogLogin.setUserAccount(vo.getName());
-			djLogLogin.setCreateTime(new Date());
-			djLogLogin.setStatus(result.getCode());
-			djLogLogin.setSourceType(SourceTypeEnum.LOCAL_LOGIN.getId());
-		}
-		LogLoginService.insertLoginLogger(djLogLogin);
-		logger.info("登录耗时->" + (System.currentTimeMillis() - start));
-		return result;
-	}
+    /**
+     * 用户登录
+     *
+     * @param vo
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/login")
+    public ResultVo<UserVo> login(@RequestBody LoginVo vo, HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        if (ip.equals("0:0:0:0:0:0:0:1")) {
+            ip = "本地";
+        }
+
+        long start = System.currentTimeMillis();
+        vo.setPwd(StringUtil.getMD5Digest32(vo.getPwd()));
+        ResultVo<UserVo> result = userService.login(vo);
+        DjLogLogin djLogLogin = new DjLogLogin();
+        if (result.getData() != null) {
+            djLogLogin.setDjUserId(result.getData().getUserId());
+            djLogLogin.setErrorMsg(result.getMsg());
+            djLogLogin.setUserName(result.getData().getUserName());
+            djLogLogin.setDjDeptId(result.getData().getDeptId());
+            djLogLogin.setUserAccount(result.getData().getName());
+            djLogLogin.setCreateTime(new Date());
+            djLogLogin.setStatus(result.getCode());
+            djLogLogin.setIp(ip);
+            djLogLogin.setSourceType(SourceTypeEnum.LOCAL_LOGIN.getId());
+        } else {
+            djLogLogin.setErrorMsg(result.getMsg());
+            djLogLogin.setUserAccount(vo.getName());
+            djLogLogin.setCreateTime(new Date());
+            djLogLogin.setStatus(result.getCode());
+            djLogLogin.setIp(ip);
+            djLogLogin.setSourceType(SourceTypeEnum.LOCAL_LOGIN.getId());
+        }
+        LogLoginService.insertLoginLogger(djLogLogin);
+        logger.info("登录耗时->" + (System.currentTimeMillis() - start));
+        return result;
+    }
+
 
 	/**
 	 * 获取当前登录用户信息

@@ -24,6 +24,7 @@ import java.util.Map;
 @Component
 @Aspect
 public class LogInterceptor {
+    private static String ip= null;
     @Autowired
     private DjLogOptMapper logOptMapper;
     private void addLog(String json, Object object, OperationsEnum enums) {
@@ -36,6 +37,7 @@ public class LogInterceptor {
                 opt.setDjUserId(user.getUserId());
                 opt.setDjDeptId(user.getDeptId());
             }
+            opt.setIp(ip);
             opt.setOptId(enums.getType());
             opt.setOptDesc(json);
             opt.setStatus(result.getCode());
@@ -48,6 +50,19 @@ public class LogInterceptor {
     }
     private UserVo getCurUser() {
         HttpServletRequest request = SysContent.getRequest();
+        ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        if (ip.equals("0:0:0:0:0:0:0:1")) {
+            ip = "本地";
+        }
         String token = request.getHeader("token");
         Map<String, String> tokenMap = JwtTokenUtil.getTokenInfo(token);
         if (tokenMap == null) {

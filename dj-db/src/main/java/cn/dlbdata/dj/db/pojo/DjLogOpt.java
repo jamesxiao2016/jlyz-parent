@@ -57,6 +57,12 @@ public class DjLogOpt {
     private Date createTime;
 
     /**
+     * 操作者的IP地址
+     */
+    @Column(name = "ip")
+    private String ip;
+
+    /**
      * 获取记录ID
      *
      * @return id - 记录ID
@@ -202,5 +208,13 @@ public class DjLogOpt {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }
