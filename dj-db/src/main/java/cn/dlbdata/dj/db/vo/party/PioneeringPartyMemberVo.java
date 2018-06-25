@@ -8,6 +8,7 @@ public class PioneeringPartyMemberVo {
     private Long id;
     private Integer auditStatus;
     private Long deptId;
+    private float scoreNow;
 
     public String getName() {
         return name;
@@ -39,5 +40,13 @@ public class PioneeringPartyMemberVo {
 
     public void setDeptId(Long deptId) {
         this.deptId = deptId;
+    }
+
+    public float getScoreNow() {
+        return scoreNow;
+    }
+
+    public void setScoreNow(float scoreNow) {
+        this.scoreNow = scoreNow;
     }
 }

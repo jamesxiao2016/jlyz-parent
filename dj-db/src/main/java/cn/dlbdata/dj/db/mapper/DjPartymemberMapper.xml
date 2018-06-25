@@ -25,7 +25,9 @@
   </resultMap>
   
   <select id="getPioneeringPartyMembers" parameterType="java.lang.Long" resultType="cn.dlbdata.dj.db.vo.party.PioneeringPartyMemberVo">
-    select name,id,dept_id as deptId from dj_partymember  where dept_id = #{deptId}
+    select pm.name,pm.id,pm.dept_id as deptId,
+    ifnull((select sum(sc.score) from dj_score sc where sc.user_id = pm.id and sc.dj_type_id = 4 ),0) as scoreNow
+    from dj_partymember  pm where pm.dept_id = #{deptId}
     order by party_post_code asc
   </select>
 
