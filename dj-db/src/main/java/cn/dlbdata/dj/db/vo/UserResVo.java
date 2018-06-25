@@ -27,7 +27,7 @@ public class UserResVo {
 	private String headerImg;// 头像
 	private String partyWork;// 党内职务
 	private String isMiandeng;// 是否免登 1.是 0.否
-	private String deptId;// 所属科室
+	private Long deptId;// 所属科室
 	private String idcard;// 身份证号
 	private String political;// 政治面貌
 	private String joinTime;// 入党时间
@@ -102,11 +102,11 @@ public class UserResVo {
 		this.isMiandeng = isMiandeng;
 	}
 
-	public String getDeptId() {
+	public Long getDeptId() {
 		return deptId;
 	}
 
-	public void setDeptId(String deptId) {
+	public void setDeptId(Long deptId) {
 		this.deptId = deptId;
 	}
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.constant.SourceTypeEnum;
 import cn.dlbdata.dj.db.pojo.DjLogLogin;
 import cn.dlbdata.dj.service.ILogLoginService;
 import cn.dlbdata.dj.service.IUserService;
@@ -55,12 +56,14 @@ public class UserController extends BaseController {
 			djLogLogin.setUserAccount(data.getName());
 			djLogLogin.setCreateTime(new Date());
 			djLogLogin.setStatus(result.getCode());
+			djLogLogin.setSourceType(SourceTypeEnum.FREE_LOGIN.getId());
 		}else {
 			djLogLogin.setErrorMsg("登录失败,token无效");
 			djLogLogin.setUserName(vo.getUserName());
 			djLogLogin.setDjDeptId(vo.getDeptId());
 			djLogLogin.setCreateTime(new Date());
 			djLogLogin.setStatus(ResultCode.NOT_LOGIN.getCode());
+			djLogLogin.setSourceType(SourceTypeEnum.FREE_LOGIN.getId());
 		}
 		LogLoginService.insertLoginLogger(djLogLogin);
 		return result;

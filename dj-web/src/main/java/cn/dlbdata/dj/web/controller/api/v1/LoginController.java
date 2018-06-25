@@ -18,6 +18,7 @@ import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.util.security.MD5Util;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.common.util.StringUtil;
+import cn.dlbdata.dj.constant.SourceTypeEnum;
 import cn.dlbdata.dj.db.pojo.DjLogLogin;
 import cn.dlbdata.dj.service.ILogLoginService;
 import cn.dlbdata.dj.service.IUserService;
@@ -61,11 +62,13 @@ public class LoginController extends BaseController {
 			djLogLogin.setUserAccount(result.getData().getName());
 			djLogLogin.setCreateTime(new Date());
 			djLogLogin.setStatus(result.getCode());
+			djLogLogin.setSourceType(SourceTypeEnum.LOCAL_LOGIN.getId());
 		} else {
 			djLogLogin.setErrorMsg(result.getMsg());
 			djLogLogin.setUserAccount(vo.getName());
 			djLogLogin.setCreateTime(new Date());
 			djLogLogin.setStatus(result.getCode());
+			djLogLogin.setSourceType(SourceTypeEnum.LOCAL_LOGIN.getId());
 		}
 		LogLoginService.insertLoginLogger(djLogLogin);
 		logger.info("登录耗时->" + (System.currentTimeMillis() - start));

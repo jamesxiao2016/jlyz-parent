@@ -7,6 +7,7 @@
 package cn.dlbdata.dj.web.controller.api.v1;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,10 +22,13 @@ import cn.dlbdata.dj.common.core.util.ConfigUtil;
 import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
+import cn.dlbdata.dj.constant.SourceTypeEnum;
+import cn.dlbdata.dj.db.pojo.DjLogLogin;
 import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.ScoreActiveVo;
 import cn.dlbdata.dj.db.vo.UserResVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
+import cn.dlbdata.dj.service.ILogLoginService;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IScoreService;
 import cn.dlbdata.dj.service.IUserService;
@@ -54,6 +58,8 @@ public class ApiController extends BaseController {
 	private IPartyMemberService partyMemberService;
 	@Autowired
 	private IScoreService scoreService;
+	@Autowired
+	private ILogLoginService logLoginService;
 
 	/**
 	 * 根据支部ID获取支部名称获取党员信息
@@ -192,6 +198,22 @@ public class ApiController extends BaseController {
 		TokenUtil.TOKEN_MAP.remove(token);
 		//登录逻辑处理
 		result = userService.thirdLogin(account, password, miandeng, phoneType);
+		DjLogLogin djLogLogin = new DjLogLogin();
+		if (result.getData() != null) {
+			djLogLogin.setDjUserId(result.getData().getUserId());
+			djLogLogin.setErrorMsg(result.getMsg());
+			djLogLogin.setUserName(result.getData().getUserName());
+			djLogLogin.setDjDeptId(result.getData().getDeptId());
+			djLogLogin.setCreateTime(new Date());
+			djLogLogin.setStatus(result.getCode());
+			djLogLogin.setSourceType(SourceTypeEnum.THIRD_LOGIN.getId());
+		} else {
+			djLogLogin.setErrorMsg(result.getMsg());
+			djLogLogin.setCreateTime(new Date());
+			djLogLogin.setStatus(result.getCode());
+			djLogLogin.setSourceType(SourceTypeEnum.THIRD_LOGIN.getId());
+		}
+		logLoginService.insertLoginLogger(djLogLogin);
 		return result;
 	}
 

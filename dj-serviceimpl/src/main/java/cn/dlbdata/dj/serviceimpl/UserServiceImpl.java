@@ -455,7 +455,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			return result;
 		}
 		user.setUserId(0L);
-		user.setDeptId("");
+//		user.setDeptId("");
 		user.setIsMiandeng(miandeng);
 		Calendar date = Calendar.getInstance();
 		Integer year = date.get(Calendar.YEAR);
@@ -465,6 +465,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 		}
 		user.setIntegral(score);
 		result.setCode(ResultCode.OK.getCode());
+		result.setMsg("登录成功");
 		result.setData(user);
 		return result;
 	}

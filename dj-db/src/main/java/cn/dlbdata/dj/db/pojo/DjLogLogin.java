@@ -58,7 +58,13 @@ public class DjLogLogin {
      */
     @Column(name = "create_time")
     private Date createTime;
-
+    
+    /**
+     * 登录类型
+     */
+    @Column(name = "source_type")
+    private Integer sourceType;
+    
     /**
      * 获取记录ID
      *
@@ -211,4 +217,13 @@ public class DjLogLogin {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+	public Integer getSourceType() {
+		return sourceType;
+	}
+
+	public void setSourceType(Integer sourceType) {
+		this.sourceType = sourceType;
+	}
+
 }
