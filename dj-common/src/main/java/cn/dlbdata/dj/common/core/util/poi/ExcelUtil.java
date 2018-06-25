@@ -51,10 +51,6 @@ public class ExcelUtil {
 					HSSFRow row = sheet.getRow(data.getRow());
 					HSSFCell cell = row.getCell((short) data.getColumn());
 					String str = cell.getStringCellValue();
-					// 替换单元格内容
-					StringBuffer sb= new StringBuffer(str);
-//					str = str.replace(data.getKey(), data.getValue());
-					str = sb.append(data.getValue()).toString();
 					// 写入单元格内容
 					cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 					// cell.setEncoding(HSSFCell.ENCODING_UTF_16);
@@ -76,11 +72,7 @@ public class ExcelUtil {
 					// 获取单元格内容
 					XSSFRow row = sheet.getRow(data.getRow());
 					XSSFCell cell = row.getCell((short) data.getColumn());
-					String str = cell.getStringCellValue();
-					// 替换单元格内容
-					StringBuffer sb= new StringBuffer(str);
-//					str = str.replace(data.getKey(), data.getValue());
-					str = sb.append(data.getValue()).toString();
+					String str = data.getValue();
 					// 写入单元格内容
 					cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 					// cell.setEncoding(HSSFCell.ENCODING_UTF_16);

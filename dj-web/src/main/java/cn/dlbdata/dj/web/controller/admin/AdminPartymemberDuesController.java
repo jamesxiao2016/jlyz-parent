@@ -94,14 +94,15 @@ public class AdminPartymemberDuesController extends BaseController {
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	@ResponseBody
-	public ResultVo upload(MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
+	public ResultVo<String> upload(MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
 		String userId = getHeader("userId");
-		ResultVo<String> result = new ResultVo<String>();
+		ResultVo<String> result = new ResultVo<>();
 		//将文件保存，并返回文件所在地址
 		String path = UploadUtil.upload(file,request,response,userId);
 		if (path == null) {
 			result.setCode(CoreConst.ResultCode.InternalServerError.getCode());
 			result.setMsg("上传失败");
+			return result;
 		}
 		//根据文件的地址读取文件，返回文件中的数据
 		List<List<Object>> lists = PoiUtil.readExecl(path);
@@ -118,7 +119,7 @@ public class AdminPartymemberDuesController extends BaseController {
         }
         if (map != null) {
             List<ExcelReplaceDataVO> errorList= map.get("error");
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append(path).insert(path.lastIndexOf("."),"err");
             String newpath = sb.toString();
             ExcelUtil.replaceModel(errorList,path,newpath);

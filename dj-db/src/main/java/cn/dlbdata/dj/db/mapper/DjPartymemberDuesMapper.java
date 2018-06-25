@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface DjPartymemberDuesMapper extends Mapper<DjPartymemberDues> {
     boolean existWithOrderCode(String orderCode);
-    int batchInset(List<DjPartymemberDues> list);
+    int batchInsert(List<DjPartymemberDues> list);
 }
