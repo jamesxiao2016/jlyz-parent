@@ -32,7 +32,7 @@
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="name" jdbcType="VARCHAR" property="typeName" />
-    <result column="user_name" jdbcType="VARCHAR" property="approveName" />
+    <result column="approve_name" jdbcType="VARCHAR" property="approveName" />
     <result column="remark" jdbcType="VARCHAR" property="refuseReason" />
   </resultMap>
   
