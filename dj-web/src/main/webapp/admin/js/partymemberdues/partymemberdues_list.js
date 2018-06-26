@@ -12,8 +12,7 @@ function initEvent() {
 	$("#btnImport").click(function() {
 		
 	});
-	console.log(getStoreItem("atoken"));
-	$("#dropz").dropzone({url: "../../admin/partymemberdues/upload",
+	$("#btnImport").dropzone({url: "../../admin/partymemberdues/upload",
 		headers : {
 			atoken : getStoreItem("atoken")
 		},
