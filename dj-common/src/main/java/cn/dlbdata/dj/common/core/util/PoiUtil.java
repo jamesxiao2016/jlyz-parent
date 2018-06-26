@@ -123,7 +123,7 @@ public class PoiUtil {
 			}
 			wb = new XSSFWorkbook(file);
 			int num = wb.getNumberOfSheets();
-			System.out.println("sheetNum:" + num);
+			logger.info("sheetNum:" + num);
 			if (num == 0) {
 				return result;
 			}
@@ -175,7 +175,7 @@ public class PoiUtil {
 			}
 			wb = new XSSFWorkbook(file);
 			int num = wb.getNumberOfSheets();
-			System.out.println("sheetNum:" + num);
+			logger.info("sheetNum:" + num);
 			if (num == 0) {
 				return result;
 			}

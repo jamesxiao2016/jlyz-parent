@@ -213,7 +213,7 @@ public class BaseController {
 		Map<String, String[]> parameters = request.getParameterMap();
 		if (parameters != null) {
 			for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
-				System.out.println(entry.getKey() + ":" + JsonUtil.toJsonString(entry.getValue()));
+				logger.info(entry.getKey() + ":" + JsonUtil.toJsonString(entry.getValue()));
 			}
 		}
 	}

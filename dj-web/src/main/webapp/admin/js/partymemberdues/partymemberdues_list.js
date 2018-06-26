@@ -12,7 +12,7 @@ function initEvent() {
 	$("#btnImport").click(function() {
 		
 	});
-	
+	$("#btnImport").dropzone({url: "../../admin/partymemberdues/upload"})
 	$.post("../../admin/getSectionAndDeptTree", function(data) {
 		$('#seldept').select2({
 			data : data,

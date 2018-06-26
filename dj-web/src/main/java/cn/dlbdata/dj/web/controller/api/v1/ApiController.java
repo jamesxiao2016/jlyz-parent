@@ -13,6 +13,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.util.ConfigUtil;
 import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
-import cn.dlbdata.dj.common.core.util.StringUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.SourceTypeEnum;
@@ -73,6 +73,7 @@ public class ApiController extends BaseController {
 	 */
 	@GetMapping(value = "/selectPartymemberByDeptId")
 	@ResponseBody
+	@CrossOrigin(origins = "*", maxAge = 3600)
 	public ResultVo<List<DjPartyMemberVo>> selectPartymemberByDeptId(Long deptId, String deptName) {
 		ResultVo<List<DjPartyMemberVo>> result = new ResultVo<>();
 		if (deptId == null && StringUtils.isEmpty(deptName)) {
@@ -100,6 +101,7 @@ public class ApiController extends BaseController {
 	 */
 	@GetMapping("/getRadarChartByUserId")
 	@ResponseBody
+	@CrossOrigin(origins = "*", maxAge = 3600)
 	public ResultVo<List<ScoreTypeVo>> getRadarChartByUserId(Long userId, Integer year) {
 		ResultVo<List<ScoreTypeVo>> result = new ResultVo<>(ResultCode.OK.getCode());
 		if (userId == null) {
@@ -123,6 +125,7 @@ public class ApiController extends BaseController {
 	 */
 	@GetMapping(value = "/getScoreAndActiveList")
 	@ResponseBody
+	@CrossOrigin(origins = "*", maxAge = 3600)
 	public ResultVo<List<ScoreActiveVo>> getScoreAndActiveList(Long userId) {
 		ResultVo<List<ScoreActiveVo>> result = new ResultVo<>();
 		if (userId == null) {
@@ -154,6 +157,7 @@ public class ApiController extends BaseController {
 	 */
 	@RequestMapping(value = "/getToken")
 	@ResponseBody
+	@CrossOrigin(origins = "*", maxAge = 3600)
 	public ResultVo<String> getToken(String code) {
 		logger.info("third-getToken->" + code);
 		ResultVo<String> result = new ResultVo<>();
@@ -188,6 +192,7 @@ public class ApiController extends BaseController {
 	 */
 	@PostMapping(value = "/login")
 	@ResponseBody
+	@CrossOrigin(origins = "*", maxAge = 3600)
 	public ResultVo<UserResVo> login(String token, String account, String password, String miandeng, String phoneType) {
 		logger.info("third-login->" + token + "->" + account + "->" + password + "->" + miandeng + "->" + phoneType);
 		ResultVo<UserResVo> result = new ResultVo<>();
