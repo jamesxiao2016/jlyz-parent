@@ -92,13 +92,13 @@ function init() {
 			name : 'birthDate',
 			index : 'birthDate',
 			align : "center",
-			width : 70
+			width : 80
 		}, {
 			label : '总积分',
 			name : 'totalScore',
 			index : 'totalScore',
 			align : "center",
-			width : 70
+			width : 50
 		}, {
 			label : 'deptId',
 			name : 'deptId',

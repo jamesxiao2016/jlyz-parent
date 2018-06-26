@@ -49,11 +49,16 @@ function initValidate() {
 			userName : {
 				required : true,
 				minlength : 2
+			},
+			idcard : {
+				required : true,
+				minlength : 18
 			}
 		},
 		messages : {
 			name : icon + "请输入党员姓名",
-			userName : icon + "请输入登录账号"
+			userName : icon + "请输入登录账号",
+			idcard : icon + "请输入身份证号"
 		}
 	});
 }
