@@ -138,7 +138,7 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='../building/building.html?id=" + rowObject.id
+	var btnEdit = "<a href='building_add.html?id=" + rowObject.id
 			+ "'>编辑</a>";
 	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
 

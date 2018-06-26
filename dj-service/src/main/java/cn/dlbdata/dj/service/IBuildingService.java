@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.db.dto.building.BuildingAddOrUpdateDto;
+import cn.dlbdata.dj.db.pojo.DjBuilding;
 
 public interface IBuildingService {
 
@@ -41,4 +42,11 @@ public interface IBuildingService {
 	 * @return
 	 */
 	public List<SelectVo> getBuildingListBySectionId(Long sectionId);
+	
+	/**
+	 * 根据ID获取详情
+	 * @param id
+	 * @return
+	 */
+	public DjBuilding getInfoById(Long id);
 }

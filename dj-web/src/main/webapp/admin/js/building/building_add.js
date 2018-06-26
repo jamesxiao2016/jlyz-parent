@@ -45,14 +45,19 @@ function submitForm() {
 	if (!validatorForm.form()) {
 		return;
 	}
+	var id = $("#id").val();
+	var reqUrl = "../building/save";
+	if(id && id != "0") {
+		reqUrl = "../building/updateBuilding/" + id;
+	}
 	var formData = $("#productForm").formSerialize();
 	console.log(formData);
-	$.ajaxJson("../building/save", formData, function(data) {
+	$.ajaxJson(reqUrl, formData, function(data) {
 		if (data.code == 1000) {
 			history.go(-1);
 		} else {
-			if (data.reason) {
-				layer.msg(data.reason);
+			if (data.msg) {
+				layer.msg(data.msg);
 			} else {
 				layer.msg("保存失败");
 			}

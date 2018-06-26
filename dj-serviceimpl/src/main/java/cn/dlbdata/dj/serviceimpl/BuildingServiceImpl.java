@@ -54,12 +54,12 @@ public class BuildingServiceImpl implements IBuildingService {
 		if (existWithName) {
 			throw new BusinessException("已存在同名的楼宇!", CoreConst.ResultCode.Forbidden.getCode());
 		}
-        if (dto.getSectionId() == null) {
-			throw new BusinessException("请选择片区",CoreConst.ResultCode.Forbidden.getCode());
+		if (dto.getSectionId() == null) {
+			throw new BusinessException("请选择片区", CoreConst.ResultCode.Forbidden.getCode());
 		}
 		DjSection section = sectionMapper.selectByPrimaryKey(dto.getSectionId());
 		if (section == null) {
-			throw new BusinessException("所选的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
+			throw new BusinessException("所选的片区不存在!", CoreConst.ResultCode.NotFound.getCode());
 		}
 		DjBuilding building = new DjBuilding();
 
@@ -88,11 +88,11 @@ public class BuildingServiceImpl implements IBuildingService {
 	@Override
 	public boolean update(Long id, BuildingAddOrUpdateDto dto) {
 		if (dto.getSectionId() == null) {
-			throw new BusinessException("请选择片区",CoreConst.ResultCode.Forbidden.getCode());
+			throw new BusinessException("请选择片区", CoreConst.ResultCode.Forbidden.getCode());
 		}
 		DjSection section = sectionMapper.selectByPrimaryKey(dto.getSectionId());
 		if (section == null) {
-			throw new BusinessException("所选的片区不存在!",CoreConst.ResultCode.NotFound.getCode());
+			throw new BusinessException("所选的片区不存在!", CoreConst.ResultCode.NotFound.getCode());
 		}
 		DjBuilding building = buildingMapper.selectByPrimaryKey(id);
 
@@ -102,10 +102,11 @@ public class BuildingServiceImpl implements IBuildingService {
 		if (building.getStatus() != DlbConstant.BASEDATA_STATUS_VALID) {
 			throw new BusinessException("楼宇状态不是有效状态!", CoreConst.ResultCode.Forbidden.getCode());
 		}
-
-		boolean existWithCode = buildingMapper.existWithCode(dto.getCode(), building.getId());
-		if (existWithCode) {
-			throw new BusinessException("已存在同编号的楼宇!", CoreConst.ResultCode.Forbidden.getCode());
+		if (!dto.getCode().equals(building.getCode())) {
+			boolean existWithCode = buildingMapper.existWithCode(dto.getCode(), building.getId());
+			if (existWithCode) {
+				throw new BusinessException("已存在同编号的楼宇!", CoreConst.ResultCode.Forbidden.getCode());
+			}
 		}
 		boolean existWithName = buildingMapper.existWithName(dto.getName(), building.getId());
 		if (existWithName) {
@@ -118,17 +119,17 @@ public class BuildingServiceImpl implements IBuildingService {
 		building.setCode(dto.getCode());
 
 		List<DjDept> depts = djDeptMapper.getByBuildingId(building.getId());
-		//修改楼的编号，楼里面的片区的楼编号也要修改
+		// 修改楼的编号，楼里面的片区的楼编号也要修改
 		for (DjDept dept : depts) {
 			dept.setBuildingCode(building.getCode());
 			djDeptMapper.updateByPrimaryKey(dept);
 		}
-		//当楼的片区发生改变时：
+		// 当楼的片区发生改变时：
 		if (!dto.getSectionId().equals(building.getDjSectionId())) {
-			DjSection originalSection = sectionMapper.selectByPrimaryKey(building.getDjSectionId());//原片区
-			//修改楼宇对应的片区
+			DjSection originalSection = sectionMapper.selectByPrimaryKey(building.getDjSectionId());// 原片区
+			// 修改楼宇对应的片区
 			building.setDjSectionId(dto.getSectionId());
-			//修改楼宇对应的片区时，楼里面的党支部的所属片区也要修改
+			// 修改楼宇对应的片区时，楼里面的党支部的所属片区也要修改
 			List<Long> deptIds = new ArrayList<>();
 			for (DjDept dept : depts) {
 				deptIds.add(dept.getId());
@@ -136,10 +137,11 @@ public class BuildingServiceImpl implements IBuildingService {
 				djDeptMapper.updateByPrimaryKey(dept);
 			}
 			if (!deptIds.isEmpty()) {
-				//一般情况下片区负责人只有一个，防止错误，以List来查询
-				List<DjUser> districtLeader = userMapper.getByRoleIdAndDeptIdIn(RoleEnum.HEADER_OF_DISTRICT.getId(),deptIds);
-				//若楼里面有片区负责人，则将这个人的职位设为普通党员,该党员对应的原片区的片区负责人id/name也要清空
-				for (DjUser leader :districtLeader) {
+				// 一般情况下片区负责人只有一个，防止错误，以List来查询
+				List<DjUser> districtLeader = userMapper.getByRoleIdAndDeptIdIn(RoleEnum.HEADER_OF_DISTRICT.getId(),
+						deptIds);
+				// 若楼里面有片区负责人，则将这个人的职位设为普通党员,该党员对应的原片区的片区负责人id/name也要清空
+				for (DjUser leader : districtLeader) {
 					if (leader.getId().equals(originalSection.getPrincipalId())) {
 						originalSection.setPrincipalId(null);
 						originalSection.setPrincipalName(null);
@@ -193,5 +195,13 @@ public class BuildingServiceImpl implements IBuildingService {
 			}
 		}
 		return rlist;
+	}
+
+	@Override
+	public DjBuilding getInfoById(Long id) {
+		if (id == null) {
+			return null;
+		}
+		return buildingMapper.selectByPrimaryKey(id);
 	}
 }
