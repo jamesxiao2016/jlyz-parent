@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.util.ConfigUtil;
 import cn.dlbdata.dj.common.core.util.JwtTokenUtil;
+import cn.dlbdata.dj.common.core.util.StringUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.SourceTypeEnum;
@@ -214,6 +215,8 @@ public class ApiController extends BaseController {
 			djLogLogin.setSourceType(SourceTypeEnum.THIRD_LOGIN.getId());
 		}
 		logLoginService.insertLoginLogger(djLogLogin);
+		result.getData().setDeptId(0L);
+		result.getData().setUserId(0L);
 		return result;
 	}
 

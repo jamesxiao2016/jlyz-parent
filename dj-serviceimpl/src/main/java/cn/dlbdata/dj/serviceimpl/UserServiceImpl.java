@@ -454,8 +454,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			result.setMsg("用户名或密码错误");
 			return result;
 		}
-		user.setUserId(0L);
-//		user.setDeptId("");
+//		user.setUserId(0L);
+//		user.setDeptId(0L);
 		user.setIsMiandeng(miandeng);
 		Calendar date = Calendar.getInstance();
 		Integer year = date.get(Calendar.YEAR);
