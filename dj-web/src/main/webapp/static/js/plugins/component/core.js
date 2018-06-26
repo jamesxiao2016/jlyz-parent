@@ -290,7 +290,7 @@ $.setDataToForm = function(data) {
 }
 
 $.ajaxPost = function(url, param, callback, completeCallback, errorCallback) {
-	var token = getStoreItem("token");
+	var token = getStoreItem("atoken");
 	if (jQuery.isFunction(param)) {
 		callback = param;
 		param = null;
@@ -342,7 +342,7 @@ $.ajaxPost = function(url, param, callback, completeCallback, errorCallback) {
 }
 
 $.ajaxJson = function(url, param, callback, completeCallback, errorCallback) {
-	var token = getStoreItem("token");
+	var token = getStoreItem("atoken");
 	if (jQuery.isFunction(param)) {
 		callback = param;
 		param = null;

@@ -12,7 +12,27 @@ function initEvent() {
 	$("#btnImport").click(function() {
 		
 	});
-	$("#btnImport").dropzone({url: "../../admin/partymemberdues/upload"})
+	console.log(getStoreItem("atoken"));
+	$("#dropz").dropzone({url: "../../admin/partymemberdues/upload",
+		headers : {
+			atoken : getStoreItem("atoken")
+		},
+		success(file,xhr) {
+			$(".dz-preview").hide();
+			if(xhr.code === 1000) {
+				layer.msg("上传成功")
+			}
+			else {
+				if(xhr.msg) {
+					layer.msg(xhr.msg);
+					if(xhr.data) {
+						location.href = xhr.data;
+					}
+				} else {
+					layer.msg("导入失败");
+				} 
+			}
+	}})
 	$.post("../../admin/getSectionAndDeptTree", function(data) {
 		$('#seldept').select2({
 			data : data,

@@ -61,7 +61,7 @@ public class LogInterceptor {
             ip = request.getRemoteAddr();
         }
         if (ip.equals("0:0:0:0:0:0:0:1")) {
-            ip = "本地";
+            ip = "localhost";
         }
         String token = request.getHeader("token");
         Map<String, String> tokenMap = JwtTokenUtil.getTokenInfo(token);

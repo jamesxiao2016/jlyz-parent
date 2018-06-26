@@ -121,7 +121,8 @@ public class AdminPartymemberDuesController extends BaseController {
 			String newpath = sb.toString();
 			ExcelUtil.replaceModel(errorList, path, newpath);
 			result.setCode(CoreConst.ResultCode.NotFound.getCode());// TODO 错误Code后面需要调整
-			result.setData(newpath);
+			
+			result.setData(getRootUrl() + "/" + newpath.substring(newpath.lastIndexOf("upload" + File.separator)));
 			result.setMsg("文件中发现错误，请下载后查看");
 			return result;
 		} else {

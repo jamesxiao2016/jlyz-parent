@@ -62,7 +62,7 @@ public class LoginController extends BaseController {
             ip = request.getRemoteAddr();
         }
         if (ip.equals("0:0:0:0:0:0:0:1")) {
-            ip = "本地";
+            ip = "localhost";
         }
 
         long start = System.currentTimeMillis();

@@ -1,17 +1,21 @@
 package cn.dlbdata.dj.web.aop;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -32,6 +36,8 @@ import cn.dlbdata.dj.web.vo.TokenVo;
 @Aspect
 public class AdminControllerInterceptor {
 	protected Logger logger = LoggerFactory.getLogger(getClass());
+	protected String resultClassName = "cn.dlbdata.dj.common.core.web.vo.ResultVo";
+	protected String jqGridClassName = "cn.dlbdata.dj.common.core.bean.JqGridBean";
 
 	@Pointcut("execution(public * cn.dlbdata.dj.web.controller.admin.*.*(..)) || execution(public * cn.dlbdata.dj.web.base.ComponentController.query*(..))")
 	public void checkToken() {
@@ -56,26 +62,38 @@ public class AdminControllerInterceptor {
 		// 日志实体对象
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 				.getRequest();
-		Object result = pjp.proceed();
 		String requestUrl = request.getRequestURI();
 		logger.info("requestUrl->" + requestUrl);
+		Signature sig = pjp.getSignature();
+		MethodSignature msig = null;
+		if (!(sig instanceof MethodSignature)) {
+			throw new IllegalArgumentException("该注解只能用于方法");
+		}
+		msig = (MethodSignature) sig;
+		Object target = pjp.getTarget();
+		Method currentMethod = target.getClass().getMethod(msig.getName(), msig.getParameterTypes());
+		Type type = currentMethod.getAnnotatedReturnType().getType();
+		String className = type.getTypeName();
+		logger.info(type.getTypeName());
 
-		if (result instanceof ResultVo) {
+		if (className.startsWith(resultClassName)) {
 			// 获取当前登陆用户信息
 			UserVo currUser = getCacheUserByToken(request);
 			if (currUser == null) {
-				ResultVo<?> rs = (ResultVo<?>) result;
+				ResultVo<?> rs = new ResultVo<>();
 				rs.setCode(ResultCode.NOT_LOGIN.getCode());
+				rs.setData(null);
 				rs.setMsg("用户未登录或已过期，请重新登录");
 				return rs;
 			}
-		} else if (result instanceof JqGridBean) {
-			// 获取当前登陆用户信息
+		} else if (className.startsWith(jqGridClassName)) {
 			UserVo currUser = getCacheUserByToken(request);
 			if (currUser == null) {
 				return new JqGridBean<>(ResultCode.NOT_LOGIN.getCode() + "", "用户未登录或已过期，请重新登录");
 			}
 		}
+
+		Object result = pjp.proceed();
 
 		// // 拦截的实体类，就是当前正在执行的controller
 		// Object target = pjp.getTarget();

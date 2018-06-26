@@ -199,7 +199,7 @@ function storeItem(key, value) {
 
 function getStoreItem(key) {
 	if(isLocalStorageSupported()) {
-		return window.sessionStorage.getItem(key);
+		return window.localStorage.getItem(key);
 	} else {
 		return $.cookie(key);
 	}
