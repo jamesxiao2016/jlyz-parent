@@ -31,10 +31,11 @@ import cn.dlbdata.dj.web.base.BaseController;
 @RequestMapping("/admin/partymember")
 public class AdminPartyMemberController extends BaseController {
 
-    @Autowired
-    private IPartyMemberService partyMemberService;
-    @Autowired
-    private IDeptService deptService;
+	@Autowired
+	private IPartyMemberService partyMemberService;
+	@Autowired
+	private IDeptService deptService;
+
 	/**
 	 * 查询列表党员列表
 	 * 
@@ -82,36 +83,44 @@ public class AdminPartyMemberController extends BaseController {
 
 	/**
 	 * 新增党员
+	 * 
 	 * @param dto
 	 * @return
 	 */
 	@PostMapping("/addPartyMember")
-    @ResponseBody
-    public ResultVo<Long> addPartyMember(@RequestBody PartyMemberAddOrUpdateDto dto) {
-        UserVo user = getCurrentAdminUserFromCache();
-        ResultVo<Long> resultVo = new ResultVo<>(CoreConst.ResultCode.OK.getCode());
-        if (user == null) {
-            logger.error("用户未登录");
-            resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
-            resultVo.setMsg("用户未登录或用户已退出");
-            return resultVo;
-        }
-        partyMemberService.addPartyMember(dto,user);
-        resultVo.setCode(CoreConst.ResultCode.OK.getCode());
-        resultVo.setMsg("新增党员成功!");
-        return resultVo;
-    }
+	@ResponseBody
+	public ResultVo<Long> addPartyMember(@RequestBody PartyMemberAddOrUpdateDto dto) {
+		UserVo user = getCurrentAdminUserFromCache();
+		ResultVo<Long> resultVo = new ResultVo<>(CoreConst.ResultCode.OK.getCode());
+		if (user == null) {
+			logger.error("用户未登录");
+			resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
+			resultVo.setMsg("用户未登录或用户已退出");
+			return resultVo;
+		}
+		try {
+			partyMemberService.addPartyMember(dto, user);
+		} catch (Exception e) {
+			logger.error("保存失败", e);
+			resultVo.setCode(CoreConst.ResultCode.BadRequest.getCode());
+			resultVo.setMsg(e.getMessage());
+			return resultVo;
+		}
+		resultVo.setCode(CoreConst.ResultCode.OK.getCode());
+		resultVo.setMsg("新增党员成功!");
+		return resultVo;
+	}
 
 	/**
 	 * 更新党员信息
+	 * 
 	 * @param dto
 	 * @param id
 	 * @return
 	 */
 	@PostMapping("/updatePartyMember/{id}")
 	@ResponseBody
-	public ResultVo<Long> updatePartyMember(@RequestBody PartyMemberAddOrUpdateDto dto,
-									  @PathVariable Long id) {
+	public ResultVo<Long> updatePartyMember(@RequestBody PartyMemberAddOrUpdateDto dto, @PathVariable Long id) {
 		UserVo user = getCurrentAdminUserFromCache();
 		ResultVo<Long> resultVo = new ResultVo<>();
 		if (user == null) {
@@ -120,14 +129,22 @@ public class AdminPartyMemberController extends BaseController {
 			resultVo.setMsg("用户未登录或用户已退出");
 			return resultVo;
 		}
-		partyMemberService.updatePartyMember(id,dto,user);
+		try {
+			partyMemberService.updatePartyMember(id, dto, user);
+		} catch (Exception e) {
+			logger.error("修改失败", e);
+			resultVo.setCode(CoreConst.ResultCode.BadRequest.getCode());
+			resultVo.setMsg(e.getMessage());
+			return resultVo;
+		}
 		resultVo.setCode(CoreConst.ResultCode.OK.getCode());
 		resultVo.setMsg("修改党员信息成功!");
 		return resultVo;
 	}
 
 	/**
-	 *作废党员
+	 * 作废党员
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -142,7 +159,14 @@ public class AdminPartyMemberController extends BaseController {
 			resultVo.setMsg("用户未登录或用户已退出");
 			return resultVo;
 		}
-		partyMemberService.invalidPartyMember(id,user);
+		try {
+			partyMemberService.invalidPartyMember(id, user);
+		} catch (Exception e) {
+			logger.error("修改失败", e);
+			resultVo.setCode(CoreConst.ResultCode.BadRequest.getCode());
+			resultVo.setMsg(e.getMessage());
+			return resultVo;
+		}
 		resultVo.setCode(CoreConst.ResultCode.OK.getCode());
 		resultVo.setMsg("作废党员成功!");
 		return resultVo;

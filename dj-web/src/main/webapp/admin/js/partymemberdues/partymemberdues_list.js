@@ -9,8 +9,8 @@ $(function() {
 function initEvent() {
 	$("#btnQuery").click(query);
 
-	$("#btnAdd").click(function() {
-		location.href = "add.html";
+	$("#btnImport").click(function() {
+		
 	});
 	
 	$.post("../../admin/getSectionAndDeptTree", function(data) {

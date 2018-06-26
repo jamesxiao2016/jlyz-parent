@@ -79,6 +79,7 @@ public class BaseController {
 		// 检查token是否有效
 		String tokenCache = JwtTokenUtil.USER_TOKEN_CACHE.getIfPresent(tokenMd5);
 		if (!token.equals(tokenCache)) {
+			logger.error("tokenCache not match");
 			return null;
 		}
 		TokenVo vo = new TokenVo();
@@ -123,6 +124,7 @@ public class BaseController {
 		// 检查token是否有效
 		String tokenCache = JwtTokenUtil.USER_TOKEN_CACHE.getIfPresent(tokenMd5);
 		if (!token.equals(tokenCache)) {
+			logger.error("tokenCache not match");
 			return null;
 		}
 		String userId = tokenMap.get(JwtTokenUtil.KEY_UID);

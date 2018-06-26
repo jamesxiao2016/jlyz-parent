@@ -52,7 +52,7 @@ import cn.dlbdata.dj.web.util.TokenUtil;
 public class ApiController extends BaseController {
 
 	private String THIRD_KEJIANG = ConfigUtil.get("third_kejiang");
-	
+
 	@Autowired
 	private IUserService userService;
 	@Autowired
@@ -155,6 +155,7 @@ public class ApiController extends BaseController {
 	@RequestMapping(value = "/getToken")
 	@ResponseBody
 	public ResultVo<String> getToken(String code) {
+		logger.info("third-getToken->" + code);
 		ResultVo<String> result = new ResultVo<>();
 		if (!THIRD_KEJIANG.equals(code)) {
 			result.setCode(ResultCode.INVALID_TOKEN.getCode());
@@ -171,8 +172,13 @@ public class ApiController extends BaseController {
 
 	/**
 	 * 
-	 * <p>Title: login</p> 
-	 * <p>Description: 第三方登录逻辑</p> 
+	 * <p>
+	 * Title: login
+	 * </p>
+	 * <p>
+	 * Description: 第三方登录逻辑
+	 * </p>
+	 * 
 	 * @param token
 	 * @param account
 	 * @param password
@@ -183,6 +189,7 @@ public class ApiController extends BaseController {
 	@PostMapping(value = "/login")
 	@ResponseBody
 	public ResultVo<UserResVo> login(String token, String account, String password, String miandeng, String phoneType) {
+		logger.info("third-login->" + token + "->" + account + "->" + password + "->" + miandeng + "->" + phoneType);
 		ResultVo<UserResVo> result = new ResultVo<>();
 		if (StringUtils.isEmpty(token)) {
 			result.setCode(ResultCode.NotFound.getCode());
@@ -197,7 +204,7 @@ public class ApiController extends BaseController {
 		}
 		// 移除token
 		TokenUtil.TOKEN_MAP.remove(token);
-		//登录逻辑处理
+		// 登录逻辑处理
 		result = userService.thirdLogin(account, password, miandeng, phoneType);
 		DjLogLogin djLogLogin = new DjLogLogin();
 		if (result.getData() != null) {
