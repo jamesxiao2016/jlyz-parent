@@ -48,9 +48,9 @@ public class AdminPartyBranchController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/add.html")
+	@RequestMapping("/branch_add.html")
 	public String add() {
-		return "add.html";
+		return "/branch/branch_add.html";
 	}
 
 	/**

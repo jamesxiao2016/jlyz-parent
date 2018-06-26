@@ -2,7 +2,7 @@ package cn.dlbdata.dj.db.dto.section;
 
 public class SectionAddOrUpdateDto {
     private String name;
-    private String address;
+    private String description;
     private Long principalId;//新增时不需要
 
     public String getName() {
@@ -13,12 +13,12 @@ public class SectionAddOrUpdateDto {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
+    public String getDescription() {
+        return description;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getPrincipalId() {

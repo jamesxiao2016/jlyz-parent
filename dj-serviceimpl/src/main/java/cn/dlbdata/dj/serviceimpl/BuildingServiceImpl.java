@@ -5,12 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import cn.dlbdata.dj.constant.RoleEnum;
+import cn.dlbdata.dj.db.dto.IdNameDto;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjSectionMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjSection;
 import cn.dlbdata.dj.db.pojo.DjUser;
+import cn.dlbdata.dj.db.vo.building.SelectBuildingVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -203,5 +205,27 @@ public class BuildingServiceImpl implements IBuildingService {
 			return null;
 		}
 		return buildingMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<SelectBuildingVo> getSectionAndBuilding() {
+		List<SelectBuildingVo> rlist = new ArrayList<SelectBuildingVo>();
+		List<DjSection> sectionList = sectionMapper.selectAll();
+		if (sectionList != null) {
+			SelectBuildingVo vo = null;
+			for (DjSection section : sectionList) {
+				vo = new SelectBuildingVo(section.getName(),"s" + section.getId(), "0");
+				List<IdNameDto> list = buildingMapper.getBuildingIdAndNameBySectionId(section.getId());
+				List<SelectBuildingVo> childrenVo = new ArrayList<>();
+				for(IdNameDto dto :list) {
+					SelectBuildingVo cldVo = new SelectBuildingVo(
+							dto.getName(),"" + dto.getId(), "s" + section.getId());
+					childrenVo.add(cldVo);
+				}
+				vo.setChildren(childrenVo);
+				rlist.add(vo);
+			}
+		}
+		return rlist;
 	}
 }

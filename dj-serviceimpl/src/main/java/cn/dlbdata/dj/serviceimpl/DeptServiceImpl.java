@@ -187,9 +187,9 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 			if (parentDept == null) {
 				throw new BusinessException("所选择的上级党支部不存在!", CoreConst.ResultCode.NotFound.getCode());
 			}
-			if (!parentDept.getDjSectionId().equals(section.getId())) {
-				throw new BusinessException("所选的上级党支部不属于所选片区!", CoreConst.ResultCode.Forbidden.getCode());
-			}
+//			if (!parentDept.getDjSectionId().equals(section.getId())) {
+//				throw new BusinessException("所选的上级党支部不属于所选片区!", CoreConst.ResultCode.Forbidden.getCode());
+//			}
 		}
 
 		DjDept dept = new DjDept();

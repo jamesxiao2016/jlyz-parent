@@ -9,7 +9,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="people_num" jdbcType="INTEGER" property="peopleNum" />
-    <result column="address" jdbcType="INTEGER" property="address" />
+    <result column="description" jdbcType="INTEGER" property="description" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="principal_id" jdbcType="BIGINT" property="principalId" />
@@ -17,7 +17,7 @@
   </resultMap>
   
   <select id="querySectionList" resultMap="SectionResultMap">
-    select id,name,people_num,address,status,create_time,principal_id,principal_name from dj_section
+    select id,name,people_num,description,status,create_time,principal_id,principal_name from dj_section
     <where>
     		status = 1
     		<if test="name != null">

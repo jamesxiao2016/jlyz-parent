@@ -11,7 +11,7 @@
     <result column="floor_num" jdbcType="INTEGER" property="floorNum" />
     <result column="party_num" jdbcType="INTEGER" property="partyNum" />
     <result column="people_num" jdbcType="INTEGER" property="peopleNum" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="principal_id" jdbcType="BIGINT" property="principalId" />
@@ -37,5 +37,9 @@
         and id != #{id}
       </if>
     </where>
+  </select>
+  
+  <select id="getBuildingIdAndNameBySectionId" resultType="cn.dlbdata.dj.db.dto.IdNameDto">
+    select id,name from dj_building where dj_section_id = #{sectionId}
   </select>
 </mapper>

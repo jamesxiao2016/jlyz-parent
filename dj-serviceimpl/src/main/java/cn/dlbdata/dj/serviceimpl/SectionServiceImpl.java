@@ -48,7 +48,7 @@ public class SectionServiceImpl extends BaseServiceImpl implements ISectionServi
         DjSection section = new DjSection();
         section.setId(DigitUtil.generatorLongId());
         section.setName(dto.getName());
-        section.setAddress(dto.getAddress());
+        section.setDescription(dto.getDescription());
         section.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
         section.setCreateTime(new Date());
         sectionMapper.insert(section);
@@ -120,7 +120,7 @@ public class SectionServiceImpl extends BaseServiceImpl implements ISectionServi
         }
 
 		section.setName(dto.getName());
-		section.setAddress(dto.getAddress());
+		section.setDescription(dto.getDescription());
 		sectionMapper.updateByPrimaryKey(section);
         return true;
     }

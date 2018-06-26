@@ -8,7 +8,9 @@ $(function() {
 });
 
 function initEvent() {
-
+    $("#btnAdd").click(function() {
+        location.href = "branch_add.html";
+    });
 	$("#btnSubmit").click(saveDeptInfo);
 
 	$.post("../../admin/section/getSectionList", function(data) {

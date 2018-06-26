@@ -2,6 +2,8 @@ package cn.dlbdata.dj.web.controller.admin;
 
 import java.util.List;
 
+import cn.dlbdata.dj.db.vo.building.SelectBuildingVo;
+import cn.dlbdata.dj.service.IBuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,8 @@ public class AdminController extends BaseController {
 	private IUserService userService;
 	@Autowired
 	private IDeptService deptService;
+	@Autowired
+	private IBuildingService buildingService;
 
 	@RequestMapping("/getAdminUserInfo")
 	@ResponseBody
@@ -80,6 +84,13 @@ public class AdminController extends BaseController {
 	@ResponseBody
 	public List<SelectTreeVo> getSectionAndDeptTree() {
 		List<SelectTreeVo> data = deptService.getSectionAndDeptTree();
+		return data;
+	}
+
+	@RequestMapping("/getSectionAndBuildingTree")
+	@ResponseBody
+	public List<SelectBuildingVo> getSectionAndBuildingTree() {
+		List<SelectBuildingVo> data = buildingService.getSectionAndBuilding();
 		return data;
 	}
 	

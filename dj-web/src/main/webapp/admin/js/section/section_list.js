@@ -52,8 +52,8 @@ function init() {
 			index : 'principal_name',
 		}, {
 			label : '说明',
-			name : 'address',
-			index : 'address',
+			name : 'description',
+			index : 'description',
 			align : "center",
 		}, {
 			label : '操作',

@@ -24,9 +24,10 @@ public class DjSection {
     private Integer peopleNum;
 
     /**
-     * 地址
+     * 说明
      */
-    private String address;
+    @Column(name = "description")
+    private String description;
 
     /**
      * 状态
@@ -102,22 +103,12 @@ public class DjSection {
         this.peopleNum = peopleNum;
     }
 
-    /**
-     * 获取地址
-     *
-     * @return address - 地址
-     */
-    public String getAddress() {
-        return address;
+    public String getDescription() {
+        return description;
     }
 
-    /**
-     * 设置地址
-     *
-     * @param address 地址
-     */
-    public void setAddress(String address) {
-        this.address = address;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**

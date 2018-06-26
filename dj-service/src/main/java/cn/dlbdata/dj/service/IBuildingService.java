@@ -5,6 +5,7 @@ import java.util.List;
 import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.db.dto.building.BuildingAddOrUpdateDto;
 import cn.dlbdata.dj.db.pojo.DjBuilding;
+import cn.dlbdata.dj.db.vo.building.SelectBuildingVo;
 
 public interface IBuildingService {
 
@@ -49,4 +50,6 @@ public interface IBuildingService {
 	 * @return
 	 */
 	public DjBuilding getInfoById(Long id);
+
+	List<SelectBuildingVo> getSectionAndBuilding();
 }
