@@ -13,6 +13,10 @@ function initEvent() {
 		$('#sectionId').select2({
 			data : data
 		});
+		
+		if(sectionId) {
+			$("#sectionId").val(sectionId).trigger('change');
+		}
 	});
 }
 
