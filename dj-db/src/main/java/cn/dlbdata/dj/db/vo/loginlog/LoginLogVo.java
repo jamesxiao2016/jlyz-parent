@@ -50,7 +50,18 @@ public class LoginLogVo {
 	 */
 	private Integer status;
 	
+	/**
+	 * ip地址
+	 */
+	private String ip;
 	
+	
+	public String getIp() {
+		return ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
 	public Integer getStatus() {
 		return status;
 	}

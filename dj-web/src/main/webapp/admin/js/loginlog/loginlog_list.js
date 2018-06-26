@@ -25,7 +25,6 @@ function initEvent() {
 	});
 }
 
-
 function query() {
 	var qryParam = {
 		"loginStatus" : $("#loginStatus").val(),
@@ -93,6 +92,11 @@ function init() {
 			formatter : datetimeFormatter,
 			align : "center",
 			width : 100
+		}, 
+		{
+			label : 'IP地址',
+			name : 'ip',
+			index : 'ip',
 		}, 
 		{
 			label : '操作',
