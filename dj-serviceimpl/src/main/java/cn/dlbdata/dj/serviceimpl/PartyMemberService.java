@@ -470,7 +470,6 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 
 		partymember.setName(dto.getName());
 		partymember.setSexCode(dto.getSexCode());
-		partymember.setAge(dto.getAge());
 		partymember.setPhone(dto.getPhone());
 		partymember.setEmail(dto.getEmail());
 		partymember.setIdcard(dto.getIdcard());
@@ -529,7 +528,6 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 
 		partymember.setName(dto.getName());
 		partymember.setSexCode(dto.getSexCode());
-		partymember.setAge(dto.getAge());
 		partymember.setPhone(dto.getPhone());
 		partymember.setEmail(dto.getEmail());
 		partymember.setIdcard(dto.getIdcard());

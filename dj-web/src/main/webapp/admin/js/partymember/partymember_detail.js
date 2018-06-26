@@ -34,21 +34,6 @@ function initData() {
 	
 }
 
-function deptList(sectionId) {
-	var $select = $('#deptId');
-	var url = '../../api/v1/component/getDeptNameList?sectionId=' + sectionId;
-	$.post(url, function(data) {
-		instance = $select.data('select2');
-		if (instance) {
-			$select.select2('destroy').empty();
-		}
-		$select.select2({
-			data : data,
-			language : "zh-CN"
-		});
-	});
-}
-
 function initEvent() {
 	$("#btnSubmit").click(submitForm);
 	$("#btnBack").click(function() {
@@ -65,10 +50,15 @@ function initValidate() {
 			name : {
 				required : true,
 				minlength : 2
+			},
+			userName : {
+				required : true,
+				minlength : 2
 			}
 		},
 		messages : {
-			roleName : icon + "请输入名称"
+			name : icon + "请输入党员姓名",
+			userName : icon + "请输入登录账号"
 		}
 	});
 }
@@ -81,7 +71,7 @@ function submitForm() {
 	var id = $("#id").val();
 	var formData = $("#productForm").formSerialize();
 	console.log(formData);
-	$.ajaxPost("../section/updateSection/" + id, formData, function(data) {
+	$.ajaxJson("../partymember/updatePartyMember/" + id, formData, function(data) {
 		if (data.code == 1000) {
 			history.go(-1);
 		} else {

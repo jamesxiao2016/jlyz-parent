@@ -2,11 +2,11 @@ package cn.dlbdata.dj.db.dto.partymember;
 
 
 public class PartyMemberAddOrUpdateDto {
+	private Long id;
     private String name;//党员姓名
     private Long deptId;//部门Id
     private String userName;//账户名
     private Integer sexCode;//性别
-    private Integer age;//年龄
     private String phone;
     private String email;
     private String idcard;
@@ -37,22 +37,6 @@ public class PartyMemberAddOrUpdateDto {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public Integer getSexCode() {
-        return sexCode;
-    }
-
-    public void setSexCode(Integer sexCode) {
-        this.sexCode = sexCode;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 
     public String getPhone() {
@@ -102,4 +86,20 @@ public class PartyMemberAddOrUpdateDto {
     public void setPartyPostCode(String partyPostCode) {
         this.partyPostCode = partyPostCode;
     }
+
+	public Integer getSexCode() {
+		return sexCode;
+	}
+
+	public void setSexCode(Integer sexCode) {
+		this.sexCode = sexCode;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

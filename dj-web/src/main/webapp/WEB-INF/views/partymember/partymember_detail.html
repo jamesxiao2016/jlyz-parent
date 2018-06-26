@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>添加产品</title>
+<title>党员详情</title>
 <link href="../../static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
 <link href="../../static/css/font-awesome.css?v=4.4.0" rel="stylesheet">
 <link href="../../static/css/animate.css" rel="stylesheet">
@@ -43,10 +43,10 @@
 								<input id="idcard" name="idcard" value="${record.idcard}"
 									class="form-control" type="text" />
 							</div>
-							<label class="col-sm-2 control-label">联系电话：</label>
+							<label class="col-sm-2 control-label">出生日期：</label>
 							<div class="col-sm-3">
-								<input id="phone" name="phone" value="${record.phone}"
-									class="form-control" type="text" />
+								<input id="birthDate" name="birthDate"
+									value="${record.birthDate}" class="form-control" type="text" readonly="readonly"/>
 							</div>
 						</div>
 						<div class="form-group">
@@ -62,10 +62,10 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label">出生日期：</label>
+							<label class="col-sm-2 control-label">联系电话：</label>
 							<div class="col-sm-3">
-								<input id="birthDate" name="birthDate"
-									value="${record.birthDate}" class="form-control" type="text" />
+								<input id="phone" name="phone" value="${record.phone}"
+									class="form-control" type="text" />
 							</div>
 							<label class="col-sm-2 control-label">电子邮箱：</label>
 							<div class="col-sm-3">

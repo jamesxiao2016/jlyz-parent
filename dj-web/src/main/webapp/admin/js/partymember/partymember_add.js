@@ -1,75 +1,40 @@
 $(function() {
-	//getProdInfo(id);
+	initData();
 	initEvent();
 	initValidate();
 });
 
+function initData() {
+	var eduData = parent.dictMap["education"];
+	var postData = parent.dictMap["party_post"];
+	var eduSelData = parent.getSelectDataByDictType("education");;
 
-function initEvent() {
-    $("#btnSubmit").click(submitForm);
-    $("#btnBack").click(function() {
-        history.go(-1);
-    });
+	var postSelData = parent.getSelectDataByDictType("party_post");
+	$("#partyPostCode").select2({
+		data : postSelData,
+		language : "zh-CN"
+	});
 
-    // 性别
-    $.post("../../api/v1/component/getDictList?dictType=sex", function(data) {
-        $('.selsex').select2({
-            data : data
-        });
-    });
-    $.post("../../admin/section/getSectionList", function(data) {
-        $('#selsection').select2({
-            data : data
-        });
-        sectionId = $("#selsection").select2("val");
-        deptList(sectionId);
-    });
-
-    $("#selsection").on("change", function() {
-        sectionId = $(this).val();
-        console.log(sectionId);
-        deptList(sectionId);
-    });
-    // 职位
-    // $.post("../../api/v1/component/getDictList?dictType=party_post",
-    // function(
-    // data) {
-    // $('.selpost').select2({
-    // data : data
-    // });
-    // })
-    function deptList(sectionId) {
-        var $select = $('#deptId');
-        var url = '../../api/v1/component/getDeptNameList?sectionId=' + sectionId;
-        $.post(url, function(data) {
-
-            instance = $select.data('select2');
-            if(instance){
-                $select.select2('destroy').empty();
-            }
-            $select.select2({
-                data : data
-            });
-        });
-    }
-
-    $('.selpost').select2({
-        ajax : {
-            url : '../../api/v1/component/getDynamicDictList?dictType=party_post',
-            dataType : 'json',
-            delay : 150
-        }
-    });
-
-    $('.seledu').select2({
-        ajax : {
-            url : '../../api/v1/component/getDynamicDictList?dictType=education',
-            dataType : 'json',
-            delay : 150
-        }
-    });
+	$("#educationCode").select2({
+		data : eduSelData,
+		language : "zh-CN"
+	});
+	
+	//加载党支部
+	$.post("../../admin/getSectionAndDeptTree", function(data) {
+		$('#deptId').select2({
+			data : data,
+			language : "zh-CN"
+		});
+	});
 }
 
+function initEvent() {
+	$("#btnSubmit").click(submitForm);
+	$("#btnBack").click(function() {
+		history.go(-1);
+	});
+}
 
 var validatorForm;
 
@@ -77,33 +42,20 @@ function initValidate() {
 	var icon = "<i class='fa fa-times-circle'></i> ";
 	validatorForm = $("#productForm").validate({
 		rules : {
-			roleName : {
+			name : {
+				required : true,
+				minlength : 2
+			},
+			userName : {
 				required : true,
 				minlength : 2
 			}
 		},
 		messages : {
-			roleName : icon + "请输入角色名称"
+			name : icon + "请输入党员姓名",
+			userName : icon + "请输入登录账号"
 		}
 	});
-}
-
-function getProdInfo(id) {
-	if (id != undefined && id != "") {
-		$("#id").val(id);
-		$("#nametip").hide();
-		$("#title").text("编辑角色");
-
-		$.ajaxPost("../../v1/system/getRoleInfoById", {
-			id : id
-		}, function(data) {
-			if (data.result == 200) {
-				$.setDataToForm(data.data);
-			} else {
-				layer.msg("获取角色信息失败");
-			}
-		})
-	}
 }
 
 function submitForm() {
@@ -113,7 +65,7 @@ function submitForm() {
 	}
 	var formData = $("#productForm").formSerialize();
 	console.log(formData);
-	$.ajaxPost("../partymember/addPartyMember", formData, function(data) {
+	$.ajaxJson("../partymember/addPartyMember", formData, function(data) {
 		if (data.code == 1000) {
 			history.go(-1);
 		} else {
@@ -124,6 +76,4 @@ function submitForm() {
 			}
 		}
 	});
-	// $.submitForm();
-	// $("#productForm").submit();
 }

@@ -88,14 +88,14 @@ public class AdminPartyMemberController extends BaseController {
 	@PostMapping("/addPartyMember")
     @ResponseBody
     public ResultVo<Long> addPartyMember(@RequestBody PartyMemberAddOrUpdateDto dto) {
-        UserVo user = getCurrentUserFromCache();
+        UserVo user = getCurrentAdminUserFromCache();
         ResultVo<Long> resultVo = new ResultVo<>(CoreConst.ResultCode.OK.getCode());
-//        if (user == null) {
-//            logger.error("用户未登录");
-//            resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
-//            resultVo.setMsg("用户未登录或用户已退出");
-//            return resultVo;
-//        }
+        if (user == null) {
+            logger.error("用户未登录");
+            resultVo.setCode(CoreConst.ResultCode.NOT_LOGIN.getCode());
+            resultVo.setMsg("用户未登录或用户已退出");
+            return resultVo;
+        }
         partyMemberService.addPartyMember(dto,user);
         resultVo.setCode(CoreConst.ResultCode.OK.getCode());
         resultVo.setMsg("新增党员成功!");
@@ -112,7 +112,7 @@ public class AdminPartyMemberController extends BaseController {
 	@ResponseBody
 	public ResultVo<Long> updatePartyMember(@RequestBody PartyMemberAddOrUpdateDto dto,
 									  @PathVariable Long id) {
-		UserVo user = getCurrentUserFromCache();
+		UserVo user = getCurrentAdminUserFromCache();
 		ResultVo<Long> resultVo = new ResultVo<>();
 		if (user == null) {
 			logger.error("用户未登录");
@@ -134,7 +134,7 @@ public class AdminPartyMemberController extends BaseController {
 	@PostMapping("/invalidPartyMember/{id}")
 	@ResponseBody
 	public ResultVo<Long> invalidPartyMember(@PathVariable Long id) {
-		UserVo user = getCurrentUserFromCache();
+		UserVo user = getCurrentAdminUserFromCache();
 		ResultVo<Long> resultVo = new ResultVo<>();
 		if (user == null) {
 			logger.error("用户未登录");

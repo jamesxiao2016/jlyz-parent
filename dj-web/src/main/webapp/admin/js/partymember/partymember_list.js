@@ -83,15 +83,14 @@ function init() {
             width : 70,
             formatter : positionFormatter
         }, {
-			label : '性别',
-			name : 'sex',
-			index : 'sex',
-			width : 70,
-            formatter : sexFormatter
+			label : '身份证号',
+			name : 'idCard',
+			index : 'idCard',
+			align : "center",
 		}, {
-			label : '年龄',
-			name : 'age',
-			index : 'age',
+			label : '出生日期',
+			name : 'birthDate',
+			index : 'birthDate',
 			align : "center",
 			width : 70
 		}, {
@@ -106,23 +105,11 @@ function init() {
 			index : 'deptId',
 			hidden : true
 		}, {
-			label : '出生日期',
-			name : 'birthDate',
-			index : 'birthDate',
-			align : "center",
-			width : 70
-		}, {
 			label : '所属支部',
 			name : 'deptName',
 			index : 'deptName',
 			align : "center",
 			width : 300
-		}, {
-			label : '身份证号',
-			name : 'idCard',
-			index : 'idCard',
-			align : "center",
-			hidden :true
 		}, {
 			label : '操作',
 			name : '',
