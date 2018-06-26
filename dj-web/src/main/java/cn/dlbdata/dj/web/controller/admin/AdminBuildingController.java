@@ -33,11 +33,16 @@ public class AdminBuildingController extends BaseController {
     public String list() {
         return "building/building_list.html";
     }
+    
+    @RequestMapping("/building_add.html")
+    public String add() {
+        return "building/building_add.html";
+    }
 
-    @PostMapping("/add")
+    @PostMapping("/save")
     @ResponseBody
-    public ResultVo add(@RequestBody BuildingAddOrUpdateDto dto) {
-        ResultVo result = new ResultVo<>();
+    public ResultVo<Long> save(@RequestBody BuildingAddOrUpdateDto dto) {
+        ResultVo<Long> result = new ResultVo<>();
         buildingService.add(dto);
         result.setCode(CoreConst.ResultCode.OK.getCode());
         result.setMsg("新增成功!");

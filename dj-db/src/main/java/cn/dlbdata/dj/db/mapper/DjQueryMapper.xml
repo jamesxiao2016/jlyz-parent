@@ -261,6 +261,7 @@
         select bud.id,bud.name,bud.code,sec.name as sectionName,bud.floor_num as floorNum,bud.party_num as partyNum,
          bud.people_num as peopleNum, bud.address, bud.status,bud.create_time as createTime
          from dj_building bud left join dj_section sec on bud.dj_section_id = sec.id
+         where bud.status = 1
     </select>
     
   <!-- 党费历史缴纳 -->
