@@ -575,6 +575,23 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	}
 
 	/**
+	 * 获取支部下的所有党员信息
+	 *
+	 * @param deptId
+	 * @return
+	 */
+	@Override
+	public SelectResultVo getPartyMembersByDeptId(Long deptId) {
+		SelectResultVo result = new SelectResultVo();
+		if(deptId == null) {
+			return result;
+		}
+		List<SelectVo> results = partyMemberMapper.getPartyMembersByDeptId(deptId);
+		result.setResults(results);
+		return result;
+	}
+
+	/**
 	 * 查询党员详细信息.
 	 *
 	 * @param id

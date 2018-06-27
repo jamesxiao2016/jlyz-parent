@@ -7,25 +7,25 @@ $(function() {
 function initData() {
 	var eduData = parent.dictMap["education"];
 	var postData = parent.dictMap["party_post"];
-	var eduSelData = parent.getSelectDataByDictType("education");;
+	var eduSelData = parent.getSelectDataByDictType("education");
+	if(deptId1) {
+        $.get(
+            "../../admin/section/getPartyMembersByDeptId?deptId="
+            + deptId1, function(data) {
+                $('#principalId').select2({
+                    data : data.results
+                });
+            });
+	}
 
-	var postSelData = parent.getSelectDataByDictType("party_post");
-	$("#partyPostCode").select2({
-		data : postSelData,
-		language : "zh-CN"
-	});
-
-	$("#educationCode").select2({
-		data : eduSelData,
-		language : "zh-CN"
-	});
-	
-	//加载楼宇 todo :这个目前取的是党支部，后面需要做修改
 	$.post("../../admin/getSectionAndBuildingTree", function(data) {
 		$('#buildingId').select2({
 			data : data,
 			language : "zh-CN"
 		});
+        if (deptBuilingId) {
+            $("#buildingId").val(deptBuilingId).trigger("change");
+        }
 	});
 
     //加载父级党支部
@@ -34,6 +34,10 @@ function initData() {
             data : data,
             language : "zh-CN"
         });
+		if(!deptParentDeptId) {
+            deptParentDeptId = "0";
+		}
+        $("#parentId").val(deptParentDeptId).trigger("change");
     });
 }
 
@@ -42,6 +46,21 @@ function initEvent() {
 	$("#btnBack").click(function() {
 		history.go(-1);
 	});
+}
+
+function loadPrincipal(deptId) {
+    var $select = $('#principalId');
+    var url = '../../admin/section/getPartyMembersByDeptId?deptId=' + deptId;
+    $.post(url, function(data) {
+
+        instance = $select.data('select2');
+        if (instance) {
+            $select.select2('destroy').empty();
+        }
+        $select.select2({
+            data : data
+        });
+    });
 }
 
 var validatorForm;
@@ -76,9 +95,14 @@ function submitForm() {
 	if (!validatorForm.form()) {
 		return;
 	}
+    var id = $("#id").val();
+    var reqUrl = "../branch/addBranch";
+    if(id && id != "0") {
+        reqUrl = "../branch/updateBranch/" + id;
+    }
 	var formData = $("#productForm").formSerialize();
 	console.log(formData);
-	$.ajaxJson("../branch/addBranch", formData, function(data) {
+	$.ajaxJson(reqUrl, formData, function(data) {
 		if (data.code == 1000) {
 			history.go(-1);
 		} else {

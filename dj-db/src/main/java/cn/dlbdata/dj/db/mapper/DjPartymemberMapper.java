@@ -84,6 +84,8 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
 	
 	public List<SelectVo> getPartyMembersBySectionId(@Param("sectionId") Long sectionId);
 
+	public List<SelectVo> getPartyMembersByDeptId(@Param("deptId") Long deptId);
+
 	PartyMemberDetailVo getPartyMemberDetailById(long id);
 
 	/**

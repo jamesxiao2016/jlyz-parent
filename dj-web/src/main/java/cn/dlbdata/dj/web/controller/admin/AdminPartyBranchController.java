@@ -3,6 +3,7 @@ package cn.dlbdata.dj.web.controller.admin;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
+import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.vo.dept.DeptDetailVo;
 import cn.dlbdata.dj.service.IDeptService;
 import cn.dlbdata.dj.vo.UserVo;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import cn.dlbdata.dj.web.base.BaseController;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 党支部管理Controller
@@ -49,8 +51,13 @@ public class AdminPartyBranchController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/branch_add.html")
-	public String add() {
-		return "/branch/branch_add.html";
+	public ModelAndView add(Long id) {
+		ModelAndView view = new ModelAndView("/branch/branch_add.html");
+		if (id != null && id > 0) {
+			DeptDetailVo dept = deptService.getDetailById(id);
+			view.addObject("record", dept);
+		}
+		return view;
 	}
 
 	/**
@@ -131,7 +138,7 @@ public class AdminPartyBranchController extends BaseController {
 		UserVo user = getCurrentAdminUserFromCache();
 		ResultVo<DeptDetailVo> resultVo = new ResultVo<>();
 
-		DeptDetailVo vo = deptService.getDetailBy(id);
+		DeptDetailVo vo = deptService.getDetailById(id);
 		resultVo.setData(vo);
 		resultVo.setCode(CoreConst.ResultCode.OK.getCode());
 		resultVo.setMsg("成功!");

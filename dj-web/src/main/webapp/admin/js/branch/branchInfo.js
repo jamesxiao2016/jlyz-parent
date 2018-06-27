@@ -33,24 +33,11 @@ function initEvent() {
 }
 
 function saveDeptInfo() {
-	// 验证参数
-	if (!validatorForm.form()) {
+	var id = $("#id").val();
+	if(!id) {
 		return;
 	}
-	var id = $("#id").val();
-	var formData = $("#deptForm").formSerialize();
-	console.log(formData);
-	$.ajaxPost("../../admin/updateBranch/"+id, formData, function(data) {
-		if (data.code == 1000) {
-			layer.msg("保存成功");
-		} else {
-			if (data.reason) {
-				layer.msg(data.reason);
-			} else {
-				layer.msg("保存失败");
-			}
-		}
-	});
+    location.href = "branch_add.html?id="+id;
 }
 
 var validatorForm;

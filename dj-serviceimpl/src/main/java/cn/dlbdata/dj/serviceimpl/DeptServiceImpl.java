@@ -241,9 +241,9 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 			if (parentDept == null) {
 				throw new BusinessException("所选择的上级党支部不存在!", CoreConst.ResultCode.NotFound.getCode());
 			}
-			if (!parentDept.getDjSectionId().equals(section.getId())) {
-				throw new BusinessException("所选的上级党支部不属于所选片区!", CoreConst.ResultCode.Forbidden.getCode());
-			}
+//			if (!parentDept.getDjSectionId().equals(section.getId())) {
+//				throw new BusinessException("所选的上级党支部不属于所选片区!", CoreConst.ResultCode.Forbidden.getCode());
+//			}
 		}
 		if (dto.getPrincipalId() != null) {
 			DjUser newPrincipal = userMapper.selectByPrimaryKey(dto.getPrincipalId());
@@ -343,12 +343,13 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	 * @return
 	 */
 	@Override
-	public DeptDetailVo getDetailBy(Long id) {
+	public DeptDetailVo getDetailById(Long id) {
 		DjDept dept = deptMapper.selectByPrimaryKey(id);
 		if (dept == null) {
 			return new DeptDetailVo();
 		}
 		DeptDetailVo vo = new DeptDetailVo();
+		vo.setId(dept.getId());
 		vo.setBuildingId(dept.getDjBuildingId());
 		vo.setFloor(dept.getFloor());
 		vo.setName(dept.getName());

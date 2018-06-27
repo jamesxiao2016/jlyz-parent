@@ -201,6 +201,13 @@ public interface IPartyMemberService {
 	public SelectResultVo getPartyMembersBySectionId(Long sectionId);
 
 	/**
+	 * 获取支部下的所有党员信息
+	 * @param deptId
+	 * @return
+	 */
+	public SelectResultVo getPartyMembersByDeptId(Long deptId);
+
+	/**
 	 * 查询党员详细信息.
 	 * @param id
 	 * @return

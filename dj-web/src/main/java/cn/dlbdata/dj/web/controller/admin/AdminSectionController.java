@@ -130,6 +130,17 @@ public class AdminSectionController extends BaseController {
 		return partyMemberService.getPartyMembersBySectionId(sectionId);
 	}
 
+	/**
+	 * 获取党支部内的所有成员
+	 *
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/getPartyMembersByDeptId")
+	public SelectResultVo getPartyMembersByDeptId(Long deptId) {
+		return partyMemberService.getPartyMembersByDeptId(deptId);
+	}
+
 	@RequestMapping("/updateSection/{id}")
 	@ResponseBody
 	public ResultVo<Long> updateSection(@RequestBody SectionAddOrUpdateDto dto, @PathVariable Long id) {

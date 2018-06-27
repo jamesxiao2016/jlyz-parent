@@ -105,7 +105,7 @@ public interface IDeptService {
 	 * @param id
 	 * @return
 	 */
-	DeptDetailVo getDetailBy(Long id);
+	DeptDetailVo getDetailById(Long id);
 
 	/**
 	 * 查询党支部和党员列表
@@ -126,4 +126,6 @@ public interface IDeptService {
 	 * @return
 	 */
 	List<SelectTreeVo> getSectionAndDeptTree();
+
+
 }

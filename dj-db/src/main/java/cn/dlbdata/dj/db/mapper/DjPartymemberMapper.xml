@@ -111,6 +111,13 @@
     left join dj_dept d on d.id = p.dept_id
     where d.dj_section_id = #{sectionId}
   </select>
+
+  <!-- 获取片区下所有的党员信息 -->
+  <select id="getPartyMembersByDeptId" parameterType="java.lang.Long" resultType="cn.dlbdata.dj.common.core.web.vo.SelectVo">
+    select p.id,p.name text from dj_partymember p
+    left join dj_dept d on d.id = p.dept_id
+    where d.id = #{deptId}
+  </select>
   
   <select id="getPartyMemberDetailById" resultType="cn.dlbdata.dj.db.vo.party.PartyMemberDetailVo">
     select pm.id,pm.name,pm.dept_id as deptId,u.name as userName,pm.sex_code as sexCode, pm.age,pm.phone,pm.email,

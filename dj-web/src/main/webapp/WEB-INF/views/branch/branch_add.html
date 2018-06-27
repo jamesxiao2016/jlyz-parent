@@ -24,17 +24,17 @@
             <div class="ibox-content">
                 <form class="form-horizontal m-t" id="productForm" method="post"
                       action="">
+                    <input id="id" name="id" type="hidden" value="${record.id}"/>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">名称：</label>
                         <div class="col-sm-3">
                             <input id="name" name="name"
-                                   class="form-control" type="text" required=""/>
+                                   class="form-control" type="text" required="" value="${record.name}"/>
                         </div>
-                        <!--TODO 这边目前取的是党支部的数据 后面要改-->
                         <div class="form-group">
                             <label class="col-sm-2 control-label">所属楼宇：</label>
                             <div class="col-sm-4">
-                                <select class="col-sm-12 seldept" id="buildingId" name="buildingId" style="height: 34px;">
+                                <select class="col-sm-12 seldept" id="buildingId" name="buildingId" style="height: 34px; ">
                                 </select>
                             </div>
                         </div>
@@ -42,24 +42,33 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">所在楼层：</label>
                         <div class="col-sm-3">
-                            <input id="floor" name="floor" class="form-control" type="number"/>
+                            <input id="floor" name="floor" class="form-control" type="number" value="${record.floor}"/>
                         </div>
                         <label class="col-sm-2 control-label">地址：</label>
                         <div class="col-sm-3">
                             <input id="address" name="address"
-                                   class="form-control" type="text"/>
+                                   class="form-control" type="text" value="${record.address}"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">联系电话：</label>
                         <div class="col-sm-3">
                             <input id="phone" name="phone"
-                                   class="form-control" type="text"/>
+                                   class="form-control" type="text" value="${record.phone}"/>
                         </div>
                         <label class="col-sm-2 control-label">上级党支部：</label>
                         <div class="col-sm-4">
                             <select class="col-sm-12 seldept" id="parentId" name="parentId" style="height: 34px;">
-                                <option value=""></option>
+                                <option value="0">无</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group"  id= "principalDiv">
+                        <label class="col-sm-3 control-label">负责人：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control seldept" id="principalId"
+                                    name="principalId" style="height: 34px;">
+                                <option value="" selected="selected">请选择负责人</option>
                             </select>
                         </div>
                     </div>
@@ -90,6 +99,12 @@
 <script src="../../static/js/plugins/component/common.js"></script>
 <script src="../js/common.js"></script>
 <script src="../js/branch/branch_add.js"></script>
+<script type="text/javascript">
+    var deptBuilingId = '${record.buildingId}';
+    var deptParentDeptId = '${record.parentId}';
+    var deptPrincipalId = '${record.principalId}';
+    var deptId1 = '${record.id}';
+</script>
 </body>
 
 </html>

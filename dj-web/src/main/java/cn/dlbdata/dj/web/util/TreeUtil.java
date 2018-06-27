@@ -7,9 +7,14 @@ import java.util.List;
 
 public class TreeUtil {
 	public static List<DeptTreeVo> RecursiveAddress(List<DeptTreeVo> treeNodes) {
+		List<Long> idList = new ArrayList<>();
+		for(DeptTreeVo treeNode : treeNodes) {
+			idList.add(treeNode.getDeptId());
+		}
 		List<DeptTreeVo> trees = new ArrayList<>();
 		for (DeptTreeVo treeNode : treeNodes) {
-			if (null == treeNode.getParentId() || treeNode.getParentId() == 0) {
+			if (null == treeNode.getParentId() || treeNode.getParentId() == 0 ||
+					!idList.contains(treeNode.getParentId())) {
 				trees.add(findAddressChildren(treeNode, treeNodes));
 			}
 		}
