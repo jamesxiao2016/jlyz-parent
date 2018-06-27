@@ -15,6 +15,9 @@ function initData() {
                 $('#principalId').select2({
                     data : data.results
                 });
+                if(deptPrincipalId) {
+                		$('#principalId').val(deptPrincipalId).trigger("change");
+                }
             });
 	}
 

@@ -22,8 +22,12 @@
 .m-t {
 	margin-top: 0px;
 }
+
 .form-group {
-    margin-bottom: 8px;
+	margin-bottom: 8px;
+}
+.ibox-title {
+	padding: 4px 15px 7px;
 }
 </style>
 </head>
@@ -34,10 +38,15 @@
 		<div class="row col-sm-12">
 			<div class="ibox ">
 				<div class="ibox-title">
-					所属片区：<select id="selsection" class="selsection col-sm-3"></select>
-				</div>
-				<div class="form-group col-lg-2 col-md-2 col-sm-2" style="padding-top: 7px;margin-left: 0px">
-					<button id="btnAdd" class="btn btn-sm btn-primary pull-left m-t-n-xs" type="button" style="margin-left: 10px;">添加</button>
+					<div class="col-sm-4">
+						所属片区： <select id="selsection" class="selsection col-sm-8"></select>
+					</div>
+					<div class="col-sm-4"
+						style="padding-top: 7px; margin-left: 0px; float: left">
+						<button id="btnAdd"
+							class="btn btn-sm btn-primary pull-left m-t-n-xs" type="button"
+							style="margin-left: 10px;">添加党支部</button>
+					</div>
 				</div>
 				<div class="ibox-content">
 					<div class="col-sm-4 zTreeDemoBackground left">
@@ -51,8 +60,8 @@
 								<div class="form-group">
 									<label class="col-sm-2 control-label">上级党支部：</label>
 									<div class="col-sm-9">
-										<input type="hidden" id="parentId" name="parentId" />
-										<input id="parentName" name="parentName" class="form-control"
+										<input type="hidden" id="parentId" name="parentId" /> <input
+											id="parentName" name="parentName" class="form-control"
 											type="text" readonly="readonly" />
 									</div>
 								</div>
@@ -60,20 +69,20 @@
 									<label class="col-sm-2 control-label">党支部名称：</label>
 									<div class="col-sm-9">
 										<input id="name" name="name" class="form-control" type="text"
-											required readonly="readonly"/>
+											required readonly="readonly" />
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">所在楼宇：</label>
 									<div class="col-sm-5">
-										<select id="buildingId" name="buildingId"
-											class="form-control" readonly="readonly"></select>
+										<select id="buildingId" name="buildingId" class="form-control"
+											disabled="disabled"></select>
 									</div>
 
 									<label class="col-sm-2 control-label">楼层：</label>
 									<div class="col-sm-2">
 										<input id="floor" name="floor" class="form-control"
-											type="number"  readonly="readonly"/>
+											type="number" readonly="readonly" />
 									</div>
 								</div>
 								<!-- <div class="form-group">
@@ -87,13 +96,13 @@
 									<label class="col-sm-2 control-label">支部评级：</label>
 									<div class="col-sm-5">
 										<input id="honor" name="honor" class="form-control"
-											type="text"  readonly="readonly"/>
+											type="text" readonly="readonly" />
 									</div>
-									
+
 									<label class="col-sm-2 control-label">党员数量：</label>
 									<div class="col-sm-2">
 										<input id="peopleNum" name="peopleNum" class="form-control"
-											type="number"  readonly="readonly"/>
+											type="number" readonly="readonly" />
 									</div>
 								</div>
 								<!-- <div class="form-group">
@@ -104,7 +113,7 @@
 								</div> -->
 								<div class="form-group">
 									<div class="col-sm-8 col-sm-offset-5">
-										<button id="btnSubmit" class="btn btn-primary" type="button">修改党支部</button>
+										<button id="btnSubmit" class="btn btn-primary" type="button">更新党支部</button>
 									</div>
 								</div>
 							</form>

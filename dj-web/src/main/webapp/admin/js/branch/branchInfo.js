@@ -5,6 +5,7 @@ var sectionId = 0;
 $(function() {
 	initEvent();
 	init();
+	clearForm();
 });
 
 function initEvent() {
@@ -32,9 +33,19 @@ function initEvent() {
 	});
 }
 
+function clearForm() {
+	$("#parentName").val("");
+	$("#name").val("");
+	$("#buildingId").val("");
+	$("#floor").val("");
+	$("#honor").val("");
+	$("#peopleNum").val("");
+}
+
 function saveDeptInfo() {
 	var id = $("#id").val();
 	if(!id) {
+		layer.msg("请先选择一个党支部");
 		return;
 	}
     location.href = "branch_add.html?id="+id;
@@ -86,7 +97,7 @@ function query(deptId) {
 
 function init() {
 	var qryParam = {
-		"deptId" : 0
+		"deptId" : -1
 	};
 	jQuery(grid_selector).jqGrid({
 		sortable : true,
