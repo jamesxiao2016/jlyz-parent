@@ -74,8 +74,8 @@ function submitForm() {
 		if (data.code == 1000) {
 			history.go(-1);
 		} else {
-			if (data.reason) {
-				layer.msg(data.reason);
+			if (data.msg) {
+				layer.msg(data.msg);
 			} else {
 				layer.msg("保存失败");
 			}
