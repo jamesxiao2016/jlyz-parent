@@ -313,7 +313,7 @@ $.ajaxPost = function(url, param, callback, completeCallback, errorCallback) {
 		},
 		success : function(data) {
 			if (data.code == 1010) {
-				top.location.href = "login.html";
+				top.location.href = baseUrl + '/admin/login.html';
 			} else {
 				if (callback) {
 					callback(data);
@@ -324,7 +324,7 @@ $.ajaxPost = function(url, param, callback, completeCallback, errorCallback) {
 			layer.closeAll('loading');
 			if (textStatus == 'parsererror') {
 				console.log("url:" + url)
-				top.location.href = "login.html";
+				top.location.href = baseUrl + '/admin/login.html';
 			}
 			if (errorCallback && jQuery.isFunction(errorCallback)) {
 				errorCallback(XMLHttpRequest, textStatus);
@@ -366,7 +366,7 @@ $.ajaxJson = function(url, param, callback, completeCallback, errorCallback) {
 		},
 		success : function(data) {
 			if (data.code == 1010) {
-				top.location.href = "login.html";
+				top.location.href = baseUrl + '/admin/login.html';
 			} else {
 				if (callback) {
 					callback(data);
@@ -377,7 +377,7 @@ $.ajaxJson = function(url, param, callback, completeCallback, errorCallback) {
 			layer.closeAll('loading');
 			if (textStatus == 'parsererror') {
 				console.log("url:" + url)
-				top.location.href = "login.html";
+				top.location.href = baseUrl + '/admin/login.html';
 			}
 			if (errorCallback && jQuery.isFunction(errorCallback)) {
 				errorCallback(XMLHttpRequest, textStatus);

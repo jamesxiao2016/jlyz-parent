@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(BusinessException.class)
     public final ResultVo handleBusinessException(BusinessException ex) {
         return new ResultVo(ex.getErrorCode(),ex.getMessage());
