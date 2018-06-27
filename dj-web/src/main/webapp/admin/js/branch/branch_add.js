@@ -19,6 +19,7 @@ function initData() {
                 		$('#principalId').val(deptPrincipalId).trigger("change");
                 }
             });
+        $("#title").text("修改党支部");
 	}
 
 	$.post("../../admin/getSectionAndBuildingTree", function(data) {
