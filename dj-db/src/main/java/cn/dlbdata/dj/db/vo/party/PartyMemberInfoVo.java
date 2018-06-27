@@ -9,7 +9,7 @@ public class PartyMemberInfoVo {
     private Long deptId;
     private String deptName;
     private Long roleId;
-    private Long idCard;
+    private String idCard;
     private String account;
     private Float totalScore;
     private String partyPostCode;
@@ -78,11 +78,11 @@ public class PartyMemberInfoVo {
         this.roleId = roleId;
     }
 
-    public Long getIdCard() {
+    public String getIdCard() {
         return idCard;
     }
 
-    public void setIdCard(Long idCard) {
+    public void setIdCard(String idCard) {
         this.idCard = idCard;
     }
 

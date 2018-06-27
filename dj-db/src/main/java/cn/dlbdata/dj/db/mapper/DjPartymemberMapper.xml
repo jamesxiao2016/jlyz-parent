@@ -129,4 +129,14 @@
   <select id="getByIdCard" resultMap="BaseResultMap">
     select id,name,idcard,dept_id from dj_partymember where idcard = #{idcard}
   </select>
+  
+  <select id="existWithIdCard" resultType="boolean">
+    select count(*) from dj_partymember
+    <where>
+      idcard = #{idCard}
+      <if test="id != null">
+        and id != #{id}
+      </if>
+    </where>
+  </select>
 </mapper>

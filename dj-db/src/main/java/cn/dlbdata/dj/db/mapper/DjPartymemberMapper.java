@@ -94,4 +94,6 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
 	 * @return
 	 */
 	DjPartymember getByIdCard(String idCard);
+
+	boolean existWithIdCard(@Param("idCard") String idCard,@Param("id") Long id);
 }

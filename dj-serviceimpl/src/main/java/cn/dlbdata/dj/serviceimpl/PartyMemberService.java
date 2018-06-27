@@ -454,6 +454,15 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		if (exist) {
 			throw new BusinessException("该用户名已存在!", ResultCode.Forbidden.getCode());
 		}
+		if (dto.getIdcard() == null || "".equals(dto.getIdcard())) {
+			throw new BusinessException("身份证编号为必填项!", ResultCode.Forbidden.getCode());
+		}
+		//校验身份证唯一性
+		boolean existWithIdCard = partyMemberMapper.existWithIdCard(dto.getIdcard(),null);
+		if (existWithIdCard) {
+			throw new BusinessException("系统中已存在该身份证党员!", ResultCode.Forbidden.getCode());
+		}
+
 		DjUser newUser = new DjUser();
 		newUser.setId(DigitUtil.generatorLongId());
 		newUser.setDjPartymemberId(newUser.getId());
@@ -520,6 +529,14 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		boolean exist = userMapper.existWithUserName(dto.getUserName(), id);
 		if (exist) {
 			throw new BusinessException("该用户名已存在!", ResultCode.Forbidden.getCode());
+		}
+		if (dto.getIdcard() == null || "".equals(dto.getIdcard())) {
+			throw new BusinessException("身份证编号为必填项!", ResultCode.Forbidden.getCode());
+		}
+		//校验身份证唯一性
+		boolean existWithIdCard = partyMemberMapper.existWithIdCard(dto.getIdcard(),id);
+		if (existWithIdCard) {
+			throw new BusinessException("系统中已存在该身份证的其他党员!", ResultCode.Forbidden.getCode());
 		}
 		oldUser.setName(dto.getUserName());
 		oldUser.setDeptId(dto.getDeptId());
