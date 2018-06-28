@@ -27,6 +27,7 @@ import cn.dlbdata.dj.db.vo.jlyz.BuildingVo;
 import cn.dlbdata.dj.db.vo.jlyz.MemberStatVo;
 import cn.dlbdata.dj.db.vo.jlyz.PartyBranchVo;
 import cn.dlbdata.dj.db.vo.jlyz.SectionVo;
+import cn.dlbdata.dj.service.IJlyzService;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IScoreService;
 import cn.dlbdata.dj.web.base.BaseController;
@@ -50,6 +51,8 @@ public class JlyzController extends BaseController {
 	private IPartyMemberService partyMemberService;
 	@Autowired
 	private IScoreService scoreService;
+	@Autowired
+	private IJlyzService jlyzService;
 
 	
 	@GetMapping(value = "/querySection/{id}.json")
@@ -57,7 +60,8 @@ public class JlyzController extends BaseController {
 	@CrossOrigin(origins = "*", maxAge = 3600)
 	public ResultVo<SectionVo> querySection(@PathVariable Long id) {
 		ResultVo<SectionVo> result = new ResultVo<>();
-		
+		SectionVo data = jlyzService.querySection(id);
+		result.setData(data);
 		return result;
 	}
 	
@@ -66,7 +70,8 @@ public class JlyzController extends BaseController {
 	@CrossOrigin(origins = "*", maxAge = 3600)
 	public ResultVo<BuildingVo> queryBuilding(@PathVariable String id) {
 		ResultVo<BuildingVo> result = new ResultVo<>();
-		
+		BuildingVo data = jlyzService.queryBuilding(id);
+		result.setData(data);
 		return result;
 	}
 	
@@ -75,7 +80,8 @@ public class JlyzController extends BaseController {
 	@CrossOrigin(origins = "*", maxAge = 3600)
 	public ResultVo<List<PartyBranchVo>> queryPartyBranches(@PathVariable String id) {
 		ResultVo<List<PartyBranchVo>> result = new ResultVo<>();
-		
+		List<PartyBranchVo> data = jlyzService.queryPartyBranches(id);
+		result.setData(data);
 		return result;
 	}
 	
@@ -84,7 +90,8 @@ public class JlyzController extends BaseController {
 	@CrossOrigin(origins = "*", maxAge = 3600)
 	public ResultVo<MemberStatVo> queryMemberStatistic(@PathVariable String id) {
 		ResultVo<MemberStatVo> result = new ResultVo<>();
-		
+		MemberStatVo data = jlyzService.queryMemberStatistic(id);
+		result.setData(data);
 		return result;
 	}
 	
