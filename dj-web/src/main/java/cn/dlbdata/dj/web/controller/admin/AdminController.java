@@ -2,8 +2,6 @@ package cn.dlbdata.dj.web.controller.admin;
 
 import java.util.List;
 
-import cn.dlbdata.dj.db.vo.building.SelectBuildingVo;
-import cn.dlbdata.dj.service.IBuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +9,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.common.core.web.vo.SelectVo;
+import cn.dlbdata.dj.db.vo.admin.AdminStatVo;
+import cn.dlbdata.dj.db.vo.building.SelectBuildingVo;
 import cn.dlbdata.dj.db.vo.dept.SelectTreeVo;
+import cn.dlbdata.dj.service.IBuildingService;
 import cn.dlbdata.dj.service.IDeptService;
 import cn.dlbdata.dj.service.IDictService;
 import cn.dlbdata.dj.service.IUserService;
@@ -37,6 +38,10 @@ public class AdminController extends BaseController {
 	@Autowired
 	private IBuildingService buildingService;
 
+	/**
+	 * 获取当前管理员信息
+	 * @return
+	 */
 	@RequestMapping("/getAdminUserInfo")
 	@ResponseBody
 	public ResultVo<UserVo> getAdminUserInfo() {
@@ -46,6 +51,12 @@ public class AdminController extends BaseController {
 		return result;
 	}
 
+	/**
+	 * 修改密码
+	 * @param oldPwd
+	 * @param newPwd
+	 * @return
+	 */
 	@RequestMapping("/modifyPwd")
 	@ResponseBody
 	public ResultVo<String> modifyPwd(String oldPwd, String newPwd) {
@@ -54,6 +65,13 @@ public class AdminController extends BaseController {
 		return result;
 	}
 
+	/**
+	 * 修改用户信息
+	 * @param userName
+	 * @param email
+	 * @param telphone
+	 * @return
+	 */
 	@RequestMapping("/modifyUser")
 	@ResponseBody
 	public ResultVo<String> modifyUser(String userName, String email, String telphone) {
@@ -62,6 +80,10 @@ public class AdminController extends BaseController {
 		return result;
 	}
 
+	/**
+	 * 获取所有的字典信息
+	 * @return
+	 */
 	@RequestMapping("/getAllDictList")
 	@ResponseBody
 	public ResultVo<List<SelectVo>> getAllDictList() {
@@ -70,7 +92,12 @@ public class AdminController extends BaseController {
 		result.setData(data);
 		return result;
 	}
-
+	
+	/**
+	 * 根据字典类型获取字典列表
+	 * @param dictType
+	 * @return
+	 */
 	@RequestMapping("/getDictListByDictType")
 	@ResponseBody
 	public ResultVo<List<SelectVo>> getDictListByDictType(String dictType) {
@@ -80,6 +107,10 @@ public class AdminController extends BaseController {
 		return result;
 	}
 	
+	/**
+	 * 获取片区及党支部数据（树形）
+	 * @return
+	 */
 	@RequestMapping("/getSectionAndDeptTree")
 	@ResponseBody
 	public List<SelectTreeVo> getSectionAndDeptTree() {
@@ -87,6 +118,10 @@ public class AdminController extends BaseController {
 		return data;
 	}
 
+	/**
+	 * 获取片区及楼宇数据（树形）
+	 * @return
+	 */
 	@RequestMapping("/getSectionAndBuildingTree")
 	@ResponseBody
 	public List<SelectBuildingVo> getSectionAndBuildingTree() {
@@ -94,4 +129,47 @@ public class AdminController extends BaseController {
 		return data;
 	}
 	
+	/**
+	 * 获取统计信息
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public ResultVo<AdminStatVo> getAdminStat(int year,int month) {
+		ResultVo<AdminStatVo> result = new ResultVo<>();
+		return result;
+	}
+	
+	/**
+	 * 获取使用排名前5的党支部
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public ResultVo<?> getTop5PartyBanch(int year,int month) {
+		ResultVo<?> result = new ResultVo<>();
+		return result;
+	}
+	
+	/**
+	 * 获取积分最多的前5名
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public ResultVo<?> getTop5Score(int year,int month) {
+		ResultVo<?> result = new ResultVo<>();
+		return result;
+	}
+	
+	/**
+	 * 获取活动参与情况
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public ResultVo<?> getActiveJoin(int year,int month) {
+		ResultVo<AdminStatVo> result = new ResultVo<>();
+		return result;
+	}
 }
