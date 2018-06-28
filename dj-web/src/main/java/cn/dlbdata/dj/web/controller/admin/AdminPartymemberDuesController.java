@@ -106,7 +106,7 @@ public class AdminPartymemberDuesController extends BaseController {
 
 		// 若文件中内容校验发现错误则返回错误信息VO
 		Map<String, List<ExcelReplaceDataVO>> map = null;
-		if (lists != null && lists.size() > 1) {// 第一行是表格头部，list.size>1才是表格中有数据
+		if (lists != null && lists.size() > 2) {// 第一行第二行是表格头部，list.size>2才是表格中有数据
 			System.out.println(lists.toString());
 			map = partyMemberDueService.saveDues(lists);
 		} else {

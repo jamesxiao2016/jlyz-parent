@@ -2,6 +2,7 @@ package cn.dlbdata.dj.serviceimpl;
 
 import cn.dlbdata.dj.common.core.util.DatetimeUtil;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
+import cn.dlbdata.dj.common.core.util.StringUtil;
 import cn.dlbdata.dj.common.core.util.poi.ExcelReplaceDataVO;
 import cn.dlbdata.dj.constant.ActiveSubTypeEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
@@ -36,16 +37,16 @@ public class PartyMemberDueServiceImpl implements PartyMemberDueService {
         List<ExcelReplaceDataVO> errorInfo = new ArrayList<>();
         List<String> orderCodeList = new ArrayList<>();
         Set<String> orderCodeSet = new HashSet<>();
-        for (int i = 1;i<data.size();i++) {
-            orderCodeList.add(data.get(i).get(1).toString());
-            orderCodeSet.add(data.get(i).get(1).toString());
+        for (int i = 2;i<data.size();i++) {
+            orderCodeList.add(data.get(i).get(0).toString());
+            orderCodeSet.add(data.get(i).get(0).toString());
         }
         Collection rs = CollectionUtils.disjunction(orderCodeList,orderCodeSet);
         List<String> repeatList = new ArrayList<String>(rs);
         List<DjPartymemberDues> duesList = new ArrayList<>();
         List<DjScore> scoreList = new ArrayList<>();
         boolean hasError = false;
-        for (int i = 1;i<data.size();i++) {//第一行是表格头部，不需要取，直接取第二行
+        for (int i = 2;i<data.size();i++) {//第一行第二行是表格头部，不需要取，直接取第三行
             DjPartymemberDues due = new DjPartymemberDues();
             due.setId(DigitUtil.generatorLongId());
             due.setCreateTime(new Date());
@@ -64,21 +65,21 @@ public class PartyMemberDueServiceImpl implements PartyMemberDueService {
             List<Object> list = data.get(i);
             ExcelReplaceDataVO repVo= new ExcelReplaceDataVO();
             repVo.setRow(i);
-            repVo.setColumn(15);
+            repVo.setColumn(18);
             StringBuilder sb = new StringBuilder();
             //订单编号
-            String orderCode = list.get(1).toString();//TODO 校验重复
+            String orderCode = list.get(0).toString();
             if (orderCode == null || "".equals(orderCode)) {
-                sb.append("请填写订单号!,");
+                sb.append("请填写缴费单号!,");
                 hasError = true;
             } else {
                 if (repeatList.contains(orderCode)) {
-                    sb.append("清单中订单号重复!,");
+                    sb.append("清单中缴费单号重复!,");
                     hasError = true;
                 } else {
                     boolean exists = duesMapper.existWithOrderCode(orderCode);
                     if (exists) {
-                        sb.append("订单号已存在系统中!,");
+                        sb.append("缴费单号已存在系统中!,");
                         hasError = true;
                     } else {
                         due.setOrderCode(orderCode);
@@ -87,7 +88,7 @@ public class PartyMemberDueServiceImpl implements PartyMemberDueService {
             }
 
             //缴费时间
-            String payTimeStr = list.get(0).toString();
+            String payTimeStr = list.get(10).toString();
             Date payTime = DatetimeUtil.getLongDateByStr(payTimeStr);
             if (payTime == null) {
                 sb.append("请填写正确的缴费时间!,");
@@ -108,7 +109,7 @@ public class PartyMemberDueServiceImpl implements PartyMemberDueService {
             }
             DjPartymember partymember = null;
             //身份证号
-            String idCardStr = list.get(8).toString();
+            String idCardStr = list.get(12).toString();
             if (idCardStr == null || "".equals(idCardStr)) {
                 sb.append("请填写身份证号!,");
                 hasError = true;
@@ -123,28 +124,21 @@ public class PartyMemberDueServiceImpl implements PartyMemberDueService {
                     score.setUserName(partymember.getName());
                 }
             }
-            String name = list.get(9).toString();
+            String name = list.get(13).toString();
             if (name == null) {
                 sb.append("请填写姓名!,");
                 hasError = true;
             } else {
                 if (partymember != null) {
+                    name = StringUtil.deleteWhitespace(name);
                     if (!partymember.getName().equals(name)) {
                         sb.append("党员身份证错误!,");
                         hasError = true;
                     }
                 }
             }
-
-            //TODO 需要写正则判断传入的日期
-            String monthStr = list.get(13).toString();
-
-            if (monthStr == null) {
-                sb.append("请填写缴纳月份!,");
-                hasError = true;
-            }
             due.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
-            String payStatusStr = list.get(14).toString();
+            String payStatusStr = list.get(8).toString();
             if (payStatusStr == null || "".equals(payStatusStr)) {
                 sb.append("请填写缴费状态!,");
                 hasError = true;
