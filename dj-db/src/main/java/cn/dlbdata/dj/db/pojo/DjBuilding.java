@@ -66,6 +66,9 @@ public class DjBuilding {
      */
     @Column(name = "code")
     private String code;
+    
+    @Column(name = "offset")
+    private String offset;
 
     /**
      * 获取记录ID
@@ -250,4 +253,12 @@ public class DjBuilding {
     public void setCode(String code) {
         this.code = code;
     }
+
+	public String getOffset() {
+		return offset;
+	}
+
+	public void setOffset(String offset) {
+		this.offset = offset;
+	}
 }

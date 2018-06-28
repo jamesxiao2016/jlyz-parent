@@ -8,7 +8,7 @@ public class PartyBranchVo {
 	// 楼层
 	Integer floor;
 	// id
-	Long id;
+	String id;
 	// 党支部评级
 	String level;
 	// 评级编号
@@ -55,11 +55,11 @@ public class PartyBranchVo {
 		this.floor = floor;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

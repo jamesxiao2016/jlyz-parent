@@ -4,7 +4,7 @@ import java.util.List;
 
 public class SectionVo {
 	//片区ID
-	Long id;
+	String id;
 	//片区名称
 	String name;
 	//负责人ID
@@ -23,10 +23,10 @@ public class SectionVo {
 	String mesh;
 	//楼宇列表
 	List<BuildingVo> buildings;
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
