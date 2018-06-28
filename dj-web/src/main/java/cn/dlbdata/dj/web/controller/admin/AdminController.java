@@ -1,12 +1,15 @@
 package cn.dlbdata.dj.web.controller.admin;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.db.vo.admin.AdminStatVo;
@@ -15,7 +18,10 @@ import cn.dlbdata.dj.db.vo.dept.SelectTreeVo;
 import cn.dlbdata.dj.service.IBuildingService;
 import cn.dlbdata.dj.service.IDeptService;
 import cn.dlbdata.dj.service.IDictService;
+import cn.dlbdata.dj.service.ILogOptService;
+import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IUserService;
+import cn.dlbdata.dj.serviceimpl.PartyMemberService;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
 
@@ -37,6 +43,10 @@ public class AdminController extends BaseController {
 	private IDeptService deptService;
 	@Autowired
 	private IBuildingService buildingService;
+	@Autowired
+	private ILogOptService logOptService;
+	@Autowired
+	private IPartyMemberService partyMemberService;
 
 	/**
 	 * 获取当前管理员信息
@@ -135,8 +145,19 @@ public class AdminController extends BaseController {
 	 * @param month
 	 * @return
 	 */
+	@GetMapping("/getAdminStat")
+	@ResponseBody
 	public ResultVo<AdminStatVo> getAdminStat(int year,int month) {
 		ResultVo<AdminStatVo> result = new ResultVo<>();
+		AdminStatVo adminStatVo = new AdminStatVo();
+		adminStatVo = deptService.getAdminStat(year,month);
+		if(adminStatVo == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("没有相关初始化数据");
+			return result;
+		}
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(adminStatVo);
 		return result;
 	}
 	
@@ -146,8 +167,18 @@ public class AdminController extends BaseController {
 	 * @param month
 	 * @return
 	 */
-	public ResultVo<?> getTop5PartyBanch(int year,int month) {
-		ResultVo<?> result = new ResultVo<>();
+	@GetMapping("/getTop5PartyBanch")
+	@ResponseBody
+	public ResultVo<Object> getTop5PartyBanch(Integer year,Integer month) {
+		ResultVo<Object> result = new ResultVo<>();
+		List<Map<String, Object>> list = logOptService.getTop5PartyBanch(year);
+		if(list == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("没有相关数据");
+			return result;
+		}
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(list);
 		return result;
 	}
 	
@@ -157,8 +188,18 @@ public class AdminController extends BaseController {
 	 * @param month
 	 * @return
 	 */
-	public ResultVo<?> getTop5Score(int year,int month) {
-		ResultVo<?> result = new ResultVo<>();
+	@GetMapping("/getTop5Score")
+	@ResponseBody
+	public ResultVo<Object> getTop5Score(Integer year,int month) {
+		ResultVo<Object> result = new ResultVo<>();
+		List<Map<String, Object>> list = partyMemberService.getTop5Score(year);
+		if(list == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("没有相关数据");
+			return result;
+		}
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(list);
 		return result;
 	}
 	

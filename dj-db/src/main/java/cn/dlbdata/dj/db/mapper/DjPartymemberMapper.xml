@@ -139,4 +139,18 @@
       </if>
     </where>
   </select>
+  
+  <select id="selectPartyNum" resultType="int">
+  	select count(*) from dj_partymember
+  </select>
+  
+  <select id="getTop5Score" parameterType="Integer" resultType="map">
+  	select djp.id, djp.name, djp.sex_code, (select sum(table1.score) from dj_score table1 where table1.user_id = djp.id and add_year = #{year}) as totalscore, dt.name deptName from dj_partymember djp
+	left join dj_dept dt on dt.id = djp.dept_id 
+	order by totalscore desc
+	limit 5
+  </select>
+  
+  
+  
 </mapper>

@@ -96,4 +96,15 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
 	DjPartymember getByIdCard(String idCard);
 
 	boolean existWithIdCard(@Param("idCard") String idCard,@Param("id") Long id);
+	
+	int selectPartyNum();
+	
+	/**
+	 * 
+	 * <p>Title: getTop5Score</p> 
+	 * <p>Description: 获取积分最多的五个人</p> 
+	 * @param year
+	 * @return
+	 */
+	List<Map<String, Object>>getTop5Score(Integer year);
 }

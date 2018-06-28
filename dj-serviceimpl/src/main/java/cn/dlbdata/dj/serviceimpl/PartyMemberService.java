@@ -642,4 +642,20 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		}
 		return vo;
 	}
+
+	/* (non-Javadoc)
+	 * <p>Title: getTop5Score</p>
+	 * <p>Description: 获取积分最多的五个人</p> 
+	 * @param year
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IPartyMemberService#getTop5Score(java.lang.Integer)
+	 */
+	@Override
+	public List<Map<String, Object>> getTop5Score(Integer year) {
+		if(year == null) {
+			logger.error("year ->"+year);
+			return null;
+		}
+		return partyMemberMapper.getTop5Score(year);
+	}
 }

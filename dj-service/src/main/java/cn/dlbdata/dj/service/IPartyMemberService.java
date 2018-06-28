@@ -1,6 +1,7 @@
 package cn.dlbdata.dj.service;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.dlbdata.dj.db.vo.party.*;
 import org.apache.ibatis.annotations.Param;
@@ -213,6 +214,13 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	PartyMemberDetailVo getPartyMemberDetailById(long id);
-
-
+	
+	/**
+	 * 
+	 * <p>Title: getTop5Score</p> 
+	 * <p>Description: 获取积分最多的五个人</p> 
+	 * @param year
+	 * @return
+	 */
+	List<Map<String, Object>> getTop5Score(Integer year);
 }

@@ -40,4 +40,12 @@ public interface DjDeptMapper extends Mapper<DjDept> {
 	DeptAndPartyMemberVo getDeptNameAndPeopleSum(long id);
 
 	List<DeptAndApplyInfoVo>getDeptListAndApplyInfo(Long sectionId);
+	
+	/**
+	 * 
+	 * <p>Title: getAdminStat</p> 
+	 * <p>Description: 获取后台首页初始化信息</p> 
+	 * @return
+	 */
+	int getAdminStat();
 }

@@ -22,4 +22,6 @@ public interface DjStudyMapper extends Mapper<DjStudy> {
 	 * @return
 	 */
 	public int getPendingCount(@Param("typeId") Long typeId,@Param("userId") Long userId);
+	
+	int selectStudyCount(int year);
 }

@@ -5,7 +5,13 @@ import java.util.List;
 import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.pojo.DjUser;
-import cn.dlbdata.dj.db.vo.dept.*;
+import cn.dlbdata.dj.db.vo.admin.AdminStatVo;
+import cn.dlbdata.dj.db.vo.dept.DeptAndApplyInfoVo;
+import cn.dlbdata.dj.db.vo.dept.DeptAndPartyMemberVo;
+import cn.dlbdata.dj.db.vo.dept.DeptDetailVo;
+import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
+import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
+import cn.dlbdata.dj.db.vo.dept.SelectTreeVo;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import cn.dlbdata.dj.db.vo.party.SectionInfoVo;
 import cn.dlbdata.dj.vo.UserVo;
@@ -126,6 +132,13 @@ public interface IDeptService {
 	 * @return
 	 */
 	List<SelectTreeVo> getSectionAndDeptTree();
-
-
+	
+	/**
+	 * 
+	 * <p>Title: getAdminStat</p> 
+	 * <p>Description: 获取后台首页初始化信息</p> 
+	 * @return
+	 */
+	AdminStatVo getAdminStat(int year,int month);
+	
 }

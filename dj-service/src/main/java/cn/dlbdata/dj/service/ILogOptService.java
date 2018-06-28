@@ -6,6 +6,9 @@
  */
 package cn.dlbdata.dj.service;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>Title: ILogOptService</p>
  * @author zhouxuan
@@ -22,4 +25,6 @@ public interface ILogOptService {
 	 * @return
 	 */
 	public Long  deleteById(Long id);
+	
+	List<Map<String, Object>> getTop5PartyBanch(Integer year);
 }

@@ -78,4 +78,9 @@
   	</if>
   </select>
   
+  <select id="selectStudyCount" parameterType="int" resultType="int">
+  	select count(*) from dj_study where year(create_time) = #{year}
+   </select>
+  
+  
 </mapper>

@@ -15,4 +15,14 @@
     <result column="dj_dept_id" jdbcType="BIGINT" property="djDeptId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+  
+  <select id="getTop5PartyBanch" parameterType="Integer" resultType="map">
+		select dt.id, dt.name, djp.name principalName,count(*) as co from dj_log_opt dlo
+		left join dj_dept dt on dt.id =  dlo.dj_dept_id
+		left join dj_partymember djp on djp.id = dt.principal_id 
+		where 1=1 and year(dlo.create_time) = #{year}
+		group by dj_dept_id 
+		order by co desc
+		limit 5
+  </select>
 </mapper>

@@ -149,4 +149,8 @@
     and start_time &gt;= now()
 	</select>
 
+	<select id="selectActiveCount" parameterType="int" resultType="int">
+		select count(*) from dj_active where status = 1 and year(create_time) = #{year}
+	</select>
+
 </mapper>

@@ -8,4 +8,6 @@ import java.util.List;
 public interface DjPartymemberDuesMapper extends Mapper<DjPartymemberDues> {
     boolean existWithOrderCode(String orderCode);
     int batchInsert(List<DjPartymemberDues> list);
+    
+    Float selectPartymemberDuesCount(int year);
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import cn.dlbdata.dj.db.vo.admin.AdminStatVo;
 import cn.dlbdata.dj.db.vo.dept.*;
 import cn.dlbdata.dj.db.vo.party.AllPartyMemberVo;
 import org.apache.commons.lang3.StringUtils;
@@ -14,13 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 import cn.dlbdata.dj.common.core.exception.BusinessException;
 import cn.dlbdata.dj.common.core.util.DigitUtil;
 import cn.dlbdata.dj.common.core.util.constant.CoreConst;
+import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.constant.RoleEnum;
 import cn.dlbdata.dj.db.dto.dept.DeptAddOrUpdateDto;
+import cn.dlbdata.dj.db.mapper.DjActiveMapper;
 import cn.dlbdata.dj.db.mapper.DjBuildingMapper;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
+import cn.dlbdata.dj.db.mapper.DjPartymemberDuesMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
 import cn.dlbdata.dj.db.mapper.DjSectionMapper;
+import cn.dlbdata.dj.db.mapper.DjStudyMapper;
 import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.pojo.DjBuilding;
 import cn.dlbdata.dj.db.pojo.DjDept;
@@ -45,6 +50,12 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 	private DjBuildingMapper buildingMapper;
 	@Autowired
 	private DjPartymemberMapper partymemberMapper;
+	@Autowired
+	private DjActiveMapper activeMapper;
+	@Autowired
+	private DjStudyMapper studyMapper;
+	@Autowired
+	private DjPartymemberDuesMapper partymemberDuesMapper;
 
 	@Override
 	public DjDept getDeptInfoById(Long id) {
@@ -457,5 +468,43 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 		}
 
 		return rlist;
+	}
+
+	/* (non-Javadoc)
+	 * <p>Title: getAdminStat</p>
+	 * <p>Description: 获取后台管理首页初始化信息</p> 
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IDeptService#getAdminStat()
+	 */
+	@Override
+	public AdminStatVo getAdminStat(int year,int month) {
+		AdminStatVo adminStatVo = new AdminStatVo();
+		if(year <= 0) {
+			return adminStatVo;
+		}
+		if(month <= 0) {
+			return adminStatVo;
+		}
+		int partybanchNum = deptMapper.getAdminStat();
+		if(partybanchNum >= 0) {
+			adminStatVo.setPartybanchNum(partybanchNum);
+		}
+		int partyNum = partymemberMapper.selectPartyNum();
+		if(partyNum >= 0) {
+			adminStatVo.setPartyNum(partyNum);
+		}
+		int activeNum = activeMapper.selectActiveCount(year);
+		if(activeNum >= 0) {
+			adminStatVo.setActiveNum(activeNum);
+		}
+		int studyNum = studyMapper.selectStudyCount(year);
+		if(studyNum >= 0) {
+			adminStatVo.setStudyNum(studyNum);
+		}
+		Float partydusNum = partymemberDuesMapper.selectPartymemberDuesCount(year);
+		if(partydusNum != null) {
+			adminStatVo.setPartydusNum(partydusNum);
+		}
+		return adminStatVo;
 	}
 }

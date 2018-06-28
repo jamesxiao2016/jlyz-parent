@@ -34,4 +34,8 @@
       #{item.orderCode})
     </foreach>
   </insert>
+  
+  <select id="selectPartymemberDuesCount" parameterType="int" resultType="float">
+  	select count(*) from dj_partymember_dues where dues_year = #{year}
+  </select>
 </mapper>
