@@ -231,8 +231,9 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 		if (building.getDjSectionId() == null) {
 			throw new BusinessException("大楼对应的片区不存在!", CoreConst.ResultCode.NotFound.getCode());
 		}
-		DjSection section = sectionMapper.selectByPrimaryKey(building.getDjSectionId());
-		if (section == null) {
+		DjSection oldSection = sectionMapper.selectByPrimaryKey(dept.getDjSectionId());
+		DjSection newSection = sectionMapper.selectByPrimaryKey(building.getDjSectionId());
+		if (newSection == null) {
 			throw new BusinessException("大楼对应的片区不存在!", CoreConst.ResultCode.NotFound.getCode());
 		}
 		// 当传入的上级党支部为0或者null，该支部为根支部，否则则为叶子支部(此时需要校验上级支部是否存在)
@@ -244,6 +245,24 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 //			if (!parentDept.getDjSectionId().equals(section.getId())) {
 //				throw new BusinessException("所选的上级党支部不属于所选片区!", CoreConst.ResultCode.Forbidden.getCode());
 //			}
+		}
+		//如果换了片区，只要本部门内有人为原片区的负责人，就要把原片区的负责人清空
+		if (!oldSection.equals(newSection)) {
+			List<DjUser> userList = userMapper.getByDeptId(dept.getId());
+			boolean tag = false;
+			for (DjUser du:userList) {
+				if (du.getId().equals(oldSection.getPrincipalId())) {
+					tag = true;
+					du.setRoleId(RoleEnum.PARTY.getId());
+					userMapper.updateByPrimaryKey(du);
+					break;
+				}
+			}
+			if (tag) {
+				oldSection.setPrincipalId(null);
+				oldSection.setPrincipalName(null);
+				sectionMapper.updateByPrimaryKey(oldSection);
+			}
 		}
 		if (dto.getPrincipalId() != null) {
 			DjUser newPrincipal = userMapper.selectByPrimaryKey(dto.getPrincipalId());
@@ -264,6 +283,15 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 					userMapper.updateByPrimaryKey(oldPrincipal);
 					dept.setPrincipalName(newPrincipal.getUserName());
 					dept.setPrincipalId(newPrincipal.getId());
+					if (newSection.equals(oldSection)) {//没有换片区
+						if (newPrincipal.getId().equals(newSection.getPrincipalId())) {
+							//如果新的部门负责人为片区负责人，那么片区的负责人要清空，一个人不能同时身兼数职
+							oldSection.setPrincipalId(null);
+							oldSection.setPrincipalName(null);
+							sectionMapper.updateByPrimaryKey(oldSection);
+						}
+					}
+
 				}
 			} else {
 				dept.setPrincipalName(newPrincipal.getUserName());
@@ -285,7 +313,7 @@ public class DeptServiceImpl extends BaseServiceImpl implements IDeptService {
 			dept.setPrincipalName(null);
 		}
 
-		dept.setDjSectionId(section.getId());
+		dept.setDjSectionId(newSection.getId());
 		dept.setDjBuildingId(building.getId());
 		dept.setFloor(dto.getFloor());
 		dept.setName(dto.getName());

@@ -19,6 +19,9 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
   </resultMap>
+  <sql id="BaseColumnList">
+    id,dj_partymember_id,name,pwd,role_id,status,dept_id,token,avatar,login_count,last_time,create_time,user_name
+  </sql>
 
   <select id="existWithUserName" resultType="boolean">
     select count(*) from dj_user
@@ -57,6 +60,10 @@
   	left join dj_partymember djp on djp.id = du.dj_partymember_id 
   	left join dj_dept dd on dd.id = du.dept_id
   	where du.name  = #{account} and du.pwd = #{password}
+  </select>
+  
+  <select id="getByDeptId" resultMap="BaseResultMap">
+    select <include refid="BaseColumnList"/> from dj_user where dept_id = #{deptId}
   </select>
   
   
