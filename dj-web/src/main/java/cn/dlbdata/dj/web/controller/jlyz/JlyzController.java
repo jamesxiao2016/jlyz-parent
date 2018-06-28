@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,6 +23,8 @@ import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.ScoreActiveVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
+import cn.dlbdata.dj.db.vo.jlyz.BuildingVo;
+import cn.dlbdata.dj.db.vo.jlyz.PartyBranchVo;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IScoreService;
 import cn.dlbdata.dj.web.base.BaseController;
@@ -46,7 +49,43 @@ public class JlyzController extends BaseController {
 	@Autowired
 	private IScoreService scoreService;
 
-
+	
+	@GetMapping(value = "/querySection/{id}.json")
+	@ResponseBody
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	public ResultVo<BuildingVo> querySection(@PathVariable Long id) {
+		ResultVo<BuildingVo> result = new ResultVo<>();
+		
+		return result;
+	}
+	
+	@GetMapping(value = "/queryBuilding/{id}.json")
+	@ResponseBody
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	public ResultVo<BuildingVo> queryBuilding(@PathVariable String id) {
+		ResultVo<BuildingVo> result = new ResultVo<>();
+		
+		return result;
+	}
+	
+	@GetMapping(value = "/queryPartyBranches/{id}.json")
+	@ResponseBody
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	public ResultVo<List<PartyBranchVo>> queryPartyBranches(@PathVariable String id) {
+		ResultVo<List<PartyBranchVo>> result = new ResultVo<>();
+		
+		return result;
+	}
+	
+	@GetMapping(value = "/queryMemberStatistic/{id}.json")
+	@ResponseBody
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	public ResultVo<?> queryMemberStatistic(@PathVariable String id) {
+		ResultVo<?> result = new ResultVo<>();
+		
+		return result;
+	}
+	
 	/**
 	 * 根据支部ID获取支部名称获取党员信息
 	 * 
