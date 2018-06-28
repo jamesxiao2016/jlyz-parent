@@ -180,10 +180,10 @@ public interface IPartyMemberService {
 	 * 
 	 * @param id
 	 * @param dto
-	 * @param user
+	 * @param userVo
 	 * @return
 	 */
-	boolean updatePartyMember(Long id, PartyMemberAddOrUpdateDto dto, UserVo user);
+	boolean updatePartyMember(Long id, PartyMemberAddOrUpdateDto dto, UserVo userVo);
 
 	/**
 	 * 作废党员

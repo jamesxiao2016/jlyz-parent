@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.db.mapper.*;
 import cn.dlbdata.dj.db.pojo.*;
 import cn.dlbdata.dj.db.vo.party.*;
 import org.apache.commons.lang3.StringUtils;
@@ -33,15 +34,6 @@ import cn.dlbdata.dj.constant.AuditStatusEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.constant.RoleEnum;
 import cn.dlbdata.dj.db.dto.partymember.PartyMemberAddOrUpdateDto;
-import cn.dlbdata.dj.db.mapper.DjActiveMapper;
-import cn.dlbdata.dj.db.mapper.DjApplyMapper;
-import cn.dlbdata.dj.db.mapper.DjDisciplineMapper;
-import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
-import cn.dlbdata.dj.db.mapper.DjPicRecordMapper;
-import cn.dlbdata.dj.db.mapper.DjScoreMapper;
-import cn.dlbdata.dj.db.mapper.DjStudyMapper;
-import cn.dlbdata.dj.db.mapper.DjThoughtsMapper;
-import cn.dlbdata.dj.db.mapper.DjUserMapper;
 import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.score.ScoreVo;
@@ -73,6 +65,10 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	private DjUserMapper userMapper;
 	@Autowired
 	private IDeptService deptService;
+	@Autowired
+    private DjDeptMapper deptMapper;
+	@Autowired
+    private DjSectionMapper sectionMapper;
 
 	@Override
 	public DjPartymember getInfoById(Long id) {
@@ -514,18 +510,19 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 	 *
 	 * @param id
 	 * @param dto
-	 * @param user
+	 * @param userVo
 	 * @return
 	 */
 	@Transactional
 	@Override
-	public boolean updatePartyMember(Long id, PartyMemberAddOrUpdateDto dto, UserVo user) {
+	public boolean updatePartyMember(Long id, PartyMemberAddOrUpdateDto dto, UserVo userVo) {
 		DjPartymember partymember = partyMemberMapper.selectByPrimaryKey(id);
-		DjUser oldUser = userMapper.selectByPrimaryKey(id);
-		if (partymember == null || oldUser == null) {
+
+		DjUser user = userMapper.selectByPrimaryKey(id);
+		if (partymember == null || user == null) {
 			throw new BusinessException("该党员不存在!", ResultCode.NotFound.getCode());
 		}
-
+        Long oldDeptId = partymember.getDeptId();
 		boolean exist = userMapper.existWithUserName(dto.getUserName(), id);
 		if (exist) {
 			throw new BusinessException("该用户名已存在!", ResultCode.Forbidden.getCode());
@@ -538,10 +535,10 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		if (existWithIdCard) {
 			throw new BusinessException("系统中已存在该身份证的其他党员!", ResultCode.Forbidden.getCode());
 		}
-		oldUser.setName(dto.getUserName());
-		oldUser.setDeptId(dto.getDeptId());
-		oldUser.setUserName(dto.getName());
-		userMapper.updateByPrimaryKey(oldUser);
+        user.setName(dto.getUserName());
+        user.setDeptId(dto.getDeptId());
+        user.setUserName(dto.getName());
+
 
 		partymember.setName(dto.getName());
 		partymember.setSexCode(dto.getSexCode());
@@ -553,7 +550,30 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		partymember.setPartyPostCode(dto.getPartyPostCode());
 
 		partymember.setBirthDate(DatetimeUtil.getDateByStr(dto.getBirthDate(), null));
-		partyMemberMapper.updateByPrimaryKey(partymember);
+
+		//当前党员为党支部书记时,要将之前所在的支部的党支部书记清空,并且将该党员的角色职位普通党员
+        DjDept oldDept = deptMapper.selectByPrimaryKey(oldDeptId);
+        DjDept newDept = deptMapper.selectByPrimaryKey(dto.getDeptId());
+        if (oldDept != null && oldDept != newDept && oldDept.getPrincipalId().equals(partymember.getId())) {
+            oldDept.setPrincipalId(null);
+            oldDept.setPrincipalName(null);
+            user.setRoleId(RoleEnum.PARTY.getId());
+            deptMapper.updateByPrimaryKey(oldDept);
+        }
+
+        //当前党员为片区负责人时,要将之前所在的片区的片区负责人清空,并且将该党员的角色职位普通党员
+        if (oldDept != null) {
+            DjSection oldSection = sectionMapper.selectByPrimaryKey(oldDept.getDjSectionId());
+            DjSection newSection = sectionMapper.selectByPrimaryKey(newDept.getDjSectionId());
+            if (oldSection!= null && oldSection != newSection && oldSection.getPrincipalId().equals(partymember.getId())) {
+                oldSection.setPrincipalId(null);
+                oldSection.setPrincipalName(null);
+                sectionMapper.updateByPrimaryKey(oldSection);
+                user.setRoleId(RoleEnum.PARTY.getId());
+            }
+        }
+        userMapper.updateByPrimaryKey(user);
+        partyMemberMapper.updateByPrimaryKey(partymember);
 
 		return true;
 	}
