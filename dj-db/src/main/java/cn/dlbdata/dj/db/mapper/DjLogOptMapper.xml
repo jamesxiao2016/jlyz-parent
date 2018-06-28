@@ -25,4 +25,16 @@
 		order by co desc
 		limit 5
   </select>
+  
+  <select id="getActiveJoin" parameterType="map" resultType="map">
+  	<if test="year != null and month == null ">
+	  	select id,name,(select count(*) from dj_log_opt where dj_opt_dict.id = dj_log_opt.opt_id and year(dj_log_opt.create_time)= #{year}) as count
+		from dj_opt_dict
+  	</if>
+  	<if test="year == null and month != null">
+  		select id,name,(select count(*) from dj_log_opt where dj_opt_dict.id = dj_log_opt.opt_id and month(dj_log_opt.create_time)= #{month}) as count
+		from dj_opt_dict
+  	</if>
+ 	 	
+  </select>
 </mapper>

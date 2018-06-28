@@ -6,6 +6,7 @@
  */
 package cn.dlbdata.dj.serviceimpl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +60,26 @@ public class LogOptServiceImpl extends BaseServiceImpl implements ILogOptService
 			return null;
 		}
 		return logOptMapper.getTop5PartyBanch(year);
+	}
+
+	/* (non-Javadoc)
+	 * <p>Title: getActiveJoin</p>
+	 * <p>Description: 获取党员参与活动情况 </p> 
+	 * @param year
+	 * @param month
+	 * @return  
+	 * @see cn.dlbdata.dj.service.ILogOptService#getActiveJoin(java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<Map<String, Object>> getActiveJoin(Integer year, Integer month) {
+		if(year == null && month == null) {
+			logger.error("year ->"+ year + "month->"+ month);
+			return null;
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("year", year);
+		map.put("month", month);
+		return logOptMapper.getActiveJoin(map);
 	}
 
 }

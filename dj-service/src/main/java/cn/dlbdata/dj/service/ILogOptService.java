@@ -27,4 +27,14 @@ public interface ILogOptService {
 	public Long  deleteById(Long id);
 	
 	List<Map<String, Object>> getTop5PartyBanch(Integer year);
+	
+	/**
+	 * 
+	 * <p>Title: getActiveJoin</p> 
+	 * <p>Description: 获取党员参与活动情况</p> 
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	List<Map<String, Object>> getActiveJoin(Integer year, Integer month);
 }

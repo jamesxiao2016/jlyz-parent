@@ -190,7 +190,7 @@ public class AdminController extends BaseController {
 	 */
 	@GetMapping("/getTop5Score")
 	@ResponseBody
-	public ResultVo<Object> getTop5Score(Integer year,int month) {
+	public ResultVo<Object> getTop5Score(Integer year,Integer month) {
 		ResultVo<Object> result = new ResultVo<>();
 		List<Map<String, Object>> list = partyMemberService.getTop5Score(year);
 		if(list == null) {
@@ -209,8 +209,18 @@ public class AdminController extends BaseController {
 	 * @param month
 	 * @return
 	 */
-	public ResultVo<?> getActiveJoin(int year,int month) {
-		ResultVo<AdminStatVo> result = new ResultVo<>();
+	@GetMapping("/getActiveJoin")
+	@ResponseBody
+	public ResultVo<Object> getActiveJoin(Integer year,Integer month) {
+		ResultVo<Object> result = new ResultVo<>();
+		List<Map<String, Object>> list = logOptService.getActiveJoin(year,month);
+		if(list == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("没有相关数据");
+			return result;
+		}
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(list);
 		return result;
 	}
 }
