@@ -1,0 +1,233 @@
+.gray-bg{
+  padding: 20px;
+}
+/* 本月本年 */
+.top{
+  overflow: hidden;
+  width: 100%;
+}
+button{
+  width: 80px;
+  height: 30px;
+  border-radius: 15px;
+  color: #b94376;
+  background: #fff;
+  border: 1px solid #b94376;
+}
+.active{
+  background: #b94376!important;
+  color: #fff!important;
+}
+/* 党员活动 */
+.item{
+  float: left;
+  margin-top: 20px;
+  margin-right: 14px;
+  width: 20%;
+  min-width: 270px;
+  height: 160px;
+  border-radius: 5px;
+  color: #fff;
+  background: #5190D7;
+}
+.item1 {
+	/* background-image: url(../img/item_bg_1.png); 
+	background-size:100% 100%;
+	-moz-background-size:100% 100%; */
+}
+.item2 {
+	background : #36A8B0;
+	/* background-image: url(../img/item_bg_2.png); 
+	background-size:100% 100%;
+	-moz-background-size:100% 100%; */
+}
+.item3 {
+	background : #3E739C;
+	/* background-image: url(../img/item_bg_3.png) background-repeat:no-repeat; 
+	background-size:100% 100%;
+	-moz-background-size:100% 100%; */
+}
+.item4 {
+	background : #F56954;
+	/* background-image: url(../img/item_bg_4.png) background-repeat:no-repeat; 
+	background-size:100% 100%;
+	-moz-background-size:100% 100%; */
+}
+.item-top{
+  height: 40px;
+  border-bottom: 1px solid #e4e4e4;
+  overflow: hidden;
+}
+.item-top .fl{
+  margin: 10px;
+  float: left;
+}
+.item-top .fr{
+  margin: 12px;
+  float: right;
+  font-size: 12px;
+}
+.item-top i{
+  display: inline-block;
+  width: 1px;
+  height: 40px;
+  margin-left: 110px;
+  background: #e4e4e4;
+}
+.item-bottom {
+  position: relative;
+  /* padding: 10px; */
+}
+.item-bottom .ft{
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+.item-bottom .fb{
+  position: absolute;
+  left: 10px;
+  top: 40px;
+  font-size: 48px;
+}
+/* 排行榜 */
+.bottom{
+ margin-top: 20px;
+}
+.bottom-fl .title{
+  display: inline-block;
+  margin-left: 20px;
+  height: 68px;
+  line-height: 68px;
+  color: #000A12;
+  font-size: 20px;
+}
+.bottom-fl{
+  float: left;
+  width: 48%;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.1);
+}
+.bottom-fl .people,.bottom-fl .people1{
+  width: 100%;
+  height: 84px;
+}
+.bottom-fl .people{
+  background:#F8EAEC;
+}
+.bottom-fl .left,.bottom-fl .right{
+  float: left;
+}
+.bottom-fl .right{
+  margin-top: 8px;
+}
+.bottom-fl .left .img{
+  width: 48px;
+  height: 48px;
+  margin-top: 18px;
+  margin-right: 8px;
+}
+.bottom-fl .right span{
+  display: inline-block;
+}
+.bottom-fl .right span:nth-child(1){
+  margin-top: 10px;
+  color: #000A12;
+  font-size: 20px;
+}
+.bottom-fl .right .name{
+  margin-top: 6px;
+  color: #053361;
+  font-size: 14px;
+}
+.bottom-fl .right .name i{
+  color: #000A12;
+  font-style: normal;
+}
+/* 排行榜更多 */
+.bottom-fl .more{
+  width: 100%;
+  height: 66px;
+  border: 0;
+  border-radius: 0;
+  font-size:18px;
+  color: #fff;
+  background: #B93647;
+}
+/* echarts */
+.bottom-fl .ibox-content{
+  margin-top: 30px;
+  width: 100%;
+  height: 318px;
+  background: #F8EAEC;
+}
+/* 右边党员排行榜 */
+.bottom-fr{
+  float: left;
+  margin-left: 20px;
+  width: 48%;
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.1);
+}
+.bottom-fr .title{
+  display: inline-block;
+  margin-left: 20px;
+  height: 68px;
+  line-height: 68px;
+  color: #000A12;
+  font-size: 20px;
+}
+.bottom-fr .membePeople,.bottom-fr .membePeople1{
+  width: 100%;
+  height: 120px;
+}
+.bottom-fr .membePeople1{
+  background:#F8EAEC;
+}
+.bottom-fr .left,.bottom-fr .right{
+  float: left;
+}
+.bottom-fr .left .img{
+  width: 48px;
+  height: 48px;
+  margin: 36px 10px 0 10px;
+  margin-right: 8px;
+}
+.bottom-fr .right{
+  width: 85%;
+}
+.bottom-fr .right span{
+  display: inline-block;
+}
+.bottom-fr .right .memberName{
+  margin-top: 10px;
+  color: #000A12;
+  font-size: 20px;
+}
+.bottom-fr .right .score{
+ margin-top: 6px;
+ color: #053361;
+ font-size: 16px;
+}
+.bottom-fr .right .score i{
+  color: #B93647;;
+  font-style: normal;
+}
+.bottom-fr .right .branch{
+  margin-top: 6px;
+  color: #053361;
+  font-size: 16px;
+ }
+ .bottom-fr .right .branch i{
+   color: #BBBBBB;;
+   font-style: normal;
+ }
+ /* 排行榜党员更多 */
+.bottom-fr .more{
+  width: 100%;
+  height: 66px;
+  border: 0;
+  border-radius: 0;
+  font-size:18px;
+  color: #fff;
+  background: #B93647;
+}

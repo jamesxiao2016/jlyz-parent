@@ -4,83 +4,159 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>党员积分制管理系统</title>
-    <link href="../static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="../static/css/font-awesome.css?v=4.4.0" rel="stylesheet">
-    <link href="../static/css/animate.css" rel="stylesheet">
-    <link href="../static/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" href="css/main2.css">
 </head>
 
 <body class="gray-bg">
-    <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>最近一周用户增长情况</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="graph_flot.html#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <!-- <ul class="dropdown-menu dropdown-user">
-                                <li><a href="graph_flot.html#">选项1</a>
-                                </li>
-                                <li><a href="graph_flot.html#">选项2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a> -->
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="echarts" id="echarts-line-chart"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>最近12个月使用统计</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="graph_flot.html#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <!-- <ul class="dropdown-menu dropdown-user">
-                                <li><a href="graph_flot.html#">选项1</a>
-                                </li>
-                                <li><a href="graph_flot.html#">选项2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a> -->
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="echarts" id="echarts-bar-chart"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <button class="active">本月</button>
+  <button style="margin-left: 20px;">本年</button>
+  <div class="top">
+    <div class="item item1">
+      <div class="item-top">
+        <div class="fl">党员活动</div>
+        <i></i>
+        <div class="fr">查看全部</div>
+      </div>
+      <div class="item-bottom">
+        <div class="ft">本月</div>
+        <div class="fb">1231</div>
+      </div>
     </div>
-    <!-- 全局js -->
-    <script src="../static/js/jquery.min.js?v=2.1.4"></script>
-    <script src="../static/js/bootstrap.min.js?v=3.3.6"></script>
-    <!-- ECharts -->
-    <script src="../static/js/plugins/echarts/echarts.min.js"></script>
-    <script src="../static/js/plugins/echarts/map/china.js"></script>
-    <!-- 自定义js -->
-    <script src="../static/js/content.js?v=1.0.0"></script>
-    <!-- ECharts demo data -->
-    <script src="../static/js/demo/echarts-demo.js"></script>
-    <script src="../static/main.js"></script>
+    <div class="item item2">
+      <div class="item-top">
+        <div class="fl">自主学习</div>
+        <i></i>
+        <div class="fr">查看全部</div>
+      </div>
+      <div class="item-bottom">
+        <div class="ft">本月</div>
+        <div class="fb">1231</div>
+      </div>
+    </div>
+    <div class="item item3">
+      <div class="item-top">
+        <div class="fl">党员积分</div>
+        <i></i>
+        <div class="fr">查看全部</div>
+      </div>
+      <div class="item-bottom">
+        <div class="ft">本月</div>
+        <div class="fb">1231</div>
+      </div>
+    </div>
+    <div class="item item4">
+      <div class="item-top">
+        <div class="fl">党费</div>
+        <i></i>
+        <div class="fr">查看全部</div>
+      </div>
+      <div class="item-bottom">
+        <div class="ft">本月</div>
+        <div class="fb">1231</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="bottom-fl">
+      <span class="title">党支部排行榜</span>
+      <div class="people">
+        <div class="left">
+          <img class="img" src="img/zuzhi.png" alt="">
+        </div>
+        <div class="right">
+          <span>中共浦东新区沪东新村街道上川居民区第一支部委员会</span>
+          <br><span class="name">支部书记：<i>刘德华</i></span>
+        </div>
+      </div>
+      <div class="people1">
+        <div class="left">
+          <img class="img" src="img/zuzhi.png" alt="">
+        </div>
+        <div class="right">
+          <span>中共浦东新区沪东新村街道上川居民区第一支部委员会</span>
+          <br><span class="name">支部书记：<i>刘德华</i></span>
+        </div>
+      </div>
+      <div class="people">
+          <div class="left">
+            <img class="img" src="img/zuzhi.png" alt="">
+          </div>
+          <div class="right">
+            <span>中共浦东新区沪东新村街道上川居民区第一支部委员会</span>
+            <br><span class="name">支部书记：<i>刘德华</i></span>
+          </div>
+      </div>
+      <button class="more">查看更多</button>   
+      
+      <!-- echarts -->
+      <div class="ibox-content">
+        <div class="echarts" id="echarts-bar-chart"></div>
+      </div>
+    </div>
+    <div class="bottom-fr">
+      <span class="title">浦东新区党员排行榜</span>
+      <div class="membePeople" style="border-top: 1px solid #e4e4e4;">
+        <div class="left">
+          <img class="img" src="img/boy.png" alt="">
+        </div>
+        <div class="right">
+          <span class="memberName">张一山</span><br>
+          <span class="score">总积分：<i>1234567890</i></span><br>
+          <span class="branch">所属支部：<i>中共浦东新区沪东新村街道上川居民区第一支部委员会</i></span>
+        </div>
+      </div>
+      <div class="membePeople1">
+        <div class="left">
+          <img class="img" src="img/boy.png" alt="">
+        </div>
+        <div class="right">
+            <span class="memberName">张一山</span><br>
+            <span class="score">总积分：<i>1234567890</i></span><br>
+            <span class="branch">所属支部：<i>中共浦东新区沪东新村街道上川居民区第一支部委员会</i></span>
+        </div>
+      </div>
+      <div class="membePeople">
+          <div class="left">
+            <img class="img" src="img/boy.png" alt="">
+          </div>
+          <div class="right">
+              <span class="memberName">张一山</span><br>
+              <span class="score">总积分：<i>1234567890</i></span><br>
+              <span class="branch">所属支部：<i>中共浦东新区沪东新村街道上川居民区第一支部委员会</i></span>
+          </div>
+      </div>
+      <div class="membePeople1">
+        <div class="left">
+          <img class="img" src="img/boy.png" alt="">
+        </div>
+        <div class="right">
+            <span class="memberName">张一山</span><br>
+            <span class="score">总积分：<i>1234567890</i></span><br>
+            <span class="branch">所属支部：<i>中共浦东新区沪东新村街道上川居民区第一支部委员会</i></span>
+        </div>
+      </div>
+      <div class="membePeople">
+        <div class="left">
+          <img class="img" src="img/boy.png" alt="">
+        </div>
+        <div class="right">
+            <span class="memberName">张一山</span><br>
+            <span class="score">总积分：<i>1234567890</i></span><br>
+            <span class="branch">所属支部：<i>中共浦东新区沪东新村街道上川居民区第一支部委员会</i></span>
+        </div>
+      </div>
+      <button class="more">查看更多</button>   
+    </div>
+  </div>
 </body>
+<!-- 全局js -->
+<script src="../static/js/jquery.min.js?v=2.1.4"></script>
+<!-- ECharts -->
+<script src="../static/js/plugins/echarts/echarts.min.js"></script>
+<script src="../static/js/plugins/echarts/map/china.js"></script>
+<!-- 自定义js -->
+<script src="../static/js/content.js?v=1.0.0"></script>
+<!-- ECharts demo data -->
+<script src="../static/js/demo/echarts-demo.js"></script>
 
 </html>
