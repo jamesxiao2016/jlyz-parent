@@ -554,7 +554,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		//当前党员为党支部书记时,要将之前所在的支部的党支部书记清空,并且将该党员的角色职位普通党员
         DjDept oldDept = deptMapper.selectByPrimaryKey(oldDeptId);
         DjDept newDept = deptMapper.selectByPrimaryKey(dto.getDeptId());
-        if (oldDept != null && oldDept != newDept && oldDept.getPrincipalId().equals(partymember.getId())) {
+        if (oldDept != null && !oldDept.equals(newDept) && oldDept.getPrincipalId().equals(partymember.getId())) {
             oldDept.setPrincipalId(null);
             oldDept.setPrincipalName(null);
             user.setRoleId(RoleEnum.PARTY.getId());
@@ -565,7 +565,7 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
         if (oldDept != null) {
             DjSection oldSection = sectionMapper.selectByPrimaryKey(oldDept.getDjSectionId());
             DjSection newSection = sectionMapper.selectByPrimaryKey(newDept.getDjSectionId());
-            if (oldSection!= null && oldSection != newSection && oldSection.getPrincipalId().equals(partymember.getId())) {
+            if (oldSection!= null && !oldSection.equals(newSection) && oldSection.getPrincipalId().equals(partymember.getId())) {
                 oldSection.setPrincipalId(null);
                 oldSection.setPrincipalName(null);
                 sectionMapper.updateByPrimaryKey(oldSection);

@@ -95,6 +95,16 @@ public class SectionServiceImpl extends BaseServiceImpl implements ISectionServi
                     oldPrincipal.setRoleId(RoleEnum.PARTY.getId());
                     //设置传入的人为片区负责人
                     newPrincipal.setRoleId(RoleEnum.HEADER_OF_DISTRICT.getId());
+                    //如果新片区负责人原来是片区下的某支部的党支部书记，则需要将新片区负责人所在的党支部的党支部书记信息清除掉
+                    DjDept newPpalsDept = djDeptMapper.selectByPrimaryKey(newPrincipal.getDeptId());
+                    if (newPpalsDept.getPrincipalId() != null) {
+                        if (newPpalsDept.getPrincipalId().equals(newPrincipal.getId())) {
+                            newPpalsDept.setPrincipalId(null);
+                            newPpalsDept.setPrincipalName(null);
+                            djDeptMapper.updateByPrimaryKey(newPpalsDept);
+                        }
+                    }
+
                     userMapper.updateByPrimaryKey(oldPrincipal);
                     section.setPrincipalName(newPrincipal.getUserName());
                     section.setPrincipalId(newPrincipal.getId());

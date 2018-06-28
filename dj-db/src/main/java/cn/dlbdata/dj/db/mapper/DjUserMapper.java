@@ -14,4 +14,6 @@ public interface DjUserMapper extends Mapper<DjUser> {
     List<DjUser> getByRoleIdAndDeptIdIn(@Param("roleId") Long roleId,@Param("deptIds") List<Long> deptIds);
     
     UserResVo getUserFromAccountAndPwd(@Param("account") String account,@Param("password") String password);
+
+    List<DjUser> getByDeptId(Long deptId);
 }
