@@ -24,7 +24,9 @@ import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.ScoreActiveVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.jlyz.BuildingVo;
+import cn.dlbdata.dj.db.vo.jlyz.MemberStatVo;
 import cn.dlbdata.dj.db.vo.jlyz.PartyBranchVo;
+import cn.dlbdata.dj.db.vo.jlyz.SectionVo;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IScoreService;
 import cn.dlbdata.dj.web.base.BaseController;
@@ -53,8 +55,8 @@ public class JlyzController extends BaseController {
 	@GetMapping(value = "/querySection/{id}.json")
 	@ResponseBody
 	@CrossOrigin(origins = "*", maxAge = 3600)
-	public ResultVo<BuildingVo> querySection(@PathVariable Long id) {
-		ResultVo<BuildingVo> result = new ResultVo<>();
+	public ResultVo<SectionVo> querySection(@PathVariable Long id) {
+		ResultVo<SectionVo> result = new ResultVo<>();
 		
 		return result;
 	}
@@ -80,8 +82,8 @@ public class JlyzController extends BaseController {
 	@GetMapping(value = "/queryMemberStatistic/{id}.json")
 	@ResponseBody
 	@CrossOrigin(origins = "*", maxAge = 3600)
-	public ResultVo<?> queryMemberStatistic(@PathVariable String id) {
-		ResultVo<?> result = new ResultVo<>();
+	public ResultVo<MemberStatVo> queryMemberStatistic(@PathVariable String id) {
+		ResultVo<MemberStatVo> result = new ResultVo<>();
 		
 		return result;
 	}
