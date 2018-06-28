@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dlbdata.dj.db.mapper.TRelaPmActMapper">
+  <resultMap id="BaseResultMap" type="cn.dlbdata.dj.db.pojo.TRelaPmAct">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="party_member_id" jdbcType="INTEGER" property="partyMemberId" />
+    <result column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="score" jdbcType="REAL" property="score" />
+  </resultMap>
+</mapper>

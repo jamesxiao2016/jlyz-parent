@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dlbdata.dj.db.mapper.TPartyBranchMapper">
+  <resultMap id="BaseResultMap" type="cn.dlbdata.dj.db.pojo.TPartyBranch">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="secretary_id" jdbcType="INTEGER" property="secretaryId" />
+    <result column="superior_id" jdbcType="INTEGER" property="superiorId" />
+    <result column="level_code" jdbcType="VARCHAR" property="levelCode" />
+    <result column="score" jdbcType="REAL" property="score" />
+    <result column="party_member_count" jdbcType="INTEGER" property="partyMemberCount" />
+    <result column="building_id" jdbcType="VARCHAR" property="buildingId" />
+    <result column="floor" jdbcType="VARCHAR" property="floor" />
+  </resultMap>
+</mapper>

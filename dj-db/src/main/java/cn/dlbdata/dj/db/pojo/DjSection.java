@@ -24,6 +24,10 @@ public class DjSection {
     private Integer peopleNum;
 
     /**
+     * 地址
+     */
+    private String address;
+    /**
      * 说明
      */
     @Column(name = "description")
@@ -167,5 +171,13 @@ public class DjSection {
 
 	public void setPrincipalName(String principalName) {
 		this.principalName = principalName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 }

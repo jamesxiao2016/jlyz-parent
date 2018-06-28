@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dlbdata.dj.db.mapper.TTempMapper">
+  <resultMap id="BaseResultMap" type="cn.dlbdata.dj.db.pojo.TTemp">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="score1" jdbcType="VARCHAR" property="score1" />
+    <result column="score2" jdbcType="VARCHAR" property="score2" />
+    <result column="score3" jdbcType="VARCHAR" property="score3" />
+    <result column="score4" jdbcType="VARCHAR" property="score4" />
+    <result column="score5" jdbcType="VARCHAR" property="score5" />
+    <result column="score6" jdbcType="VARCHAR" property="score6" />
+    <result column="score7" jdbcType="VARCHAR" property="score7" />
+    <result column="score8" jdbcType="VARCHAR" property="score8" />
+    <result column="score9" jdbcType="VARCHAR" property="score9" />
+    <result column="score10" jdbcType="VARCHAR" property="score10" />
+    <result column="score11" jdbcType="VARCHAR" property="score11" />
+    <result column="score12" jdbcType="VARCHAR" property="score12" />
+    <result column="score13" jdbcType="VARCHAR" property="score13" />
+    <result column="score14" jdbcType="VARCHAR" property="score14" />
+  </resultMap>
+</mapper>

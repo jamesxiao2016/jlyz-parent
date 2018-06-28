@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dlbdata.dj.db.mapper.TBuildingMapper">
+  <resultMap id="BaseResultMap" type="cn.dlbdata.dj.db.pojo.TBuilding">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="floors_total" jdbcType="INTEGER" property="floorsTotal" />
+    <result column="party_branche_count" jdbcType="INTEGER" property="partyBrancheCount" />
+    <result column="party_member_count" jdbcType="INTEGER" property="partyMemberCount" />
+    <result column="section_id" jdbcType="INTEGER" property="sectionId" />
+    <result column="offset" jdbcType="VARCHAR" property="offset" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dlbdata.dj.db.mapper.TActivityRuleMapper">
+  <resultMap id="BaseResultMap" type="cn.dlbdata.dj.db.pojo.TActivityRule">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type_code" jdbcType="VARCHAR" property="typeCode" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="kind_code" jdbcType="VARCHAR" property="kindCode" />
+    <result column="kind" jdbcType="VARCHAR" property="kind" />
+    <result column="score_per_time_m" jdbcType="REAL" property="scorePerTimeM" />
+    <result column="time_limit_m" jdbcType="INTEGER" property="timeLimitM" />
+    <result column="score_per_time_b" jdbcType="REAL" property="scorePerTimeB" />
+    <result column="time_limit_b" jdbcType="INTEGER" property="timeLimitB" />
+  </resultMap>
+</mapper>

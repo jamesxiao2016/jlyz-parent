@@ -17,7 +17,7 @@
 		</plugin>
 
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://180.169.82.28:3336/jlyz-test" userId="dlbroot"
+			connectionURL="jdbc:mysql://180.169.82.28:3336/jlyz" userId="dlbroot"
 			password="71257125">
 		</jdbcConnection>
 
@@ -31,7 +31,7 @@
 		<javaClientGenerator targetPackage="cn.dlbdata.dj.db.mapper"
 			targetProject="/Users/xiaowei/work/project/jlyz-park/server/dj-parent/dj-db/src/main/java/" type="XMLMAPPER" />
 
-		<table tableName="dj_dict">
+		<table tableName="t_%">
 		</table>
 	</context>
 </generatorConfiguration>
