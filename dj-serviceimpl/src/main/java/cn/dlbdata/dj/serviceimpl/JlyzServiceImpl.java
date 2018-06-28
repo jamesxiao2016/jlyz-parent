@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cn.dlbdata.dj.db.mapper.DjBuildingMapper;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
@@ -24,6 +25,7 @@ import cn.dlbdata.dj.db.vo.jlyz.StageVo;
 import cn.dlbdata.dj.service.IJlyzService;
 import cn.dlbdata.dj.serviceimpl.base.BaseServiceImpl;
 
+@Service
 public class JlyzServiceImpl extends BaseServiceImpl implements IJlyzService {
 	@Autowired
 	private DjSectionMapper sectionMapper;
