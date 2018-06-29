@@ -117,7 +117,7 @@ public class JlyzServiceImpl extends BaseServiceImpl implements IJlyzService {
 			stageVo.setDzb_prefix(stage.getPartyBranchPrefix());
 			stageVo.setFloor(stage.getFloor());
 			stageVo.setId(stage.getId() + "");
-			stageVo.setImage(rootUrl + "/" + stage.getImage());
+			stageVo.setImage(rootUrl + "/img/" + stage.getImage());
 			stageVo.setName(stage.getName());
 			stageVo.setSummary(stage.getSummary());
 			result.setStage(stageVo);
