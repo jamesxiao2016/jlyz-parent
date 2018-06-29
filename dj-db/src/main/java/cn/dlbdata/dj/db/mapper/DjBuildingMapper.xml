@@ -42,4 +42,16 @@
   <select id="getBuildingIdAndNameBySectionId" resultType="cn.dlbdata.dj.db.dto.IdNameDto">
     select id,name from dj_building where dj_section_id = #{sectionId}
   </select>
+  
+  <resultMap type="cn.dlbdata.dj.db.vo.jlyz.BuildingVo" id="ResultBuildingMap">
+  	 <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="people_num" jdbcType="INTEGER" property="dy_number" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="offset" jdbcType="VARCHAR" property="offset" />
+    <result column="floor_num" jdbcType="INTEGER" property="floors_total" />
+  </resultMap>
+  <select id="getListBuildingBySectionId" parameterType="Long" resultMap="ResultBuildingMap">
+  select id, people_num, name, offset, floor_num from dj_building where dj_section_id = #{id}
+  
+  </select>
 </mapper>

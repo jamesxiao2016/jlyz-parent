@@ -71,6 +71,7 @@ public class JlyzController extends BaseController {
 	public ResultVo<BuildingVo> queryBuilding(@PathVariable String id) {
 		ResultVo<BuildingVo> result = new ResultVo<>();
 		BuildingVo data = jlyzService.queryBuilding(id);
+		
 		result.setData(data);
 		return result;
 	}
@@ -81,7 +82,9 @@ public class JlyzController extends BaseController {
 	public ResultVo<List<PartyBranchVo>> queryPartyBranches(@PathVariable String id) {
 		ResultVo<List<PartyBranchVo>> result = new ResultVo<>();
 		List<PartyBranchVo> data = jlyzService.queryPartyBranches(id);
-		result.setData(data);
+		if(data != null && data.size() > 0 ) {
+			result.setData(data);
+		}
 		return result;
 	}
 	

@@ -64,6 +64,17 @@
   	select count(*) from dj_dept
   </select>
   
-  
+  <resultMap type="cn.dlbdata.dj.db.vo.jlyz.PartyBranchVo" id="ResultPartyBranchMap">
+  	 <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="floor" jdbcType="INTEGER" property="floor" />
+    <result column="people_num" jdbcType="INTEGER" property="number" />
+    <result column="principal_id" jdbcType="BIGINT" property="secretary_id" />
+    <result column="principal_name" jdbcType="VARCHAR" property="sj_name" />
+    <result column="dept_level" jdbcType="VARCHAR" property="deptLevel" />
+  </resultMap>
+  <select id="getBuildingAndDept" parameterType="String" resultMap="ResultPartyBranchMap">
+  	select id, name, floor, people_num, principal_id, principal_name from dj_dept where building_code = #{buildingCode}
+  </select>
   
 </mapper>

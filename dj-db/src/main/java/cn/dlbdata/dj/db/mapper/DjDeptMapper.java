@@ -5,6 +5,7 @@ import cn.dlbdata.dj.db.vo.dept.DeptAndApplyInfoVo;
 import cn.dlbdata.dj.db.vo.dept.DeptAndPartyMemberVo;
 import cn.dlbdata.dj.db.vo.dept.DeptIdNameDto;
 import cn.dlbdata.dj.db.vo.dept.DeptTreeVo;
+import cn.dlbdata.dj.db.vo.jlyz.PartyBranchVo;
 import cn.dlbdata.dj.db.vo.party.BranchDeptInfoVo;
 import org.apache.ibatis.annotations.Select;
 import tk.mybatis.mapper.common.Mapper;
@@ -48,4 +49,6 @@ public interface DjDeptMapper extends Mapper<DjDept> {
 	 * @return
 	 */
 	int getAdminStat();
+	
+	List<PartyBranchVo> getBuildingAndDept(String building_code);
 }

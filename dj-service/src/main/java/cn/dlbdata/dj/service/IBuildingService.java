@@ -6,6 +6,7 @@ import cn.dlbdata.dj.common.core.web.vo.SelectVo;
 import cn.dlbdata.dj.db.dto.building.BuildingAddOrUpdateDto;
 import cn.dlbdata.dj.db.pojo.DjBuilding;
 import cn.dlbdata.dj.db.vo.building.SelectBuildingVo;
+import cn.dlbdata.dj.db.vo.jlyz.BuildingVo;
 
 public interface IBuildingService {
 
@@ -52,4 +53,5 @@ public interface IBuildingService {
 	public DjBuilding getInfoById(Long id);
 
 	List<SelectBuildingVo> getSectionAndBuilding();
+	
 }

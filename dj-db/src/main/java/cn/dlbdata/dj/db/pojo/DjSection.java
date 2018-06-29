@@ -52,8 +52,29 @@ public class DjSection {
      */
     @Column(name = "principal_name")
     private String principalName;
+    
+    private String camera;
+    private String mesh;
+    
+    
+    
+    public String getCamera() {
+		return camera;
+	}
 
-    /**
+	public void setCamera(String camera) {
+		this.camera = camera;
+	}
+
+	public String getMesh() {
+		return mesh;
+	}
+
+	public void setMesh(String mesh) {
+		this.mesh = mesh;
+	}
+
+	/**
      * 获取记录ID
      *
      * @return id - 记录ID
