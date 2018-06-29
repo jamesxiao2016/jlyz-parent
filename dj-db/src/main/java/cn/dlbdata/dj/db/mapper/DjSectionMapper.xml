@@ -14,6 +14,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="principal_id" jdbcType="BIGINT" property="principalId" />
     <result column="principal_name" jdbcType="VARCHAR" property="principalName" />
+    <result column="enterprise_count" jdbcType="INTEGER" property="enterpriseCount" />
   </resultMap>
   
   <select id="getByPrincipalId" resultMap="BaseResultMap">

@@ -85,6 +85,11 @@ public class PicController extends BaseController {
 
 		try {
 			path = downloadMedia(picId, vo.getMediaId(), PICTURE_PATH, user.getUserId());
+			if(StringUtils.isEmpty(path)) {
+				result.setMsg("上传图片失败");
+				result.setCode(ResultCode.Forbidden.getCode());
+				return result;
+			}
 			logger.info("downloadMedia success");
 			ImageUtil.thumbnailImage(PICTURE_PATH + path, 200, 200, PREVFIX, false);
 			logger.info("thumbnailImage success");
@@ -99,7 +104,7 @@ public class PicController extends BaseController {
 				logger.info("thumbnailImage success");
 			} catch (Exception ee) {
 				logger.error("保存图片失败", e);
-				result.setMsg("保存图片失败");
+				result.setMsg("上传图片失败");
 				result.setCode(ResultCode.Forbidden.getCode());
 				return result;
 			}
@@ -190,7 +195,12 @@ public class PicController extends BaseController {
 			if (responseCode == 200) {
 				bis = new BufferedInputStream(conn.getInputStream());
 				logger.info("InputStream-Count->" + bis.available());
+				if(bis.available() < 1024) {
+					logger.info("下载媒体文件失败，fileSize=" + bis.available());
+					return "";
+				}
 				fos = new FileOutputStream(new File(filePath));
+				
 				byte[] buf = new byte[4096];
 				int size = 0;
 				while ((size = bis.read(buf)) != -1) {

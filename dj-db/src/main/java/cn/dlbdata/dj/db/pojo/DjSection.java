@@ -56,6 +56,12 @@ public class DjSection {
     private String camera;
     private String mesh;
     
+    /**
+     * 片区内企业数量
+     */
+    @Column(name = "enterprise_count")
+    private Integer enterpriseCount;
+    
     
     
     public String getCamera() {
