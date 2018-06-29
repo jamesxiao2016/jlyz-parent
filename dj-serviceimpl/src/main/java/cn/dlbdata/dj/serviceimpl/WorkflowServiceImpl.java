@@ -357,9 +357,10 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		if (subTypeId.equals(ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId())) {
 			DjStudy condition = new DjStudy();
 			condition.setCreateUserId(userId);
+			condition.setDjSubTypeId(ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId());
 			condition.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 			int count = studyMapper.selectCount(condition);
-			if (count >= 1) {
+			if (count > 1) {
 				logger.error("组织生活自主活动 只能加一次分->" + userId);
 				return;
 			}

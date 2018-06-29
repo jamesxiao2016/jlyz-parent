@@ -78,15 +78,16 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 			result.setMsg("参数错误");
 			return result;
 		}
-		Long typeId;
-		if (studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_B.getActiveSubId())) {
-			typeId = ActiveTypeEnum.ACTIVE_A.getActiveId();
-
-		} else if (studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId())) {
-			typeId = ActiveTypeEnum.ACTIVE_B.getActiveId();
-		} else {
-			typeId = ActiveTypeEnum.ACTIVE_F.getActiveId();
-		}
+//		Long typeId = 0L;
+//		if (studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_B.getActiveSubId())) {
+//			typeId = ActiveTypeEnum.ACTIVE_A.getActiveId();
+//		} else if (studyVo.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId())) {
+//			typeId = ActiveTypeEnum.ACTIVE_B.getActiveId();
+//		} else {
+//			typeId = ActiveTypeEnum.ACTIVE_F.getActiveId();
+//		}
+		String subTypeIdStr = studyVo.getDjSubTypeId().toString();
+		Long typeId = DigitUtil.parseToLong(subTypeIdStr.substring(0, 1));
 		DjSubType subType = subTypeMapper.selectByPrimaryKey(studyVo.getDjSubTypeId());
 		if (subType == null) {
 			logger.error("subType is not found->" + studyVo.getDjSubTypeId());
@@ -349,11 +350,13 @@ public class StudyServiceImpl extends BaseServiceImpl implements IStudyService {
 		return id;
 	}
 
-	/* (non-Javadoc)
-	 * <p>Title: getAdminStudyDetail</p>
-	 * <p>Description: 后台根据id获取自主学习详情</p> 
+	/*
+	 * (non-Javadoc) <p>Title: getAdminStudyDetail</p> <p>Description: 后台根据id获取自主学习详情</p>
+	 * 
 	 * @param applyId
-	 * @return  
+	 * 
+	 * @return
+	 * 
 	 * @see cn.dlbdata.dj.service.IStudyService#getAdminStudyDetail(java.lang.Long)
 	 */
 	@Override
