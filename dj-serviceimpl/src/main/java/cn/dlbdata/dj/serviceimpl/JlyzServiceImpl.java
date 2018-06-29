@@ -108,8 +108,8 @@ public class JlyzServiceImpl extends BaseServiceImpl implements IJlyzService {
 			stageVo.setImage(stage.getImage());
 			stageVo.setName(stage.getName());
 			stageVo.setSummary(stage.getSummary());
+			result.setStage(stageVo);
 		}
-		result.setStage(stageVo);
 
 		return result;
 	}
