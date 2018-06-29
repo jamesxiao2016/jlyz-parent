@@ -205,6 +205,11 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		active.setStartTime(DatetimeUtil.getDateByStr(activeVo.getStartActiveTime()));
 		active.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		active.setDjSubTypeId(activeVo.getSubTypeId());
+		if(activeVo.getTypeId() == null || activeVo.getTypeId() == 0) {
+			String subTypeIdStr = activeVo.getSubTypeId().toString();
+			Long typeId = DigitUtil.parseToLong(subTypeIdStr.substring(0, 1));
+			activeVo.setTypeId(typeId);
+		}
 		active.setDjTypeId(activeVo.getTypeId());
 		active.setUserName(user.getUserName());
 		if (RoleEnum.BRANCH_PARTY.getId().equals(user.getRoleId())) {
