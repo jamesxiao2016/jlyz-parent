@@ -23,6 +23,7 @@ public class SectionVo {
 	String mesh;
 	//楼宇列表
 	List<BuildingVo> buildings;
+	
 	public Long getId() {
 		return id;
 	}

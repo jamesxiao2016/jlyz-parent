@@ -16,6 +16,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="principal_id" jdbcType="BIGINT" property="principalId" />
     <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="offset" jdbcType="VARCHAR" property="offset" />
   </resultMap>
 
   <select id="existWithCode" resultType="boolean">

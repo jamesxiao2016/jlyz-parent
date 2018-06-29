@@ -2,8 +2,8 @@ package cn.dlbdata.dj.db.vo.jlyz;
 
 public class StageVo {
 	String dzb_prefix;
-	Integer floor;
-	Long id;
+	String floor;
+	String id;
 	String image;
 	String name;
 	String summary;
@@ -16,19 +16,19 @@ public class StageVo {
 		this.dzb_prefix = dzb_prefix;
 	}
 
-	public Integer getFloor() {
+	public String getFloor() {
 		return floor;
 	}
 
-	public void setFloor(Integer floor) {
+	public void setFloor(String floor) {
 		this.floor = floor;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
