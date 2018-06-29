@@ -64,7 +64,15 @@ public class DjSection {
     
     
     
-    public String getCamera() {
+    public Integer getEnterpriseCount() {
+		return enterpriseCount;
+	}
+
+	public void setEnterpriseCount(Integer enterpriseCount) {
+		this.enterpriseCount = enterpriseCount;
+	}
+
+	public String getCamera() {
 		return camera;
 	}
 

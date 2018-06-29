@@ -40,4 +40,18 @@
     </where>
 
   </select>
+  
+  <select id="selectSectionPartymemberCount" parameterType="Long" resultType="Integer">
+  	SELECT count(*) FROM dj_partymember p LEFT JOIN dj_dept d on d.id = p.dept_id where d.dj_section_id = #{id}
+  </select>
+  
+  <select id="selectSectionDeptCount" parameterType="Long" resultType="Integer">
+  	SELECT count(*) FROM dj_dept where dj_section_id = #{id}
+  </select>
+  
+  <select id="selectSectionBuildingCount" parameterType="Long" resultType="Integer">
+  	SELECT count(*) FROM dj_building where dj_section_id = #{id}
+  </select>
+  
+  
 </mapper>

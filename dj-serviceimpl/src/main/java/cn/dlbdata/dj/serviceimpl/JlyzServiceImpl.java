@@ -55,7 +55,19 @@ public class JlyzServiceImpl extends BaseServiceImpl implements IJlyzService {
 		result.setName(section.getName());
 		result.setSj_id(section.getPrincipalId());
 		result.setSj_name(section.getPrincipalName());
-		result.setDy_number(section.getPeopleNum());
+		result.setQy_number(section.getEnterpriseCount());//企业数量
+		Integer dy_number = sectionMapper.selectSectionPartymemberCount(id);
+		if(dy_number != null) {
+			result.setDy_number(dy_number);//党员数量
+		}
+		Integer dzb_number = sectionMapper.selectSectionDeptCount(id);
+		if(dzb_number != null) {
+			result.setDzb_number(dzb_number);//党支部数量
+		}
+		Integer ld_number = sectionMapper.selectSectionBuildingCount(id);
+		if(ld_number != null) {
+			result.setLd_number(ld_number);//大楼数量
+		}
 		result.setCamera(section.getCamera());
 		result.setMesh(section.getMesh());
 		// 查询楼宇列表

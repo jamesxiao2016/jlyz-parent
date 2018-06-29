@@ -11,5 +11,11 @@ public interface DjSectionMapper extends Mapper<DjSection> {
     SectionInfoVo getSectionInfo(Long sectionId);
 
     boolean existWithName(@Param("name") String name,@Param("id") Long id);
+    
+    Integer selectSectionPartymemberCount(Long id);
+    
+    Integer selectSectionDeptCount(Long id);
+    
+    Integer selectSectionBuildingCount(Long id);
 
 }
