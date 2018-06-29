@@ -119,7 +119,7 @@
 
 	<select id="getNoPicActive" resultType="cn.dlbdata.dj.db.vo.ToDoVo">
     select ac.id,ac.name,ac.dj_sub_type_id as subTypeId ,1 as tag,2 as status from dj_active  ac where  
-    not exists (select * from dj_pic_record pr where pr.table_name ='dj_active' and pr.record_id = ac.id)
+    not exists (select * from dj_active_pic pr where pr.dj_active_id = ac.id)
     and ac.status = 1
     and create_user_id = #{userId}
     and start_time &lt;= now()
