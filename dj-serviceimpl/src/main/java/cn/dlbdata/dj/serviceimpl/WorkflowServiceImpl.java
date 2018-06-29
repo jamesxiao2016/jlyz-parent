@@ -222,26 +222,39 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 			return resultVo;
 		}
 		DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
-		// 自主学习的申请必须本人的部门领导才可以审核
-		if (apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_B.getActiveSubId())
-				|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId())
-				|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_H.getActiveSubId())) {
-			if (!user.getUserId().equals(dept.getPrincipalId())) {
-				resultVo.setCode(ResultCode.Forbidden.getCode());
-				resultVo.setMsg("当前用户没有权限审核此数据");
-				return resultVo;
+		if (dept == null) {
+			logger.error("用户所属党支部不存在->" + user.getDeptId());
+		}
+		Long sectionId = null;
+		if (dept != null) {
+			sectionId = dept.getDjSectionId();
+			// 自主学习的申请必须本人的部门领导才可以审核
+			if (apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_B.getActiveSubId())
+					|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId())
+					|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_H.getActiveSubId())) {
+				if (!user.getUserId().equals(dept.getPrincipalId())) {
+					resultVo.setCode(ResultCode.Forbidden.getCode());
+					resultVo.setMsg("当前用户没有权限审核此数据");
+					return resultVo;
+				}
 			}
 		}
+		
+		if (sectionId == null || sectionId == 0) {
+			sectionId = user.getSectionId();
+		}
 		// 先锋作用、驿站生活违规的只有片区负责人才有资格审核
-		DjSection section = sectionMapper.selectByPrimaryKey(dept.getDjSectionId());
-		if (apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_M.getActiveSubId())
-				|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_N.getActiveSubId())
-				|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_O.getActiveSubId())
-				|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId())) {
-			if (!user.getUserId().equals(section.getPrincipalId())) {
-				resultVo.setCode(ResultCode.Forbidden.getCode());
-				resultVo.setMsg("当前用户没有权限审核此数据");
-				return resultVo;
+		DjSection section = sectionMapper.selectByPrimaryKey(sectionId);
+		if (section != null) {
+			if (apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_M.getActiveSubId())
+					|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_N.getActiveSubId())
+					|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_O.getActiveSubId())
+					|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId())) {
+				if (!user.getUserId().equals(section.getPrincipalId())) {
+					resultVo.setCode(ResultCode.Forbidden.getCode());
+					resultVo.setMsg("当前用户没有权限审核此数据");
+					return resultVo;
+				}
 			}
 		}
 
@@ -367,7 +380,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 				return;
 			}
 		}
-		
+
 		// 写入积分记录表
 		// 根据类型判断最大分数
 		if (year == null) {
