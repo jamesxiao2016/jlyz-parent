@@ -54,7 +54,6 @@ public class JlyzController extends BaseController {
 	@Autowired
 	private IJlyzService jlyzService;
 
-	
 	@GetMapping(value = "/querySection/{id}.json")
 	@ResponseBody
 	@CrossOrigin(origins = "*", maxAge = 3600)
@@ -64,30 +63,30 @@ public class JlyzController extends BaseController {
 		result.setData(data);
 		return result;
 	}
-	
+
 	@GetMapping(value = "/queryBuilding/{id}.json")
 	@ResponseBody
 	@CrossOrigin(origins = "*", maxAge = 3600)
 	public ResultVo<BuildingVo> queryBuilding(@PathVariable String id) {
 		ResultVo<BuildingVo> result = new ResultVo<>();
-		BuildingVo data = jlyzService.queryBuilding(id);
-		
+		BuildingVo data = jlyzService.queryBuilding(id, getRootUrl());
+
 		result.setData(data);
 		return result;
 	}
-	
+
 	@GetMapping(value = "/queryPartyBranches/{id}.json")
 	@ResponseBody
 	@CrossOrigin(origins = "*", maxAge = 3600)
 	public ResultVo<List<PartyBranchVo>> queryPartyBranches(@PathVariable String id) {
 		ResultVo<List<PartyBranchVo>> result = new ResultVo<>();
 		List<PartyBranchVo> data = jlyzService.queryPartyBranches(id);
-		if(data != null && data.size() > 0 ) {
+		if (data != null && data.size() > 0) {
 			result.setData(data);
 		}
 		return result;
 	}
-	
+
 	@GetMapping(value = "/queryMemberStatistic/{id}.json")
 	@ResponseBody
 	@CrossOrigin(origins = "*", maxAge = 3600)
@@ -97,7 +96,7 @@ public class JlyzController extends BaseController {
 		result.setData(data);
 		return result;
 	}
-	
+
 	/**
 	 * 根据支部ID获取支部名称获取党员信息
 	 * 
