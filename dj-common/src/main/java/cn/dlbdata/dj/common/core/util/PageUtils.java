@@ -19,7 +19,7 @@ public class PageUtils {
 	}
 
 	public static int normalizePageSize(Integer pageSize) {
-		return pageSize == null ? 20 : pageSize;
+		return pageSize == null ? 100 : pageSize;
 	}
 
 	public static int normalizePageIndex(Integer pageIndex) {

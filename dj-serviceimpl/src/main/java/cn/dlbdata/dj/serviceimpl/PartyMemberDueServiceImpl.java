@@ -57,7 +57,7 @@ public class PartyMemberDueServiceImpl implements PartyMemberDueService {
             score.setDjTypeId(ActiveTypeEnum.ACTIVE_G.getActiveId());
             score.setScore(1.25F);
             score.setAddTime(new Date());
-            score.setAddYear(2018);//TODO 需要修改
+            score.setAddYear(Calendar.getInstance().get(Calendar.YEAR));//TODO 需要修改
             score.setStatus(1);
             score.setRecrodDesc("党员按月足额缴纳党费");
             score.setApproverName("系统自动");
