@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import cn.dlbdata.dj.common.core.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -202,24 +203,18 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 
 	@Transactional
 	@Override
-	public ResultVo<String> doAudit(AuditVo auditVo, UserVo user) {
-		ResultVo<String> resultVo = new ResultVo<>(ResultCode.ParameterError.getCode());
+	public boolean doAudit(AuditVo auditVo, UserVo user) {
 		if (auditVo == null || auditVo.getId() == null || auditVo.getResult() == null || user == null) {
 			logger.error("id is null Or result is null Or user is null");
-			resultVo.setMsg("参数不完整");
-			return resultVo;
+			throw new BusinessException("参数不完整",ResultCode.ParameterError.getCode());
 		}
 		DjApply apply = applyMapper.selectByPrimaryKey(auditVo.getId());
 		if (apply == null) {
 			logger.error("申请记录查询失败" + auditVo.getId());
-			resultVo.setCode(ResultCode.NotFound.getCode());
-			resultVo.setMsg("审核失败");
-			return resultVo;
+			throw new BusinessException("审核失败",ResultCode.NotFound.getCode());
 		}
 		if (apply.getStatus() == AuditStatusEnum.PASS.getValue()) {
-			resultVo.setCode(ResultCode.BadRequest.getCode());
-			resultVo.setMsg("请勿重复审核！");
-			return resultVo;
+			throw new BusinessException("请勿重复审核！",ResultCode.BadRequest.getCode());
 		}
 		DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
 		if (dept == null) {
@@ -233,9 +228,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 					|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_D.getActiveSubId())
 					|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_H.getActiveSubId())) {
 				if (!user.getUserId().equals(dept.getPrincipalId())) {
-					resultVo.setCode(ResultCode.Forbidden.getCode());
-					resultVo.setMsg("当前用户没有权限审核此数据");
-					return resultVo;
+					throw new BusinessException("当前用户没有权限审核此数据",ResultCode.Forbidden.getCode());
 				}
 			}
 		}
@@ -251,9 +244,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 					|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_O.getActiveSubId())
 					|| apply.getDjSubTypeId().equals(ActiveSubTypeEnum.ACTIVE_SUB_F.getActiveSubId())) {
 				if (!user.getUserId().equals(section.getPrincipalId())) {
-					resultVo.setCode(ResultCode.Forbidden.getCode());
-					resultVo.setMsg("当前用户没有权限审核此数据");
-					return resultVo;
+					throw new BusinessException("当前用户没有权限审核此数据",ResultCode.Forbidden.getCode());
 				}
 			}
 		}
@@ -261,16 +252,12 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		DjType type = typeMapper.selectByPrimaryKey(apply.getDjTypeId());
 		if (type == null) {
 			logger.error("类型记录查询失败" + apply.getDjTypeId());
-			resultVo.setCode(ResultCode.NotFound.getCode());
-			resultVo.setMsg("审核失败");
-			return resultVo;
+			throw new BusinessException("审核失败",ResultCode.NotFound.getCode());
 		}
 		DjSubType subType = subTypeMapper.selectByPrimaryKey(apply.getDjSubTypeId());
 		if (subType == null) {
 			logger.error("二级分类记录查询失败" + apply.getDjSubTypeId());
-			resultVo.setCode(ResultCode.NotFound.getCode());
-			resultVo.setMsg("审核失败");
-			return resultVo;
+			throw new BusinessException("审核失败",ResultCode.NotFound.getCode());
 		}
 		Integer result = auditVo.getResult();
 		switch (apply.getTableName()) {
@@ -340,10 +327,7 @@ public class WorkflowServiceImpl extends BaseServiceImpl implements IWorkflowSer
 		approve.setDjApplyId(auditVo.getId());
 		approve.setStatus(1);
 		approveMapper.insertSelective(approve);
-
-		resultVo.setCode(ResultCode.OK.getCode());
-		resultVo.setMsg("审核成功");
-		return resultVo;
+		return true;
 	}
 
 	/**
