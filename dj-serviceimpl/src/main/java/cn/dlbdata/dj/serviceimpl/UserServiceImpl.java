@@ -236,6 +236,8 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			result.setMsg("请输入用户名或密码");
 			return result;
 		}
+		vo.setPwd(StringUtil.getMD5Digest32(vo.getPwd()));
+		vo.setNewPwd(StringUtil.getMD5Digest32(vo.getNewPwd()));
 
 		// 用户检查
 		DjUser user = getUserInfoByName(vo.getName());
