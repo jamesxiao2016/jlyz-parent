@@ -65,7 +65,7 @@ public interface IWorkflowService {
 	 *            当前登录用户
 	 * @return
 	 */
-	public ResultVo<String> doAudit(AuditVo auditVo, UserVo user);
+	public boolean doAudit(AuditVo auditVo, UserVo user);
 
 	/**
 	 * 支书查询待办列表

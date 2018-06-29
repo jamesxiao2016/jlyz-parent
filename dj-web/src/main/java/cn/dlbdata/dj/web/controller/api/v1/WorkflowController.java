@@ -159,8 +159,9 @@ public class WorkflowController extends BaseController {
 			resultVo.setMsg("参数不完整");
 			return resultVo;
 		}
-		resultVo = workflowService.doAudit(auditVo, user);
-
+		workflowService.doAudit(auditVo, user);
+		resultVo.setCode(ResultCode.OK.getCode());
+		resultVo.setMsg("审核成功");
 		return resultVo;
 	}
 
