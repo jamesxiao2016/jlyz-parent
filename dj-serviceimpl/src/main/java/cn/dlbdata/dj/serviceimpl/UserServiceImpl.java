@@ -15,6 +15,7 @@ import cn.dlbdata.dj.common.core.util.security.MD5Util;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.common.util.PingyinUtil;
 import cn.dlbdata.dj.common.util.StringUtil;
+import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.constant.RoleEnum;
 import cn.dlbdata.dj.db.mapper.DjDeptMapper;
 import cn.dlbdata.dj.db.mapper.DjPartymemberMapper;
@@ -306,7 +307,15 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			data.setSex(member.getSexCode());
 		}
 		DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
-		if (dept != null) {
+		if(dept == null) {
+			DjSection section = getSectionByUserId(user.getId());
+			if(section != null) {
+				data.setSectionId(section.getId());
+				data.setPartyBranchName(data.getUserName());
+			}
+			data.setPartyCommittee(DlbConstant.PARTYCOMMITTEE_LJZ);
+		}
+		else {
 			data.setSectionId(dept.getDjSectionId());
 			String name = dept.getPrincipalName();
 			if (StringUtils.isEmpty(name)) {
@@ -329,23 +338,40 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 					data.setSectionName(section.getName());
 				}
 			}
-
-			// 片区负责人，显示片区总人数
-			if (RoleEnum.HEADER_OF_DISTRICT.getId().equals(roleId)) {
-				DjDept deptCondition = new DjDept();
-				deptCondition.setDjSectionId(dept.getDjSectionId());
-				Integer deptNum = deptMapper.selectCount(deptCondition);
-				data.setDeptNum(deptNum);
-				Integer peopleNum = deptMapper.getSectionPeopleNum(dept.getDjSectionId());
-				data.setCommitteeNum(peopleNum);
-			}
 		}
+		
+		// 片区负责人，显示片区总人数
+		if (RoleEnum.HEADER_OF_DISTRICT.getId().equals(roleId)) {
+			DjDept deptCondition = new DjDept();
+			deptCondition.setDjSectionId(data.getSectionId());
+			Integer deptNum = deptMapper.selectCount(deptCondition);
+			data.setDeptNum(deptNum);
+			Integer peopleNum = deptMapper.getSectionPeopleNum(data.getSectionId());
+			data.setCommitteeNum(peopleNum);
+		}
+		
 		// if (isShowScore != null && isShowScore == 1) {
 		Float totalScore = getSumScoreByUserId(user.getId(), Calendar.getInstance().get(Calendar.YEAR));
 		data.setTotalScore(totalScore);
 		// }
 		// CacheManager.getInstance().put(user.getId() + "", data);
 		return data;
+	}
+	
+	
+	private DjSection getSectionByUserId(Long userId) {
+		if(userId == null) {
+			return null;
+		}
+		DjSection secCondition = new DjSection();
+		secCondition.setPrincipalId(userId);
+		
+		List<DjSection> list = sectionMapper.select(secCondition);
+		if(list == null || list.isEmpty()) {
+			return null;
+		}
+		
+		return list.get(0);
 	}
 
 	@Override
