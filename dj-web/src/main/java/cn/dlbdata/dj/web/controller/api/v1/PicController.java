@@ -141,10 +141,10 @@ public class PicController extends BaseController {
 			return "";
 		}
 		retryCount = 0;
-		String token = LocalCache.TICKET_CACHE.getIfPresent(DlbConstant.KEY_ACCESS_TOKEN);
-		if (StringUtils.isEmpty(token)) {
-			token = getAccessToken();
-		}
+		//String token = LocalCache.TICKET_CACHE.getIfPresent(DlbConstant.KEY_ACCESS_TOKEN);
+		//if (StringUtils.isEmpty(token)) {
+		String token = getAccessToken();
+		//}
 		// 如果token为空
 		if (StringUtils.isEmpty(token)) {
 			logger.error("token获取为空");

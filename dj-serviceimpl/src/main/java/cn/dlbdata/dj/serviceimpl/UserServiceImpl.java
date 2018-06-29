@@ -319,9 +319,9 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 			data.setSectionId(dept.getDjSectionId());
 			String name = dept.getPrincipalName();
 			if (StringUtils.isEmpty(name)) {
-				DjUser principal = userMapper.selectByPrimaryKey(dept.getPrincipalId());
+				DjPartymember principal = partyMemberMapper.selectByPrimaryKey(dept.getPrincipalId());
 				if (principal != null) {
-					name = principal.getUserName();
+					name = principal.getName();
 				}
 			}
 			data.setPartyBranchName(name);
