@@ -21,7 +21,7 @@ public interface IJlyzService extends IBaseService {
 	 * @param buildingCode
 	 * @return
 	 */
-	BuildingVo queryBuilding(String buildingCode);
+	BuildingVo queryBuilding(String buildingCode, String rootUrl);
 	
 	/**
 	 * 查询楼宇党支部信息

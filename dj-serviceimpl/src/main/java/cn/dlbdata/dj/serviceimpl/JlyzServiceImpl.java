@@ -92,7 +92,7 @@ public class JlyzServiceImpl extends BaseServiceImpl implements IJlyzService {
 	}
 
 	@Override
-	public BuildingVo queryBuilding(String buildingCode) {
+	public BuildingVo queryBuilding(String buildingCode, String rootUrl) {
 		BuildingVo result = new BuildingVo();
 		if (StringUtils.isEmpty(buildingCode)) {
 			logger.error("楼宇编号为空");
@@ -117,7 +117,7 @@ public class JlyzServiceImpl extends BaseServiceImpl implements IJlyzService {
 			stageVo.setDzb_prefix(stage.getPartyBranchPrefix());
 			stageVo.setFloor(stage.getFloor());
 			stageVo.setId(stage.getId() + "");
-			stageVo.setImage(stage.getImage());
+			stageVo.setImage(rootUrl + "/" + stage.getImage());
 			stageVo.setName(stage.getName());
 			stageVo.setSummary(stage.getSummary());
 			result.setStage(stageVo);
