@@ -1,5 +1,5 @@
 
-var baseUrl = "/dj-web";
+var baseUrl = "/dangjian";
 
 /**
  * 字符串替换 使用示例： var text = "a{0}b{0}c{1}d\nqq{0}"; var text2 = $.format(text, 1,

@@ -227,8 +227,10 @@ public class ApiController extends BaseController {
 			djLogLogin.setSourceType(SourceTypeEnum.THIRD_LOGIN.getId());
 		}
 		logLoginService.insertLoginLogger(djLogLogin);
-		result.getData().setDeptId(0L);
-		result.getData().setUserId(0L);
+		if (result.getData() != null) {
+			result.getData().setDeptId(0L);
+			result.getData().setUserId(0L);
+		}
 		return result;
 	}
 
