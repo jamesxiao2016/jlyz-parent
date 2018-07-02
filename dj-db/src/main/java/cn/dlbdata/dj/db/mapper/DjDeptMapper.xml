@@ -77,4 +77,8 @@
   	select id, name, floor, people_num, principal_id, principal_name from dj_dept where building_code = #{buildingCode}
   </select>
   
+  <select id="getDeptIdAndNameBySectionId" resultType="cn.dlbdata.dj.db.dto.IdNameDto">
+    select id,name from dj_dept where dj_section_id = #{sectionId}
+  </select>
+  
 </mapper>

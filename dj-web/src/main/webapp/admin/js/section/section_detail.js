@@ -4,6 +4,7 @@ $(function() {
 	//getProdInfo(id);
 	initEvent();
 	initValidate();
+    initData();
 });
 
 function initEvent() {
@@ -11,6 +12,19 @@ function initEvent() {
 	$("#btnBack").click(function() {
 		history.go(-1);
 	});
+}
+
+function initData() {
+
+    $.post("../../admin/getDeptAndPtMemberTree/"+sectionId, function(data) {
+        $("#principalId").select2({
+            data : data,
+            language : "zh-CN"
+        });
+        if (secprincipalId) {
+            $("#principalId").val(secprincipalId).trigger("change");
+        }
+    });
 }
 
 var validatorForm;

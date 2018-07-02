@@ -1,14 +1,11 @@
 package cn.dlbdata.dj.serviceimpl;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import cn.dlbdata.dj.db.dto.IdNameDto;
 import cn.dlbdata.dj.db.mapper.*;
 import cn.dlbdata.dj.db.pojo.*;
+import cn.dlbdata.dj.db.vo.building.SelectBuildingVo;
 import cn.dlbdata.dj.db.vo.party.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -657,5 +654,33 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 			return null;
 		}
 		return partyMemberMapper.getTop5Score(year);
+	}
+
+	/**
+	 * 获取片区内的党支部以及党支部成员
+	 *
+	 * @param sectionId
+	 * @return
+	 */
+	@Override
+	public List<SelectBuildingVo> getDeptAndPtMemberTree(long sectionId) {
+		List<SelectBuildingVo> rlist = new ArrayList<SelectBuildingVo>();
+		List<IdNameDto> deptList = deptMapper.getDeptIdAndNameBySectionId(sectionId);
+		if (deptList != null) {
+			SelectBuildingVo vo = null;
+			for (IdNameDto dept : deptList) {
+				vo = new SelectBuildingVo(dept.getName(),"s" + dept.getId(), "0");
+				List<IdNameDto> list = partyMemberMapper.getPtmemberIdAndNameBydeptId(dept.getId());
+				List<SelectBuildingVo> childrenVo = new ArrayList<>();
+				for(IdNameDto dto :list) {
+					SelectBuildingVo cldVo = new SelectBuildingVo(
+							dto.getName(),"" + dto.getId(), "s" + dept.getId());
+					childrenVo.add(cldVo);
+				}
+				vo.setChildren(childrenVo);
+				rlist.add(vo);
+			}
+		}
+		return rlist;
 	}
 }

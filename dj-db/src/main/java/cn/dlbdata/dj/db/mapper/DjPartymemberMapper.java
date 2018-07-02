@@ -3,6 +3,7 @@ package cn.dlbdata.dj.db.mapper;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.db.dto.IdNameDto;
 import cn.dlbdata.dj.db.vo.party.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -107,4 +108,6 @@ public interface DjPartymemberMapper extends Mapper<DjPartymember> {
 	 * @return
 	 */
 	List<Map<String, Object>>getTop5Score(Integer year);
+
+	List<IdNameDto> getPtmemberIdAndNameBydeptId(long deptId);
 }

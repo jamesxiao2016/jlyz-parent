@@ -3,6 +3,7 @@ package cn.dlbdata.dj.service;
 import java.util.List;
 import java.util.Map;
 
+import cn.dlbdata.dj.db.vo.building.SelectBuildingVo;
 import cn.dlbdata.dj.db.vo.party.*;
 import org.apache.ibatis.annotations.Param;
 
@@ -223,4 +224,11 @@ public interface IPartyMemberService {
 	 * @return
 	 */
 	List<Map<String, Object>> getTop5Score(Integer year);
+
+	/**
+	 *获取片区内的党支部以及党支部成员
+	 * @param sectionId
+	 * @return
+	 */
+	List<SelectBuildingVo> getDeptAndPtMemberTree(long sectionId);
 }

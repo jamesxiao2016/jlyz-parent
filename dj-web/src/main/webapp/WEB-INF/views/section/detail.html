@@ -41,9 +41,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">负责人：</label>
 							<div class="col-sm-8">
-								<select class="form-control seldept" id="principalId"
-									name="principalId" style="height: 34px;">
-									<option value="" selected="selected">请选择负责人</option>
+								<select class="col-sm-12 seldept" id="principalId" name="principalId" style="height: 34px; ">
 								</select>
 							</div>
 						</div>
@@ -80,17 +78,7 @@
 	<script src="../js/section/section_detail.js"></script>
 	<script type="text/javascript">
 		var sectionId = '${record.id}';
-		$(function() {
-			if (sectionId) {
-				$.get(
-						"../../admin/section/getPartyMembersBySectionId?sectionId="
-								+ sectionId, function(data) {
-							$('#principalId').select2({
-								data : data.results
-							});
-						});
-			}
-		})
+		var secprincipalId = '${record.principalId}';
 	</script>
 </body>
 

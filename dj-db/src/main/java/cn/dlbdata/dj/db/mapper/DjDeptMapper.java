@@ -1,5 +1,6 @@
 package cn.dlbdata.dj.db.mapper;
 
+import cn.dlbdata.dj.db.dto.IdNameDto;
 import cn.dlbdata.dj.db.pojo.DjDept;
 import cn.dlbdata.dj.db.vo.dept.DeptAndApplyInfoVo;
 import cn.dlbdata.dj.db.vo.dept.DeptAndPartyMemberVo;
@@ -51,4 +52,6 @@ public interface DjDeptMapper extends Mapper<DjDept> {
 	int getAdminStat();
 	
 	List<PartyBranchVo> getBuildingAndDept(String building_code);
+
+	List<IdNameDto> getDeptIdAndNameBySectionId(long sectionId);
 }

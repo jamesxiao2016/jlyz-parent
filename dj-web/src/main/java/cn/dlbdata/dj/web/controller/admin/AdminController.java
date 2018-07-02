@@ -5,9 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
@@ -21,7 +19,6 @@ import cn.dlbdata.dj.service.IDictService;
 import cn.dlbdata.dj.service.ILogOptService;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IUserService;
-import cn.dlbdata.dj.serviceimpl.PartyMemberService;
 import cn.dlbdata.dj.vo.UserVo;
 import cn.dlbdata.dj.web.base.BaseController;
 
@@ -138,6 +135,18 @@ public class AdminController extends BaseController {
 		List<SelectBuildingVo> data = buildingService.getSectionAndBuilding();
 		return data;
 	}
+
+	/**
+	 * 党支部及党员（树形）
+	 * @return
+	 */
+	@RequestMapping("/getDeptAndPtMemberTree/{sectionId}")
+	@ResponseBody
+	public List<SelectBuildingVo> getDeptAndPtMemberTree(@PathVariable("sectionId") Long sectionId) {
+		List<SelectBuildingVo> data = partyMemberService.getDeptAndPtMemberTree(sectionId);
+		return data;
+	}
+
 	
 	/**
 	 * 获取统计信息

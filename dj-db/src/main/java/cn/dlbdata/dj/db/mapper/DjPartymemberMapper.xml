@@ -151,6 +151,12 @@
 	limit 5
   </select>
   
+  <select id="getPtmemberIdAndNameBydeptId" resultType="cn.dlbdata.dj.db.dto.IdNameDto">
+    select id,name from dj_partymember pm
+    where
+    dept_id = #{deptId}
+  </select>
+  
   
   
 </mapper>
