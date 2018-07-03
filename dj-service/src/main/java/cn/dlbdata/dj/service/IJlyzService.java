@@ -5,6 +5,7 @@ import java.util.List;
 import cn.dlbdata.dj.db.vo.jlyz.BuildingVo;
 import cn.dlbdata.dj.db.vo.jlyz.MemberStatVo;
 import cn.dlbdata.dj.db.vo.jlyz.PartyBranchVo;
+import cn.dlbdata.dj.db.vo.jlyz.SectionResVo;
 import cn.dlbdata.dj.db.vo.jlyz.SectionVo;
 import cn.dlbdata.dj.service.base.IBaseService;
 
@@ -36,4 +37,12 @@ public interface IJlyzService extends IBaseService {
 	 * @return
 	 */
 	public MemberStatVo queryMemberStatistic(String buildingCode);
+	
+	/**
+	 * 
+	 * <p>Title: queryAllSections</p> 
+	 * <p>Description: 获取所有片区</p> 
+	 * @return
+	 */
+	public List<SectionResVo> queryAllSections();
 }

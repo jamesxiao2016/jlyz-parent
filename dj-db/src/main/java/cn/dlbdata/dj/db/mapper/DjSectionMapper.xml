@@ -54,4 +54,12 @@
   </select>
   
   
+  <resultMap type="cn.dlbdata.dj.db.vo.jlyz.SectionResVo" id="ResultSectionResMap">
+     <result column="id" jdbcType="BIGINT" property="id" />
+     <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <select id="queryAllSections" resultMap="ResultSectionResMap">
+  	select id, name from dj_section 
+  </select>
+  
 </mapper>

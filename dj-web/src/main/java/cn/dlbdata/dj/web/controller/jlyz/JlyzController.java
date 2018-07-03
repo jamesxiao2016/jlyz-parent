@@ -26,6 +26,7 @@ import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.jlyz.BuildingVo;
 import cn.dlbdata.dj.db.vo.jlyz.MemberStatVo;
 import cn.dlbdata.dj.db.vo.jlyz.PartyBranchVo;
+import cn.dlbdata.dj.db.vo.jlyz.SectionResVo;
 import cn.dlbdata.dj.db.vo.jlyz.SectionVo;
 import cn.dlbdata.dj.service.IJlyzService;
 import cn.dlbdata.dj.service.IPartyMemberService;
@@ -96,7 +97,32 @@ public class JlyzController extends BaseController {
 		result.setData(data);
 		return result;
 	}
-
+	
+	/**
+	 *  
+	 * <p>Title: queryMemberStatistic</p> 
+	 * <p>Description: 获取所有片区</p> 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping(value = "/query_all_sections.json")
+	@ResponseBody
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	public ResultVo<List<SectionResVo>> queryAllSections() {
+		ResultVo<List<SectionResVo>> result = new ResultVo<>();
+		List<SectionResVo> list = jlyzService.queryAllSections();
+		if(list != null && list.size() > 0) {
+			result.setCode(ResultCode.OK.getCode());
+			result.setData(list);
+			return result;
+		}else {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("没有相应的片区");
+			return result;
+		}
+		
+	}
+	
 	/**
 	 * 根据支部ID获取支部名称获取党员信息
 	 * 

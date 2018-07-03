@@ -20,6 +20,7 @@ import cn.dlbdata.dj.db.pojo.TStatistic;
 import cn.dlbdata.dj.db.vo.jlyz.BuildingVo;
 import cn.dlbdata.dj.db.vo.jlyz.MemberStatVo;
 import cn.dlbdata.dj.db.vo.jlyz.PartyBranchVo;
+import cn.dlbdata.dj.db.vo.jlyz.SectionResVo;
 import cn.dlbdata.dj.db.vo.jlyz.SectionVo;
 import cn.dlbdata.dj.db.vo.jlyz.StageVo;
 import cn.dlbdata.dj.service.IJlyzService;
@@ -160,6 +161,17 @@ public class JlyzServiceImpl extends BaseServiceImpl implements IJlyzService {
 		BeanUtils.copyProperties(condition, result);
 		
 		return result;
+	}
+
+	/* (non-Javadoc)
+	 * <p>Title: queryAllSections</p>
+	 * <p>Description: 获取所有片区</p> 
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IJlyzService#queryAllSections()
+	 */
+	@Override
+	public List<SectionResVo> queryAllSections() {
+		return sectionMapper.queryAllSections();
 	}
 
 }
