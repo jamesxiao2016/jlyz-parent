@@ -91,7 +91,7 @@
  </select> 
 
     <select id="queryPartyMemberList" resultType="cn.dlbdata.dj.db.vo.party.PartyMemberInfoVo">
-        select u.id as id,pm.name as name,pm.sex_code as sex,pm.age as age,pm.birth_date as birthDate,pm.dept_id as deptId,dept.name as deptName,
+        select pm.id as id,pm.name as name,pm.sex_code as sex,pm.age as age,pm.birth_date as birthDate,pm.dept_id as deptId,dept.name as deptName,
         u.role_id as roleId,pm.idcard as idCard,u.name as account,ifnull(ts.score,0) as totalScore,
         pm.party_post_code as partyPostCode
         from dj_partymember pm

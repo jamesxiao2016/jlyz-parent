@@ -157,11 +157,14 @@ function init() {
 }
 
 function actionFormatter(cellvalue, options, rowObject) {
-	var btnEdit = "<a href='../partymember/partymember_detail.html?id=" + rowObject.id
-			+ "'>编辑</a>";
-	var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
-
-	return btnEdit + "&nbsp;" + btnDel;
+	if(rowObject.id) {
+		var btnEdit = "<a href='../partymember/partymember_detail.html?id=" + rowObject.id
+				+ "'>编辑</a>";
+		var btnDel = "<a href='javascript:delRecord(" + rowObject.id + ")'>删除</a>";
+	
+		return btnEdit + "&nbsp;" + btnDel;
+	}
+	return "";
 }
 
 function sexFormatter(cellvalue, options, rowObject) {
