@@ -95,7 +95,7 @@
     <result column="score_desc"  jdbcType="VARCHAR" property="scoreDesc" />
   </resultMap>
 
-  <select id="getScoreAndActiveList" parameterType="java.lang.Integer" resultMap="BaseResult">
+  <select id="getScoreAndActiveList" parameterType="java.lang.Long" resultMap="BaseResult">
   	select ps.score, ps.create_time, ps.score_desc
   	from dj_score ps
   	where ps.user_id = #{userId}

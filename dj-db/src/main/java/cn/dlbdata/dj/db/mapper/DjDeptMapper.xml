@@ -74,7 +74,9 @@
     <result column="dept_level" jdbcType="VARCHAR" property="deptLevel" />
   </resultMap>
   <select id="getBuildingAndDept" parameterType="String" resultMap="ResultPartyBranchMap">
-  	select id, name, floor, people_num, principal_id, principal_name from dj_dept where building_code = #{buildingCode}
+  	select dd.id, dd.name, dd.floor, dd.people_num, dd.principal_id, dp.name principal_name from dj_dept dd
+  	left join dj_partymember dp on dp.id = dd.principal_id
+  	where building_code = #{buildingCode}
   </select>
   
   <select id="getDeptIdAndNameBySectionId" resultType="cn.dlbdata.dj.db.dto.IdNameDto">
