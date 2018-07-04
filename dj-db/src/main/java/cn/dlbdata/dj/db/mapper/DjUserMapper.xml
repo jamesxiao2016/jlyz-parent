@@ -51,15 +51,18 @@
     <result column="dept_name" jdbcType="BIGINT" property="deptName" />
     <result column="sex_code" jdbcType="INTEGER" property="sex" />
     <result column="avatar" jdbcType="VARCHAR" property="headerImg" />
-    <result column="party_post_code" jdbcType="VARCHAR" property="partyWork" />
+    <result column="dict_name" jdbcType="VARCHAR" property="partyWork" />
     <result column="idcard" jdbcType="VARCHAR" property="idcard" />
   </resultMap>
   <select id="getUserFromAccountAndPwd" resultMap="ThirdLoginResultMap">
-  	select du.id, du.user_name, djp.phone, du.avatar, djp.sex_code, djp.party_post_code,djp.idcard, du.dept_id,dd.name dept_name
+  	select du.id, du.user_name, djp.phone, du.avatar, djp.sex_code, dic.dict_name ,djp.idcard, du.dept_id,dd.name dept_name
   	from dj_user du 
   	left join dj_partymember djp on djp.id = du.dj_partymember_id 
   	left join dj_dept dd on dd.id = du.dept_id
-  	where du.name  = #{account} and du.pwd = #{password}
+  	left join dj_dict dic on dic.dict_code = djp.party_post_code
+  	where  dic.dict_type = 'party_post' 
+  	and du.name  = #{account} and du.pwd = #{password}
+  	
   </select>
   
   <select id="getByDeptId" resultMap="BaseResultMap">
