@@ -856,4 +856,46 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * <p>Title: getActiveIndex</p>
+	 * <p>Description: </p> 
+	 * @param recordId
+	 * @param roleId
+	 * @return  
+	 * @see cn.dlbdata.dj.service.IActiveService#getActiveIndex(java.lang.Long, java.lang.Long)
+	 */
+	@Override
+	public ResultVo<Map<String, Object>> getActiveIndex(Long recordId) {
+		ResultVo<Map<String, Object>> result = new ResultVo<>();
+		if (recordId == null) {
+			logger.error("参数错误");
+			result.setCode(ResultCode.Forbidden.getCode());
+			return result;
+		}
+		DjActive active = activeMapper.getActiveIndex(recordId);
+		if (active == null) {
+			logger.error("参数错误");
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("获取活动失败");
+			return result;
+		}
+		JSONObject json = JSON.parseObject(JSON.toJSONString(active));
+		// 获取活动图集
+		Long[] picIds = new Long[0];
+		Example picExample = new Example(DjActivePic.class);
+		picExample.createCriteria().andEqualTo("djActiveId", active.getId());
+		List<DjActivePic> picList = activePicMapper.selectByExample(picExample);
+		/* 将与该活动相关的图片的id加入数组中 */
+		if (picList != null && picList.size() > 0) {
+			picIds = new Long[picList.size()];
+			for (int i = 0, count = picList.size(); i < count; i++) {
+				picIds[i] = picList.get(i).getDjPicId();
+			}
+			active.setPicIds(picIds);
+		}
+		json.put("picIds", picIds);
+		result.setData(json);
+		return result;
+	}
+
 }

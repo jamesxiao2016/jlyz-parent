@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.dlbdata.dj.constant.ActiveStatusEnum;
 import cn.dlbdata.dj.constant.ActiveTypeEnum;
 import cn.dlbdata.dj.constant.DlbConstant;
 import cn.dlbdata.dj.db.mapper.DjScoreMapper;
@@ -84,8 +85,18 @@ public class ScoreServiceImpl extends BaseServiceImpl implements IScoreService {
 	 */
 	@Override
 	public List<ScoreActiveVo> getScoreAndActiveList(Long userId) {
+		List<ScoreActiveVo> list = scoreMapper.getScoreAndActiveList(userId);
+		if(list.size() != 0 && list != null ) {
+			for (ScoreActiveVo scoreActiveVo : list) {
+				if(scoreActiveVo.getDjTypeId() == 11 || scoreActiveVo.getDjTypeId() == 21 || scoreActiveVo.getDjTypeId() == 23 || scoreActiveVo.getDjTypeId() == 61 ) {
+					scoreActiveVo.setStatus(ActiveStatusEnum.ACTIVE_VALID.getValue());
+				}else {
+					scoreActiveVo.setStatus(ActiveStatusEnum.ACTIVE_INVALID.getValue());
+				}
+			}
+		}
 		
-		return scoreMapper.getScoreAndActiveList(userId);
+		return list;
 	}
 
 

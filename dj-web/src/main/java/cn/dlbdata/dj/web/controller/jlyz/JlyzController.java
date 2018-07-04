@@ -8,6 +8,7 @@ package cn.dlbdata.dj.web.controller.jlyz;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,14 @@ import cn.dlbdata.dj.common.core.util.constant.CoreConst.ResultCode;
 import cn.dlbdata.dj.common.core.web.vo.ResultVo;
 import cn.dlbdata.dj.db.vo.DjPartyMemberVo;
 import cn.dlbdata.dj.db.vo.ScoreActiveVo;
+import cn.dlbdata.dj.db.vo.active.ActiveIndexVo;
 import cn.dlbdata.dj.db.vo.apply.ScoreTypeVo;
 import cn.dlbdata.dj.db.vo.jlyz.BuildingVo;
 import cn.dlbdata.dj.db.vo.jlyz.MemberStatVo;
 import cn.dlbdata.dj.db.vo.jlyz.PartyBranchVo;
 import cn.dlbdata.dj.db.vo.jlyz.SectionResVo;
 import cn.dlbdata.dj.db.vo.jlyz.SectionVo;
+import cn.dlbdata.dj.service.IActiveService;
 import cn.dlbdata.dj.service.IJlyzService;
 import cn.dlbdata.dj.service.IPartyMemberService;
 import cn.dlbdata.dj.service.IScoreService;
@@ -54,6 +57,8 @@ public class JlyzController extends BaseController {
 	private IScoreService scoreService;
 	@Autowired
 	private IJlyzService jlyzService;
+	@Autowired
+	private IActiveService activeService;
 
 	@GetMapping(value = "/querySection/{id}.json")
 	@ResponseBody
@@ -204,5 +209,30 @@ public class JlyzController extends BaseController {
 		result.setCode(ResultCode.OK.getCode());
 		return result;
 	}
+	
+	
+	/**
+	 * 点击查看活动详情
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	@GetMapping(value = "/getActiveIndex")
+	@ResponseBody
+	@CrossOrigin(origins = "*", maxAge = 3600)
+	public ResultVo<Map<String, Object>> getActiveIndex(Long recordId) {
+		ResultVo<Map<String, Object>> result = new  ResultVo<Map<String, Object>>();
+		ResultVo<Map<String, Object>> res = activeService.getActiveIndex(recordId);
+		if (res == null) {
+			result.setCode(ResultCode.Forbidden.getCode());
+			result.setMsg("没有相关的活动");
+			return result;
+		}
+		result.setCode(ResultCode.OK.getCode());
+		result.setData(res.getData());
+		return result;
+	}
+	
+	
 
 }

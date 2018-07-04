@@ -153,4 +153,16 @@
 		select count(*) from dj_active where status = 1 and year(create_time) = #{year}
 	</select>
 
+
+<select id="getActiveIndex" parameterType="Long" resultMap="BaseResultMap">
+  	select
+  		t.id, t.name, t.dj_type_id, t.dj_sub_type_id, t.address, t.principal_name, t.start_time, t.end_time, t.content, t.create_time,
+  		dju.user_name, djs.name sub_active_type_name
+  		from dj_active t
+  		left join dj_user dju on dju.id = t.create_user_id 
+  		left join dj_sub_type djs on djs.id = t.dj_sub_type_id
+  		where t.id = #{activeId}
+  </select>
+
+
 </mapper>

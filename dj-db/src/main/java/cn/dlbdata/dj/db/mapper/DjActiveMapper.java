@@ -98,5 +98,6 @@ public interface DjActiveMapper extends Mapper<DjActive> {
 	public DjActive selectAdminActiveIndexById(Long activeId);
 	
 	int selectActiveCount(int year);
-
+	
+	public DjActive getActiveIndex(Long activeId);
 }

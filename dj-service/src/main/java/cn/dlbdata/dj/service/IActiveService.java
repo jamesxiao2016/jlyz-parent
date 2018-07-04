@@ -147,5 +147,5 @@ public interface IActiveService {
 	ResultVo<Map<String, Object>> queryAdminActiveById(Long activeId, Long roleId);
 	
 	
-	
+	ResultVo<Map<String, Object>> getActiveIndex(Long recordId);
 }
