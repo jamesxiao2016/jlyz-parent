@@ -10,6 +10,7 @@ function initData() {
 	var eduSelData = parent.getSelectDataByDictType("education");;
 
 	var postSelData = parent.getSelectDataByDictType("party_post");
+    var sexSelData = parent.getSelectDataByDictType("sex");
 	$("#partyPostCode").select2({
 		data : postSelData,
 		language : "zh-CN"
@@ -19,6 +20,11 @@ function initData() {
 		data : eduSelData,
 		language : "zh-CN"
 	});
+
+    $("#sexCode").select2({
+        data : sexSelData,
+        language : "zh-CN"
+    });
 	
 	//加载党支部
 	$.post("../../admin/getSectionAndDeptTree", function(data) {

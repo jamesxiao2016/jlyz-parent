@@ -29,11 +29,10 @@
 
     
     <select id="getScoreAuditList" resultType="cn.dlbdata.dj.db.vo.apply.ScoreApplyVo">
-        select pm.id as partyMemberId,pm.name as partyMemberName,4 as typeId,
-        ifnull((select sum(sco.score)  from dj_score sco where sco.user_id = pm.id),0) as totalScore,
-        dt.principal_name as leaderName
-        from dj_partymember pm
-        left join dj_dept dt on dt.id = pm.dept_id
+        select pm.id as partyMemberId,pm.name as partyMemberName,4 as typeId,ifnull(t.totalScore,0) as totalScore,dt.principal_name as leaderName
+		from dj_partymember pm
+		left join dj_dept dt on dt.id = pm.dept_id 
+		LEFT JOIN (select sco.user_id ,sum(sco.score) totalScore from dj_score sco where add_year = (select year(now())) group by user_id) t on t.user_id = pm.id
         <where>
             <choose>
                 <when test="status==0">

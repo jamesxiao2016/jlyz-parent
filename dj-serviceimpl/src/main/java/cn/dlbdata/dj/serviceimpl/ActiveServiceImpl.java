@@ -459,15 +459,12 @@ public class ActiveServiceImpl extends BaseServiceImpl implements IActiveService
 		activeUser.setSignTime(new Date());
 		int count = activeUserMapper.updateByPrimaryKeySelective(activeUser);
 		if (count > 0) {
-			DjApply apply = new DjApply();
 			Long subTypeId = active.getDjSubTypeId();
 			DjSubType subType = subTypeMapper.selectByPrimaryKey(subTypeId);
 			DjDept dept = deptMapper.selectByPrimaryKey(user.getDeptId());
 			handScore(subTypeId, user.getUserId(), user.getUserId(), user.getUserName(), dept.getPrincipalId(),
-					dept.getPrincipalName(), subType.getScore(), apply.getRecordId(), apply.getRemark(),
-					apply.getApplyYear());
-		} else {
-
+					dept.getPrincipalName(), subType.getScore(), active.getId(), active.getName(),
+					Calendar.getInstance().get(Calendar.YEAR));
 		}
 		result.setCode(ResultCode.OK.getCode());
 		result.setMsg("签到成功，积分已发放");

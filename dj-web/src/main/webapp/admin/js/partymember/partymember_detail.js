@@ -10,18 +10,26 @@ function initData() {
 	var eduSelData = parent.getSelectDataByDictType("education");;
 
 	var postSelData = parent.getSelectDataByDictType("party_post");
+
+    var sexSelData = parent.getSelectDataByDictType("sex");
 	$("#partyPostCode").select2({
 		data : postSelData,
 		language : "zh-CN"
 	});
 
 	$("#educationCode").select2({
-		data : eduSelData,
-		language : "zh-CN"
-	});
+        data : eduSelData,
+        language : "zh-CN"
+    });
+
+    $("#sexCode").select2({
+        data : sexSelData,
+        language : "zh-CN"
+    });
 
 	$("#partyPostCode").select2("val", memberPost);
 	$("#educationCode").select2("val", memberEdu);
+    $("#sexCode").select2("val", memberSex);
 	
 	//加载党支部
 	$.post("../../admin/getSectionAndDeptTree", function(data) {
