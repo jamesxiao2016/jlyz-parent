@@ -483,23 +483,23 @@ public class PartyMemberService extends BaseServiceImpl implements IPartyMemberS
 		partymember.setStatus(DlbConstant.BASEDATA_STATUS_VALID);
 		partyMemberMapper.insert(partymember);
         //基础分
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-        DjScore score = new DjScore();
-        score.setId(DigitUtil.generatorLongId());
-        score.setDjTypeId(ActiveTypeEnum.ACTIVE_E.getActiveId());
-        score.setDjSubTypeId(ActiveSubTypeEnum.ACTIVE_SUB_P.getActiveSubId());
-        score.setScore(20F);
-        score.setUserId(partymember.getId());
-        score.setAddTime(new Date());
-        score.setApplyUserId(null);
-        score.setApplyUserName("系统自动");
-        score.setApproverId(null);
-        score.setApproverName("系统自动");
-        score.setAddYear(year);
-        score.setAddStatus(1);
-        score.setScoreDesc("遵纪守法基础积分");
-        score.setCreateTime(new Date());
-        scoreMapper.insert(score);
+//        int year = Calendar.getInstance().get(Calendar.YEAR);
+//        DjScore score = new DjScore();
+//        score.setId(DigitUtil.generatorLongId());
+//        score.setDjTypeId(ActiveTypeEnum.ACTIVE_E.getActiveId());
+//        score.setDjSubTypeId(ActiveSubTypeEnum.ACTIVE_SUB_P.getActiveSubId());
+//        score.setScore(20F);
+//        score.setUserId(partymember.getId());
+//        score.setAddTime(new Date());
+//        score.setApplyUserId(null);
+//        score.setApplyUserName("系统自动");
+//        score.setApproverId(null);
+//        score.setApproverName("系统自动");
+//        score.setAddYear(year);
+//        score.setAddStatus(1);
+//        score.setScoreDesc("遵纪守法基础积分");
+//        score.setCreateTime(new Date());
+//        scoreMapper.insert(score);
 	}
 
 	/**
