@@ -5,7 +5,7 @@ import java.util.Date;
 public class ScoreActiveVo {
 	private Float score;
 	private Date createTime;
-	private String scoreDesc;
+	private String recrodDesc;
 	private String subTypeName;
 	private Long djTypeId;
 	private Integer status;
@@ -49,12 +49,13 @@ public class ScoreActiveVo {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public String getScoreDesc() {
-		return scoreDesc;
+	public String getRecrodDesc() {
+		return recrodDesc;
 	}
-	public void setScoreDesc(String scoreDesc) {
-		this.scoreDesc = scoreDesc;
+	public void setRecrodDesc(String recrodDesc) {
+		this.recrodDesc = recrodDesc;
 	}
+
 
 	
 }

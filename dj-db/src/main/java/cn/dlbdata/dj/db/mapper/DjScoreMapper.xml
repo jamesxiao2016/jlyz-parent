@@ -92,14 +92,14 @@
 <resultMap id="BaseResult" type="cn.dlbdata.dj.db.vo.ScoreActiveVo">
     <result column="score" jdbcType="DECIMAL" property="score" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="score_desc"  jdbcType="VARCHAR" property="scoreDesc" />
+    <result column="recrod_desc"  jdbcType="VARCHAR" property="recrodDesc" />
     <result column="sub_type_name"  jdbcType="VARCHAR" property="subTypeName" />
    <result column="dj_sub_type_id" jdbcType="BIGINT" property="djTypeId" />
     <result column="record_id" jdbcType="BIGINT" property="recordId" />
   </resultMap>
 
   <select id="getScoreAndActiveList" parameterType="java.lang.Long" resultMap="BaseResult">
-  	select ps.score, ps.create_time, ps.score_desc, dst.name sub_type_name, ps.dj_sub_type_id, ps.record_id
+  	select ps.score, ps.create_time, ps.recrod_desc, dst.name sub_type_name, ps.dj_sub_type_id, ps.record_id
   	from dj_score ps
   	left join dj_sub_type dst on dst.id = ps.dj_sub_type_id
   	where ps.user_id = #{userId}

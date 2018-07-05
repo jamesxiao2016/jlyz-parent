@@ -89,7 +89,11 @@ public class ScoreServiceImpl extends BaseServiceImpl implements IScoreService {
 		if(list.size() != 0 && list != null ) {
 			for (ScoreActiveVo scoreActiveVo : list) {
 				if(scoreActiveVo.getDjTypeId() == 11 || scoreActiveVo.getDjTypeId() == 21 || scoreActiveVo.getDjTypeId() == 23 || scoreActiveVo.getDjTypeId() == 61 ) {
-					scoreActiveVo.setStatus(ActiveStatusEnum.ACTIVE_VALID.getValue());
+					if(scoreActiveVo.getRecordId() != null || scoreActiveVo.getRecordId() != 0 ) {
+						scoreActiveVo.setStatus(ActiveStatusEnum.ACTIVE_VALID.getValue());
+					}else {
+						scoreActiveVo.setStatus(ActiveStatusEnum.ACTIVE_INVALID.getValue());
+					}
 				}else {
 					scoreActiveVo.setStatus(ActiveStatusEnum.ACTIVE_INVALID.getValue());
 				}
